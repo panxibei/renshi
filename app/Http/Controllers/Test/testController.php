@@ -68,6 +68,20 @@ dd($email);
 		return view('test.scroll');
 		
 	}
+
+    // mint界面
+	public function mint() {
+
+		return view('test.mint');
+		
+	}
+
+    // muse界面
+	public function muse() {
+
+		return view('test.muse');
+		
+	}
 	
 
 }

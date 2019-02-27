@@ -270,10 +270,13 @@ Route::group(['prefix'=>'permission', 'namespace'=>'Admin', 'middleware'=>['jwta
 
 
 // 测试用
-Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>['jwtauth','permission:permission_super_admin']], function() {
+// Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>['jwtauth','permission:permission_super_admin']], function() {
+Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>[]], function() {
 	Route::get('test', 'testController@test');
 	Route::get('phpinfo', 'testController@phpinfo');
 	Route::get('ldap', 'testController@ldap');
 	Route::get('scroll', 'testController@scroll');
+	Route::get('mint', 'testController@mint');
+	Route::get('muse', 'testController@muse');
 	// Route::get('config', 'testController@mainConfig');
 });
