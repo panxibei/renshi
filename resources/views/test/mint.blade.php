@@ -51,6 +51,7 @@ var vm_app = new Vue({
         handleClick() {
 			console.log('aaaaaaa');
 			this.$messagebox('提示', '操作成功');
+			this.$toast('提示信息');
 
         },
 

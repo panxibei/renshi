@@ -18,7 +18,7 @@
     <mu-button color="primary">Primary</mu-button>
     <br><br>
     <mu-button full-width color="primary" @click="openSimpleDialog">full width button</mu-button>
-    <mu-dialog title="Dialog" width="360" :open.sync="openSimple">
+    <mu-dialog title="Dialog" width="340" :open.sync="openSimple">
         this is simple Dialog
         <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">Close</mu-button>
     </mu-dialog>
