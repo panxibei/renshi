@@ -5,6 +5,8 @@
 	<title>Test Muse</title>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="{{ asset('statics/muse-ui/muse-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('statics/muse-ui/roboto.css') }}">
+    <link rel="stylesheet" href="{{ asset('statics/muse-ui/material-icons.css') }}">
 
 <style type="text/css">
 
@@ -23,7 +25,9 @@
         <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">Close</mu-button>
     </mu-dialog>
 
-
+	<mu-button class="demo-button" color="primary" @click="alert()">Alert</mu-button>
+	<!-- <mu-button class="demo-button" color="secondary" @click="confirm()">Confirm</mu-button>
+	<mu-button class="demo-button" color="teal" @click="prompt()">Prompt</mu-button> -->
 
 
 	
@@ -32,6 +36,7 @@
 <script src="{{ asset('js/vue.min.js') }}"></script>
 <!-- 引入组件库 -->
 <script src="{{ asset('statics/muse-ui/muse-ui.js') }}"></script>
+
 
 
 <script type="text/javascript">
@@ -64,130 +69,16 @@ var vm_app = new Vue({
 
 
 
-
-
-
-
-
-		handleClose: function () {
-			this.show = false;
-		},
-		mylabel: function (h) {
-			return h('div', [
-				h('span', '标签一'),
-				h('Badge', {
-					props: {
-						count: 3
-					}
-				})
-			])
-		},
-		switchchange: function (status) {
-			this.$Message.info('开关状态：' + status);
-		},
-		showperson: function (index) {
-			alert(index);
-			this.$Modal.info({
-				title: 'User Info',
-				content: `Date：${this.data5[index].date}<br>Name：${this.data5[index].name}<br>Age：${this.data5[index].age}<br>Address：${this.data5[index].address}`
-			})
-		},
-		removeperson: function (index) {
-			alert(index);
-		},
-		datepickerchange: function () {
-			//alert(this.datepicker1.Format("yyyy-MM-dd hh:mm:ss.S"));
-			alert(this.datepicker1.Format("yyyy-MM-dd hh:mm:ss"));
-			
-		},
-		getMockData: function () {
-			let mockData = [];
-			for (let i = 1; i <= 20; i++) {
-				mockData.push({
-					key: i.toString(),
-					label: 'Content ' + i,
-					description: 'The desc of content  ' + i,
-					disabled: Math.random() * 3 < 1
-				});
-			}
-			return mockData;
-		},
-		getTargetKeys: function () {
-			return this.getMockData()
-					.filter(() => Math.random() * 2 > 1)
-					//.map(item => item.key);
-					.map(function (item) {return item.key});
-		},
-		render1: function (item) {
-			return item.label;
-		},
-		handleChange1: function (newTargetKeys, direction, moveKeys) {
-			console.log(newTargetKeys);
-			console.log(direction);
-			console.log(moveKeys);
-			this.targetKeystransfer = newTargetKeys;
-		},
-		handleSubmit(name) {
-			this.$refs[name].validate((valid) => {
-				if (valid) {
-					this.$Message.success('Success!');
-				} else {
-					this.$Message.error('Fail!');
-				}
-			})
-		},
-		handleReset (name) {
-			this.$refs[name].resetFields();
-		},
-		loading () {
-			const msg = this.$Message.loading({
-				content: 'Loading... 3秒后会自动关闭。当然你可以点击按钮关闭我。',
-				duration: 0
-			});
-			setTimeout(msg, 3000);
-		},
-		poptipok () {
-			this.$Message.info('You click ok');
-		},
-		poptipcancel () {
-			this.$Message.info('You click cancel');
-		},
-		stepnext () {
-			if (this.stepcurrent == 3) {
-				this.stepcurrent = 0;
-			} else {
-				this.stepcurrent += 1;
-			}
-		},
-		loadingbarstart () {
-			this.$Loading.start();
-		},
-		loadingbarfinish () {
-			this.$Loading.finish();
-		},
-		loadingbarerror () {
-			this.$Loading.error();
+		alert () {
+			// this.$toast.message('Hello world');
+			console.log('不用import引入，好像不能直接用message等组件。暂时放弃！');
 		},
 
-
-		handleReachBottom () {
-			return new Promise(resolve => {
-				setTimeout(() => {
-					const last = this.list1[this.list1.length - 1];
-					for (let i = 1; i < 21; i++) {
-						this.list1.push(last + i);
-					}
-					resolve();
-				}, 2000);
-			});
-		},
 
 
 
 	},
 	mounted: function () {
-		this.datatransfer = this.getMockData();
-        this.targetKeystransfer = this.getTargetKeys();
 	}
 })
 </script>
