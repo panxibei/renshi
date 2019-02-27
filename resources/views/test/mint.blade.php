@@ -17,10 +17,26 @@
 
 <mt-field label="用户名" placeholder="请输入用户名" v-model="username"></mt-field>
 <mt-field label="密码" placeholder="请输入密码" type="password" v-model="password"></mt-field>
-<mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
 
-<mt-button type="default" size="large" @click.native="handleClick">default</mt-button>
+<mt-button type="primary" size="large" @click.native="handleClick">default</mt-button>
 
+
+<mt-range v-model="rangeValue">
+	<div slot="start">0</div>
+	<div slot="end">100</div>
+</mt-range>
+
+
+<mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+
+
+<mt-button type="primary" size="large" @click.native="openPicker">Open Datetime</mt-button>
+<mt-datetime-picker
+	ref="picker"
+	type="date"
+	v-model="pickerValue"
+	startDate="startDate1">
+</mt-datetime-picker>
 
 
 
@@ -40,10 +56,29 @@ var vm_app = new Vue({
 
         username: '',
         password: '',
-        phone: '',
 
-        accountPlaceholder: '手机',
-        defaultAccountText: '',
+		rangeValue: 10,
+		
+		slots: [
+			{
+				flex: 1,
+				values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+				className: 'slot1',
+				textAlign: 'right'
+			}, {
+				divider: true,
+				content: '-',
+				className: 'slot2'
+			}, {
+				flex: 1,
+				values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+				className: 'slot3',
+				textAlign: 'left'
+			}
+		],
+
+		pickerValue: new Date(),
+		startDate1: new Date(),
 
 
 	},
@@ -56,159 +91,27 @@ var vm_app = new Vue({
         },
 
 
-
-
-
-
-
-
-
-		handleClose: function () {
-			this.show = false;
-		},
-		mylabel: function (h) {
-			return h('div', [
-				h('span', '标签一'),
-				h('Badge', {
-					props: {
-						count: 3
-					}
-				})
-			])
-		},
-		switchchange: function (status) {
-			this.$Message.info('开关状态：' + status);
-		},
-		showperson: function (index) {
-			alert(index);
-			this.$Modal.info({
-				title: 'User Info',
-				content: `Date：${this.data5[index].date}<br>Name：${this.data5[index].name}<br>Age：${this.data5[index].age}<br>Address：${this.data5[index].address}`
-			})
-		},
-		removeperson: function (index) {
-			alert(index);
-		},
-		datepickerchange: function () {
-			//alert(this.datepicker1.Format("yyyy-MM-dd hh:mm:ss.S"));
-			alert(this.datepicker1.Format("yyyy-MM-dd hh:mm:ss"));
-			
-		},
-		getMockData: function () {
-			let mockData = [];
-			for (let i = 1; i <= 20; i++) {
-				mockData.push({
-					key: i.toString(),
-					label: 'Content ' + i,
-					description: 'The desc of content  ' + i,
-					disabled: Math.random() * 3 < 1
-				});
-			}
-			return mockData;
-		},
-		getTargetKeys: function () {
-			return this.getMockData()
-					.filter(() => Math.random() * 2 > 1)
-					//.map(item => item.key);
-					.map(function (item) {return item.key});
-		},
-		render1: function (item) {
-			return item.label;
-		},
-		handleChange1: function (newTargetKeys, direction, moveKeys) {
-			console.log(newTargetKeys);
-			console.log(direction);
-			console.log(moveKeys);
-			this.targetKeystransfer = newTargetKeys;
-		},
-		handleSubmit(name) {
-			this.$refs[name].validate((valid) => {
-				if (valid) {
-					this.$Message.success('Success!');
-				} else {
-					this.$Message.error('Fail!');
-				}
-			})
-		},
-		handleReset (name) {
-			this.$refs[name].resetFields();
-		},
-		loading () {
-			const msg = this.$Message.loading({
-				content: 'Loading... 3秒后会自动关闭。当然你可以点击按钮关闭我。',
-				duration: 0
-			});
-			setTimeout(msg, 3000);
-		},
-		poptipok () {
-			this.$Message.info('You click ok');
-		},
-		poptipcancel () {
-			this.$Message.info('You click cancel');
-		},
-		stepnext () {
-			if (this.stepcurrent == 3) {
-				this.stepcurrent = 0;
-			} else {
-				this.stepcurrent += 1;
+		onValuesChange(picker, values) {
+			if (values[0] > values[1]) {
+				picker.setSlotValue(1, values[0]);
 			}
 		},
-		loadingbarstart () {
-			this.$Loading.start();
-		},
-		loadingbarfinish () {
-			this.$Loading.finish();
-		},
-		loadingbarerror () {
-			this.$Loading.error();
+
+
+		openPicker() {
+			this.$refs.picker.open();
 		},
 
 
-		handleReachBottom () {
-			return new Promise(resolve => {
-				setTimeout(() => {
-					const last = this.list1[this.list1.length - 1];
-					for (let i = 1; i < 21; i++) {
-						this.list1.push(last + i);
-					}
-					resolve();
-				}, 2000);
-			});
-		},
+
+		
 
 
 
 	},
 	mounted: function () {
-		this.datatransfer = this.getMockData();
-        this.targetKeystransfer = this.getTargetKeys();
+
 	}
 })
-</script>
-<script>
-// 对Date的扩展，将 Date 转化为指定格式的String
-// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
-// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
-// 例子：
-// (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
-// (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
-// let time1 = new Date().Format("yyyy-MM-dd");
-// let time2 = new Date().Format("yyyy-MM-dd HH:mm:ss");
- 
-Date.prototype.Format = function (fmt) { //author: meizz
-    let o = {
-        "M+": this.getMonth() + 1, //月份
-        "d+": this.getDate(), //日
-        "h+": this.getHours(), //小时
-        "m+": this.getMinutes(), //分
-        "s+": this.getSeconds(), //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-        "S": this.getMilliseconds() //毫秒
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (let k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-};
 </script>
 </html>
