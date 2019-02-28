@@ -278,5 +278,7 @@ Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>[]], function
 	Route::get('scroll', 'testController@scroll');
 	Route::get('mint', 'testController@mint');
 	Route::get('muse', 'testController@muse');
+	Route::get('vant', 'testController@vant');
+	Route::get('cube', 'testController@cube');
 	// Route::get('config', 'testController@mainConfig');
 });

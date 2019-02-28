@@ -82,6 +82,20 @@ dd($email);
 		return view('test.muse');
 		
 	}
+
+    // vant界面
+	public function vant() {
+
+		return view('test.vant');
+		
+	}
+
+    // cube界面
+	public function cube() {
+
+		return view('test.cube');
+		
+	}
 	
 
 }
