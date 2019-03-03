@@ -280,5 +280,6 @@ Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>[]], function
 	Route::get('muse', 'testController@muse');
 	Route::get('vant', 'testController@vant');
 	Route::get('cube', 'testController@cube');
+	Route::get('pgsql', 'testController@pgsql');
 	// Route::get('config', 'testController@mainConfig');
 });

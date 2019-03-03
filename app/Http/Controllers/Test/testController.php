@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Adldap\AdldapInterface;
 use Adldap\Laravel\Facades\Adldap;
 
+use DB;
+
 class testController extends Controller
 {
     // test界面
@@ -96,6 +98,17 @@ dd($email);
 		return view('test.cube');
 		
 	}
-	
+
+    // pgsql界面
+	public function pgsql()
+    {
+
+		$res['data1'] = DB::connection('mysql')->table('users')->find(1);
+		$res['data2'] = DB::connection('pgsql')->table('table1')->find(1);
+
+
+
+		return view('test.pgsql', $res);
+    }	
 
 }
