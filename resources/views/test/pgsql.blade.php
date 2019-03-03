@@ -22,6 +22,13 @@ pgsql:<br>
     {{ $value }}
 @endforeach
 
+<br><br>
+
+mssql:<br>
+@foreach($data3 as $value)
+    {{ $value }}
+@endforeach
+
 
 </body>
 </html>

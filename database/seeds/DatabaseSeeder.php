@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
 		$this->call(RolesAndPermissionsSeeder::class);
 		
         $this->call(Smt_configsTableSeeder::class);
+        $this->call(JiabansTableSeeder::class);
     }
 }

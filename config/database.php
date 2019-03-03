@@ -91,12 +91,12 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+            'host' => env('DB_HOST_MSSQL', 'localhost'),
+            'port' => env('DB_PORT_MSSQL', '1433'),
+            'database' => env('DB_DATABASE_MSSQL', 'forge'),
+            'username' => env('DB_USERNAME_MSSQL', 'forge'),
+            'password' => env('DB_PASSWORD_MSSQL', ''),
+            'charset' => env('DB_CHARSET_MSSQL', 'utf8'),
             'prefix' => '',
         ],
 

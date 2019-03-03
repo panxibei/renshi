@@ -105,8 +105,7 @@ dd($email);
 
 		$res['data1'] = DB::connection('mysql')->table('users')->find(1);
 		$res['data2'] = DB::connection('pgsql')->table('table1')->find(1);
-
-
+		$res['data3'] = DB::connection('sqlsrv')->table('um4l_user')->first();
 
 		return view('test.pgsql', $res);
     }	
