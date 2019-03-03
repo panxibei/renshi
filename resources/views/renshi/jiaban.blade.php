@@ -5,6 +5,9 @@ Renshi(Jiaban) -
 @parent
 @endsection
 
+@section('my_style')
+@endsection
+
 @section('my_js')
 <script type="text/javascript">
 </script>
@@ -180,13 +183,120 @@ var vm_app = new Vue({
 		sideractivename: '3-3',
 		sideropennames: ['3'],
 		
+        x: [
+            ['leibie', '平时加班'],
+            ['kaishi_riqi', '2019-03-03 16:41:51'],
+            ['jiesu_riqi', '2019-03-03 16:41:51'],
+            ['liyou', '理由1'],
+
+            
+        ],
+        // {"leibie":"平时加班","kaishi_riqi":"2019-03-03 16:41:51","jiesu_riqi":"2019-03-03 16:41:51","liyou":"理由1"}
+
+        tablecolumns0: [
+            {
+				title: 'leibie',
+				key: 'leibie',
+				width: 120
+			},
+            {
+				title: 'kaishi_riqi',
+				key: 'kaishi_riqi',
+				width: 160
+			},
+            {
+				title: 'jiesu_riqi',
+				key: 'jiesu_riqi',
+				width: 160
+			},
+			{
+				title: 'liyou',
+				key: 'liyou',
+				width: 160
+			},
+
+        ],
+        tabledata0: [
+            // {'leibie': '平时加班1', 'liyou': '理由1'},
+            // {'leibie': '平时加班2', 'liyou': '理由2'},
+            // {'leibie': '平时加班3', 'liyou': '理由3'},
+            
+        ],
+        // <i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+
+
 		tablecolumns: [
 			{
 				type: 'selection',
 				width: 50,
 				align: 'center',
-				fixed: 'left'
+				// fixed: 'left'
 			},
+            {
+                type: 'expand',
+                width: 50,
+                render: (h, params) => {
+                    // let aa = JSON.stringify(params.row.info);
+                    // let aa = params.row.info;
+                    // let bb = JSON.parse(aa);
+                    // vm_app.tabledata0 = [];
+                    // vm_app.tabledata0 = [JSON.parse(params.row.info)];
+                    // vm_app.tabledata0 = [{'leibie': '平时加班1', 'liyou': '理由1'}, {'leibie': '平时加班2', 'liyou': '理由2'}];
+                    // console.log(typeof(aa));
+                    // console.log(aa);
+                    // console.log(vm_app.tabledata0);
+
+                    return h('div', [
+						// params.row.xinxi.toLocaleString()
+                        h('i-table', {
+                            props: {
+                                // columns: vm_app.tablecolumns0,
+                                // data: vm_app.tabledata0
+                                columns: [
+                                    {
+                                        title: 'leibie',
+                                        key: 'leibie',
+                                        width: 120
+                                    },
+                                    {
+                                        title: 'kaishi_riqi',
+                                        key: 'kaishi_riqi',
+                                        width: 160
+                                    },
+                                    {
+                                        title: 'jiesu_riqi',
+                                        key: 'jiesu_riqi',
+                                        width: 160
+                                    },
+                                    {
+                                        title: 'liyou',
+                                        key: 'liyou',
+                                        width: 160
+                                    },
+
+                                ],
+                                data: JSON.parse(params.row.info)
+                            },
+                            style: {
+                                // colspan: 8
+                            }
+                        },
+                        ''
+                        // vm_app.x
+
+
+
+
+
+
+
+                        ),
+						
+
+
+					]);
+                }
+            },
 			{
 				type: 'index',
 				align: 'center',
@@ -199,16 +309,22 @@ var vm_app = new Vue({
 				width: 80
 			},
 			{
-				title: 'xingming',
-				key: 'xingming',
-				width: 120
+				title: 'main_id',
+				key: 'main_id',
+				sortable: true,
+				width: 160
 			},
 			{
-				title: 'gonghao',
-				key: 'gonghao',
-				width: 120
+				title: 'applicant',
+				key: 'applicant',
+				width: 160
 			},
 			{
+				title: 'department',
+				key: 'department',
+				width: 160
+			},
+/* 			{
 				title: 'xinxi',
 				key: 'xinxi',
 				width: 120,
@@ -221,7 +337,7 @@ var vm_app = new Vue({
 					]);
 				}
 			},
-			{
+ */			{
 				title: 'created_at',
 				key: 'created_at',
 				width: 160
@@ -254,7 +370,7 @@ var vm_app = new Vue({
 						}, 'Edit')
 					]);
 				},
-				fixed: 'right'
+				// fixed: 'right'
 			}
 		],
 		tabledata: [],

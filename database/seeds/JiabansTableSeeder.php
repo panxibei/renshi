@@ -23,10 +23,18 @@ class JiabansTableSeeder extends Seeder
             'applicant' => '张三',
             'department' => '生产部',
             'info' => json_encode([
-                'leibie' => '平时加班',
+                [
+                'leibie' => '平时加班1',
                 'kaishi_riqi' => $nowtime,
                 'jiesu_riqi' => $nowtime,
-                'liyou' => '理由1'
+                'liyou' => '理由1111'
+                ],
+                [
+                'leibie' => '平时加班2',
+                'kaishi_riqi' => $nowtime,
+                'jiesu_riqi' => $nowtime,
+                'liyou' => '理由2222'
+                ],
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK),
         ]);
         
@@ -35,10 +43,12 @@ class JiabansTableSeeder extends Seeder
             'applicant' => '李四',
             'department' => '财务部',
             'info' => json_encode([
+                [
                 'leibie' => '双休加班',
                 'kaishi_riqi' => $nowtime,
                 'jiesu_riqi' => $nowtime,
                 'liyou' => '理由2'
+                ]
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK),
         ]);
         
