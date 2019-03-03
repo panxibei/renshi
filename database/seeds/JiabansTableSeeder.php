@@ -16,50 +16,33 @@ class JiabansTableSeeder extends Seeder
         
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Jiaban::truncate();
-		
-		Jiaban::insert(array (
-            0 => 
-            array (
-                'gonghao' => '071215958',
-                'xingming' => 'zhangsan',
-                'xinxi' => json_encode("{
-                    'leibie': '平时加班',
-                    'kaishi_riqi': $nowtime,
-                    'jiesu_riqi': $nowtime,
-                    'liyou': '我愿意'
-                }"),
-                'created_at' => $nowtime,
-                'updated_at' => $nowtime,
-            ),
-            1 => 
-            array (
-                'gonghao' => '081215958',
-                'xingming' => 'lisi',
-                'xinxi' => json_encode("{
-                    'leibie': '平时加班',
-                    'kaishi_riqi': $nowtime,
-                    'jiesu_riqi': $nowtime,
-                    'liyou': '我愿意'
-                }"),
-                'created_at' => $nowtime,
-                'updated_at' => $nowtime,
-            ),
-            2 => 
-            array (
-                'gonghao' => '091215958',
-                'xingming' => 'wangwu',
-                'xinxi' => json_encode("{
-                    'leibie': '平时加班',
-                    'kaishi_riqi': $nowtime,
-                    'jiesu_riqi': $nowtime,
-                    'liyou': '我愿意'
-                }"),
-				'created_at' => $nowtime,
-                'updated_at' => $nowtime,
-
-            ),
-        ));		
+        Jiaban::truncate();
+        
+        Jiaban::create([
+            'main_id' => 'JBM000000001',
+            'applicant' => '张三',
+            'department' => '生产部',
+            'info' => json_encode([
+                'leibie' => '平时加班',
+                'kaishi_riqi' => $nowtime,
+                'jiesu_riqi' => $nowtime,
+                'liyou' => '理由1'
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK),
+        ]);
+        
+        Jiaban::create([
+            'main_id' => 'JBM000000002',
+            'applicant' => '李四',
+            'department' => '财务部',
+            'info' => json_encode([
+                'leibie' => '双休加班',
+                'kaishi_riqi' => $nowtime,
+                'jiesu_riqi' => $nowtime,
+                'liyou' => '理由2'
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK),
+        ]);
+        
+	
 		
     }
 }

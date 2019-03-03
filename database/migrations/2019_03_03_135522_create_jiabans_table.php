@@ -15,9 +15,10 @@ class CreateJiabansTable extends Migration
     {
         Schema::create('jiabans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('gonghao');
-            $table->string('xingming');
-            $table->json('xinxi');
+            $table->text('main_id')->comment('主编号');
+            $table->string('applicant')->comment('申请人');
+            $table->string('department')->comment('申请部门');
+            $table->json('info');
 
             $table->timestamps();
         });

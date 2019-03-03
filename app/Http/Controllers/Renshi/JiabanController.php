@@ -150,13 +150,13 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Jiaban::select('id', 'gonghao', 'xingming', 'created_at', 'updated_at')
+			$result = Jiaban::select('id', 'gonghao', 'xingming', 'xinxi', 'created_at', 'updated_at')
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
 				})
 				->limit(1000)
 				->orderBy('created_at', 'desc')
-				->paginate($perPage, ['*'], 'page', $page)->toArray();
+				->paginate($perPage, ['*'], 'page', $page);
 
 			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}

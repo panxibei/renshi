@@ -9,7 +9,7 @@ class Jiaban extends Model
     protected $table = 'jiabans'; 
 
 	protected $fillable = [
-        'gonghao', 'xingming', 'xinxi',
+        'main_id', 'info',
     ];
 
 }

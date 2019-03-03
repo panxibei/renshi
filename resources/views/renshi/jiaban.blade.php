@@ -199,14 +199,27 @@ var vm_app = new Vue({
 				width: 80
 			},
 			{
-				title: 'name',
-				key: 'name',
-				width: 240
+				title: 'xingming',
+				key: 'xingming',
+				width: 120
 			},
 			{
-				title: 'guard_name',
-				key: 'guard_name',
+				title: 'gonghao',
+				key: 'gonghao',
 				width: 120
+			},
+			{
+				title: 'xinxi',
+				key: 'xinxi',
+				width: 120,
+                render: (h, params) => {
+					return h('div', [
+						// params.row.xinxi.toLocaleString()
+						params.row.xinxi
+
+
+					]);
+				}
 			},
 			{
 				title: 'created_at',
@@ -445,13 +458,13 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
+				// if (response.data['jwt'] == 'logout') {
+				// 	_this.alert_logout();
+				// 	return false;
+				// }
 
 				if (response.data) {
 					_this.delete_disabled_permission = true;
