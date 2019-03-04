@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Test Mint</title>
+	<title>Test Cube</title>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="{{ asset('statics/cube/cube.min.css') }}">
 
