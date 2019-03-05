@@ -36,7 +36,7 @@ class CreateRenshiJiabansTable extends Migration
 
         Schema::create('renshi_jiaban_sub_2_mains', function (Blueprint $table) {
             $table->unsignedInteger('main_id')->comment('主编号');
-            $table->unsignedInteger('sub_id')->comment('副编号');;
+            $table->unsignedInteger('sub_id')->comment('副编号');
 
             $table->foreign('main_id')
                 ->references('id')

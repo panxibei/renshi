@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Renshi\Renshi_jiaban_main;
 use App\Models\Renshi\Renshi_jiaban_sub;
+use App\Models\Renshi\Renshi_jiaban_sub_2_main;
 use Illuminate\Support\Facades\DB;
 
 class Renshi_jiabansTableSeeder extends Seeder
@@ -50,7 +51,6 @@ class Renshi_jiabansTableSeeder extends Seeder
             'department' => 'shengchanbu',
         ]);
 
-
         Renshi_jiaban_sub::create([
             'applicant' => 'lisi',
             'department' => 'caiwu',
@@ -61,6 +61,32 @@ class Renshi_jiabansTableSeeder extends Seeder
             'reason' => 'reason1',
             'remark' => '',
         ]);
+
+        Renshi_jiaban_sub::create([
+            'applicant' => 'wangwu',
+            'department' => 'caiwu',
+            'category' => 'pingshijiaban',
+            'start_date' => $nowtime,
+            'end_date' => $nowtime,
+            'duration' => 60,
+            'reason' => 'reason2',
+            'remark' => '',
+        ]);
+
+		Renshi_jiaban_sub_2_main::insert(array (
+            0 => 
+            array (
+                'main_id' => '1',
+                'sub_id' => '1',
+                ),
+            1 => 
+            array (
+                'main_id' => '1',
+                'sub_id' => '2',
+                ),
+        ));		
+
+
 
         
         

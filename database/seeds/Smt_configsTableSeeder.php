@@ -134,7 +134,7 @@ class Smt_configsTableSeeder extends Seeder
                 'updated_at' => $nowtime,
             ),
 
-        ));		
+        ));
 		
     }
 }
