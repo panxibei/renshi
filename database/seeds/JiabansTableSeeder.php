@@ -19,35 +19,53 @@ class JiabansTableSeeder extends Seeder
         Jiaban::truncate();
         
         Jiaban::create([
-            'main_id' => 'JBM000000001',
-            'applicant' => '张三',
-            'department' => '生产部',
+            'main_id' => 'MJB000000001',
+            'agent' => 'zhangsan',
+            'department' => 'shengchanbu',
             'info' => json_encode([
                 [
-                'leibie' => '平时加班1',
+                'main_id' => 'MJB000000001',
+                'sub_id' => 'SJB0002',
+                'applicant' => 'zhangsan',
+                'department' => 'shengchanbu',
+                'leibie' => 'jiaban1',
                 'kaishi_riqi' => $nowtime,
                 'jiesu_riqi' => $nowtime,
-                'liyou' => '理由1111'
+                'duration' => 60,
+                'liyou' => 'liyou1111',
+                'remark' => 'remark1'
                 ],
                 [
-                'leibie' => '平时加班2',
+                'main_id' => 'MJB000000001',
+                'sub_id' => 'SJB0003',
+                'applicant' => 'zhangsan',
+                'department' => 'shengchanbu',
+                'leibie' => 'jiaban2',
                 'kaishi_riqi' => $nowtime,
                 'jiesu_riqi' => $nowtime,
-                'liyou' => '理由2222'
+                'duration' => 60,
+                'liyou' => 'liyou2222',
+                'remark' => ''
                 ],
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK),
         ]);
         
         Jiaban::create([
-            'main_id' => 'JBM000000002',
-            'applicant' => '李四',
-            'department' => '财务部',
+            'main_id' => 'MJB000000002',
+            'agent' => 'lisi',
+            'department' => 'caiwubu',
             'info' => json_encode([
                 [
-                'leibie' => '双休加班',
+                'main_id' => 'MJB000000002',
+                'sub_id' => 'SJB0005',
+                'applicant' => 'zhangsan',
+                'department' => 'shengchanbu',
+                'leibie' => 'shuanxiujiaban',
                 'kaishi_riqi' => $nowtime,
                 'jiesu_riqi' => $nowtime,
-                'liyou' => '理由2'
+                'duration' => 60,
+                'liyou' => 'liyou2',
+                'remark' => ''
                 ]
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK),
         ]);

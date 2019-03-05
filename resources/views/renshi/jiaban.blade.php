@@ -45,7 +45,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ondelete_permission()" :disabled="delete_disabled_permission" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ondelete_permission()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="oncreate_permission()"><Icon type="ios-color-wand-outline"></Icon> 新建权限</i-button>
@@ -193,36 +193,92 @@ var vm_app = new Vue({
         ],
         // {"leibie":"平时加班","kaishi_riqi":"2019-03-03 16:41:51","jiesu_riqi":"2019-03-03 16:41:51","liyou":"理由1"}
 
-        tablecolumns0: [
-            {
+        tablecolumnssub: [
+			{
+				type: 'selection',
+				width: 50,
+				align: 'center',
+				fixed: 'left'
+			},
+			{
+				type: 'index',
+				align: 'center',
+				width: 60,
+			},
+			{
+				title: 'sub_id',
+				key: 'sub_id',
+				width: 60,
+			},
+			{
+				title: 'applicant',
+				key: 'applicant',
+				width: 120
+			},
+			{
+				title: 'department',
+				key: 'department',
+				width: 120
+			},
+			{
 				title: 'leibie',
 				key: 'leibie',
 				width: 120
 			},
-            {
+			{
 				title: 'kaishi_riqi',
 				key: 'kaishi_riqi',
 				width: 160
 			},
-            {
+			{
 				title: 'jiesu_riqi',
 				key: 'jiesu_riqi',
 				width: 160
+			},
+			{
+				title: 'duration',
+				key: 'duration',
+				width: 80
 			},
 			{
 				title: 'liyou',
 				key: 'liyou',
 				width: 160
 			},
+			{
+				title: 'remark',
+				key: 'remark',
+				width: 160
+			},
+			{
+				title: 'Action',
+				key: 'action',
+				align: 'center',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.permission_edit(params.row)
+								}
+							}
+						}, 'Edit')
+					]);
+				},
+				fixed: 'right'
+			}
 
         ],
-        tabledata0: [
-            // {'leibie': '平时加班1', 'liyou': '理由1'},
-            // {'leibie': '平时加班2', 'liyou': '理由2'},
-            // {'leibie': '平时加班3', 'liyou': '理由3'},
-            
-        ],
-        // <i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+        tabledatasub: [],
+		tableselectsub: [],
 
 
 		tablecolumns: [
@@ -236,64 +292,30 @@ var vm_app = new Vue({
                 type: 'expand',
                 width: 50,
                 render: (h, params) => {
-                    // let aa = JSON.stringify(params.row.info);
-                    // let aa = params.row.info;
-                    // let bb = JSON.parse(aa);
-                    // vm_app.tabledata0 = [];
-                    // vm_app.tabledata0 = [JSON.parse(params.row.info)];
-                    // vm_app.tabledata0 = [{'leibie': '平时加班1', 'liyou': '理由1'}, {'leibie': '平时加班2', 'liyou': '理由2'}];
-                    // console.log(typeof(aa));
-                    // console.log(aa);
-                    // console.log(vm_app.tabledata0);
 
                     return h('div', [
 						// params.row.xinxi.toLocaleString()
+						
                         h('i-table', {
                             props: {
                                 // columns: vm_app.tablecolumns0,
                                 // data: vm_app.tabledata0
-                                columns: [
-                                    {
-                                        title: 'leibie',
-                                        key: 'leibie',
-                                        width: 120
-                                    },
-                                    {
-                                        title: 'kaishi_riqi',
-                                        key: 'kaishi_riqi',
-                                        width: 160
-                                    },
-                                    {
-                                        title: 'jiesu_riqi',
-                                        key: 'jiesu_riqi',
-                                        width: 160
-                                    },
-                                    {
-                                        title: 'liyou',
-                                        key: 'liyou',
-                                        width: 160
-                                    },
-
-                                ],
+                                columns: vm_app.tablecolumnssub,
                                 data: JSON.parse(params.row.info)
                             },
                             style: {
                                 // colspan: 8
-                            }
+                            },
+							on: {
+								"on-selection-change": (selection) => {
+									vm_app.onselectchangesub(selection)
+								}
+							}
+
                         },
                         ''
-                        // vm_app.x
-
-
-
-
-
-
 
                         ),
-						
-
-
 					]);
                 }
             },
@@ -315,8 +337,8 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
-				title: 'applicant',
-				key: 'applicant',
+				title: 'agent',
+				key: 'agent',
 				width: 160
 			},
 			{
@@ -397,7 +419,8 @@ var vm_app = new Vue({
 		permission_edit_password: '',
 		
 		// 删除
-		delete_disabled_permission: true,
+		delete_disabled: true,
+		delete_disabled_sub: true,
 
 		// tabs索引
 		currenttabs: 0,
@@ -583,7 +606,7 @@ var vm_app = new Vue({
 				// }
 
 				if (response.data) {
-					_this.delete_disabled_permission = true;
+					_this.delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -604,13 +627,29 @@ var vm_app = new Vue({
 		// 表role选择
 		onselectchange: function (selection) {
 			var _this = this;
-			_this.tableselect = [];
 
+			_this.tableselect = [];
 			for (var i in selection) {
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.delete_disabled_permission = _this.tableselect[0] == undefined ? true : false;
+			_this.delete_disabled = _this.tableselect[0] == undefined ? true : false;
+		},
+
+		onselectchangesub: function (selection) {
+			var _this = this;
+
+			_this.tableselect = [];
+			for (var i in selection) {
+				_this.tableselect.push(selection[i].main_id);
+			}
+
+			_this.tableselectsub = [];
+			for (var i in selection) {
+				_this.tableselectsub.push(selection[i].sub_id);
+			}
+			
+			_this.delete_disabled = _this.tableselectsub[0] == undefined ? true : false;
 		},
 
 		// permission编辑前查看
