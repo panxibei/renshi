@@ -183,15 +183,6 @@ var vm_app = new Vue({
 		sideractivename: '3-3',
 		sideropennames: ['3'],
 		
-        x: [
-            ['leibie', '平时加班'],
-            ['kaishi_riqi', '2019-03-03 16:41:51'],
-            ['jiesu_riqi', '2019-03-03 16:41:51'],
-            ['liyou', '理由1'],
-
-            
-        ],
-        // {"leibie":"平时加班","kaishi_riqi":"2019-03-03 16:41:51","jiesu_riqi":"2019-03-03 16:41:51","liyou":"理由1"}
 
         tablecolumnssub: [
 			{
@@ -293,7 +284,7 @@ var vm_app = new Vue({
                 width: 50,
                 render: (h, params) => {
 
-					// var x = vm_app.jiabansubgets(1, 1)
+					vm_app.jiabansubgets(1, 1)
 
 					// console.log('x: ' + x)
 					// return false
@@ -641,8 +632,6 @@ var vm_app = new Vue({
 			})
 			.then(function (response) {
 				console.log(response.data.data);
-				return response.data.data;
-				return false;
 
 				// if (response.data['jwt'] == 'logout') {
 				// 	_this.alert_logout();
@@ -653,10 +642,10 @@ var vm_app = new Vue({
 					_this.delete_disabled = true;
 					_this.tableselect = [];
 					
-					_this.page_current = response.data.current_page;
-					_this.page_total = response.data.total;
-					_this.page_last = response.data.last_page;
-					_this.tabledata = response.data.data;
+					// _this.page_current = response.data.current_page;
+					// _this.page_total = response.data.total;
+					// _this.page_last = response.data.last_page;
+					_this.tabledatasub = response.data.data;
 					
 				}
 				
