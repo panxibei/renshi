@@ -4,12 +4,10 @@ namespace App\Models\Renshi;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Jiaban extends Model
+class Renshi_jiaban_main extends Model
 {
-    protected $table = 'jiabans'; 
-
 	protected $fillable = [
-        'main_id', 'info',
+        'uuid', 'agent', 'department',
     ];
 
 }
