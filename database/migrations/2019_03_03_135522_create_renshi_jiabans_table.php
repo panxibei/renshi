@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJiabansTable extends Migration
+class CreateRenshiJiabansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class CreateJiabansTable extends Migration
     {
         Schema::create('renshi_jiaban_mains', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('main_id')->unique()->comment('主编号');
             $table->string('agent')->comment('代理申请人');
             $table->string('department')->comment('代理申请部门');
             $table->timestamps();
@@ -23,29 +22,31 @@ class CreateJiabansTable extends Migration
 
         Schema::create('renshi_jiaban_subs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('sub_id')->unique()->comment('主编号');
-            $table->string('agent')->comment('代理申请人');
-            $table->string('department')->comment('代理申请部门');
-            $table->json('info');
-
+            $table->string('applicant')->comment('申请人');
+            $table->string('department')->comment('申请部门');
+            $table->string('leibie')->comment('申请部门');
+            $table->timestamps('kaishi_riqi')->comment('申请部门');
+            $table->timestamps('jiesu_riqi')->comment('申请部门');
+            $table->string('liyou')->comment('申请部门');
+            $table->string('remark')->comment('申请部门');
             $table->timestamps();
         });
 
-        Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
-            $table->unsignedInteger('permission_id');
-            $table->unsignedInteger('role_id');
+        Schema::create($tableNames['renshi_jiaban_sub_2_mains'], function (Blueprint $table) use ($tableNames) {
+            $table->unsignedInteger('main_id')->comment('主编号');
+            $table->unsignedInteger('sub_id')->comment('副编号');;
 
-            $table->foreign('permission_id')
+            $table->foreign('main_id')
                 ->references('id')
-                ->on($tableNames['permissions'])
+                ->on(renshi_jiaban_mains)
                 ->onDelete('cascade');
 
-            $table->foreign('role_id')
+            $table->foreign('sub_id')
                 ->references('id')
-                ->on($tableNames['roles'])
+                ->on('renshi_jiaban_subs')
                 ->onDelete('cascade');
 
-            $table->primary(['permission_id', 'role_id']);
+            $table->primary(['main_id', 'sub_id']);
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Renshi\Jiaban;
 
-class JiabansTableSeeder extends Seeder
+class Renshi_jiabansTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
