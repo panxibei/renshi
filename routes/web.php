@@ -23,10 +23,8 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], func
 	Route::get('jiabanIndex', 'JiabanController@jiabanIndex')->name('renshi.jiaban.index');
 
 	// jiaban列表
-	Route::get('jiabanmainGets', 'JiabanController@jiabanmainGets')->name('renshi.jiaban.jiabanmaingets');
+	Route::get('jiabanGets', 'JiabanController@jiabanGets')->name('renshi.jiaban.jiabangets');
 
-	// jiaban列表
-	Route::get('jiabansubGets', 'JiabanController@jiabansubGets')->name('renshi.jiaban.jiabansubgets');
 
 
 

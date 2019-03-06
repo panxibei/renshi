@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Renshi\Renshi_jiaban_main;
-use App\Models\Renshi\Renshi_jiaban_sub;
-use App\Models\Renshi\Renshi_jiaban_sub_2_main;
+use App\Models\Renshi\Renshi_jiaban;
+// use App\Models\Renshi\Renshi_jiaban_sub;
+// use App\Models\Renshi\Renshi_jiaban_sub_2_main;
 use Illuminate\Support\Facades\DB;
 
 class Renshi_jiabansTableSeeder extends Seeder
@@ -20,8 +20,7 @@ class Renshi_jiabansTableSeeder extends Seeder
 		$nowtime = date("Y-m-d H:i:s",time());
 
         // Renshi_jiaban_main::truncate();
-        DB::statement('truncate table renshi_jiaban_mains restart identity cascade');
-        DB::statement('truncate table renshi_jiaban_subs restart identity cascade');
+        DB::statement('truncate table renshi_jiabans restart identity cascade');
 
 
         // json数据写入，通过 '{"key1": "value1", "key2": "value2"}' 的形式。
@@ -45,46 +44,85 @@ class Renshi_jiabansTableSeeder extends Seeder
         //     }',
         // ]);
 
-        Renshi_jiaban_main::create([
-            'uuid' => 'MJB000000002',
+        Renshi_jiaban::create([
+            'uuid' => 'MJB000000001',
             'agent' => 'zhangsan',
-            'department' => 'shengchanbu',
-        ]);
-
-        Renshi_jiaban_sub::create([
+            'department_of_agent' => 'shengchanbu',
             'applicant' => 'lisi',
-            'department' => 'caiwu',
-            'category' => 'pingshijiaban',
-            'start_date' => $nowtime,
-            'end_date' => $nowtime,
-            'duration' => 30,
-            'reason' => 'reason1',
-            'remark' => '',
-        ]);
-
-        Renshi_jiaban_sub::create([
-            'applicant' => 'wangwu',
-            'department' => 'caiwu',
+            'department_of_applicant' => 'caiwu',
             'category' => 'pingshijiaban',
             'start_date' => $nowtime,
             'end_date' => $nowtime,
             'duration' => 60,
+            'status' => 1,
+            'reason' => 'reason1',
+            'remark' => '',
+        ]);
+
+        Renshi_jiaban::create([
+            'uuid' => 'MJB000000001',
+            'agent' => 'zhangsan',
+            'department_of_agent' => 'shengchanbu',
+            'applicant' => 'wangwu',
+            'department_of_applicant' => 'caiwu',
+            'category' => 'pingshijiaban',
+            'start_date' => $nowtime,
+            'end_date' => $nowtime,
+            'duration' => 30,
+            'status' => 1,
             'reason' => 'reason2',
             'remark' => '',
         ]);
 
-		Renshi_jiaban_sub_2_main::insert(array (
-            0 => 
-            array (
-                'main_id' => '1',
-                'sub_id' => '1',
-                ),
-            1 => 
-            array (
-                'main_id' => '1',
-                'sub_id' => '2',
-                ),
-        ));		
+        Renshi_jiaban::create([
+            'uuid' => 'MJB000000002',
+            'agent' => 'zhangsan',
+            'department_of_agent' => 'shengchanbu',
+            'applicant' => 'zhaoliu',
+            'department_of_applicant' => 'caiwu',
+            'category' => 'pingshijiaban',
+            'start_date' => $nowtime,
+            'end_date' => $nowtime,
+            'duration' => 120,
+            'status' => 1,
+            'reason' => 'reason3',
+            'remark' => '',
+        ]);
+
+        // Renshi_jiaban_sub::create([
+        //     'applicant' => 'lisi',
+        //     'department' => 'caiwu',
+        //     'category' => 'pingshijiaban',
+        //     'start_date' => $nowtime,
+        //     'end_date' => $nowtime,
+        //     'duration' => 30,
+        //     'reason' => 'reason1',
+        //     'remark' => '',
+        // ]);
+
+        // Renshi_jiaban_sub::create([
+        //     'applicant' => 'wangwu',
+        //     'department' => 'caiwu',
+        //     'category' => 'pingshijiaban',
+        //     'start_date' => $nowtime,
+        //     'end_date' => $nowtime,
+        //     'duration' => 60,
+        //     'reason' => 'reason2',
+        //     'remark' => '',
+        // ]);
+
+		// Renshi_jiaban_sub_2_main::insert(array (
+        //     0 => 
+        //     array (
+        //         'main_id' => '1',
+        //         'sub_id' => '1',
+        //         ),
+        //     1 => 
+        //     array (
+        //         'main_id' => '1',
+        //         'sub_id' => '2',
+        //         ),
+        // ));		
 
 
 

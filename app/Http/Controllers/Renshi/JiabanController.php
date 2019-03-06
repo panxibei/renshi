@@ -7,8 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 // use App\Models\Admin\User;
-use App\Models\Renshi\Renshi_jiaban_main;
-use App\Models\Renshi\Renshi_jiaban_sub;
+use App\Models\Renshi\Renshi_jiaban;
 use DB;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
@@ -118,12 +117,12 @@ class JiabanController extends Controller
     }
 
     /**
-     * 加班列表
+     * jiaban列表
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function jiabanmainGets(Request $request)
+    public function jiabanGets(Request $request)
     {
 		if (! $request->ajax()) return null;
 
@@ -151,7 +150,7 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban_main::select('id', 'uuid', 'agent', 'department', 'created_at', 'updated_at')
+			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent','applicant', 'department_of_applicant', 'category', 'start_date', 'end_date', 'duration', 'status', 'reason', 'remark', 'created_at', 'updated_at')
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
 				})
@@ -165,58 +164,7 @@ class JiabanController extends Controller
 		return $result;
     }
 
-    /**
-     * 加班sub列表
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function jiabansubGets(Request $request)
-    {
-		if (! $request->ajax()) return null;
 
-		// 重置角色和权限的缓存
-		app()['cache']->forget('spatie.permission.cache');
-
-		$url = request()->url();
-		$queryParams = request()->query();
-		
-		$perPage = $queryParams['perPage'] ?? 10000;
-		$page = $queryParams['page'] ?? 1;
-		
-		$queryfilter_name = $request->input('queryfilter_name');
-		$main_id = $request->input('main_id');
-
-		//对查询参数按照键名排序
-		ksort($queryParams);
-
-		//将查询数组转换为查询字符串
-		$queryString = http_build_query($queryParams);
-
-		$fullUrl = sha1("{$url}?{$queryString}");
-		
-		
-		//首先查寻cache如果找到
-		if (Cache::has($fullUrl)) {
-			$result = Cache::get($fullUrl);    //直接读取cache
-		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban_sub::select('id', 'applicant', 'department', 'category', 'start_date', 'end_date', 'duration', 'reason', 'remark', 'created_at', 'updated_at')
-				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
-					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
-				})
-				->when($main_id, function ($query) use ($main_id) {
-					return $query->where('id', '=', $main_id);
-				})
-				->limit(1000)
-				->orderBy('created_at', 'desc')
-				->paginate($perPage, ['*'], 'page', $page);
-
-			Cache::put($fullUrl, $result, now()->addSeconds(10));
-		}
-		// dd($result);
-		return $result;
-    }
-	
     /**
      * 创建permission ajax
      *

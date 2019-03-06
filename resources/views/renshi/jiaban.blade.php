@@ -28,7 +28,7 @@ Renshi(Jiaban) -
 					<i-row :gutter="16">
 						<i-col span="4">
 							name&nbsp;&nbsp;
-							<i-input v-model.lazy="queryfilter_name" @on-change="jiabanmaingets(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+							<i-input v-model.lazy="queryfilter_name" @on-change="jiabangets(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
 						<i-col span="20">
 							&nbsp;
@@ -94,14 +94,102 @@ Renshi(Jiaban) -
 					</div>	
 				</Modal>
 				
-				<Modal v-model="modal_permission_edit" @on-ok="permission_edit_ok" ok-text="保存" title="Edit - Permission" width="420">
+
+				<Modal v-model="modal_jiaban_edit" @on-ok="permission_edit_ok" ok-text="保存" title="Edit - Permission" width="640">
 					<div style="text-align:left">
 						
-						<p>
-							name&nbsp;&nbsp;
-							<i-input v-model.lazy="permission_edit_name" placeholder="" size="small" clearable style="width: 240px"></i-input>
+						<i-row :gutter="16">
+							<i-col span="8">
+								uuid:&nbsp;&nbsp;
+								@{{ jiaban_edit_uuid }}
+							</i-col>
 
-						</p>
+							<i-col span="8">
+							created_at&nbsp;&nbsp;
+							@{{ jiaban_edit_created_at }}
+							</i-col>
+
+							<i-col span="8">
+							updated_at&nbsp;&nbsp;
+							@{{ jiaban_edit_updated_at }}
+							</i-col>
+						</i-row>
+
+						
+						<i-row :gutter="16">
+						<br>
+							<i-col span="8">
+								agent:&nbsp;&nbsp;
+								@{{ jiaban_edit_agent }}
+							</i-col>
+
+							<i-col span="16">
+							department_of_agent:&nbsp;&nbsp;
+							@{{ jiaban_edit_department_of_agent }}
+							</i-col>
+						</i-row>
+						
+						<i-row :gutter="16">
+						<br>
+							<i-col span="8">
+								applicant:&nbsp;&nbsp;
+								@{{ jiaban_edit_applicant }}
+							</i-col>
+
+							<i-col span="8">
+							department_of_applicant:&nbsp;&nbsp;
+							@{{ jiaban_edit_department_of_applicant }}
+							</i-col>
+
+							<i-col span="8">
+							category:&nbsp;&nbsp;
+								@{{ jiaban_edit_category }}
+							</i-col>
+						</i-row>
+						
+						<i-row :gutter="16">
+						<br>
+							<i-col span="8">
+							start_date:&nbsp;&nbsp;
+							@{{ jiaban_edit_start_date }}
+							</i-col>
+
+							<i-col span="8">
+							end_date:&nbsp;&nbsp;
+							@{{ jiaban_edit_end_date }}
+							</i-col>
+
+							<i-col span="8">
+							duration:&nbsp;&nbsp;
+								@{{ jiaban_edit_duration }}
+							</i-col>
+						</i-row>
+
+						<i-row :gutter="16">
+						<br>
+							<i-col span="12">
+							reason:&nbsp;&nbsp;
+							@{{ jiaban_edit_reason }}
+							</i-col>
+							<i-col span="12">
+							remark:&nbsp;&nbsp;
+							@{{ jiaban_edit_remark }}
+							</i-col>
+						</i-row>
+
+						<i-row :gutter="16">
+						<br>
+							<i-col span="20">
+							&nbsp;
+							
+							</i-col>
+							<i-col span="4">
+							status:&nbsp;&nbsp;
+							@{{ jiaban_edit_status }}
+							</i-col>
+						</i-row>
+
+
 						
 						&nbsp;
 					
@@ -184,138 +272,40 @@ var vm_app = new Vue({
 		sideropennames: ['3'],
 		
 
-        tablecolumnssub: [
+		tablecolumns: [
 			{
 				type: 'selection',
 				width: 50,
 				align: 'center',
 				fixed: 'left'
 			},
-			{
-				type: 'index',
-				align: 'center',
-				width: 60,
-			},
-			{
-				title: 'sub_id',
-				key: 'sub_id',
-				width: 60,
-			},
-			{
-				title: 'applicant',
-				key: 'applicant',
-				width: 120
-			},
-			{
-				title: 'department',
-				key: 'department',
-				width: 120
-			},
-			{
-				title: 'leibie',
-				key: 'leibie',
-				width: 120
-			},
-			{
-				title: 'kaishi_riqi',
-				key: 'kaishi_riqi',
-				width: 160
-			},
-			{
-				title: 'jiesu_riqi',
-				key: 'jiesu_riqi',
-				width: 160
-			},
-			{
-				title: 'duration',
-				key: 'duration',
-				width: 80
-			},
-			{
-				title: 'liyou',
-				key: 'liyou',
-				width: 160
-			},
-			{
-				title: 'remark',
-				key: 'remark',
-				width: 160
-			},
-			{
-				title: 'Action',
-				key: 'action',
-				align: 'center',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.permission_edit(params.row)
-								}
-							}
-						}, 'Edit')
-					]);
-				},
-				fixed: 'right'
-			}
+            // {
+            //     type: 'expand',
+            //     width: 50,
+            //     render: (h, params) => {
 
-        ],
-        tabledatasub: [],
-		tableselectsub: [],
-
-
-		tablecolumns: [
-			{
-				type: 'selection',
-				width: 50,
-				align: 'center',
-				// fixed: 'left'
-			},
-            {
-                type: 'expand',
-                width: 50,
-                render: (h, params) => {
-
-					vm_app.jiabansubgets(1, 1)
-
-					// console.log('x: ' + x)
-					// return false
-
-                    return h('div', [
-						// params.row.xinxi.toLocaleString()
+            //         return h('div', [
 						
-                        h('i-table', {
-                            props: {
-                                // columns: vm_app.tablecolumns0,
-                                // data: vm_app.tabledata0
-                                columns: vm_app.tablecolumnssub,
-                                // data: JSON.parse(params.row.info)
-                                data: vm_app.tabledatasub
-                            },
-                            style: {
-                                // colspan: 8
-                            },
-							on: {
-								"on-selection-change": (selection) => {
-									vm_app.onselectchangesub(selection)
-								}
-							}
+            //             h('i-table', {
+            //                 props: {
+            //                     columns: vm_app.tablecolumnssub,
+            //                     data: JSON.parse(params.row.info)
+            //                 },
+            //                 style: {
+            //                     // colspan: 8
+            //                 },
+			// 				on: {
+			// 					"on-selection-change": (selection) => {
+			// 						vm_app.onselectchangesub(selection)
+			// 					}
+			// 				}
 
-                        },
-                        ''
-
-                        ),
-					]);
-                }
-            },
+            //             },
+            //             ''
+            //             ),
+			// 		]);
+            //     }
+            // },
 			{
 				type: 'index',
 				align: 'center',
@@ -339,8 +329,53 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
-				title: 'department',
-				key: 'department',
+				title: 'department_of_agent',
+				key: 'department_of_agent',
+				width: 160
+			},
+			{
+				title: 'applicant',
+				key: 'applicant',
+				width: 120
+			},
+			{
+				title: 'department_of_applicant',
+				key: 'department_of_applicant',
+				width: 120
+			},
+			{
+				title: 'leibie',
+				key: 'leibie',
+				width: 120
+			},
+			{
+				title: 'kaishi_riqi',
+				key: 'kaishi_riqi',
+				width: 160
+			},
+			{
+				title: 'jiesu_riqi',
+				key: 'jiesu_riqi',
+				width: 160
+			},
+			{
+				title: 'duration',
+				key: 'duration',
+				width: 80
+			},
+			{
+				title: 'status',
+				key: 'status',
+				width: 60
+			},
+			{
+				title: 'liyou',
+				key: 'liyou',
+				width: 160
+			},
+			{
+				title: 'remark',
+				key: 'remark',
 				width: 160
 			},
 			{
@@ -370,13 +405,13 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.permission_edit(params.row)
+									vm_app.jiaban_edit(params.row)
 								}
 							}
 						}, 'Edit')
 					]);
 				},
-				// fixed: 'right'
+				fixed: 'right'
 			}
 		],
 		tabledata: [],
@@ -396,11 +431,22 @@ var vm_app = new Vue({
 		permission_add_password: '',
 		
 		// 编辑
-		modal_permission_edit: false,
-		permission_edit_id: '',
-		permission_edit_name: '',
-		permission_edit_email: '',
-		permission_edit_password: '',
+		modal_jiaban_edit: false,
+		jiaban_edit_id: '',
+		jiaban_edit_uuid: '',
+		jiaban_edit_agent: '',
+		jiaban_edit_department_of_agent: '',
+		jiaban_edit_applicant: '',
+		jiaban_edit_department_of_applicant: '',
+		jiaban_edit_category: '',
+		jiaban_edit_start_date: '',
+		jiaban_edit_end_date: '',
+		jiaban_edit_duration: '',
+		jiaban_edit_status: '',
+		jiaban_edit_reason: '',
+		jiaban_edit_remark: '',
+		jiaban_edit_created_at: '',
+		jiaban_edit_updated_at: '',
 		
 		// 删除
 		delete_disabled: true,
@@ -527,7 +573,7 @@ var vm_app = new Vue({
 		
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
-			this.jiabanmaingets(currentpage, this.page_last);
+			this.jiabangets(currentpage, this.page_last);
 		},
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
@@ -548,7 +594,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.page_size = pagesize;
-					_this.jiabanmaingets(1, _this.page_last);
+					_this.jiabangets(1, _this.page_last);
 				} else {
 					_this.warning(false, 'Warning', 'failed!');
 				}
@@ -558,7 +604,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabanmaingets: function(page, last_page){
+		jiabangets: function(page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -571,7 +617,7 @@ var vm_app = new Vue({
 			var queryfilter_name = _this.queryfilter_name;
 
 			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabanmaingets') }}";
+			var url = "{{ route('renshi.jiaban.jiabangets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -608,54 +654,7 @@ var vm_app = new Vue({
 			})
 		},
 		
-		jiabansubgets: function(page, last_page){
-			var _this = this;
-			
-			if (page > last_page) {
-				page = last_page;
-			} else if (page < 1) {
-				page = 1;
-			}
-			
 
-			var queryfilter_name = _this.queryfilter_name;
-
-			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabansubgets') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					perPage: _this.page_size,
-					page: page,
-					main_id: 1,
-				}
-			})
-			.then(function (response) {
-				console.log(response.data.data);
-
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
-
-				if (response.data) {
-					_this.delete_disabled = true;
-					_this.tableselect = [];
-					
-					// _this.page_current = response.data.current_page;
-					// _this.page_total = response.data.total;
-					// _this.page_last = response.data.last_page;
-					_this.tabledatasub = response.data.data;
-					
-				}
-				
-				_this.loadingbarfinish();
-			})
-			.catch(function (error) {
-				_this.loadingbarerror();
-				_this.error(false, 'Error', error);
-			})
-		},
 		
 		// 表role选择
 		onselectchange: function (selection) {
@@ -686,11 +685,29 @@ var vm_app = new Vue({
 		},
 
 		// permission编辑前查看
-		permission_edit: function (row) {
+		jiaban_edit: function (row) {
 			var _this = this;
 			
-			_this.permission_edit_id = row.id;
+			_this.jiaban_edit_id = row.id;
 			_this.permission_edit_name = row.name;
+
+			_this.jiaban_edit_uuid = row.uuid;
+			_this.jiaban_edit_agent = row.agent;
+			_this.jiaban_edit_department_of_agent = row.department_of_agent;
+			_this.jiaban_edit_applicant = row.applicant;
+			_this.jiaban_edit_department_of_applicant = row.department_of_applicant;
+			_this.jiaban_edit_category = row.category;
+			_this.jiaban_edit_start_date = row.start_date;
+			_this.jiaban_edit_end_date = row.end_date;
+			_this.jiaban_edit_duration = row.duration;
+			_this.jiaban_edit_status = row.status;
+			_this.jiaban_edit_reason = row.reason;
+			_this.jiaban_edit_remark = row.remark;
+			_this.jiaban_edit_created_at = row.created_at;
+			_this.jiaban_edit_updated_at = row.updated_at;
+
+
+
 			// _this.role_edit_email = row.email;
 			// _this.user_edit_password = row.password;
 			// _this.relation_xuqiushuliang_edit[0] = row.xuqiushuliang;
@@ -698,7 +715,7 @@ var vm_app = new Vue({
 			// _this.user_created_at_edit = row.created_at;
 			// _this.user_updated_at_edit = row.updated_at;
 
-			_this.modal_permission_edit = true;
+			_this.modal_jiaban_edit = true;
 		},		
 		
 
@@ -706,7 +723,7 @@ var vm_app = new Vue({
 		permission_edit_ok: function () {
 			var _this = this;
 			
-			var id = _this.permission_edit_id;
+			var id = _this.jiaban_edit_id;
 			var name = _this.permission_edit_name;
 			// var email = _this.user_edit_email;
 			// var password = _this.user_edit_password;
@@ -744,12 +761,12 @@ var vm_app = new Vue({
 					return false;
 				}
 				
-				_this.jiabanmaingets(_this.page_current, _this.page_last);
+				_this.jiabangets(_this.page_current, _this.page_last);
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
 					
-					_this.permission_edit_id = '';
+					_this.jiaban_edit_id = '';
 					_this.permission_edit_name = '';
 					// _this.role_edit_email = '';
 					// _this.role_edit_password = '';
@@ -786,7 +803,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.jiabanmaingets(_this.page_current, _this.page_last);
+					_this.jiabangets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -834,7 +851,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.success(false, 'Success', 'Permission created successfully!');
 					_this.permission_add_name = '';
-					_this.jiabanmaingets(_this.page_current, _this.page_last);
+					_this.jiabangets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, 'Warning', 'Permission created failed!');
 				}
@@ -1187,7 +1204,7 @@ var vm_app = new Vue({
 		_this.current_nav = '权限管理';
 		_this.current_subnav = '权限';
 		// 显示所有
-		_this.jiabanmaingets(1, 1); // page: 1, last_page: 1
+		_this.jiabangets(1, 1); // page: 1, last_page: 1
 	}
 });
 </script>
