@@ -95,7 +95,7 @@ Renshi(Jiaban) -
 				</Modal>
 				
 
-				<Modal v-model="modal_jiaban_edit" @on-ok="permission_edit_ok" ok-text="保存" title="Edit - Permission" width="640">
+				<Modal v-model="modal_jiaban_edit" @on-ok="jiaban_edit_ok" ok-text="同意" @on-cancel="jiaban_edit_cancel" cancel-text="拒绝" title="Edit - Jiaban" width="640">
 					<div style="text-align:left">
 						
 						<i-row :gutter="16">
@@ -193,6 +193,11 @@ Renshi(Jiaban) -
 						
 						&nbsp;
 					
+					</div>
+					<div slot="footer">
+						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass">通 过</i-button>
+						<br><br>
+						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
 					</div>	
 				</Modal>
 		
@@ -432,6 +437,8 @@ var vm_app = new Vue({
 		
 		// 编辑
 		modal_jiaban_edit: false,
+		modal_jiaban_pass_loading: false,
+		modal_jiaban_deny_loading: false,
 		jiaban_edit_id: '',
 		jiaban_edit_uuid: '',
 		jiaban_edit_agent: '',
@@ -719,8 +726,8 @@ var vm_app = new Vue({
 		},		
 		
 
-		// permission编辑后保存
-		permission_edit_ok: function () {
+		// jiaban编辑后保存（同意）
+		jiaban_edit_ok: function () {
 			var _this = this;
 			
 			var id = _this.jiaban_edit_id;
@@ -781,6 +788,89 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '更新失败！');
 			})			
+		},
+
+		// jiaban编辑后取消（拒绝）
+		jiaban_edit_cancel: function () {
+			var _this = this;
+
+			// alert('取消');
+			// return false;
+			
+			var id = _this.jiaban_edit_id;
+			var name = _this.permission_edit_name;
+			// var email = _this.user_edit_email;
+			// var password = _this.user_edit_password;
+			// var created_at = _this.relation_created_at_edit;
+			// var updated_at = _this.relation_updated_at_edit;
+			
+			if (name == '' || name == null || name == undefined) {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+			
+			var url = "{{ route('admin.permission.update') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				name: name,
+				// email: email,
+				// password: password,
+				// xuqiushuliang: xuqiushuliang[1],
+				// created_at: created_at,
+				// updated_at: updated_at
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				_this.jiabangets(_this.page_current, _this.page_last);
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+					
+					_this.jiaban_edit_id = '';
+					_this.permission_edit_name = '';
+					// _this.role_edit_email = '';
+					// _this.role_edit_password = '';
+					
+					// _this.relation_xuqiushuliang_edit = [0, 0];
+					// _this.relation_created_at_edit = '';
+					// _this.relation_updated_at_edit = '';
+				} else {
+					_this.error(false, '失败', '更新失败！请刷新查询条件后再试！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})			
+		},
+
+		// 通过
+		jiaban_edit_pass () {
+			this.modal_jiaban_pass_loading = true;
+
+			setTimeout(() => {
+				this.modal_jiaban_pass_loading = false;
+				this.modal_jiaban_edit = false;
+				this.$Message.success('成功通过！');
+			}, 2000);
+		},
+
+		// 拒绝
+		jiaban_edit_deny () {
+			this.modal_jiaban_deny_loading = true;
+
+			setTimeout(() => {
+				this.modal_jiaban_deny_loading = false;
+				this.modal_jiaban_edit = false;
+				this.$Message.success('成功拒绝！');
+			}, 2000);
 		},
 		
 		// ondelete_permission
