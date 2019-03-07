@@ -96,7 +96,13 @@ Renshi(Jiaban) -
 				
 
 				<Modal v-model="modal_jiaban_edit" @on-ok="jiaban_edit_ok" ok-text="同意" @on-cancel="jiaban_edit_cancel" cancel-text="拒绝" title="Edit - Jiaban" width="640">
+					
+					
+					
+					
+					
 					<div style="text-align:left">
+					<i-table size="large" :show-header="true" :columns="tablecolumns_edit" :data="tabledata_edit"></i-table>
 						
 						<i-row :gutter="16">
 							<i-col span="8">
@@ -421,6 +427,25 @@ var vm_app = new Vue({
 		],
 		tabledata: [],
 		tableselect: [],
+
+		tablecolumns_edit: [
+			{
+				title: 'id',
+				key: 'id',
+				width: 80
+			},
+			{
+				title: 'uuid',
+				key: 'uuid',
+				width: 160
+			},
+
+		],
+		tabledata_edit: [
+{id: 'n1', uuid: 'xxxx'}
+
+		],
+		tableselect_edit: [],
 		
 		//分页
 		page_current: 1,
