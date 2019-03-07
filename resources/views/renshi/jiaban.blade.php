@@ -95,29 +95,24 @@ Renshi(Jiaban) -
 				</Modal>
 				
 
-				<Modal v-model="modal_jiaban_edit" @on-ok="jiaban_edit_ok" ok-text="同意" @on-cancel="jiaban_edit_cancel" cancel-text="拒绝" title="Edit - Jiaban" width="640">
-					
-					
-					
-					
+				<Modal v-model="modal_jiaban_edit" title="Edit - Jiaban" width="800">
 					
 					<div style="text-align:left">
-					<i-table size="large" :show-header="true" :columns="tablecolumns_edit" :data="tabledata_edit"></i-table>
 						
 						<i-row :gutter="16">
 							<i-col span="8">
-								uuid:&nbsp;&nbsp;
-								@{{ jiaban_edit_uuid }}
+								UUID&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="8">
 							created_at&nbsp;&nbsp;
-							@{{ jiaban_edit_created_at }}
+							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="8">
 							updated_at&nbsp;&nbsp;
-							@{{ jiaban_edit_updated_at }}
+							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
 
@@ -125,13 +120,13 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="8">
-								agent:&nbsp;&nbsp;
-								@{{ jiaban_edit_agent }}
+								agent&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="16">
-							department_of_agent:&nbsp;&nbsp;
-							@{{ jiaban_edit_department_of_agent }}
+								department_of_agent&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
 						
@@ -139,63 +134,60 @@ Renshi(Jiaban) -
 						<br>
 							<i-col span="8">
 								applicant:&nbsp;&nbsp;
-								@{{ jiaban_edit_applicant }}
+								<i-input v-model.lazy="jiaban_edit_applicant" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="8">
-							department_of_applicant:&nbsp;&nbsp;
-							@{{ jiaban_edit_department_of_applicant }}
+								department_of_applicant:&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_department_of_applicant" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="8">
-							category:&nbsp;&nbsp;
-								@{{ jiaban_edit_category }}
+								category&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_category" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
 						
 						<i-row :gutter="16">
 						<br>
 							<i-col span="8">
-							start_date:&nbsp;&nbsp;
-							@{{ jiaban_edit_start_date }}
+								start_date&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_start_date" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="8">
-							end_date:&nbsp;&nbsp;
-							@{{ jiaban_edit_end_date }}
+								end_date&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_end_date" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="8">
-							duration:&nbsp;&nbsp;
-								@{{ jiaban_edit_duration }}
+								duration&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_duration" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
 
 						<i-row :gutter="16">
 						<br>
-							<i-col span="12">
-							reason:&nbsp;&nbsp;
-							@{{ jiaban_edit_reason }}
+							<i-col span="24">
+								reason:&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_reason" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
-							<i-col span="12">
-							remark:&nbsp;&nbsp;
-							@{{ jiaban_edit_remark }}
+						</i-row>
+						<i-row :gutter="16">
+						<br>
+							<i-col span="24">
+								remark:&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_remark" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
 						</i-row>
 
 						<i-row :gutter="16">
 						<br>
-							<i-col span="20">
-							&nbsp;
-							
-							</i-col>
-							<i-col span="4">
-							status:&nbsp;&nbsp;
+							<i-col span="24">
+							status&nbsp;&nbsp;
 							@{{ jiaban_edit_status }}
 							</i-col>
 						</i-row>
-
-
 						
 						&nbsp;
 					
@@ -428,24 +420,7 @@ var vm_app = new Vue({
 		tabledata: [],
 		tableselect: [],
 
-		tablecolumns_edit: [
-			{
-				title: 'id',
-				key: 'id',
-				width: 80
-			},
-			{
-				title: 'uuid',
-				key: 'uuid',
-				width: 160
-			},
 
-		],
-		tabledata_edit: [
-{id: 'n1', uuid: 'xxxx'}
-
-		],
-		tableselect_edit: [],
 		
 		//分页
 		page_current: 1,
@@ -815,66 +790,6 @@ var vm_app = new Vue({
 			})			
 		},
 
-		// jiaban编辑后取消（拒绝）
-		jiaban_edit_cancel: function () {
-			var _this = this;
-
-			// alert('取消');
-			// return false;
-			
-			var id = _this.jiaban_edit_id;
-			var name = _this.permission_edit_name;
-			// var email = _this.user_edit_email;
-			// var password = _this.user_edit_password;
-			// var created_at = _this.relation_created_at_edit;
-			// var updated_at = _this.relation_updated_at_edit;
-			
-			if (name == '' || name == null || name == undefined) {
-				_this.warning(false, '警告', '内容不能为空！');
-				return false;
-			}
-			
-			var url = "{{ route('admin.permission.update') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				name: name,
-				// email: email,
-				// password: password,
-				// xuqiushuliang: xuqiushuliang[1],
-				// created_at: created_at,
-				// updated_at: updated_at
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				_this.jiabangets(_this.page_current, _this.page_last);
-				
-				if (response.data) {
-					_this.success(false, '成功', '更新成功！');
-					
-					_this.jiaban_edit_id = '';
-					_this.permission_edit_name = '';
-					// _this.role_edit_email = '';
-					// _this.role_edit_password = '';
-					
-					// _this.relation_xuqiushuliang_edit = [0, 0];
-					// _this.relation_created_at_edit = '';
-					// _this.relation_updated_at_edit = '';
-				} else {
-					_this.error(false, '失败', '更新失败！请刷新查询条件后再试！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '更新失败！');
-			})			
-		},
 
 		// 通过
 		jiaban_edit_pass () {
