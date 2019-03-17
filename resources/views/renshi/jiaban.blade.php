@@ -169,7 +169,7 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
-								reason:&nbsp;&nbsp;
+								reason&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_reason" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
 						</i-row>
@@ -177,7 +177,7 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
-								remark:&nbsp;&nbsp;
+								remark&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_remark" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
 						</i-row>
@@ -185,13 +185,30 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
-								auditing:&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_auditing" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+								<!-- auditing&nbsp;&nbsp; -->
+								<!-- <i-input v-model.lazy="jiaban_edit_auditing" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input> -->
 							
 								<span v-for="auditing in jiaban_edit_auditing">
 
-								@{{ auditing.auditor }}
+									<i-row :gutter="16">
+									<br>
+										<i-col span="8">
+											auditor:&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
+											<!-- @{{ auditing.auditor }} -->
+										</i-col>
+										<i-col span="16">
+											&nbsp;
+										</i-col>
+									</i-row>
 
+									<i-row :gutter="16">
+									<br>
+										<i-col span="24">
+											opinion&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.opinion" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+										</i-col>
+									</i-row>
 
 								</span>
 							
@@ -336,13 +353,16 @@ var vm_app = new Vue({
 				title: 'id',
 				key: 'id',
 				sortable: true,
-				width: 80
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
 				title: 'uuid',
 				key: 'uuid',
 				sortable: true,
-				width: 160
+				width: 280
 			},
 			{
 				title: 'agent',
@@ -357,12 +377,12 @@ var vm_app = new Vue({
 			{
 				title: 'applicant',
 				key: 'applicant',
-				width: 120
+				width: 80,
 			},
 			{
 				title: 'department_of_applicant',
 				key: 'department_of_applicant',
-				width: 120
+				width: 100,
 			},
 			{
 				title: 'leibie',
@@ -370,39 +390,57 @@ var vm_app = new Vue({
 				width: 120
 			},
 			{
-				title: 'kaishi_riqi',
+				title: '',
 				key: 'kaishi_riqi',
-				width: 160
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
-				title: 'jiesu_riqi',
+				title: '',
 				key: 'jiesu_riqi',
-				width: 160
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
-				title: 'duration',
+				title: '',
 				key: 'duration',
-				width: 80
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
 				title: 'status',
 				key: 'status',
-				width: 60
+				width: 80
 			},
 			{
-				title: 'liyou',
+				title: '',
 				key: 'liyou',
-				width: 160
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
-				title: 'remark',
+				title: '',
 				key: 'remark',
-				width: 160
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
-				title: 'auditing',
+				title: '',
 				key: 'auditing',
-				width: 160
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
 				title: 'created_at',
@@ -410,9 +448,12 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
-				title: 'updated_at',
+				title: '',
 				key: 'updated_at',
-				width: 160
+				width: 0,
+				render: (h, params) => {
+					return h('div');
+				},
 			},
 			{
 				title: 'Action',
@@ -734,7 +775,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
-			_this.jiaban_edit_auditing = row.auditing;
+			_this.jiaban_edit_auditing = JSON.parse(row.auditing);
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 

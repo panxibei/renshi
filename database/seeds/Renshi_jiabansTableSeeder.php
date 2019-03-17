@@ -59,9 +59,16 @@ class Renshi_jiabansTableSeeder extends Seeder
             'reason' => 'reason1',
             'remark' => '',
             'auditing' => json_encode(
-                '{"auditor": "领导1",
-                "opinion": "balabala1...."
-                }', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+                array(
+                    array(
+                        "auditor" => "领导1",
+                        "opinion" => "balabala1...."
+                    ),
+                    array(
+                        "auditor" => "领导2",
+                        "opinion" => "balabala2...."
+                    )
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
             ),
         ]);
 
