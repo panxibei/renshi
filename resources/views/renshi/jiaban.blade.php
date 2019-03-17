@@ -173,11 +173,29 @@ Renshi(Jiaban) -
 								<i-input v-model.lazy="jiaban_edit_reason" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
 						</i-row>
+
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
 								remark:&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_remark" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+							</i-col>
+						</i-row>
+
+						<i-row :gutter="16">
+						<br>
+							<i-col span="24">
+								auditing:&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_auditing" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+							
+								<span v-for="auditing in jiaban_edit_auditing">
+
+								@{{ auditing.auditor }}
+
+
+								</span>
+							
+							
 							</i-col>
 						</i-row>
 
@@ -382,6 +400,11 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
+				title: 'auditing',
+				key: 'auditing',
+				width: 160
+			},
+			{
 				title: 'created_at',
 				key: 'created_at',
 				width: 160
@@ -452,6 +475,7 @@ var vm_app = new Vue({
 		jiaban_edit_status: '',
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
+		jiaban_edit_auditing: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
 		
@@ -710,6 +734,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
+			_this.jiaban_edit_auditing = row.auditing;
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 

@@ -6,6 +6,7 @@ use App\Models\Renshi\Renshi_jiaban;
 // use App\Models\Renshi\Renshi_jiaban_sub;
 // use App\Models\Renshi\Renshi_jiaban_sub_2_main;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
 
 class Renshi_jiabansTableSeeder extends Seeder
 {
@@ -45,7 +46,7 @@ class Renshi_jiabansTableSeeder extends Seeder
         // ]);
 
         Renshi_jiaban::create([
-            'uuid' => 'MJB000000001',
+            'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'applicant' => 'lisi',
@@ -57,10 +58,15 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 1,
             'reason' => 'reason1',
             'remark' => '',
+            'auditing' => json_encode(
+                '{"auditor": "领导1",
+                "opinion": "balabala1...."
+                }', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            ),
         ]);
 
         Renshi_jiaban::create([
-            'uuid' => 'MJB000000001',
+            'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'applicant' => 'wangwu',
@@ -72,10 +78,14 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 1,
             'reason' => 'reason2',
             'remark' => '',
+            // 'auditing' => ['{
+            //     "auditor": "lingdao1",
+            //     "opinion": "balabala1...."
+            // }'],
         ]);
 
         Renshi_jiaban::create([
-            'uuid' => 'MJB000000002',
+            'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c0',
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'applicant' => 'zhaoliu',
