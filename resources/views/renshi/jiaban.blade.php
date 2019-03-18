@@ -130,21 +130,35 @@ Renshi(Jiaban) -
 							</i-col>
 						</i-row>
 						
+						&nbsp;<Divider orientation="left">Jiaban info</Divider>
+
 						<i-row :gutter="16">
-						<br>
-							<i-col span="8">
-								applicant:&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_applicant" readonly="true" style="width: 160px"></i-input>
+							<i-col span="5">
+								applicant:<br>
+								<i-input v-model.lazy="jiaban_edit_applicant" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}" style="width: 140px"></i-input>
 							</i-col>
 
-							<i-col span="8">
-								department_of_applicant:&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_department_of_applicant" readonly="true" style="width: 160px"></i-input>
+							<i-col span="5">
+								department_of_applicant:<br>
+								<i-input v-model.lazy="jiaban_edit_department_of_applicant" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}" style="width: 140px"></i-input>
 							</i-col>
 
-							<i-col span="8">
+							<i-col span="7">
+								start_date&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_start_date" readonly="true" style="width: 140px"></i-input>
+								
+								<br><br>
 								category&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_category" readonly="true" style="width: 160px"></i-input>
+								<i-input v-model.lazy="jiaban_edit_category" readonly="true" style="width: 140px"></i-input>
+							</i-col>
+
+							<i-col span="7">
+								end_date&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_end_date" readonly="true" style="width: 140px"></i-input>
+
+								<br><br>
+								duration&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_duration" readonly="true" style="width: 140px"></i-input>
 							</i-col>
 						</i-row>
 						
