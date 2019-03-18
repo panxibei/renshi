@@ -363,15 +363,15 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 60,
 			},
-			{
-				title: 'id',
-				key: 'id',
-				sortable: true,
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
+			// {
+			// 	title: '',
+			// 	key: 'id',
+			// 	sortable: true,
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
 			{
 				title: 'uuid',
 				key: 'uuid',
@@ -388,87 +388,96 @@ var vm_app = new Vue({
 				key: 'department_of_agent',
 				width: 160
 			},
-			{
-				title: 'applicant',
-				key: 'applicant',
-				width: 80,
-			},
-			{
-				title: 'department_of_applicant',
-				key: 'department_of_applicant',
-				width: 100,
-			},
-			{
-				title: 'leibie',
-				key: 'leibie',
-				width: 120
-			},
-			{
-				title: '',
-				key: 'kaishi_riqi',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
-			{
-				title: '',
-				key: 'jiesu_riqi',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
-			{
-				title: '',
-				key: 'duration',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
+			// {
+			// 	title: '',
+			// 	key: 'applicant',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'department_of_applicant',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'category',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'kaishi_riqi',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'jiesu_riqi',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'duration',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
 			{
 				title: 'status',
 				key: 'status',
 				width: 80
 			},
-			{
-				title: '',
-				key: 'liyou',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
-			{
-				title: '',
-				key: 'remark',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
-			{
-				title: '',
-				key: 'auditing',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
+			// {
+			// 	title: '',
+			// 	key: 'liyou',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'remark',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
+			// {
+			// 	title: '',
+			// 	key: 'auditing',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
 			{
 				title: 'created_at',
 				key: 'created_at',
 				width: 160
 			},
-			{
-				title: '',
-				key: 'updated_at',
-				width: 0,
-				render: (h, params) => {
-					return h('div');
-				},
-			},
+			// {
+			// 	title: '',
+			// 	key: 'updated_at',
+			// 	width: 0,
+			// 	render: (h, params) => {
+			// 		return h('div');
+			// 	},
+			// },
 			{
 				title: 'Action',
 				key: 'action',
