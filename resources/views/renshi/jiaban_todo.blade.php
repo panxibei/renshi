@@ -15,7 +15,7 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">Jiaban Management</Divider>
+<Divider orientation="left">Jiaban todo</Divider>
 
 <Tabs type="card" v-model="currenttabs">
 	<Tab-pane label="Permission List">
@@ -320,8 +320,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '3-3',
-		sideropennames: ['3'],
+		sideractivename: '1-2',
+		sideropennames: ['1'],
 		
 
 		tablecolumns: [
@@ -1320,8 +1320,8 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '权限管理';
-		_this.current_subnav = '权限';
+		_this.current_nav = '加班管理';
+		_this.current_subnav = '处理';
 		// 显示所有
 		_this.jiabangets(1, 1); // page: 1, last_page: 1
 	}

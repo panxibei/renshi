@@ -19,8 +19,11 @@
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], function() {
 
-	// 显示jiaban页面
-	Route::get('jiabanIndex', 'JiabanController@jiabanIndex')->name('renshi.jiaban.index');
+	// 显示applicant页面
+	Route::get('jiabanApplicant', 'JiabanController@jiabanApplicant')->name('renshi.jiaban.applicant');
+
+	// 显示todo页面
+	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');
 
 	// jiaban列表
 	Route::get('jiabanGets', 'JiabanController@jiabanGets')->name('renshi.jiaban.jiabangets');

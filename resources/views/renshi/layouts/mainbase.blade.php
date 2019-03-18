@@ -84,7 +84,7 @@
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
 						<Breadcrumb>
-							<Breadcrumb-item to="{{route('admin.config.index')}}">管理首页</Breadcrumb-item>
+							<Breadcrumb-item to="{{route('renshi.jiaban.todo')}}">系统首页</Breadcrumb-item>
 							<Breadcrumb-item to="#">@{{ current_nav }}</Breadcrumb-item>
 							<Breadcrumb-item>@{{ current_subnav }}</Breadcrumb-item>
 						</Breadcrumb>
@@ -164,65 +164,18 @@
 						<div class="layout-logo"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} 后台管理</a></div>
 					</div>
 					<div id="menu">
-					<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
-                        <Submenu name="1">
-                            <template slot="title">
-								<Icon type="ios-home"></Icon> 后台首页
-                            </template>
-							<Menu-item name="1-1"><Icon type="ios-construct"></Icon> 配置管理</Menu-item>
-                        </Submenu>
+						<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
 
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="logo-dropbox"></Icon> 元素管理
-                            </template>
-							<Submenu name="2-1">
-								<template slot="title">
-									<Icon type="ios-color-wand"></Icon> 基本元素
-								</template>
-								<Menu-item name="2-1-1"><Icon type="ios-list"></Icon> Field</Menu-item>
-								<Menu-item name="2-1-2"><Icon type="ios-list-box"></Icon> Slot</Menu-item>
-								<Menu-item name="2-1-3"><Icon type="ios-paper"></Icon> Template</Menu-item>
+							<Submenu name="1">
+									<template slot="title">
+											<Icon type="ios-key"></Icon> 加班管理
+									</template>
+									<Menu-item name="1-1"><Icon type="ios-person"></Icon> 申请</Menu-item>
+									<Menu-item name="1-2"><Icon type="ios-person"></Icon> 处理</Menu-item>
+									<Menu-item name="1-3"><Icon type="ios-people"></Icon> 归档</Menu-item>
 							</Submenu>
-							
-							<Submenu name="2-2">
-								<template slot="title">
-									<Icon type="ios-link"></Icon> 元素关联
-								</template>
-								<Menu-item name="2-2-1"><Icon type="ios-list-box"></Icon>Slot2Field</Menu-item>
-								<Menu-item name="2-2-2"><Icon type="ios-paper"></Icon>Tpl2Slot</Menu-item>
-							</Submenu>
-							
-							<Submenu name="2-3">
-								<template slot="title">
-									<Icon type="ios-person"></Icon> 用户关联
-								</template>
-								<Menu-item name="2-3-1"><Icon type="ios-mail"></Icon> MailingList</Menu-item>
-								<Menu-item name="2-3-2"><Icon type="ios-people"></Icon> Slot2User</Menu-item>
-								<Menu-item name="2-3-3"><Icon type="ios-person"></Icon> Usr4Wkflw</Menu-item>
-							</Submenu>
-							
-                        </Submenu>
-						
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-key"></Icon> 权限管理
-                            </template>
-                            <Menu-item name="3-1"><Icon type="ios-person"></Icon> 用户</Menu-item>
-                            <Menu-item name="3-2"><Icon type="ios-people"></Icon> 角色</Menu-item>
-                            <Menu-item name="3-3"><Icon type="ios-key"></Icon> 权限</Menu-item>
-                        </Submenu>
-						
-                        <Submenu name="4">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                其他管理
-                            </template>
-                            <Menu-item name="4-1">其他管理1</Menu-item>
-                            <Menu-item name="4-2">其他管理2</Menu-item>
-                            <Menu-item name="4-3">其他管理3</Menu-item>
-                        </Submenu>
-                    </i-menu>
+		
+						</i-menu>
 					</div>
                 </Sider>
 			</Layout>
@@ -267,7 +220,10 @@ function navmenuselect (name) {
 	switch(name)
 	{
 	case '1-1':
-	  window.location.href = "{{route('admin.config.index')}}";
+	  window.location.href = "{{route('renshi.jiaban.applicant')}}";
+	  break;
+	case '1-2':
+	  window.location.href = "{{route('renshi.jiaban.todo')}}";
 	  break;
 
 	case '2-1-1':
