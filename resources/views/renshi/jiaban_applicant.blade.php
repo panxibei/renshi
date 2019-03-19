@@ -20,7 +20,7 @@ Renshi(Jiaban) -
 <i-row :gutter="16">
     <i-col span="4">
         ↓ 批量录入&nbsp;&nbsp;
-        <Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+        <Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
         &nbsp;项
     </i-col>
     <i-col span="20">
@@ -40,7 +40,7 @@ Renshi(Jiaban) -
         </i-col> -->
         <i-col span="4">
             * 工号&nbsp;
-            <i-select v-model.lazy="item.id" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="onchange_applicant" clearable placeholder="输入后选择" size="small" style="width: 120px;">
+            <i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
                 <i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
             </i-select>
         </i-col>
@@ -71,7 +71,6 @@ Renshi(Jiaban) -
     <br>
     </span>
 
-    <br>
 
 
 
@@ -106,7 +105,7 @@ var vm_app = new Vue({
 		// 批量录入applicant表
 		piliangluru_applicant: [
 			{
-				id: '',
+				uid: '',
 				applicant: '',
 				department: '',
 				start_date: '',
@@ -300,7 +299,7 @@ var vm_app = new Vue({
 					// this.piliangluru_applicant.push({value: 'piliangluru_applicant'+parseInt(len+i+1)});
 					this.piliangluru_applicant.push(
 						{
-                            id: '',
+                            uid: '',
                             applicant: '',
                             department: '',
                             start_date: '',
@@ -383,7 +382,7 @@ var vm_app = new Vue({
 		onclear_applicant: function () {
 			var _this = this;
 			_this.piliangluru_applicant.map(function (v,i) {
-				v.id = '';
+				v.uid = '';
 				v.applicant = '';
 				v.department = '';
 				v.start_date = '';
@@ -399,20 +398,12 @@ var vm_app = new Vue({
 		remoteMethod_applicant (query) {
 			var _this = this;
 
-            _this.applicant_options = [
-                {value: '平时加班', label: '平时加班'},
-                {value: '双休加班', label: '双休加班'},
-                {value: '节假日加班', label: '节假日加班'}
-
-            ];
-            return false;
-
 			if (query !== '') {
 				_this.applicant_loading = true;
 				
 				var queryfilter_name = query;
 				
-				var url = "{{ route('admin.permission.rolelist') }}";
+				var url = "{{ route('renshi.jiaban.applicant.uidlist') }}";
 				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 				axios.get(url,{
 					params: {
@@ -421,10 +412,10 @@ var vm_app = new Vue({
 				})
 				.then(function (response) {
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
+				// if (response.data['jwt'] == 'logout') {
+				// 	_this.alert_logout();
+				// 	return false;
+				// }
 					
 					if (response.data) {
 						var json = response.data;
@@ -450,37 +441,31 @@ var vm_app = new Vue({
 		},
 
         // 选择role查看permission
-		onchange_applicant: function () {
+		onchange_applicant: function (value) {
 			var _this = this;
 
-alert('change');
-return false;
-
-			var roleid = _this.role_select;
+			var employeeid = value;
 			// console.log(roleid);return false;
 			
-			if (roleid == undefined || roleid == '') {
-				_this.targetkeystransfer = [];
-				_this.datatransfer = [];
-				_this.boo_update = true;
+			if (employeeid == undefined || employeeid == '') {
 				return false;
 			}
-			_this.boo_update = false;
+
 			var url = "{{ route('admin.permission.rolehaspermission') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
-					roleid: roleid
+					employeeid: employeeid
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				console.log(response.data);
+				return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
+				// if (response.data['jwt'] == 'logout') {
+				// 	_this.alert_logout();
+				// 	return false;
+				// }
 				
 				if (response.data) {
 					var json = response.data.allpermissions;

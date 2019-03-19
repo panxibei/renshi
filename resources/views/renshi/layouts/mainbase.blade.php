@@ -183,7 +183,7 @@
 			<div><br><br><br><br></div>
 			<Layout :style="{padding: '0 12px 24px', marginLeft: '200px'}">
 				<!--内容主体-->
-				<Content :style="{padding: '0px 12px', minHeight: '280px', background: '#fff'}">
+				<Content :style="{padding: '0px 12px', minHeight: '500px', background: '#fff'}">
 				<!-- 主体 -->
 				@section('my_body')
 				@show
