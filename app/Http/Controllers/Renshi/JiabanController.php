@@ -188,12 +188,12 @@ class JiabanController extends Controller
     }
 
     /**
-     * 列出人员
+     * 列出人员uid
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function employeeList(Request $request)
+    public function uidList(Request $request)
     {
 		if (! $request->ajax()) return null;
 
@@ -231,8 +231,49 @@ class JiabanController extends Controller
 		return $result;
     }
 
+    /**
+     * 列出人员信息
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function employeeList(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		$url = request()->url();
+		$queryParams = request()->query();
+		
+		$employeeid = $request->input('employeeid');
+		
+		//对查询参数按照键名排序
+		ksort($queryParams);
+
+		//将查询数组转换为查询字符串
+		$queryString = http_build_query($queryParams);
+
+		$fullUrl = sha1("{$url}?{$queryString}");
+		
+		
+		//首先查寻cache如果找到
+		if (Cache::has($fullUrl)) {
+			$result = Cache::get($fullUrl);    //直接读取cache
+		} else {                                   //如果cache里面没有
+			$result = Renshi_employee::select('applicant', 'department')
+				->when($employeeid, function ($query) use ($employeeid) {
+					return $query->where('id', $employeeid);
+				})
+				->first();
+
+			Cache::put($fullUrl, $result, now()->addSeconds(30));
+		}
 
 
+		return $result;
+    }
 
 
 

@@ -40,17 +40,17 @@ Renshi(Jiaban) -
         </i-col> -->
         <i-col span="4">
             * 工号&nbsp;
-            <i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
+            <i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
                 <i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
             </i-select>
         </i-col>
         <i-col span="3">
-            * 姓名&nbsp;
-            <i-input v-model.lazy="item.applicant" size="small" placeholder="例：张三" clearable style="width: 80px"></i-input>
+            姓名&nbsp;
+            <i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
         </i-col>
         <i-col span="3">
             部门&nbsp;
-            <i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" clearable style="width: 80px"></i-input>
+            <i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
         </i-col>
         <i-col span="4">
             * 类别&nbsp;
@@ -441,17 +441,19 @@ var vm_app = new Vue({
 		},
 
         // 选择role查看permission
-		onchange_applicant: function (value) {
+		onchange_applicant: function (value, index) {
 			var _this = this;
 
 			var employeeid = value;
 			// console.log(roleid);return false;
 			
 			if (employeeid == undefined || employeeid == '') {
+                _this.piliangluru_applicant[index].applicant = '';
+                _this.piliangluru_applicant[index].department = '';
 				return false;
 			}
 
-			var url = "{{ route('admin.permission.rolehaspermission') }}";
+			var url = "{{ route('renshi.jiaban.applicant.employeelist') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -459,8 +461,9 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+                // alert(index);
+				// console.log(response.data);
+				// return false;
 
 				// if (response.data['jwt'] == 'logout') {
 				// 	_this.alert_logout();
@@ -468,16 +471,17 @@ var vm_app = new Vue({
 				// }
 				
 				if (response.data) {
-					var json = response.data.allpermissions;
-					_this.datatransfer = _this.json2transfer(json);
-					
-					var arr = response.data.rolehaspermission;
-					_this.targetkeystransfer = _this.arr2target(arr);
-
+                    var json = response.data;
+                    var arr = [];
+                    for (var key in json) {
+                        arr.push(json[key]);
+                    }
+                    _this.piliangluru_applicant[index].applicant = arr[0];
+                    _this.piliangluru_applicant[index].department = arr[1];
 				} else {
-					_this.targetkeystransfer = [];
-					_this.datatransfer = [];
-				}
+                    _this.piliangluru_applicant[index].applicant = '';
+                    _this.piliangluru_applicant[index].department = '';
+                }
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
