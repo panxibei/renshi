@@ -17,292 +17,80 @@ Renshi(Jiaban) -
 @parent
 <Divider orientation="left">Jiaban applicant</Divider>
 
-    <i-row :gutter="16">
-        <i-col span="8">
-            UUID&nbsp;&nbsp;
-            <i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 160px"></i-input>
-        </i-col>
+<i-row :gutter="16">
+    <i-col span="3">
+        &nbsp;&nbsp;<i-button @click="oncreate_applicant()" type="primary">记入</i-button>
+        &nbsp;&nbsp;<i-button @click="onclear_applicant()">清除</i-button>
+    </i-col>
+    <i-col span="21">
+        &nbsp;
+    </i-col>
+</i-row>
 
-        <i-col span="8">
-        created_at&nbsp;&nbsp;
-        <i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 160px"></i-input>
-        </i-col>
+<br><br>
 
-        <i-col span="8">
-        updated_at&nbsp;&nbsp;
-        <i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 160px"></i-input>
-        </i-col>
-    </i-row>
 
+<i-row :gutter="16">
+    <i-col span="24">
+        ↓ 批量录入&nbsp;&nbsp;
+        <Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+        &nbsp;项
+    </i-col>
+</i-row>
     
     &nbsp;
 
-<Tabs type="card" v-model="currenttabs">
-	<Tab-pane label="Permission List">
-	
-		
-		<i-row :gutter="16">
-			<br>
-			<i-col span="3">
-				<i-button @click="ondelete_permission()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
-			</i-col>
-			<i-col span="2">
-				<i-button type="default" size="small" @click="oncreate_permission()"><Icon type="ios-color-wand-outline"></Icon> 新建权限</i-button>
-			</i-col>
-			<i-col span="2">
-				<i-button type="default" size="small" @click="onexport_permission()"><Icon type="ios-download-outline"></Icon> 导出权限</i-button>
-			</i-col>
-			<i-col span="2">
-			&nbsp;
-			</i-col>
-			<i-col span="15">
-			&nbsp;
-				<Tooltip content="输入用户选择" placement="top">
-					<i-select v-model.lazy="test_user_select" filterable remote :remote-method="remoteMethod_sync_user" :loading="test_user_loading" @on-change="" clearable placeholder="输入用户" style="width: 200px;" size="small">
-						<i-option v-for="item in test_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Tooltip>
-				&nbsp;<Icon type="md-arrow-round-forward"></Icon>&nbsp;
-				<Tooltip content="输入权限选择" placement="top">
-					<i-select v-model.lazy="test_permission_select" filterable remote :remote-method="remoteMethod_sync_permission" :loading="test_permission_loading" @on-change="" clearable placeholder="输入权限" style="width: 200px;" size="small">
-						<i-option v-for="item in test_permission_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Tooltip>
-				&nbsp;&nbsp;
-				<i-button type="default" size="small" @click="testuserspermission"><Icon type="md-help"></Icon> 测试用户是否有权限</i-button>
-			</i-col>
-		</i-row>
-		
-		<i-row :gutter="16">
-			<i-col span="24">
-	
-				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
-				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
-			
-				<Modal v-model="modal_permission_add" @on-ok="oncreate_permission_ok" ok-text="新建" title="Create - Permission" width="420">
-					<div style="text-align:left">
-						
-						<p>
-							name&nbsp;&nbsp;
-							<i-input v-model.lazy="permission_add_name" placeholder="" size="small" clearable style="width: 240px"></i-input>
+    <span v-for="(item, index) in piliangluru_applicant">
+    
+    <i-row>
+    <br>
+        <i-col span="1">
+            &nbsp;(@{{index+1}})
+        </i-col>
+        <i-col span="3">
+            * 姓名&nbsp;&nbsp;
+            <i-input v-model.lazy="item.applicant" size="small" placeholder="例：张三" clearable style="width: 80px"></i-input>
+        </i-col>
+        <i-col span="3">
+            * 部门&nbsp;&nbsp;
+            <i-input v-model.lazy="item.department" size="small" placeholder="例：生产部" clearable style="width: 80px"></i-input>
+        </i-col>
+        <i-col span="4">
+            * 类别&nbsp;&nbsp;
+            <i-select v-model.lazy="item.category" size="small" style="width:100px" placeholder="选择加班类别">
+                <i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+        <i-col span="5">
+            * 开始时间&nbsp;&nbsp;
+            <Date-picker v-model.lazy="item.start_date" type="datetime" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班开始时间" style="width:140px"></Date-picker>
+        </i-col>
+        <i-col span="5">
+            * 结束时间&nbsp;&nbsp;
+            <Date-picker v-model.lazy="item.end_date" type="datetime" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班结束时间" style="width:140px"></Date-picker>
+        </i-col>
+        <i-col span="3">
+            * 期间（分钟）&nbsp;&nbsp;
+            <i-input v-model.lazy="item.duration" readonly="true" size="small" placeholder="" clearable style="width: 40px"></i-input>
+        </i-col>
+        
+    </i-row>
+    <br>
+    </span>
 
-						</p>
-						
-						&nbsp;
-					
-					</div>	
-				</Modal>
-				
+    <br>
 
-				<Modal v-model="modal_jiaban_edit" title="Edit - Jiaban" width="800">
-					
-					<div style="text-align:left">
-						
-						<i-row :gutter="16">
-							<i-col span="8">
-								UUID&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 160px"></i-input>
-							</i-col>
 
-							<i-col span="8">
-							created_at&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 160px"></i-input>
-							</i-col>
 
-							<i-col span="8">
-							updated_at&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 160px"></i-input>
-							</i-col>
-						</i-row>
 
-						
-						<i-row :gutter="16">
-						<br>
-							<i-col span="8">
-								agent&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px"></i-input>
-							</i-col>
 
-							<i-col span="16">
-								department_of_agent&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
-							</i-col>
-						</i-row>
-						
-						&nbsp;<Divider orientation="left">Jiaban info</Divider>
 
-						<i-row :gutter="16">
-							<i-col span="5">
-								applicant:<br>
-								<i-input v-model.lazy="jiaban_edit_applicant" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}" style="width: 140px"></i-input>
-							</i-col>
 
-							<i-col span="5">
-								department_of_applicant:<br>
-								<i-input v-model.lazy="jiaban_edit_department_of_applicant" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}" style="width: 140px"></i-input>
-							</i-col>
 
-							<i-col span="7">
-								start_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_start_date" readonly="true" style="width: 140px"></i-input>
-								
-								<br><br>
-								category&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_category" readonly="true" style="width: 140px"></i-input>
-							</i-col>
 
-							<i-col span="7">
-								end_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_end_date" readonly="true" style="width: 140px"></i-input>
+    &nbsp;
 
-								<br><br>
-								duration&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_duration" readonly="true" style="width: 140px"></i-input>
-							</i-col>
-						</i-row>
-						
-						<i-row :gutter="16">
-						<br>
-							<i-col span="8">
-								start_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_start_date" readonly="true" style="width: 160px"></i-input>
-							</i-col>
 
-							<i-col span="8">
-								end_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_end_date" readonly="true" style="width: 160px"></i-input>
-							</i-col>
-
-							<i-col span="8">
-								duration&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_duration" readonly="true" style="width: 160px"></i-input>
-							</i-col>
-						</i-row>
-
-						<i-row :gutter="16">
-						<br>
-							<i-col span="24">
-								reason&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_reason" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
-							</i-col>
-						</i-row>
-
-						<i-row :gutter="16">
-						<br>
-							<i-col span="24">
-								remark&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_remark" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
-							</i-col>
-						</i-row>
-
-						<i-row :gutter="16">
-						<br>
-							<i-col span="24">
-								<!-- auditing&nbsp;&nbsp; -->
-								<!-- <i-input v-model.lazy="jiaban_edit_auditing" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input> -->
-							
-								<span v-for="auditing in jiaban_edit_auditing">
-
-									<i-row :gutter="16">
-									<br>
-										<i-col span="8">
-											auditor:&nbsp;&nbsp;
-											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
-											<!-- @{{ auditing.auditor }} -->
-										</i-col>
-										<i-col span="16">
-											&nbsp;
-										</i-col>
-									</i-row>
-
-									<i-row :gutter="16">
-									<br>
-										<i-col span="24">
-											opinion&nbsp;&nbsp;
-											<i-input v-model.lazy="auditing.opinion" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
-										</i-col>
-									</i-row>
-
-								</span>
-							
-							
-							</i-col>
-						</i-row>
-
-						<i-row :gutter="16">
-						<br>
-							<i-col span="24">
-							status&nbsp;&nbsp;
-							@{{ jiaban_edit_status }}
-							</i-col>
-						</i-row>
-						
-						&nbsp;
-					
-					</div>
-					<div slot="footer">
-						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass">通 过</i-button>
-						<br><br>
-						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
-					</div>	
-				</Modal>
-		
-			</i-col>
-		</i-row>
-
-	
-	</Tab-pane>
-
-	<Tab-pane label="Advance">
-
-		<i-row :gutter="16">
-			<i-col span="9">
-				<i-select v-model.lazy="role_select" filterable remote :remote-method="remoteMethod_role" :loading="role_loading" @on-change="onchange_role" clearable placeholder="输入角色名称后选择" style="width: 280px;">
-					<i-option v-for="item in role_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-				&nbsp;&nbsp;
-				<i-button type="primary" :disabled="boo_update" @click="roleupdatepermission">Update</i-button>
-			</i-col>
-			<i-col span="6">
-				&nbsp;
-			</i-col>
-			<i-col span="6">
-				<i-select v-model.lazy="permission2role_select" filterable remote :remote-method="remoteMethod_permission2role" :loading="permission2role_loading" @on-change="onchange_permission2role" clearable placeholder="输入权限名称查看哪些角色正在使用">
-					<i-option v-for="item in permission2role_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-			</i-col>
-			<i-col span="3">
-				&nbsp;
-			</i-col>
-		</i-row>
-		
-		<br><br><br>
-			
-		<i-row :gutter="16">
-			<i-col span="14">
-				<Transfer
-					:titles="titlestransfer"
-					:data="datatransfer"
-					filterable
-					:target-keys="targetkeystransfer"
-					:render-format="rendertransfer"
-					@on-change="onChangeTransfer">
-				</Transfer>
-			</i-col>
-			<i-col span="1">
-			&nbsp;
-			</i-col>
-			<i-col span="6">
-				<i-input v-model.lazy="permission2role_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
-			</i-col>
-			<i-col span="3">
-			&nbsp;
-			</i-col>
-		</i-row>
-
-	</Tab-pane>
-
-</Tabs>
 @endsection
 
 @section('my_footer')
@@ -322,189 +110,37 @@ var vm_app = new Vue({
 		sideractivename: '1-1',
 		sideropennames: ['1'],
 		
-
-		tablecolumns: [
+		// 批量录入applicant表
+		piliangluru_applicant: [
 			{
-				type: 'selection',
-				width: 50,
-				align: 'center',
-				fixed: 'left'
+				applicant: '',
+				department: '',
+				start_date: '',
+				end_date: '',
+				category: '',
+				duration: ''
 			},
-            // {
-            //     type: 'expand',
-            //     width: 50,
-            //     render: (h, params) => {
-
-            //         return h('div', [
-						
-            //             h('i-table', {
-            //                 props: {
-            //                     columns: vm_app.tablecolumnssub,
-            //                     data: JSON.parse(params.row.info)
-            //                 },
-            //                 style: {
-            //                     // colspan: 8
-            //                 },
-			// 				on: {
-			// 					"on-selection-change": (selection) => {
-			// 						vm_app.onselectchangesub(selection)
-			// 					}
-			// 				}
-
-            //             },
-            //             ''
-            //             ),
-			// 		]);
-            //     }
-            // },
-			{
-				type: 'index',
-				align: 'center',
-				width: 60,
-			},
-			// {
-			// 	title: '',
-			// 	key: 'id',
-			// 	sortable: true,
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			{
-				title: 'uuid',
-				key: 'uuid',
-				sortable: true,
-				width: 280
-			},
-			{
-				title: 'agent',
-				key: 'agent',
-				width: 160
-			},
-			{
-				title: 'department_of_agent',
-				key: 'department_of_agent',
-				width: 160
-			},
-			// {
-			// 	title: '',
-			// 	key: 'applicant',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'department_of_applicant',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'category',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'kaishi_riqi',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'jiesu_riqi',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'duration',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			{
-				title: 'status',
-				key: 'status',
-				width: 80
-			},
-			// {
-			// 	title: '',
-			// 	key: 'liyou',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'remark',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			// {
-			// 	title: '',
-			// 	key: 'auditing',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			{
-				title: 'created_at',
-				key: 'created_at',
-				width: 160
-			},
-			// {
-			// 	title: '',
-			// 	key: 'updated_at',
-			// 	width: 0,
-			// 	render: (h, params) => {
-			// 		return h('div');
-			// 	},
-			// },
-			{
-				title: 'Action',
-				key: 'action',
-				align: 'center',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.jiaban_edit(params.row)
-								}
-							}
-						}, 'Edit')
-					]);
-				},
-				fixed: 'right'
-			}
 		],
-		tabledata: [],
-		tableselect: [],
+
+		// 批量录入项
+		piliangluruxiang_applicant: 1,
+
+		//加班类别
+		option_category: [
+			{value: '平时加班', label: '平时加班'},
+			{value: '双休加班', label: '双休加班'},
+			{value: '节假日加班', label: '节假日加班'}
+		],
+
+
+
+
+
+
+
+
+
+
 
 
 		
@@ -654,6 +290,117 @@ var vm_app = new Vue({
 			}
 			return arr.reverse();
 		},
+
+		// 生成piliangluru_applicant
+		piliangluru_applicant_generate: function (counts) {
+			if (counts == undefined) counts = 1;
+			var len = this.piliangluru_applicant.length;
+			
+			if (counts > len) {
+				for (var i=0;i<counts-len;i++) {
+					// this.piliangluru_applicant.push({value: 'piliangluru_applicant'+parseInt(len+i+1)});
+					this.piliangluru_applicant.push(
+						{
+                            applicant: '',
+                            department: '',
+                            start_date: '',
+                            end_date: '',
+                            category: '',
+                            duration: ''
+                        }
+					);
+				}
+			} else if (counts < len) {
+				if (this.piliangluruxiang_applicant != '') {
+					for (var i=counts;i<len;i++) {
+						if (this.piliangluruxiang_applicant == this.piliangluru_applicant[i].value) {
+							this.piliangluruxiang_applicant = '';
+							break;
+						}
+					}
+				}
+				
+				for (var i=0;i<len-counts;i++) {
+					this.piliangluru_applicant.pop();
+				}
+			}
+		},
+
+		// oncreate_applicant
+		oncreate_applicant: function () {
+			var _this = this;
+
+			var booFlagOk = true;
+			_this.piliangluru_applicant.map(function (v,i) {
+				// applicant: '',
+				// department: '',
+				// start_date: '',
+				// end_date: '',
+				// category: '',
+				// duration: ''
+				
+				if (v.jizhongming == '' || v.pinfan == '' || v.pinming == ''  || v.xuqiushuliang == '' || v.leibie == ''
+					|| v.jizhongming == undefined || v.pinfan == undefined || v.pinming == undefined || v.xuqiushuliang == undefined || v.leibie == undefined) {
+					booFlagOk = false;
+				}
+			});
+			
+			if (booFlagOk == false) {
+				_this.warning(false, '警告', '输入内容为空或不正确2！');
+				return false;
+			}
+			
+			var piliangluru_applicant = _this.piliangluru_applicant;
+			
+			var url = "{{ route('bpjg.zrcfx.relationcreate') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				piliangluru: piliangluru_applicant
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+				
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.onclear_applicant();
+					_this.success(false, '成功', '记入成功！');
+				} else {
+					_this.error(false, '失败', '记入失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '记入失败！');
+				// console.log(error);
+			})
+		},
+
+        // onclear_applicant
+		onclear_applicant: function () {
+			var _this = this;
+			_this.piliangluru_applicant.map(function (v,i) {
+				v.applicant = '';
+				v.department = '';
+				v.start_date = '';
+				v.end_date = '';
+				v.category = '';
+				v.duration = '';
+			});
+			
+			// _this.$refs.xianti.focus();
+		},
+
+
+
+
+
+
+
+
 		
 		// 穿梭框目标文本转换（数字转字符串）
 		arr2target: function (arr) {
