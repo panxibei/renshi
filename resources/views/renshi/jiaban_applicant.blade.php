@@ -60,7 +60,7 @@ Renshi(Jiaban) -
         </i-col>
         <i-col span="7">
             * 时间&nbsp;
-            <Date-picker v-model.lazy="item.datetime" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+            <Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
         </i-col>
         <i-col span="3">
             * 时长&nbsp;
@@ -108,8 +108,7 @@ var vm_app = new Vue({
 				uid: '',
 				applicant: '',
 				department: '',
-				start_date: '',
-				end_date: '',
+				datetimerange: [],
 				category: '',
 				duration: ''
 			},
@@ -302,8 +301,7 @@ var vm_app = new Vue({
                             uid: '',
                             applicant: '',
                             department: '',
-                            start_date: '',
-                            end_date: '',
+                            datetimerange: [],
                             category: '',
                             duration: ''
                         }
@@ -333,32 +331,31 @@ var vm_app = new Vue({
 			_this.piliangluru_applicant.map(function (v,i) {
 				// applicant: '',
 				// department: '',
-				// start_date: '',
-				// end_date: '',
+				// datetimerange: [],
 				// category: '',
 				// duration: ''
 				
-				if (v.jizhongming == '' || v.pinfan == '' || v.pinming == ''  || v.xuqiushuliang == '' || v.leibie == ''
-					|| v.jizhongming == undefined || v.pinfan == undefined || v.pinming == undefined || v.xuqiushuliang == undefined || v.leibie == undefined) {
+				if (v.applicant == '' || v.department == '' || v.category == ''  || v.duration == '' || v.datetimerange[0] == ''
+					|| v.applicant == undefined || v.department == undefined || v.category == undefined || v.duration == undefined || v.datetimerange[0] == undefined) {
 					booFlagOk = false;
 				}
 			});
 			
 			if (booFlagOk == false) {
-				_this.warning(false, '警告', '输入内容为空或不正确2！');
+				_this.warning(false, '警告', '输入内容为空或不正确！');
 				return false;
 			}
 			
 			var piliangluru_applicant = _this.piliangluru_applicant;
 			
-			var url = "{{ route('bpjg.zrcfx.relationcreate') }}";
+			var url = "{{ route('renshi.jiaban.applicant.applicantcreate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				piliangluru: piliangluru_applicant
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				console.log(response.data);
+				return false;
 				
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -385,8 +382,7 @@ var vm_app = new Vue({
 				v.uid = '';
 				v.applicant = '';
 				v.department = '';
-				v.start_date = '';
-				v.end_date = '';
+				v.datetimerange = [];
 				v.category = '';
 				v.duration = '';
 			});

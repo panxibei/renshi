@@ -22,11 +22,14 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], func
 	// 显示applicant页面
 	Route::get('jiabanApplicant', 'JiabanController@jiabanApplicant')->name('renshi.jiaban.applicant');
 
-	// applicant页面查询employee_uid
+	// applicant页面 查询employee_uid
 	Route::get('uidList', 'JiabanController@uidList')->name('renshi.jiaban.applicant.uidlist');
 
-	// applicant页面查询employee
+	// applicant页面 查询employee
 	Route::get('employeeList', 'JiabanController@employeeList')->name('renshi.jiaban.applicant.employeelist');
+
+	// applicant页面 批量录入
+	Route::post('applicantCreate', 'JiabanController@applicantCreate')->name('renshi.jiaban.applicant.applicantcreate');
 
 	// 显示todo页面
 	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');

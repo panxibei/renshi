@@ -257,7 +257,6 @@ class JiabanController extends Controller
 
 		$fullUrl = sha1("{$url}?{$queryString}");
 		
-		
 		//首先查寻cache如果找到
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
@@ -271,11 +270,64 @@ class JiabanController extends Controller
 			Cache::put($fullUrl, $result, now()->addSeconds(30));
 		}
 
-
 		return $result;
     }
 
 
+		/**
+     * applicantCreate
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function applicantCreate(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+		
+		$piliangluru = $request->input('piliangluru');
+dd($piliangluru);
+
+
+		$created_at = date('Y-m-d H:i:s');
+		$updated_at = date('Y-m-d H:i:s');
+
+		foreach ($piliangluru as $key => $value) {
+			// $s[$key]['xianti'] = $xianti;
+			// $s[$key]['qufen'] = $qufen;
+			$s[$key]['created_at'] = $created_at;
+			$s[$key]['updated_at'] = $updated_at;
+
+			$s[$key]['jizhongming'] = $value['jizhongming'];
+			$s[$key]['pinfan'] = $value['pinfan'];
+			$s[$key]['pinming'] = $value['pinming'];
+			$s[$key]['xuqiushuliang'] = $value['xuqiushuliang'];
+			$s[$key]['leibie'] = $value['leibie'];
+		}
+		// dd($s);
+		
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// foreach ($s as $value) {
+				// Bpjg_zhongricheng_main::create($value);
+			// }
+			Bpjg_zhongricheng_relation::insert($s);
+
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;		
+    }
 
 
 
