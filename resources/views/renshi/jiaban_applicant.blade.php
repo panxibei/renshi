@@ -18,23 +18,14 @@ Renshi(Jiaban) -
 <Divider orientation="left">Jiaban applicant</Divider>
 
 <i-row :gutter="16">
-    <i-col span="3">
-        &nbsp;&nbsp;<i-button @click="oncreate_applicant()" type="primary">记入</i-button>
-        &nbsp;&nbsp;<i-button @click="onclear_applicant()">清除</i-button>
-    </i-col>
-    <i-col span="21">
-        &nbsp;
-    </i-col>
-</i-row>
-
-<br><br>
-
-
-<i-row :gutter="16">
-    <i-col span="24">
+    <i-col span="4">
         ↓ 批量录入&nbsp;&nbsp;
         <Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
         &nbsp;项
+    </i-col>
+    <i-col span="20">
+        &nbsp;&nbsp;<i-button @click="oncreate_applicant()" size="default" type="primary">提 交</i-button>
+        &nbsp;&nbsp;<i-button @click="onclear_applicant()" size="default">清 除</i-button>
     </i-col>
 </i-row>
     
@@ -44,34 +35,36 @@ Renshi(Jiaban) -
     
     <i-row>
     <br>
-        <i-col span="1">
+        <!-- <i-col span="1">
             &nbsp;(@{{index+1}})
+        </i-col> -->
+        <i-col span="4">
+            * 工号&nbsp;
+            <i-select v-model.lazy="item.id" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="onchange_applicant" clearable placeholder="输入后选择" size="small" style="width: 120px;">
+                <i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+            </i-select>
         </i-col>
         <i-col span="3">
-            * 姓名&nbsp;&nbsp;
+            * 姓名&nbsp;
             <i-input v-model.lazy="item.applicant" size="small" placeholder="例：张三" clearable style="width: 80px"></i-input>
         </i-col>
         <i-col span="3">
-            * 部门&nbsp;&nbsp;
-            <i-input v-model.lazy="item.department" size="small" placeholder="例：生产部" clearable style="width: 80px"></i-input>
+            部门&nbsp;
+            <i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" clearable style="width: 80px"></i-input>
         </i-col>
         <i-col span="4">
-            * 类别&nbsp;&nbsp;
-            <i-select v-model.lazy="item.category" size="small" style="width:100px" placeholder="选择加班类别">
+            * 类别&nbsp;
+            <i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
                 <i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
             </i-select>
         </i-col>
-        <i-col span="5">
-            * 开始时间&nbsp;&nbsp;
-            <Date-picker v-model.lazy="item.start_date" type="datetime" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班开始时间" style="width:140px"></Date-picker>
-        </i-col>
-        <i-col span="5">
-            * 结束时间&nbsp;&nbsp;
-            <Date-picker v-model.lazy="item.end_date" type="datetime" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班结束时间" style="width:140px"></Date-picker>
+        <i-col span="7">
+            * 时间&nbsp;
+            <Date-picker v-model.lazy="item.datetime" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
         </i-col>
         <i-col span="3">
-            * 期间（分钟）&nbsp;&nbsp;
-            <i-input v-model.lazy="item.duration" readonly="true" size="small" placeholder="" clearable style="width: 40px"></i-input>
+            * 时长&nbsp;
+            <Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
         </i-col>
         
     </i-row>
@@ -113,6 +106,7 @@ var vm_app = new Vue({
 		// 批量录入applicant表
 		piliangluru_applicant: [
 			{
+				id: '',
 				applicant: '',
 				department: '',
 				start_date: '',
@@ -131,6 +125,11 @@ var vm_app = new Vue({
 			{value: '双休加班', label: '双休加班'},
 			{value: '节假日加班', label: '节假日加班'}
 		],
+
+		// 选择角色查看编辑相应权限
+		applicant_select: '',
+		applicant_options: [],
+		applicant_loading: false,
 
 
 
@@ -301,6 +300,7 @@ var vm_app = new Vue({
 					// this.piliangluru_applicant.push({value: 'piliangluru_applicant'+parseInt(len+i+1)});
 					this.piliangluru_applicant.push(
 						{
+                            id: '',
                             applicant: '',
                             department: '',
                             start_date: '',
@@ -383,6 +383,7 @@ var vm_app = new Vue({
 		onclear_applicant: function () {
 			var _this = this;
 			_this.piliangluru_applicant.map(function (v,i) {
+				v.id = '';
 				v.applicant = '';
 				v.department = '';
 				v.start_date = '';
@@ -392,6 +393,111 @@ var vm_app = new Vue({
 			});
 			
 			// _this.$refs.xianti.focus();
+		},
+
+		// 远程查询角色
+		remoteMethod_applicant (query) {
+			var _this = this;
+
+            _this.applicant_options = [
+                {value: '平时加班', label: '平时加班'},
+                {value: '双休加班', label: '双休加班'},
+                {value: '节假日加班', label: '节假日加班'}
+
+            ];
+            return false;
+
+			if (query !== '') {
+				_this.applicant_loading = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('admin.permission.rolelist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.applicant_options = _this.json2selectvalue(json);
+					}
+				})
+				.catch(function (error) {
+				})				
+				
+				setTimeout(() => {
+					_this.applicant_loading = false;
+					// const list = this.list.map(item => {
+						// return {
+							// value: item,
+							// label: item
+						// };
+					// });
+					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
+				}, 200);
+			} else {
+				_this.applicant_options = [];
+			}
+		},
+
+        // 选择role查看permission
+		onchange_applicant: function () {
+			var _this = this;
+
+alert('change');
+return false;
+
+			var roleid = _this.role_select;
+			// console.log(roleid);return false;
+			
+			if (roleid == undefined || roleid == '') {
+				_this.targetkeystransfer = [];
+				_this.datatransfer = [];
+				_this.boo_update = true;
+				return false;
+			}
+			_this.boo_update = false;
+			var url = "{{ route('admin.permission.rolehaspermission') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					roleid: roleid
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data.allpermissions;
+					_this.datatransfer = _this.json2transfer(json);
+					
+					var arr = response.data.rolehaspermission;
+					_this.targetkeystransfer = _this.arr2target(arr);
+
+				} else {
+					_this.targetkeystransfer = [];
+					_this.datatransfer = [];
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
 		},
 
 
