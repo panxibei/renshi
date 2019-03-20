@@ -18,8 +18,31 @@ Renshi(Jiaban) -
 <Divider orientation="left">Jiaban applicant</Divider>
 
 <i-row :gutter="16">
+	<i-col span="6">
+		加班理由&nbsp;&nbsp;
+		<i-input v-model.lazy="jiaban_add_reason" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
+	</i-col>
+
+	<i-col span="1">
+	&nbsp;
+	</i-col>
+
+	<i-col span="6">
+		备注&nbsp;&nbsp;
+		<i-input v-model.lazy="jiaban_add_remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
+	</i-col>
+
+	<i-col span="11">
+		&nbsp;&nbsp;
+	</i-col>
+</i-row>
+
+&nbsp;&nbsp;<br><br>
+
+<i-row :gutter="16">
+<br><br>
     <i-col span="4">
-        ↓ 批量录入&nbsp;&nbsp;
+        ↓ 批量提交&nbsp;&nbsp;
         <Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
         &nbsp;项
     </i-col>
@@ -29,49 +52,47 @@ Renshi(Jiaban) -
     </i-col>
 </i-row>
     
-    &nbsp;
+&nbsp;
 
-    <span v-for="(item, index) in piliangluru_applicant">
-    
-    <i-row>
-    <br>
-        <!-- <i-col span="1">
-            &nbsp;(@{{index+1}})
-        </i-col> -->
-        <i-col span="4">
-            * 工号&nbsp;
-            <i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
-                <i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-            </i-select>
-        </i-col>
-        <i-col span="3">
-            姓名&nbsp;
-            <i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
-        </i-col>
-        <i-col span="3">
-            部门&nbsp;
-            <i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
-        </i-col>
-        <i-col span="4">
-            * 类别&nbsp;
-            <i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
-                <i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-            </i-select>
-        </i-col>
-        <i-col span="7">
-            * 时间&nbsp;
-            <Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
-        </i-col>
-        <i-col span="3">
-            * 时长&nbsp;
-            <Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
-        </i-col>
-        
-    </i-row>
-    <br>
-    </span>
+<span v-for="(item, index) in piliangluru_applicant">
 
-
+<i-row>
+<br>
+	<!-- <i-col span="1">
+		&nbsp;(@{{index+1}})
+	</i-col> -->
+	<i-col span="4">
+		* 工号&nbsp;
+		<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
+			<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+		</i-select>
+	</i-col>
+	<i-col span="3">
+		姓名&nbsp;
+		<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
+	</i-col>
+	<i-col span="3">
+		部门&nbsp;
+		<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
+	</i-col>
+	<i-col span="4">
+		* 类别&nbsp;
+		<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
+			<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+		</i-select>
+	</i-col>
+	<i-col span="7">
+		* 时间&nbsp;
+		<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+	</i-col>
+	<i-col span="3">
+		* 时长&nbsp;
+		<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
+	</i-col>
+	
+</i-row>
+<br>
+</span>
 
 
 
@@ -80,7 +101,9 @@ Renshi(Jiaban) -
 
 
 
-    &nbsp;
+
+
+&nbsp;
 
 
 @endsection
@@ -101,6 +124,10 @@ var vm_app = new Vue({
 		
 		sideractivename: '1-1',
 		sideropennames: ['1'],
+
+		// 创建
+		jiaban_add_reason: '',
+		jiaban_add_remark: '',
 		
 		// 批量录入applicant表
 		piliangluru_applicant: [
@@ -147,12 +174,6 @@ var vm_app = new Vue({
 		page_size: {{ $config['PERPAGE_RECORDS_FOR_PERMISSION'] }},
 		page_last: 1,
 		
-		// 创建
-		modal_permission_add: false,
-		permission_add_id: '',
-		permission_add_name: '',
-		permission_add_email: '',
-		permission_add_password: '',
 		
 		// 编辑
 		modal_jiaban_edit: false,
