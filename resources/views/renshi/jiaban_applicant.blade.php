@@ -19,7 +19,7 @@ Renshi(Jiaban) -
 
 <i-row :gutter="16">
 	<i-col span="6">
-		加班理由&nbsp;&nbsp;
+		* 加班理由&nbsp;&nbsp;
 		<i-input v-model.lazy="jiaban_add_reason" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
 	</i-col>
 
@@ -349,23 +349,33 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var booFlagOk = true;
-			_this.piliangluru_applicant.map(function (v,i) {
-				// applicant: '',
-				// department: '',
-				// datetimerange: [],
-				// category: '',
-				// duration: ''
-				
-				if (v.applicant == '' || v.department == '' || v.category == ''  || v.duration == '' || v.datetimerange[0] == ''
-					|| v.applicant == undefined || v.department == undefined || v.category == undefined || v.duration == undefined || v.datetimerange[0] == undefined) {
-					booFlagOk = false;
-				}
-			});
+
+			var jiaban_add_reason = _this.jiaban_add_reason;
+			var jiaban_add_remark = _this.jiaban_add_remark;
+
+			if (jiaban_add_reason == ''
+				|| jiaban_add_reason == undefined) {
+				booFlagOk = false;
+			} else {
+				_this.piliangluru_applicant.map(function (v,i) {
+					// applicant: '',
+					// department: '',
+					// datetimerange: [],
+					// category: '',
+					// duration: ''
+					
+					if (v.applicant == '' || v.department == '' || v.category == ''  || v.duration == '' || v.datetimerange[0] == ''
+						|| v.applicant == undefined || v.department == undefined || v.category == undefined || v.duration == undefined || v.datetimerange[0] == undefined) {
+						booFlagOk = false;
+					}
+				});
+			}
 			
 			if (booFlagOk == false) {
 				_this.warning(false, '警告', '输入内容为空或不正确！');
 				return false;
 			}
+			
 			
 			var piliangluru_applicant = _this.piliangluru_applicant;
 			
