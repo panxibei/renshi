@@ -61,9 +61,9 @@ class Renshi_jiabansTableSeeder extends Seeder
                     ),
                     array(
                         "uid" => "071215957",
-                        "applicant" => "李四",
-                        'department' => 'caiwu',
-                        'category' => 'pingshijiaban',
+                        "applicant" => "李四四四四",
+                        'department' => '生产计划管理部',
+                        'category' => '节假日加班补',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
                         'duration' => 60,
                     )

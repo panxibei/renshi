@@ -147,10 +147,10 @@ Renshi(Jiaban) -
 										姓名
 										<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
 									</i-col>
-									<i-col span="3">
+									<i-col span="4">
 										部门
 									</i-col>
-									<i-col span="4">
+									<i-col span="3">
 										类别
 									</i-col>
 									<i-col span="8">
@@ -177,10 +177,10 @@ Renshi(Jiaban) -
 											@{{ application.applicant }}
 											<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
 										</i-col>
-										<i-col span="3">
+										<i-col span="4">
 											@{{ application.department }}
 										</i-col>
-										<i-col span="4">
+										<i-col span="3">
 											@{{ application.category }}
 										</i-col>
 										<i-col span="8">
