@@ -49,12 +49,30 @@ class Renshi_jiabansTableSeeder extends Seeder
             'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
-            'applicant' => 'lisi',
-            'department_of_applicant' => 'caiwu',
-            'category' => 'pingshijiaban',
-            'start_date' => $nowtime,
-            'end_date' => $nowtime,
-            'duration' => 60,
+            'application' => json_encode(
+                array(
+                    array(
+                        "applicant" => "张三",
+                        'department' => 'caiwu',
+                        'category' => 'pingshijiaban',
+                        'datetimerange' => $nowtime . ' - ' . $nowtime,
+                        'duration' => 60,
+                    ),
+                    array(
+                        "applicant" => "李四",
+                        'department' => 'caiwu',
+                        'category' => 'pingshijiaban',
+                        'datetimerange' => $nowtime . ' - ' . $nowtime,
+                        'duration' => 60,
+                    )
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            ),
+            // 'applicant' => 'lisi',
+            // 'department_of_applicant' => 'caiwu',
+            // 'category' => 'pingshijiaban',
+            // 'start_date' => $nowtime,
+            // 'end_date' => $nowtime,
+            // 'duration' => 60,
             'status' => 1,
             'reason' => 'reason1',
             'remark' => '',
@@ -76,12 +94,17 @@ class Renshi_jiabansTableSeeder extends Seeder
             'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
-            'applicant' => 'wangwu',
-            'department_of_applicant' => 'caiwu',
-            'category' => 'pingshijiaban',
-            'start_date' => $nowtime,
-            'end_date' => $nowtime,
-            'duration' => 30,
+            'application' => json_encode(
+                array(
+                    array(
+                        "applicant" => "王五",
+                        'department' => 'caiwu',
+                        'category' => 'pingshijiaban',
+                        'datetimerange' => $nowtime . ' - ' . $nowtime,
+                        'duration' => 30,
+                    ),
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            ),
             'status' => 1,
             'reason' => 'reason2',
             'remark' => '',
@@ -95,12 +118,17 @@ class Renshi_jiabansTableSeeder extends Seeder
             'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c0',
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
-            'applicant' => 'zhaoliu',
-            'department_of_applicant' => 'caiwu',
-            'category' => 'pingshijiaban',
-            'start_date' => $nowtime,
-            'end_date' => $nowtime,
-            'duration' => 120,
+            'application' => json_encode(
+                array(
+                    array(
+                        "applicant" => "赵六",
+                        'department' => 'caiwu',
+                        'category' => 'pingshijiaban',
+                        'datetimerange' => $nowtime . ' - ' . $nowtime,
+                        'duration' => 30,
+                    ),
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+            ),
             'status' => 1,
             'reason' => 'reason3',
             'remark' => '',
