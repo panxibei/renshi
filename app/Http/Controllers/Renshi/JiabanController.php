@@ -173,7 +173,7 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent','applicant', 'department_of_applicant', 'category', 'start_date', 'end_date', 'duration', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
+			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent','application', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
 				})

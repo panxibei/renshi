@@ -133,52 +133,72 @@ Renshi(Jiaban) -
 						&nbsp;<Divider orientation="left">Jiaban info</Divider>
 
 						<i-row :gutter="16">
-							<i-col span="5">
-								applicant:<br>
-								<i-input v-model.lazy="jiaban_edit_applicant" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}" style="width: 140px"></i-input>
-							</i-col>
+							<i-col span="24">
 
-							<i-col span="5">
-								department_of_applicant:<br>
-								<i-input v-model.lazy="jiaban_edit_department_of_applicant" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}" style="width: 140px"></i-input>
-							</i-col>
+								<i-row :gutter="16">
+									<i-col span="1">
+										序号
+									</i-col>
+									<i-col span="3">
+										工号
+										<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
+									</i-col>
+									<i-col span="3">
+										姓名
+										<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
+									</i-col>
+									<i-col span="3">
+										部门
+									</i-col>
+									<i-col span="4">
+										类别
+									</i-col>
+									<i-col span="8">
+										时间
+									</i-col>
+									<i-col span="2">
+										时长
+									</i-col>
+								</i-row>
 
-							<i-col span="7">
-								start_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_start_date" readonly="true" style="width: 140px"></i-input>
-								
-								<br><br>
-								category&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_category" readonly="true" style="width: 140px"></i-input>
-							</i-col>
 
-							<i-col span="7">
-								end_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_end_date" readonly="true" style="width: 140px"></i-input>
+								<span v-for="(application, index) in jiaban_edit_application">
 
-								<br><br>
-								duration&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_duration" readonly="true" style="width: 140px"></i-input>
+
+									<i-row :gutter="16">
+									<br>
+										<i-col span="1">
+											#@{{index+1}}
+										</i-col>
+										<i-col span="3">
+											@{{ application.uid }}
+										</i-col>
+										<i-col span="3">
+											@{{ application.applicant }}
+											<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
+										</i-col>
+										<i-col span="3">
+											@{{ application.department }}
+										</i-col>
+										<i-col span="4">
+											@{{ application.category }}
+										</i-col>
+										<i-col span="8">
+											@{{ application.datetimerange }}
+										</i-col>
+										<i-col span="2">
+											@{{ application.duration }}
+										</i-col>
+									</i-row>
+
+								</span>
+							
+							
 							</i-col>
 						</i-row>
-						
-						<i-row :gutter="16">
-						<br>
-							<i-col span="8">
-								start_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_start_date" readonly="true" style="width: 160px"></i-input>
-							</i-col>
 
-							<i-col span="8">
-								end_date&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_end_date" readonly="true" style="width: 160px"></i-input>
-							</i-col>
 
-							<i-col span="8">
-								duration&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_duration" readonly="true" style="width: 160px"></i-input>
-							</i-col>
-						</i-row>
+
 
 						<i-row :gutter="16">
 						<br>
@@ -530,12 +550,13 @@ var vm_app = new Vue({
 		jiaban_edit_uuid: '',
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
-		jiaban_edit_applicant: '',
-		jiaban_edit_department_of_applicant: '',
-		jiaban_edit_category: '',
-		jiaban_edit_start_date: '',
-		jiaban_edit_end_date: '',
-		jiaban_edit_duration: '',
+		jiaban_edit_application: '',
+		// jiaban_edit_applicant: '',
+		// jiaban_edit_department_of_applicant: '',
+		// jiaban_edit_category: '',
+		// jiaban_edit_start_date: '',
+		// jiaban_edit_end_date: '',
+		// jiaban_edit_duration: '',
 		jiaban_edit_status: '',
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
@@ -789,12 +810,13 @@ var vm_app = new Vue({
 			_this.jiaban_edit_uuid = row.uuid;
 			_this.jiaban_edit_agent = row.agent;
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
-			_this.jiaban_edit_applicant = row.applicant;
-			_this.jiaban_edit_department_of_applicant = row.department_of_applicant;
-			_this.jiaban_edit_category = row.category;
-			_this.jiaban_edit_start_date = row.start_date;
-			_this.jiaban_edit_end_date = row.end_date;
-			_this.jiaban_edit_duration = row.duration;
+			_this.jiaban_edit_application = JSON.parse(row.application);
+			// _this.jiaban_edit_applicant = row.applicant;
+			// _this.jiaban_edit_department_of_applicant = row.department_of_applicant;
+			// _this.jiaban_edit_category = row.category;
+			// _this.jiaban_edit_start_date = row.start_date;
+			// _this.jiaban_edit_end_date = row.end_date;
+			// _this.jiaban_edit_duration = row.duration;
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;

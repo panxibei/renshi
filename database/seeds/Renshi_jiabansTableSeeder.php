@@ -52,6 +52,7 @@ class Renshi_jiabansTableSeeder extends Seeder
             'application' => json_encode(
                 array(
                     array(
+                        "uid" => "071215958",
                         "applicant" => "张三",
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
@@ -59,13 +60,14 @@ class Renshi_jiabansTableSeeder extends Seeder
                         'duration' => 60,
                     ),
                     array(
+                        "uid" => "071215957",
                         "applicant" => "李四",
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
                         'duration' => 60,
                     )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
             // 'applicant' => 'lisi',
             // 'department_of_applicant' => 'caiwu',
@@ -86,7 +88,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                         "auditor" => "领导2",
                         "opinion" => "balabala2...."
                     )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
         ]);
 
@@ -97,13 +99,14 @@ class Renshi_jiabansTableSeeder extends Seeder
             'application' => json_encode(
                 array(
                     array(
+                        "uid" => "071015516",
                         "applicant" => "王五",
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
                         'duration' => 30,
                     ),
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
             'status' => 1,
             'reason' => 'reason2',
@@ -121,13 +124,14 @@ class Renshi_jiabansTableSeeder extends Seeder
             'application' => json_encode(
                 array(
                     array(
+                        "uid" => "071111111",
                         "applicant" => "赵六",
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
                         'duration' => 30,
                     ),
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
             'status' => 1,
             'reason' => 'reason3',
