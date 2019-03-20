@@ -45,10 +45,10 @@ class Renshi_jiabansTableSeeder extends Seeder
         //     }',
         // ]);
 
-        $uuid1 = Uuid::uuid4();
+        $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             // 'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
-            'uuid' => $uuid1->toString(),
+            'uuid' => $uuid4->toString(),
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'application' => json_encode(
@@ -94,9 +94,9 @@ class Renshi_jiabansTableSeeder extends Seeder
             ),
         ]);
 
-        $uuid1 = Uuid::uuid4();
+        $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
-            'uuid' => $uuid1->toString(),
+            'uuid' => $uuid4->toString(),
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'application' => json_encode(
@@ -120,9 +120,9 @@ class Renshi_jiabansTableSeeder extends Seeder
             // }'],
         ]);
 
-        $uuid1 = Uuid::uuid4();
+        $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
-            'uuid' => $uuid1->toString(),
+            'uuid' => $uuid4->toString(),
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'application' => json_encode(

@@ -381,8 +381,8 @@ var vm_app = new Vue({
 			var url = "{{ route('renshi.jiaban.applicant.applicantcreate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				jiaban_add_reason: jiaban_add_reason,
-				jiaban_add_remark: jiaban_add_remark,
+				reason: jiaban_add_reason,
+				remark: jiaban_add_remark,
 				piliangluru: piliangluru_applicant
 			})
 			.then(function (response) {

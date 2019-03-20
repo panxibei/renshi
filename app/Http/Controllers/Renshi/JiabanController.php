@@ -15,6 +15,7 @@ use DB;
 // use Maatwebsite\Excel\Facades\Excel;
 // use App\Exports\Admin\permissionExport;
 use Illuminate\Support\Facades\Cache;
+use Ramsey\Uuid\Uuid;
 
 class JiabanController extends Controller
 {
@@ -223,7 +224,7 @@ class JiabanController extends Controller
 				})
 				->limit(10)
 				->orderBy('created_at', 'desc')
-				->pluck('uid', 'id')->toArray();
+				->pluck('uid', 'uid')->toArray();
 
 			Cache::put($fullUrl, $result, now()->addSeconds(30));
 		}
@@ -263,7 +264,7 @@ class JiabanController extends Controller
 		} else {                                   //如果cache里面没有
 			$result = Renshi_employee::select('applicant', 'department')
 				->when($employeeid, function ($query) use ($employeeid) {
-					return $query->where('id', $employeeid);
+					return $query->where('uid', $employeeid);
 				})
 				->first();
 
@@ -284,12 +285,38 @@ class JiabanController extends Controller
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 		
-		$piliangluru = $request->input('piliangluru');
-dd($piliangluru);
-
-
 		$created_at = date('Y-m-d H:i:s');
 		$updated_at = date('Y-m-d H:i:s');
+
+		$reason = $request->input('reason');
+		$remark = $request->input('remark');
+		$piliangluru = $request->input('piliangluru');
+
+
+		$uuid4 = Uuid::uuid4();
+		$uuid = $uuid4->toString();
+		$agent = 'agent';
+		$department_of_agent = 'mydepartment';
+
+		foreach ($piliangluru as $key => $value) {
+			$s[$key]['uid'] = $value['uid'];
+			$s[$key]['applicant'] = $value['applicant'];
+			$s[$key]['department'] = $value['department'];
+			$s[$key]['category'] = $value['category'];
+			$s[$key]['datetimerange'] = date('Y-m-d H:i', strtotime($value['datetimerange'][0])) . ' - ' . date('Y-m-d H:i', strtotime($value['datetimerange'][1]));
+			$s[$key]['duration'] = $value['duration'];
+		}
+
+		$application = json_encode(
+			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+
+
+
+dd($s);
+
+
 
 		foreach ($piliangluru as $key => $value) {
 			// $s[$key]['xianti'] = $xianti;
