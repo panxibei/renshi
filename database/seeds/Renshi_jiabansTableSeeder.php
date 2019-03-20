@@ -45,8 +45,12 @@ class Renshi_jiabansTableSeeder extends Seeder
         //     }',
         // ]);
 
+        $uuid1 = Uuid::uuid1();
+        
+
         Renshi_jiaban::create([
-            'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+            // 'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+            'uuid' => $uuid1->toString(),
             'agent' => 'zhangsan',
             'department_of_agent' => 'shengchanbu',
             'application' => json_encode(
