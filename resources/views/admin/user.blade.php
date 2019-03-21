@@ -148,11 +148,11 @@ Admin(User) -
 	
 		<i-row :gutter="16">
 			<i-col span="15">
-				当前用户：&nbsp;
-				<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+				当前用户工号：&nbsp;
+				<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
 					<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
-				&nbsp;@{{ username }}&nbsp;
+				&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current }}&nbsp;
 				<!-- <i-button type="primary" :disabled="boo_update" @click="userupdaterole" size="small">Update</i-button>
 				&nbsp;&nbsp;
 				当前用户： -->
@@ -162,44 +162,39 @@ Admin(User) -
 			</i-col>
 		</i-row>
 		
-		<br><br><br>
+		<br><br>
 
 		<i-row :gutter="16">
 			<i-col span="15">
-				处理用户：&nbsp;
-				<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+				处理用户工号：&nbsp;
+				<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
 					<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
-				&nbsp;@{{ username }}&nbsp;
-				<i-button type="primary" :disabled="boo_update" @click="userupdaterole" size="small">Update</i-button>
-				&nbsp;&nbsp;
-				当前用户：
+				&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing }}&nbsp;
 			</i-col>
 			<i-col span="9">
 				&nbsp;
 			</i-col>
 		</i-row>
 		
-		<br><br><br>
-			
+		<br><br>
+
 		<i-row :gutter="16">
-			<i-col span="14">
-				<Transfer
-					:titles="titlestransfer"
-					:data="datatransfer"
-					filterable
-					:target-keys="targetkeystransfer"
-					:render-format="rendertransfer"
-					@on-change="onChangeTransfer">
-				</Transfer>
+			<i-col span="6">
+				<i-input v-model.lazy="user2auditing_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
 			</i-col>
 			<i-col span="1">
 			&nbsp;
 			</i-col>
-			<i-col span="9">
-			&nbsp;
+			<i-col span="17">
+				<i-button type="default" :disabled="boo_update" @click="auditingadd" size="small">Add</i-button>
+				<br><br>
+				<i-button type="default" :disabled="boo_update" @click="auditingdel" size="small">Del</i-button>
+				<br><br>
+				<i-button type="primary" :disabled="boo_update" @click="auditingupdate" size="small">Update</i-button>
 			</i-col>
 		</i-row>
+		
 
 	</Tab-pane>
 
@@ -424,11 +419,13 @@ var vm_app = new Vue({
 		user_select_auditing: '',
 		user_options_auditing: [],
 		user_loading_auditing: false,
-		boo_update: false,
-		titlestransfer: ['待选', '已选'], // ['源列表', '目的列表']
-		datatransfer: [],
-		targetkeystransfer: [], // ['1', '2'] key
-		username: '',
+		boo_update: true,
+		username_current: '',
+		username_auditing: '',
+		user2auditing_input: '',
+
+
+
 
 		
 		
@@ -912,17 +909,6 @@ var vm_app = new Vue({
 			
 		},
 		
-		// 穿梭框显示文本
-		rendertransfer: function (item) {
-			return item.label + ' (ID:' + item.key + ')';
-		},
-		
-		onChangeTransfer: function (newTargetKeys, direction, moveKeys) {
-			// console.log(newTargetKeys);
-			// console.log(direction);
-			// console.log(moveKeys);
-			this.targetkeystransfer = newTargetKeys;
-		},		
 		
 		
 		// 选择user current
@@ -932,13 +918,13 @@ var vm_app = new Vue({
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
-				_this.username = '';
-				_this.targetkeystransfer = [];
-				_this.datatransfer = [];
-				_this.boo_update = true;
+				_this.username_current = '';
+				// _this.targetkeystransfer = [];
+				// _this.datatransfer = [];
+				// _this.boo_update = true;
 				return false;
 			}
-			_this.boo_update = false;
+			// _this.boo_update = false;
 			var url = "{{ route('admin.user.userhasauditing') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
@@ -964,12 +950,12 @@ var vm_app = new Vue({
 					// var arr = response.data.userhasauditing.auditing;
 					// _this.targetkeystransfer = _this.arr2target(arr);
 
-					_this.username = response.data.username;
+					_this.username_current = response.data.username;
 
 				} else {
-					_this.targetkeystransfer = [];
-					_this.datatransfer = [];
-					_this.username = '';
+					// _this.targetkeystransfer = [];
+					// _this.datatransfer = [];
+					_this.username_current = '';
 				}
 			})
 			.catch(function (error) {
@@ -981,13 +967,13 @@ var vm_app = new Vue({
 		// 选择user auditing
 		onchange_user_auditing: function () {
 			var _this = this;
-			var userid = _this.user_select_current;
+			var userid = _this.user_select_auditing;
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
-				_this.username = '';
-				_this.targetkeystransfer = [];
-				_this.datatransfer = [];
+				_this.username_auditing = '';
+				// _this.targetkeystransfer = [];
+				// _this.datatransfer = [];
 				_this.boo_update = true;
 				return false;
 			}
@@ -1017,12 +1003,12 @@ var vm_app = new Vue({
 					// var arr = response.data.userhasauditing.auditing;
 					// _this.targetkeystransfer = _this.arr2target(arr);
 
-					_this.username = response.data.username;
+					_this.username_auditing = response.data.username;
 
 				} else {
-					_this.targetkeystransfer = [];
-					_this.datatransfer = [];
-					_this.username = '';
+					// _this.targetkeystransfer = [];
+					// _this.datatransfer = [];
+					_this.username_auditing = '';
 				}
 			})
 			.catch(function (error) {
@@ -1062,8 +1048,8 @@ var vm_app = new Vue({
 			})
 		},
 
-		// 远程查询用户
-		remoteMethod_user (query) {
+		// 远程查询当前用户
+		remoteMethod_user_current (query) {
 			var _this = this;
 
 			if (query !== '') {
@@ -1090,6 +1076,54 @@ var vm_app = new Vue({
 					if (response.data) {
 						var json = response.data;
 						_this.user_options_current = _this.json2selectvalue(json);
+					}
+				})
+				.catch(function (error) {
+				})				
+				
+				setTimeout(() => {
+					_this.user_loading_current = false;
+					// const list = this.list.map(item => {
+						// return {
+							// value: item,
+							// label: item
+						// };
+					// });
+					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
+				}, 200);
+			} else {
+				_this.user_options_current = [];
+			}
+		},
+
+		// 远程查询处理用户
+		remoteMethod_user_auditing (query) {
+			var _this = this;
+
+			if (query !== '') {
+				_this.user_loading_current = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('admin.user.uidlist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					// return false;
+
+					if (response.data['jwt'] == 'logout') {
+						_this.alert_logout();
+						return false;
+					}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.user_options_auditing = _this.json2selectvalue(json);
 					}
 				})
 				.catch(function (error) {
