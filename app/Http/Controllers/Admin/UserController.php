@@ -11,6 +11,8 @@ use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\Admin\userExport;
+use Illuminate\Support\Facades\Cache;
+
 
 // use Illuminate\Database\Eloquent\Collection;
 // use Illuminate\Support\Collection;
@@ -347,6 +349,113 @@ class UserController extends Controller
 		}
 		// dd($result);
 		return $result;
-    }	
+		}
+		
+
+    /**
+     * 列出用户 ajax
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function uidList(Request $request)
+    {
+		if (! $request->ajax()) return null;
+		
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		$url = request()->url();
+		$queryParams = request()->query();
+		
+		$queryfilter_name = $request->input('queryfilter_name');
+
+		//对查询参数按照键名排序
+		ksort($queryParams);
+
+		//将查询数组转换为查询字符串
+		$queryString = http_build_query($queryParams);
+
+		$fullUrl = sha1("{$url}?{$queryString}");
+
+		
+		//首先查寻cache如果找到
+		if (Cache::has($fullUrl)) {
+			$result = Cache::get($fullUrl);    //直接读取cache
+		} else {                                   //如果cache里面没有
+			$result = User::when($queryfilter_name, function ($query) use ($queryfilter_name) {
+					return $query->where('uid', 'like', '%'.$queryfilter_name.'%');
+				})
+				->limit(10)
+				->orderBy('created_at', 'desc')
+				->pluck('uid', 'id')->toArray();
+
+			Cache::put($fullUrl, $result, now()->addSeconds(60));
+		}
+		
+		return $result;
+    }
+
+
+    /**
+     * 列出用户所指向的auditing信息
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function userHasRole(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		$userid = $request->input('userid');
+		
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		// 获取当前用户拥有的角色
+		$userhasrole = DB::table('users')
+			->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+			->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+			->where('users.id', $userid)
+			// ->pluck('roles.name', 'roles.id')->toArray();
+			->select('roles.id')
+			->get()->toArray();
+		$userhasrole = array_column($userhasrole, 'id'); //变成一维数组
+
+		// $tmp_array = DB::table('roles')
+			// ->select('id', 'name')
+			// ->whereNotIn('id', array_keys($userhasrole))
+			// ->get()->toArray();
+			// $usernothasrole = array_column($tmp_array, 'name', 'id'); //变成一维数组
+		// $usernothasrole = DB::table('roles')
+			// ->select('id', 'name')
+			// ->whereNotIn('id', array_keys($userhasrole))
+			// ->pluck('name', 'id')->toArray();
+		$allroles = DB::table('roles')
+			->pluck('name', 'id')->toArray();
+
+		$displayname = DB::table('users')
+			->where('id', $userid)
+			->value('displayname');
+
+		// $result['userhasrole'] = $userhasrole;
+		// $result['allroles'] = $allroles;
+		$result = compact('userhasrole', 'allroles', 'displayname');
+
+		return $result;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

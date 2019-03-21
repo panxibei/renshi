@@ -213,6 +213,9 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 获取user数据信息
 	Route::get('userList', 'UserController@userList')->name('admin.user.list');
 
+	// 列出指定的用户
+	Route::get('uidList', 'UserController@uidList')->name('admin.user.uidlist');
+
 	// 创建user
 	Route::post('userCreate', 'UserController@userCreate')->name('admin.user.create');
 

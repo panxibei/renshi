@@ -144,9 +144,43 @@ Admin(User) -
 	
 	</Tab-pane>
 
-	<Tab-pane label="Create/Edit Template">
+	<Tab-pane label="Advance">
 	
-
+		<i-row :gutter="16">
+			<i-col span="15">
+				<i-select v-model.lazy="user_select" filterable remote :remote-method="remoteMethod_user" :loading="user_loading" @on-change="onchange_user" clearable placeholder="输入工号后选择" style="width: 280px;">
+					<i-option v-for="item in user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+				&nbsp;&nbsp;
+				<i-button type="primary" :disabled="boo_update" @click="userupdaterole">Update</i-button>
+				&nbsp;&nbsp;
+				当前用户：@{{ username }}
+			</i-col>
+			<i-col span="9">
+				&nbsp;
+			</i-col>
+		</i-row>
+		
+		<br><br><br>
+			
+		<i-row :gutter="16">
+			<i-col span="14">
+				<Transfer
+					:titles="titlestransfer"
+					:data="datatransfer"
+					filterable
+					:target-keys="targetkeystransfer"
+					:render-format="rendertransfer"
+					@on-change="onChangeTransfer">
+				</Transfer>
+			</i-col>
+			<i-col span="1">
+			&nbsp;
+			</i-col>
+			<i-col span="9">
+			&nbsp;
+			</i-col>
+		</i-row>
 
 	</Tab-pane>
 
@@ -364,7 +398,16 @@ var vm_app = new Vue({
 		// 查询过滤器下拉
 		collapse_query: '',
 		
-		
+		// 选择用户查看编辑相应角色
+		user_select: '',
+		user_options: [],
+		user_loading: false,
+		boo_update: false,
+		titlestransfer: ['待选', '已选'], // ['源列表', '目的列表']
+		datatransfer: [],
+		targetkeystransfer: [], // ['1', '2'] key
+		username: '',
+
 		
 		
 		
@@ -426,6 +469,44 @@ var vm_app = new Vue({
 			return false;
 		},
 		
+		// 把laravel返回的结果转换成select能接受的格式
+		json2selectvalue: function (json) {
+			var arr = [];
+			for (var key in json) {
+				// alert(key);
+				// alert(json[key]);
+				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
+				arr.push({ value: key, label: json[key] });
+			}
+			return arr;
+			// return arr.reverse();
+		},
+
+		// 穿梭框显示文本转换
+		json2transfer: function (json) {
+			var arr = [];
+			for (var key in json) {
+				arr.push({
+					key: key,
+					label: json[key],
+					description: json[key],
+					disabled: false
+				});
+			}
+			return arr.reverse();
+		},
+		
+		// 穿梭框目标文本转换（数字转字符串）
+		arr2target: function (arr) {
+			var res = [];
+			arr.map(function( value, index) {
+				// console.log('map遍历:'+index+'--'+value);
+				res.push(value.toString());
+			});
+			return res;
+		},
+
+
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
 			this.usergets(currentpage, this.page_last);
@@ -792,11 +873,152 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '清除用户登录TTL失败！');
 			})
-
-
 			
 		},
 		
+		// 穿梭框显示文本
+		rendertransfer: function (item) {
+			return item.label + ' (ID:' + item.key + ')';
+		},
+		
+		onChangeTransfer: function (newTargetKeys, direction, moveKeys) {
+			// console.log(newTargetKeys);
+			// console.log(direction);
+			// console.log(moveKeys);
+			this.targetkeystransfer = newTargetKeys;
+		},		
+		
+		
+		// 选择user查看role
+		onchange_user: function () {
+			var _this = this;
+			var userid = _this.user_select;
+			// console.log(userid);return false;
+			
+			if (userid == undefined || userid == '') {
+				_this.username = '';
+				_this.targetkeystransfer = [];
+				_this.datatransfer = [];
+				_this.boo_update = true;
+				return false;
+			}
+			_this.boo_update = false;
+			var url = "{{ route('admin.role.userhasrole') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					userid: userid
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data.allroles;
+					_this.datatransfer = _this.json2transfer(json);
+					
+					var arr = response.data.userhasrole;
+					_this.targetkeystransfer = _this.arr2target(arr);
+
+					_this.username = response.data.username;
+
+				} else {
+					_this.targetkeystransfer = [];
+					_this.datatransfer = [];
+					_this.username = '';
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
+		},
+		
+		// userupdaterole
+		userupdaterole: function () {
+			var _this = this;
+			var userid = _this.user_select;
+			var roleid = _this.targetkeystransfer;
+
+			if (userid == undefined || userid == '') return false;
+			
+			var url = "{{ route('admin.role.userupdaterole') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				userid: userid,
+				roleid: roleid
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, 'Success', 'Update OK!');
+				} else {
+					_this.warning(false, 'Warning', 'Update failed!');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+		},
+
+		// 远程查询用户
+		remoteMethod_user (query) {
+			var _this = this;
+
+			if (query !== '') {
+				_this.user_loading = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('admin.user.uidlist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					// return false;
+
+					if (response.data['jwt'] == 'logout') {
+						_this.alert_logout();
+						return false;
+					}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.user_options = _this.json2selectvalue(json);
+					}
+				})
+				.catch(function (error) {
+				})				
+				
+				setTimeout(() => {
+					_this.user_loading = false;
+					// const list = this.list.map(item => {
+						// return {
+							// value: item,
+							// label: item
+						// };
+					// });
+					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
+				}, 200);
+			} else {
+				_this.user_options = [];
+			}
+		},
+
 		
 		
 		
