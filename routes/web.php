@@ -234,6 +234,9 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 清除user的ttl
 	Route::post('userclsttl', 'UserController@userClsttl')->name('admin.user.clsttl');
 
+	// 列出当前用户拥有的角色
+	Route::get('userHasAuditing', 'UserController@userHasAuditing')->name('admin.user.userhasauditing');
+
 
 });
 

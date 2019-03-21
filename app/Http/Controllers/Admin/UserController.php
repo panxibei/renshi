@@ -403,7 +403,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function userHasRole(Request $request)
+    public function userHasAuditing(Request $request)
     {
 		if (! $request->ajax()) return null;
 
@@ -412,35 +412,17 @@ class UserController extends Controller
 		// 重置角色和权限的缓存
 		app()['cache']->forget('spatie.permission.cache');
 		
-		// 获取当前用户拥有的角色
-		$userhasrole = DB::table('users')
-			->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-			->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-			->where('users.id', $userid)
-			// ->pluck('roles.name', 'roles.id')->toArray();
-			->select('roles.id')
-			->get()->toArray();
-		$userhasrole = array_column($userhasrole, 'id'); //变成一维数组
-
-		// $tmp_array = DB::table('roles')
-			// ->select('id', 'name')
-			// ->whereNotIn('id', array_keys($userhasrole))
-			// ->get()->toArray();
-			// $usernothasrole = array_column($tmp_array, 'name', 'id'); //变成一维数组
-		// $usernothasrole = DB::table('roles')
-			// ->select('id', 'name')
-			// ->whereNotIn('id', array_keys($userhasrole))
-			// ->pluck('name', 'id')->toArray();
-		$allroles = DB::table('roles')
-			->pluck('name', 'id')->toArray();
-
-		$displayname = DB::table('users')
+		// 获取当前用户所指向的auditing
+		$userhasauditing = User::select('name', 'auditing')
 			->where('id', $userid)
-			->value('displayname');
+			->first();
 
-		// $result['userhasrole'] = $userhasrole;
-		// $result['allroles'] = $allroles;
-		$result = compact('userhasrole', 'allroles', 'displayname');
+		$username = $userhasauditing['name'];
+		$auditing = $userhasauditing['auditing'];
+		
+		$allusers = User::pluck('name', 'id')->toArray();
+
+		$result = compact('username', 'auditing', 'allusers');
 
 		return $result;
     }
