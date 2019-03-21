@@ -118,18 +118,13 @@ Admin(User) -
 
 							&nbsp;&nbsp;&nbsp;&nbsp;
 
-							email&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_email" placeholder="" size="small" clearable style="width: 120px" type="email"></i-input>
+							department&nbsp;&nbsp;
+							<i-input v-model.lazy="user_edit_department" placeholder="" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
-<!-- 							ldapname&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_ldapname" placeholder="" size="small" clearable style="width: 120px"></i-input>
-
-							&nbsp;&nbsp;&nbsp;&nbsp;
- -->
-							displayname&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_displayname" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							uid&nbsp;&nbsp;
+							<i-input v-model.lazy="user_edit_uid" placeholder="" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
@@ -350,8 +345,8 @@ var vm_app = new Vue({
 		user_edit_id: '',
 		user_edit_name: '',
 		user_edit_ldapname: '',
-		user_edit_email: '',
-		user_edit_displayname: '',
+		user_edit_department: '',
+		user_edit_uid: '',
 		user_edit_password: '',
 		
 		// 删除
@@ -555,8 +550,8 @@ var vm_app = new Vue({
 			_this.user_edit_id = row.id;
 			_this.user_edit_name = row.name;
 			// _this.user_edit_ldapname = row.ldapname;
-			_this.user_edit_email = row.email;
-			_this.user_edit_displayname = row.displayname;
+			_this.user_edit_department = row.department;
+			_this.user_edit_uid = row.uid;
 			// _this.user_edit_password = row.password;
 			// _this.relation_xuqiushuliang_edit[0] = row.xuqiushuliang;
 			// _this.relation_xuqiushuliang_edit[1] = row.xuqiushuliang;
@@ -574,25 +569,25 @@ var vm_app = new Vue({
 			var id = _this.user_edit_id;
 			var name = _this.user_edit_name;
 			// var ldapname = _this.user_edit_ldapname;
-			var email = _this.user_edit_email;
-			var displayname = _this.user_edit_displayname;
+			var department = _this.user_edit_department;
+			var uid = _this.user_edit_uid;
 			var password = _this.user_edit_password;
 			// var created_at = _this.relation_created_at_edit;
 			// var updated_at = _this.relation_updated_at_edit;
 			
 			if (name == '' || name == null || name == undefined
 				// || ldapname == '' || ldapname == null || ldapname == undefined
-				|| email == '' || email == null || email == undefined
-				|| displayname == '' || displayname == null || displayname == undefined) {
+				|| department == '' || department == null || department == undefined
+				|| uid == '' || uid == null || uid == undefined) {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
 			
-			var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-			if (! regexp.test(email)) {
-				_this.warning(false, 'Warning', 'Email is incorrect!');
-				return false;
-			}
+			// var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+			// if (! regexp.test(email)) {
+			// 	_this.warning(false, 'Warning', 'Email is incorrect!');
+			// 	return false;
+			// }
 			
 			var url = "{{ route('admin.user.update') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -600,8 +595,8 @@ var vm_app = new Vue({
 				id: id,
 				name: name,
 				// ldapname: ldapname,
-				email: email,
-				displayname: displayname,
+				department: department,
+				uid: uid,
 				password: password,
 				// xuqiushuliang: xuqiushuliang[1],
 				// created_at: created_at,
@@ -624,8 +619,8 @@ var vm_app = new Vue({
 					_this.user_edit_id = '';
 					_this.user_edit_name = '';
 					// _this.user_edit_ldapname = '';
-					_this.user_edit_email = '';
-					_this.user_edit_displayname = '';
+					_this.user_edit_department = '';
+					_this.user_edit_uid = '';
 					_this.user_edit_password = '';
 					
 					// _this.relation_xuqiushuliang_edit = [0, 0];

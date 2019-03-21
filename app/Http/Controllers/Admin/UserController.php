@@ -73,7 +73,7 @@ class UserController extends Controller
 		$queryfilter_email = $request->input('queryfilter_email');
 		$queryfilter_loginip = $request->input('queryfilter_loginip');
 
-		$user = User::select('uid', 'name', 'department', 'auditing', 'ldapname', 'email', 'displayname', 'login_time', 'login_ip', 'login_counts', 'created_at', 'updated_at', 'deleted_at')
+		$user = User::select('id', 'uid', 'name', 'department', 'auditing', 'ldapname', 'email', 'displayname', 'login_time', 'login_ip', 'login_counts', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_logintime, function ($query) use ($queryfilter_logintime) {
 				return $query->whereBetween('login_time', $queryfilter_logintime);
 			})
@@ -220,8 +220,8 @@ class UserController extends Controller
 		$id = $request->input('id');
 		$name = $request->input('name');
 		// $ldapname = $request->input('ldapname');
-		$email = $request->input('email');
-		$displayname = $request->input('displayname');
+		$department = $request->input('department');
+		$uid = $request->input('uid');
 		$password = $request->input('password');
 		// $created_at = $request->input('created_at');
 		// $updated_at = $request->input('updated_at');
@@ -231,24 +231,23 @@ class UserController extends Controller
 			if (isset($password)) {
 				$result = User::where('id', $id)
 					->update([
-						'name'			=>	$name,
-						// 'ldapname'		=>	$ldapname,
-						'email'			=>	$email,
-						'displayname'	=>	$displayname,
+						'name'				=>	$name,
+						'department'	=>	$department,
+						'uid'					=>	$uid,
 						'password'		=>	bcrypt($password)
 					]);
 			} else {
 				$result = User::where('id', $id)
 					->update([
-						'name'			=>	$name,
-						// 'ldapname'		=>	$ldapname,
-						'email'			=>	$email,
-						'displayname'	=>	$displayname
+						'name'				=>	$name,
+						'department'	=>	$department,
+						'uid'					=>	$uid
 					]);
 			}
 		}
 		catch (Exception $e) {//捕获异常
 			// echo 'Message: ' .$e->getMessage();
+			// return 'Message: ' .$e->getMessage();
 			$result = 0;
 		}
 		
