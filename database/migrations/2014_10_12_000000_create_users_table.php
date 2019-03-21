@@ -15,10 +15,12 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('ldapname')->nullable()->unique()->comment('ldap用户名');
-            $table->string('email')->unique();
-            $table->string('displayname');
+            $table->string('uid')->nullable()->comment('申请人工号');
+            $table->string('name')->unique()->comment('申请人姓名');
+            $table->string('department')->comment('申请人部门');
+            $table->string('ldapname')->nullable()->comment('ldap用户名');
+            $table->string('email')->nullable();
+            $table->string('displayname')->nullable();
             $table->string('password');
 			$table->timestamp('login_time')->comment('登录时间');
 			$table->integer('login_ttl')->default(0)->comment('登录有效时间');
@@ -27,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
 			$table->softDeletes();
-			$table->engine = 'InnoDB';
+			// $table->engine = 'InnoDB';
         });
     }
 

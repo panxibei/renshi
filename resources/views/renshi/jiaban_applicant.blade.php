@@ -386,30 +386,31 @@ var vm_app = new Vue({
 				piliangluru: piliangluru_applicant
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 				
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
+				// if (response.data['jwt'] == 'logout') {
+				// 	_this.alert_logout();
+				// 	return false;
+				// }
 				
 				if (response.data) {
 					_this.onclear_applicant();
-					_this.success(false, '成功', '记入成功！');
+					_this.success(false, '成功', '提交成功！');
 				} else {
-					_this.error(false, '失败', '记入失败！');
+					_this.error(false, '失败', '提交失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '记入失败！');
-				// console.log(error);
+				_this.error(false, '错误', '提交失败！');
 			})
 		},
 
         // onclear_applicant
 		onclear_applicant: function () {
 			var _this = this;
+			_this.jiaban_add_reason = '';
+			_this.jiaban_add_remark = '';
 			_this.piliangluru_applicant.map(function (v,i) {
 				v.uid = '';
 				v.applicant = '';
@@ -440,10 +441,10 @@ var vm_app = new Vue({
 				})
 				.then(function (response) {
 
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
+					// if (response.data['jwt'] == 'logout') {
+					// 	_this.alert_logout();
+					// 	return false;
+					// }
 					
 					if (response.data) {
 						var json = response.data;

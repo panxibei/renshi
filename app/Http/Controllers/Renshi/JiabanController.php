@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
-// use App\Models\Admin\User;
+use App\Models\Admin\User;
 use App\Models\Renshi\Renshi_jiaban;
-use App\Models\Renshi\Renshi_employee;
+// use App\Models\Renshi\Renshi_employee;
 use DB;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
@@ -219,9 +219,11 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_employee::when($queryfilter_name, function ($query) use ($queryfilter_name) {
+			// $result = Renshi_employee::when($queryfilter_name, function ($query) use ($queryfilter_name) {
+			$result = User::when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('uid', 'like', '%'.$queryfilter_name.'%');
 				})
+				->where('id', '>', 10)
 				->limit(10)
 				->orderBy('created_at', 'desc')
 				->pluck('uid', 'uid')->toArray();
@@ -262,7 +264,8 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_employee::select('applicant', 'department')
+			// $result = Renshi_employee::select('applicant', 'department')
+			$result = User::select('name', 'department')
 				->when($employeeid, function ($query) use ($employeeid) {
 					return $query->where('uid', $employeeid);
 				})
@@ -295,7 +298,7 @@ class JiabanController extends Controller
 
 		$uuid4 = Uuid::uuid4();
 		$uuid = $uuid4->toString();
-		$agent = 'agent';
+		$agent = 'myagent';
 		$department_of_agent = 'mydepartment';
 
 		foreach ($piliangluru as $key => $value) {
@@ -311,26 +314,8 @@ class JiabanController extends Controller
 			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
-
-
-
-dd($s);
-
-
-
-		foreach ($piliangluru as $key => $value) {
-			// $s[$key]['xianti'] = $xianti;
-			// $s[$key]['qufen'] = $qufen;
-			$s[$key]['created_at'] = $created_at;
-			$s[$key]['updated_at'] = $updated_at;
-
-			$s[$key]['jizhongming'] = $value['jizhongming'];
-			$s[$key]['pinfan'] = $value['pinfan'];
-			$s[$key]['pinming'] = $value['pinming'];
-			$s[$key]['xuqiushuliang'] = $value['xuqiushuliang'];
-			$s[$key]['leibie'] = $value['leibie'];
-		}
-		// dd($s);
+// dd($application);
+// dd($s);
 		
 		// 写入数据库
 		try	{
@@ -340,14 +325,26 @@ dd($s);
 			// foreach ($s as $value) {
 				// Bpjg_zhongricheng_main::create($value);
 			// }
-			Bpjg_zhongricheng_relation::insert($s);
+			// Bpjg_zhongricheng_relation::insert($s);
+
+			$uuid4 = Uuid::uuid4();
+			Renshi_jiaban::create([
+					'uuid' => $uuid4->toString(),
+					'agent' => $agent,
+					'department_of_agent' => $department_of_agent,
+					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+					'application' => $application,
+					'status' => 1,
+					'reason' => $reason,
+					'remark' => $remark,
+			]);
 
 			$result = 1;
 		}
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
 			DB::rollBack();
-			return 'Message: ' .$e->getMessage();
+			// return 'Message: ' .$e->getMessage();
 			return 0;
 		}
 
