@@ -198,32 +198,43 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 60,
 			},
+			// {
+			// 	title: 'id',
+			// 	key: 'id',
+			// 	sortable: true,
+			// 	width: 80
+			// },
 			{
-				title: 'id',
-				key: 'id',
+				title: 'uid',
+				key: 'uid',
 				sortable: true,
-				width: 80
+				width: 100
 			},
 			{
 				title: 'name',
 				key: 'name',
+				width: 100
+			},
+			{
+				title: 'department',
+				key: 'department',
 				width: 130
 			},
-			{
-				title: 'ldapname',
-				key: 'ldapname',
-				width: 130
-			},
-			{
-				title: 'email',
-				key: 'email',
-				width: 240
-			},
-			{
-				title: 'displayname',
-				key: 'displayname',
-				width: 180
-			},
+			// {
+			// 	title: 'ldapname',
+			// 	key: 'ldapname',
+			// 	width: 130
+			// },
+			// {
+			// 	title: 'email',
+			// 	key: 'email',
+			// 	width: 240
+			// },
+			// {
+			// 	title: 'displayname',
+			// 	key: 'displayname',
+			// 	width: 180
+			// },
 			{
 				title: 'login IP',
 				key: 'login_ip',

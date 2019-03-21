@@ -28,7 +28,7 @@ class CreateRenshiJiabansTable extends Migration
             $table->integer('status')->comment('状态');
             $table->text('reason')->comment('事由');
             $table->text('remark')->comment('备注');
-            $table->jsonb('auditing')->nullable()->comment('审核');
+            $table->jsonb('auditing')->nullable()->comment('审核信息');
             $table->timestamps();
         });
 
