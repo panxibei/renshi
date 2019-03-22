@@ -403,7 +403,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: 'name',
-				key: 'name',
+				key: 'auditor',
 				width: 100
 			},
 			{
