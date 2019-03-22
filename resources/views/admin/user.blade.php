@@ -445,7 +445,7 @@ var vm_app = new Vue({
 				title: 'Action',
 				key: 'action',
 				align: 'center',
-				width: 140,
+				width: 100,
 				render: (h, params) => {
 					return h('div', [
 						h('Button', {
@@ -458,24 +458,10 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.user_edit(params.row)
+									vm_app.auditing_remove(params.row)
 								}
 							}
-						}, 'Edit'),
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.user_clsttl(params.row)
-								}
-							}
-						}, 'ClsTTL')
+						}, 'Remove'),
 					]);
 				},
 				// fixed: 'right'
@@ -1027,6 +1013,42 @@ var vm_app = new Vue({
 					_this.success(false, '成功', '清除用户登录TTL成功！');
 				} else {
 					_this.error(false, '失败', '清除用户登录TTL失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '清除用户登录TTL失败！');
+			})
+			
+		},
+
+		// auditing_remove
+		auditing_remove: function (row) {
+			var _this = this;
+			var uid = row.uid;
+
+			// console.log(_this.user_select_current);
+			// return false;
+
+			var url = "{{ route('admin.user.auditingremove') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: _this.user_select_current,
+				uid: uid,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.success(false, '成功', '删除处理用户成功！');
+					_this.tabledata_auditing = response.data;
+				} else {
+					_this.error(false, '失败', '删除处理用户失败！');
 				}
 			})
 			.catch(function (error) {
