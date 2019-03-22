@@ -145,7 +145,15 @@ Admin(User) -
 	</Tab-pane>
 
 	<Tab-pane label="Advance">
-	
+		<i-row :gutter="16">
+			<i-col span="24">
+				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+				&nbsp;
+			</i-col>
+		</i-row>
+		
+		<br><br>
+
 		<i-row :gutter="16">
 			<i-col span="15">
 				当前用户工号：&nbsp;
@@ -153,9 +161,6 @@ Admin(User) -
 					<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
 				&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current }}&nbsp;
-				<!-- <i-button type="primary" :disabled="boo_update" @click="userupdaterole" size="small">Update</i-button>
-				&nbsp;&nbsp;
-				当前用户： -->
 			</i-col>
 			<i-col span="9">
 				&nbsp;
@@ -180,16 +185,28 @@ Admin(User) -
 		<br><br>
 
 		<i-row :gutter="16">
+			<i-col span="24">
+				<i-button type="default" :disabled="boo_update" @click="auditingadd" size="small" icon="ios-add"> Add</i-button>
+			</i-col>
+		</i-row>
+
+
+		<br><br>
+
+		<i-table height="300" size="small" border :columns="tablecolumns_auditing" :data="tabledata_auditing"></i-table>
+
+		<br><br>
+
+		<i-row :gutter="16">
 			<i-col span="6">
-				<i-input v-model.lazy="user2auditing_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
+				<i-input v-model.lazy="user2auditing_input" type="textarea" :rows="14" placeholder=""></i-input>
 			</i-col>
 			<i-col span="1">
 			&nbsp;
 			</i-col>
 			<i-col span="17">
-				<i-button type="default" :disabled="boo_update" @click="auditingadd" size="small">Add</i-button>
-				<br><br>
-				<i-button type="default" :disabled="boo_update" @click="auditingdel" size="small">Del</i-button>
+				&nbsp;
+				<i-button type="default" :disabled="boo_update" @click="auditingremove" size="small" icon="ios-remove"></i-button>
 				<br><br>
 				<i-button type="primary" :disabled="boo_update" @click="auditingupdate" size="small">Update</i-button>
 			</i-col>
@@ -372,6 +389,100 @@ var vm_app = new Vue({
 		],
 		tabledata: [],
 		tableselect: [],
+
+		tablecolumns_auditing: [
+			{
+				type: 'index',
+				align: 'center',
+				width: 60,
+			},
+			{
+				title: 'uid',
+				key: 'uid',
+				width: 100
+			},
+			{
+				title: 'name',
+				key: 'name',
+				width: 100
+			},
+			{
+				title: 'department',
+				key: 'department',
+				width: 130
+			},
+			{
+				title: 'status',
+				key: 'deleted_at',
+				align: 'center',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: ! params.row.deleted_at
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
+				}
+			},
+			{
+				title: 'Action',
+				key: 'action',
+				align: 'center',
+				width: 140,
+				render: (h, params) => {
+					return h('div', [
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.user_edit(params.row)
+								}
+							}
+						}, 'Edit'),
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.user_clsttl(params.row)
+								}
+							}
+						}, 'ClsTTL')
+					]);
+				},
+				// fixed: 'right'
+			}
+		],
+		tabledata_auditing: [],
+		tableselect_auditing: [],
 		
 		//分页
 		page_current: 1,
@@ -417,11 +528,13 @@ var vm_app = new Vue({
 		user_options_current: [],
 		user_loading_current: false,
 		user_select_auditing: '',
+		user_select_auditing_uid: '',
 		user_options_auditing: [],
 		user_loading_auditing: false,
 		boo_update: true,
 		username_current: '',
 		username_auditing: '',
+		user2auditing_id: [],
 		user2auditing_input: '',
 
 
@@ -499,6 +612,18 @@ var vm_app = new Vue({
 			}
 			return arr;
 			// return arr.reverse();
+		},
+
+		json2array (json) {
+			var arr = [];
+			for (var key in json) {
+				// alert(key);
+				// alert(json[key]);
+				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
+				arr.push({ key: json[key] });
+			}
+			return arr;
+
 		},
 
 		// 穿梭框显示文本转换
@@ -635,6 +760,7 @@ var vm_app = new Vue({
 					_this.page_total = response.data.total;
 					_this.page_last = response.data.last_page;
 					_this.tabledata = response.data.data;
+					// console.log(_this.tabledata);
 				}
 				
 				_this.loadingbarfinish();
@@ -943,9 +1069,13 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					var json1 = response.data.allusers;
+					// console.log(json1);
 					_this.datatransfer = _this.json2transfer(json1);
 					
 					var json2 = response.data.auditing;
+					console.log(json2);
+					// console.log(_this.json2array(json2);
+					_this.tabledata_auditing = json2;
 					_this.targetkeystransfer = _this.json2transfer(json2);
 					// var arr = response.data.userhasauditing.auditing;
 					// _this.targetkeystransfer = _this.arr2target(arr);
@@ -968,6 +1098,7 @@ var vm_app = new Vue({
 		onchange_user_auditing: function () {
 			var _this = this;
 			var userid = _this.user_select_auditing;
+			
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
@@ -1004,6 +1135,7 @@ var vm_app = new Vue({
 					// _this.targetkeystransfer = _this.arr2target(arr);
 
 					_this.username_auditing = response.data.username;
+					_this.user_select_auditing_uid = response.data.uid;
 
 				} else {
 					// _this.targetkeystransfer = [];
@@ -1016,9 +1148,22 @@ var vm_app = new Vue({
 			})
 			
 		},
+
+		auditingadd () {
+			var _this = this;
+			alert(_this.user_select_auditing_uid);
+			_this.user2auditing_id.push(_this.user_select_auditing);
+			_this.user2auditing_input = _this.user_select_auditing_uid + ' - ' + _this.username_auditing;
+
+
+		},
+
+		auditingremove () {
+alert('remove');
+		},
 		
-		// userupdaterole
-		userupdaterole: function () {
+		// auditingupdate
+		auditingupdate: function () {
 			var _this = this;
 			var userid = _this.user_select_current;
 			var roleid = _this.targetkeystransfer;
