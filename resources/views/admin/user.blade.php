@@ -83,18 +83,13 @@ Admin(User) -
 
 							&nbsp;&nbsp;&nbsp;&nbsp;
 
-							email&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_email" placeholder="" size="small" clearable style="width: 120px" type="email"></i-input>
+							department&nbsp;&nbsp;
+							<i-input v-model.lazy="user_add_department" placeholder="" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
-<!-- 							ldapname&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_ldapname" placeholder="" size="small" clearable style="width: 120px"></i-input>
-
-							&nbsp;&nbsp;&nbsp;&nbsp;
- -->							
-							displayname&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_displayname" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							uid&nbsp;&nbsp;
+							<i-input v-model.lazy="user_add_uid" placeholder="" size="small" clearable style="width: 120px"></i-input>
 
 							<br><br>
 
@@ -467,8 +462,8 @@ var vm_app = new Vue({
 		user_add_id: '',
 		user_add_name: '',
 		user_add_ldapname: '',
-		user_add_email: '',
-		user_add_displayname: '',
+		user_add_department: '',
+		user_add_uid: '',
 		user_add_password: '',
 		
 		// 编辑
@@ -867,14 +862,14 @@ var vm_app = new Vue({
 			var _this = this;
 			var name = _this.user_add_name;
 			// var ldapname = _this.user_add_ldapname;
-			var email = _this.user_add_email;
-			var displayname = _this.user_add_displayname;
+			var department = _this.user_add_department;
+			var uid = _this.user_add_uid;
 			var password = _this.user_add_password;
 			
 			if (name == '' || name == null || name == undefined
 				// || ldapname == '' || ldapname == null || ldapname == undefined
-				|| email == '' || email == null || email == undefined
-				|| displayname == '' || displayname == null || displayname == undefined
+				|| department == '' || department == null || department == undefined
+				|| uid == '' || uid == null || uid == undefined
 				|| password == '' || password == null || password == undefined) {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
@@ -882,19 +877,18 @@ var vm_app = new Vue({
 			
 			// var re = new RegExp(“a”);  //RegExp对象。参数就是我们想要制定的规则。有一种情况必须用这种方式，下面会提到。
 			// var re = /a/;   // 简写方法 推荐使用 性能更好  不能为空 不然以为是注释 ，
-			var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-			if (! regexp.test(email)) {
-				_this.warning(false, 'Warning', 'Email is incorrect!');
-				return false;
-			}
+			// var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+			// if (! regexp.test(email)) {
+			// 	_this.warning(false, 'Warning', 'Email is incorrect!');
+			// 	return false;
+			// }
 
 			var url = "{{ route('admin.user.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				name: name,
-				// ldapname: ldapname,
-				email: email,
-				displayname: displayname,
+				department: department,
+				uid: uid,
 				password: password
 			})
 			.then(function (response) {
@@ -907,8 +901,8 @@ var vm_app = new Vue({
 					_this.success(false, '成功', '用户创建成功！');
 					_this.user_add_name = '';
 					// _this.user_add_ldapname = '';
-					_this.user_add_email = '';
-					_this.user_add_displayname = '';
+					_this.user_add_department = '';
+					_this.user_add_uid = '';
 					_this.user_add_password = '';
 					_this.usergets(_this.page_current, _this.page_last);
 				} else {

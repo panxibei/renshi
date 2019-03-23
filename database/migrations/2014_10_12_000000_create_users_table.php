@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('uid')->nullable()->comment('申请人工号');
             $table->string('name')->unique()->comment('申请人姓名');
             $table->string('department')->comment('申请人部门');
-            $table->jsonb('auditing')->comment('审核信息');
+            $table->jsonb('auditing')->nullable()->comment('审核信息');
             $table->string('ldapname')->nullable()->comment('ldap用户名');
             $table->string('email')->nullable();
             $table->string('displayname')->nullable();

@@ -110,18 +110,16 @@ class UserController extends Controller
 		// $newuser = $request->only('name', 'email');
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$name = $request->input('name');
-		// $ldapname = $request->input('ldapname');
-		$email = $request->input('email');
-		$displayname = $request->input('displayname');
+		$department = $request->input('department');
+		$uid = $request->input('uid');
 		$password = $request->input('password');
 		
 		$logintime = date("Y-m-d H:i:s", 86400);
 		
 		$result = User::create([
 			'name'     		=> $name,
-			// 'ldapname'     	=> $ldapname,
-			'email'    		=> $email,
-			'displayname'	=> $displayname,
+			'department'  => $department,
+			'uid'					=> $uid,
 			'password' 		=> bcrypt($password),
 			'login_time' 	=> $logintime,
 			'login_ip' 		=> '255.255.255.255',
