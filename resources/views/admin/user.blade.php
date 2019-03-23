@@ -506,8 +506,8 @@ var vm_app = new Vue({
 		boo_update: true,
 		username_current: '',
 		username_auditing: '',
-		user2auditing_id: [],
-		user2auditing_input: '',
+		// user2auditing_id: [],
+		// user2auditing_input: '',
 
 
 
@@ -612,29 +612,7 @@ var vm_app = new Vue({
 			return arr.reverse();
 		},
 
-		// 穿梭框显示文本转换
-		json2target: function (json) {
-			var arr = [];
-			for (var key in json) {
-				arr.push({
-					key: key,
-					label: json[key],
-					description: json[key],
-					disabled: false
-				});
-			}
-			return arr.reverse();
-		},
 		
-		// 穿梭框目标文本转换（数字转字符串）
-		arr2target: function (arr) {
-			var res = [];
-			arr.map(function( value, index) {
-				// console.log('map遍历:'+index+'--'+value);
-				res.push(value.toString());
-			});
-			return res;
-		},
 
 
 		// 切换当前页
@@ -1137,23 +1115,10 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					var json1 = response.data.allusers;
-					// console.log(json1);
-					_this.datatransfer = _this.json2transfer(json1);
-					
-					var json2 = response.data.auditing;
-					console.log(json2);
-					// console.log(_this.json2array(json2);
-					_this.tabledata_auditing = json2;
-					_this.targetkeystransfer = _this.json2transfer(json2);
-					// var arr = response.data.userhasauditing.auditing;
-					// _this.targetkeystransfer = _this.arr2target(arr);
-
+					_this.tabledata_auditing = response.data.auditing;
 					_this.username_current = response.data.username;
-
 				} else {
-					// _this.targetkeystransfer = [];
-					// _this.datatransfer = [];
+					_this.tabledata_auditing = [];
 					_this.username_current = '';
 				}
 			})
@@ -1201,7 +1166,6 @@ var vm_app = new Vue({
 					var json2 = response.data.auditing;
 					_this.targetkeystransfer = _this.json2transfer(json2);
 					// var arr = response.data.userhasauditing.auditing;
-					// _this.targetkeystransfer = _this.arr2target(arr);
 
 					_this.username_auditing = response.data.username;
 					_this.user_select_auditing_uid = response.data.uid;
