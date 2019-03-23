@@ -413,16 +413,17 @@ class UserController extends Controller
 		app()['cache']->forget('spatie.permission.cache');
 		
 		// 获取当前用户所指向的auditing
-		$userhasauditing = User::select('name', 'auditing')
+		$userhasauditing = User::select('uid', 'name', 'auditing')
 			->where('id', $userid)
 			->first();
 
+		$uid = $userhasauditing['uid'];
 		$username = $userhasauditing['name'];
 		$auditing = json_decode($userhasauditing['auditing'], true);
 		
 		// $allusers = User::pluck('name', 'id')->toArray();
 
-		$result = compact('username', 'auditing');
+		$result = compact('uid', 'username', 'auditing');
 
 		return $result;
     }

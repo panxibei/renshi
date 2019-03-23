@@ -586,34 +586,6 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 
-		json2array (json) {
-			var arr = [];
-			for (var key in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ key: json[key] });
-			}
-			return arr;
-
-		},
-
-		// 穿梭框显示文本转换
-		json2transfer: function (json) {
-			var arr = [];
-			for (var key in json) {
-				arr.push({
-					key: key,
-					label: json[key],
-					description: json[key],
-					disabled: false
-				});
-			}
-			return arr.reverse();
-		},
-
-		
-
 
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
@@ -1160,20 +1132,11 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					var json1 = response.data.allusers;
-					_this.datatransfer = _this.json2transfer(json1);
-					
-					var json2 = response.data.auditing;
-					_this.targetkeystransfer = _this.json2transfer(json2);
-					// var arr = response.data.userhasauditing.auditing;
-
 					_this.username_auditing = response.data.username;
 					_this.user_select_auditing_uid = response.data.uid;
-
 				} else {
-					// _this.targetkeystransfer = [];
-					// _this.datatransfer = [];
 					_this.username_auditing = '';
+					_this.user_select_auditing_uid = '';
 				}
 			})
 			.catch(function (error) {
