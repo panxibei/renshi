@@ -336,9 +336,8 @@ class JiabanController extends Controller
 			// }
 			// Bpjg_zhongricheng_relation::insert($s);
 
-			$uuid4 = Uuid::uuid4();
 			Renshi_jiaban::create([
-					'uuid' => $uuid4->toString(),
+					'uuid' => $uuid,
 					'agent' => $agent,
 					'department_of_agent' => $department_of_agent,
 					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
