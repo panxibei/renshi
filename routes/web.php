@@ -17,7 +17,7 @@
 
 // Renshi路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
-Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], function() {
+Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth']], function() {
 
 	// 显示applicant页面
 	Route::get('jiabanApplicant', 'JiabanController@jiabanApplicant')->name('renshi.jiaban.applicant');

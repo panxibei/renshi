@@ -1049,7 +1049,6 @@ var vm_app = new Vue({
 		},
 		
 		
-		
 		// 选择user current
 		onchange_user_current: function () {
 			var _this = this;

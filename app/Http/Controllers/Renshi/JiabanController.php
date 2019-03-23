@@ -298,8 +298,17 @@ class JiabanController extends Controller
 
 		$uuid4 = Uuid::uuid4();
 		$uuid = $uuid4->toString();
-		$agent = 'myagent';
-		$department_of_agent = 'mydepartment';
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+
+		// dd($user['uid']);
+		// dd($user['department']);
+		// dd($user['displayname']);
+		
+		$agent = $user['name'];
+		$department_of_agent = $user['department'];
 
 		foreach ($piliangluru as $key => $value) {
 			$s[$key]['uid'] = $value['uid'];

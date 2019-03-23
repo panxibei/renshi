@@ -389,10 +389,10 @@ var vm_app = new Vue({
 				// console.log(response.data);
 				// return false;
 				
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
 				
 				if (response.data) {
 					_this.onclear_applicant();
