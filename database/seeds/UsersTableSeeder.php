@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
 		User::insert(array (
             0 => 
             array (
-                'id' => 1,
+                // 'id' => 1,
                 'uid' => '0001',
                 'name' => 'admin',
                 'department' => 'admin',
@@ -55,7 +55,7 @@ class UsersTableSeeder extends Seeder
             ),
             1 => 
             array (
-                'id' => 2,
+                // 'id' => 2,
                 'uid' => '0002',
                 'name' => 'root',
                 'department' => 'root',
@@ -82,7 +82,7 @@ class UsersTableSeeder extends Seeder
             ),
             2 => 
             array (
-                'id' => 3,
+                // 'id' => 3,
                 'uid' => '0003',
                 'name' => 'user1',
                 'department' => 'user',
@@ -109,7 +109,7 @@ class UsersTableSeeder extends Seeder
             ),
             3 => 
             array (
-                'id' => 4,
+                // 'id' => 4,
                 'uid' => '0004',
                 'name' => 'user2',
                 'department' => 'user',
@@ -136,7 +136,7 @@ class UsersTableSeeder extends Seeder
             ),
             4 => 
             array (
-                'id' => 5,
+                // 'id' => 5,
                 'uid' => '0005',
                 'name' => 'user3',
                 'department' => 'user',
@@ -163,7 +163,7 @@ class UsersTableSeeder extends Seeder
             ),
             5 => 
             array (
-                'id' => 6,
+                // 'id' => 6,
                 'uid' => '0006',
                 'name' => 'user4',
                 'department' => 'user',
@@ -190,7 +190,7 @@ class UsersTableSeeder extends Seeder
             ),
             6 => 
             array (
-                'id' => 7,
+                // 'id' => 7,
                 'uid' => '0007',
                 'name' => 'user5',
                 'department' => 'user',
@@ -217,7 +217,7 @@ class UsersTableSeeder extends Seeder
             ),
             7 => 
             array (
-                'id' => 8,
+                // 'id' => 8,
                 'uid' => '0008',
                 'name' => 'user6',
                 'department' => 'user',
@@ -244,7 +244,7 @@ class UsersTableSeeder extends Seeder
             ),
             8 => 
             array (
-                'id' => 9,
+                // 'id' => 9,
                 'uid' => '0009',
                 'name' => 'user7',
                 'department' => 'user',
@@ -271,7 +271,7 @@ class UsersTableSeeder extends Seeder
             ),
             9 => 
             array (
-                'id' => 10,
+                // 'id' => 10,
                 'uid' => '0010',
                 'name' => 'user8',
                 'department' => 'user',
@@ -298,7 +298,7 @@ class UsersTableSeeder extends Seeder
             ),
             10 => 
             array (
-                'id' => 11,
+                // 'id' => 11,
                 'uid' => '071215958',
                 'name' => 'zhangsan',
                 'department' => 'abc',
@@ -325,7 +325,7 @@ class UsersTableSeeder extends Seeder
             ),
             11 => 
             array (
-                'id' => 12,
+                // 'id' => 12,
                 'uid' => '071015516',
                 'name' => 'lisi',
                 'department' => 'gggg',

@@ -453,7 +453,9 @@ class UserController extends Controller
 			->where('id', $id_current)
 			->first()->toArray();
 
-		$auditing_after = json_decode($user_current['auditing'], true);
+		if ($user_current['auditing']) {
+			$auditing_after = json_decode($user_current['auditing'], true);
+		}
 
 		array_push($auditing_after, $user_auditing);
 
