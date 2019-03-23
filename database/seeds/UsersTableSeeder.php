@@ -31,12 +31,12 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                         array(
                             "uid" => "0002",
-                            "auditor" => "root",
+                            "name" => "root",
                             "department" => "root"
                         )
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -63,7 +63,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -90,7 +90,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -117,7 +117,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -144,7 +144,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -171,7 +171,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -198,7 +198,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -225,7 +225,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -252,7 +252,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -279,7 +279,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -306,7 +306,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -333,7 +333,7 @@ class UsersTableSeeder extends Seeder
                     array(
                         array(
                             "uid" => "0001",
-                            "auditor" => "admin",
+                            "name" => "admin",
                             "department" => "admin"
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES

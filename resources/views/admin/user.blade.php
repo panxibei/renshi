@@ -389,7 +389,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: 'name',
-				key: 'auditor',
+				key: 'name',
 				width: 100
 			},
 			{
@@ -1015,10 +1015,15 @@ var vm_app = new Vue({
 			var id_auditing = _this.user_select_auditing;
 
 			if (id_current == '' || id_auditing == ''
-				|| id_current == undefined || id_auditing == undefined
-				|| id_current == id_auditing) {
-				return false;
+				|| id_current == undefined || id_auditing == undefined) {
+					_this.error(false, '失败', '用户ID为空或不正确！');
+					return false;
 			}
+
+			// if (id_current == id_auditing) {
+			// 		_this.error(false, '失败', '自己不能处理自己的申请！');
+			// 		return false;
+			// }
 
 			// console.log(_this.user_select_current);
 			// return false;
@@ -1054,6 +1059,10 @@ var vm_app = new Vue({
 		// auditing_remove
 		auditing_remove: function (row) {
 			var _this = this;
+			// console.log(row._index);
+			// return false;
+
+			var index = row._index;
 			var uid = row.uid;
 			var id = _this.user_select_current;
 
@@ -1069,6 +1078,7 @@ var vm_app = new Vue({
 			var url = "{{ route('admin.user.auditingremove') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
+				index: index,
 				id: id,
 				uid: uid,
 			})

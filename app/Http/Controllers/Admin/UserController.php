@@ -444,7 +444,7 @@ class UserController extends Controller
 		$id_current = $request->input('id_current');
 		$id_auditing = $request->input('id_auditing');
 
-		if ($id_current == $id_auditing) return 0;
+		// if ($id_current == $id_auditing) return 0;
 
 		$user_auditing = User::select('uid', 'name', 'department')
 			->where('id', $id_auditing)
@@ -500,6 +500,7 @@ class UserController extends Controller
 		// 重置角色和权限的缓存
 		app()['cache']->forget('spatie.permission.cache');
 		
+		$index = $request->input('index');
 		$id = $request->input('id');
 		$uid = $request->input('uid');
 
@@ -512,8 +513,11 @@ class UserController extends Controller
 		$auditing_before = json_decode($user['auditing'], true);
 
 		$auditing_after = [];
-		foreach ($auditing_before as $value) {
-			if ($value['uid'] != $uid) {
+		foreach ($auditing_before as $key => $value) {
+			// if ($value['uid'] != $uid) {
+			// 	array_push($auditing_after, $value);
+			// }
+			if ($key != $index) {
 				array_push($auditing_after, $value);
 			}
 		}
