@@ -237,7 +237,10 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 列出当前用户拥有的角色
 	Route::get('userHasAuditing', 'UserController@userHasAuditing')->name('admin.user.userhasauditing');
 
-	// 列出当前用户拥有的角色
+	// 添加处理用户
+	Route::post('auditingAdd', 'UserController@auditingAdd')->name('admin.user.auditingadd');
+
+	// 删除处理用户
 	Route::post('auditingRemove', 'UserController@auditingRemove')->name('admin.user.auditingremove');
 
 

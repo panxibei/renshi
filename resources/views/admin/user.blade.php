@@ -186,7 +186,7 @@ Admin(User) -
 
 		<i-row :gutter="16">
 			<i-col span="24">
-				<i-button type="default" :disabled="boo_update" @click="auditingadd" size="small" icon="ios-add"> Add</i-button>
+				<i-button type="default" :disabled="boo_update" @click="auditing_add" size="small" icon="ios-add"> Add</i-button>
 			</i-col>
 		</i-row>
 
@@ -197,20 +197,6 @@ Admin(User) -
 
 		<br><br>
 
-		<i-row :gutter="16">
-			<i-col span="6">
-				<i-input v-model.lazy="user2auditing_input" type="textarea" :rows="14" placeholder=""></i-input>
-			</i-col>
-			<i-col span="1">
-			&nbsp;
-			</i-col>
-			<i-col span="17">
-				&nbsp;
-				<i-button type="default" :disabled="boo_update" @click="auditingremove" size="small" icon="ios-remove"></i-button>
-				<br><br>
-				<i-button type="primary" :disabled="boo_update" @click="auditingupdate" size="small">Update</i-button>
-			</i-col>
-		</i-row>
 		
 
 	</Tab-pane>
@@ -1021,6 +1007,43 @@ var vm_app = new Vue({
 			
 		},
 
+		// auditing_add
+		auditing_add () {
+			var _this = this;
+
+			var id = _this.user_select_auditing;
+
+			// console.log(_this.user_select_current);
+			// return false;
+
+			var url = "{{ route('admin.user.auditingadd') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: _this.user_select_current,
+				uid: uid,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.success(false, '成功', '删除处理用户成功！');
+					_this.tabledata_auditing = response.data;
+				} else {
+					_this.error(false, '失败', '删除处理用户失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '清除用户登录TTL失败！');
+			})
+			
+		},
+
 		// auditing_remove
 		auditing_remove: function (row) {
 			var _this = this;
@@ -1171,18 +1194,6 @@ var vm_app = new Vue({
 			
 		},
 
-		auditingadd () {
-			var _this = this;
-			alert(_this.user_select_auditing_uid);
-			_this.user2auditing_id.push(_this.user_select_auditing);
-			_this.user2auditing_input = _this.user_select_auditing_uid + ' - ' + _this.username_auditing;
-
-
-		},
-
-		auditingremove () {
-alert('remove');
-		},
 		
 		// auditingupdate
 		auditingupdate: function () {
