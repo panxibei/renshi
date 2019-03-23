@@ -1011,7 +1011,14 @@ var vm_app = new Vue({
 		auditing_add () {
 			var _this = this;
 
-			var id = _this.user_select_auditing;
+			var id_current = _this.user_select_current;
+			var id_auditing = _this.user_select_auditing;
+
+			if (id_current == '' || id_auditing == ''
+				|| id_current == undefined || id_auditing == undefined
+				|| id_current == id_auditing) {
+				return false;
+			}
 
 			// console.log(_this.user_select_current);
 			// return false;
@@ -1019,8 +1026,8 @@ var vm_app = new Vue({
 			var url = "{{ route('admin.user.auditingadd') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id: _this.user_select_current,
-				uid: uid,
+				id_current: id_current,
+				id_auditing: id_auditing,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -1032,14 +1039,14 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.success(false, '成功', '删除处理用户成功！');
+					_this.success(false, '成功', '添加处理用户成功！');
 					_this.tabledata_auditing = response.data;
 				} else {
-					_this.error(false, '失败', '删除处理用户失败！');
+					_this.error(false, '失败', '添加处理用户失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '清除用户登录TTL失败！');
+				_this.error(false, '错误', '添加处理用户失败！');
 			})
 			
 		},
@@ -1048,6 +1055,13 @@ var vm_app = new Vue({
 		auditing_remove: function (row) {
 			var _this = this;
 			var uid = row.uid;
+			var id = _this.user_select_current;
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined
+				|| id == uid) {
+				return false;
+			}
 
 			// console.log(_this.user_select_current);
 			// return false;
@@ -1055,7 +1069,7 @@ var vm_app = new Vue({
 			var url = "{{ route('admin.user.auditingremove') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id: _this.user_select_current,
+				id: id,
 				uid: uid,
 			})
 			.then(function (response) {

@@ -429,6 +429,65 @@ class UserController extends Controller
     }
 
     /**
+     * auditingAdd
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function auditingAdd(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		$id_current = $request->input('id_current');
+		$id_auditing = $request->input('id_auditing');
+
+		if ($id_current == $id_auditing) return 0;
+
+		$user_auditing = User::select('uid', 'name', 'department')
+			->where('id', $id_auditing)
+			->first()->toArray();
+		
+		
+		$user_current = User::select('auditing')
+			->where('id', $id_current)
+			->first()->toArray();
+
+		$auditing_after = json_decode($user_current['auditing'], true);
+
+		array_push($auditing_after, $user_auditing);
+
+		// dd($auditing_after);
+
+		try	{
+			$result = User::where('id', $id_current)
+				->update([
+					'auditing' => json_encode(
+						$auditing_after
+					, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+					)
+				]);
+			// $result = 1;
+
+			// 获取当前用户所指向的auditing
+			$userhasauditing = User::select('auditing')
+			->where('id', $id_current)
+			->first();
+
+			$result = json_decode($userhasauditing['auditing'], true);
+
+		}
+		catch (Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		// dd($result);
+		return $result;
+		}
+
+    /**
      * auditingRemove
      *
      * @param  int  $id
