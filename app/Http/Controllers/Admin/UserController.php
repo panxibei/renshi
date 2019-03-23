@@ -448,16 +448,16 @@ class UserController extends Controller
 			->where('id', $id_auditing)
 			->first()->toArray();
 		
-		
 		$user_current = User::select('auditing')
 			->where('id', $id_current)
 			->first()->toArray();
 
-		if ($user_current['auditing']) {
+		if ($user_current['auditing'] != null) {
 			$auditing_after = json_decode($user_current['auditing'], true);
+			array_push($auditing_after, $user_auditing);
+		} else {
+			$auditing_after[] = $user_auditing;
 		}
-
-		array_push($auditing_after, $user_auditing);
 
 		// dd($auditing_after);
 

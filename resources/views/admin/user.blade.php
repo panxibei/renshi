@@ -1057,10 +1057,8 @@ var vm_app = new Vue({
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
+				_this.tabledata_auditing = [];
 				_this.username_current = '';
-				// _this.targetkeystransfer = [];
-				// _this.datatransfer = [];
-				// _this.boo_update = true;
 				return false;
 			}
 			// _this.boo_update = false;
