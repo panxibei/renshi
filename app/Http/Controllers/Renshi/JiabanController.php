@@ -383,6 +383,7 @@ class JiabanController extends Controller
 
 // dd($application);
 // dd($s);
+// dd($user);
 		
 		// 写入数据库
 		try	{
@@ -398,6 +399,8 @@ class JiabanController extends Controller
 					'uuid' => $uuid,
 					'agent' => $agent,
 					'department_of_agent' => $department_of_agent,
+					'auditor' => $user['name'],
+					'department_of_auditor' => $user['department'],
 					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 					'application' => $application,
 					'status' => 1,

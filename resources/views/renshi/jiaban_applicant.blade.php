@@ -149,6 +149,7 @@ Renshi(Jiaban) -
 
 								<span v-for="(application, index) in jiaban_edit_application">
 
+									&nbsp;
 									<i-row :gutter="16">
 									<br>
 										<i-col span="1">
@@ -211,7 +212,6 @@ Renshi(Jiaban) -
 										<i-col span="8">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
-											<!-- @{{ auditing.auditor }} -->
 										</i-col>
 										<i-col span="16">
 											&nbsp;
@@ -228,7 +228,6 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
-							
 							
 							</i-col>
 						</i-row>
@@ -691,6 +690,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.onclear_applicant();
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '提交成功！');
 				} else {
 					_this.error(false, '失败', '提交失败！');
