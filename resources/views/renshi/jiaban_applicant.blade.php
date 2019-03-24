@@ -17,93 +17,333 @@ Renshi(Jiaban) -
 @parent
 <Divider orientation="left">Jiaban applicant</Divider>
 
-<i-row :gutter="16">
-	<i-col span="6">
-		* 加班理由&nbsp;&nbsp;
-		<i-input v-model.lazy="jiaban_add_reason" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
-	</i-col>
+<Tabs type="card" v-model="currenttabs">
 
-	<i-col span="1">
-	&nbsp;
-	</i-col>
+	<Tab-pane label="Application List">
 
-	<i-col span="6">
-		备注&nbsp;&nbsp;
-		<i-input v-model.lazy="jiaban_add_remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
-	</i-col>
-
-	<i-col span="11">
-		&nbsp;&nbsp;
-	</i-col>
-</i-row>
-
-&nbsp;&nbsp;<br><br>
-
-<i-row :gutter="16">
-<br><br>
-    <i-col span="4">
-        ↓ 批量提交&nbsp;&nbsp;
-        <Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
-        &nbsp;项
-    </i-col>
-    <i-col span="20">
-        &nbsp;&nbsp;<i-button @click="oncreate_applicant()" size="default" type="primary">提 交</i-button>
-        &nbsp;&nbsp;<i-button @click="onclear_applicant()" size="default">清 除</i-button>
-    </i-col>
-</i-row>
-    
-&nbsp;
-
-<span v-for="(item, index) in piliangluru_applicant">
-
-<i-row>
-<br>
-	<!-- <i-col span="1">
-		&nbsp;(@{{index+1}})
-	</i-col> -->
-	<i-col span="4">
-		* 工号&nbsp;
-		<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
-			<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-		</i-select>
-	</i-col>
-	<i-col span="3">
-		姓名&nbsp;
-		<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
-	</i-col>
-	<i-col span="3">
-		部门&nbsp;
-		<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
-	</i-col>
-	<i-col span="4">
-		* 类别&nbsp;
-		<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
-			<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-		</i-select>
-	</i-col>
-	<i-col span="7">
-		* 时间&nbsp;
-		<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
-	</i-col>
-	<i-col span="3">
-		* 时长&nbsp;
-		<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
-	</i-col>
+		<Collapse v-model="collapse_query">
+			<Panel name="1">
+				Permission Query Filter
+				<p slot="content">
+				
+					<i-row :gutter="16">
+						<i-col span="4">
+							name&nbsp;&nbsp;
+							<i-input v-model.lazy="queryfilter_name" @on-change="jiabangetsapplicant(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+						</i-col>
+						<i-col span="20">
+							&nbsp;
+						</i-col>
+					</i-row>
+				
+				
+				&nbsp;
+				</p>
+			</Panel>
+		</Collapse>
+		<br>
+		
+		<i-row :gutter="16">
+			<br>
+			<i-col span="3">
+				<i-button @click="ondelete_permission()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
+			</i-col>
+			<i-col span="2">
+				<i-button type="default" size="small" @click="oncreate_permission()"><Icon type="ios-color-wand-outline"></Icon> 新建权限</i-button>
+			</i-col>
+			<i-col span="2">
+				<i-button type="default" size="small" @click="onexport_permission()"><Icon type="ios-download-outline"></Icon> 导出权限</i-button>
+			</i-col>
+			<i-col span="2">
+			&nbsp;
+			</i-col>
+			<i-col span="15">
+			&nbsp;
+				<Tooltip content="输入用户选择" placement="top">
+					<i-select v-model.lazy="test_user_select" filterable remote :remote-method="remoteMethod_sync_user" :loading="test_user_loading" @on-change="" clearable placeholder="输入用户" style="width: 200px;" size="small">
+						<i-option v-for="item in test_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Tooltip>
+				&nbsp;<Icon type="md-arrow-round-forward"></Icon>&nbsp;
+				<Tooltip content="输入权限选择" placement="top">
+					<i-select v-model.lazy="test_permission_select" filterable remote :remote-method="remoteMethod_sync_permission" :loading="test_permission_loading" @on-change="" clearable placeholder="输入权限" style="width: 200px;" size="small">
+						<i-option v-for="item in test_permission_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Tooltip>
+				&nbsp;&nbsp;
+				<i-button type="default" size="small" @click="testuserspermission"><Icon type="md-help"></Icon> 测试用户是否有权限</i-button>
+			</i-col>
+		</i-row>
+		
+		<i-row :gutter="16">
+			<i-col span="24">
 	
-</i-row>
-<br>
-</span>
+				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
+			
+				<Modal v-model="modal_jiaban_edit" title="查看 - 加班" width="800">
+					
+					<div style="text-align:left">
+						
+						<i-row :gutter="16">
+							<i-col span="8">
+								UUID&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 160px"></i-input>
+							</i-col>
+
+							<i-col span="8">
+							created_at&nbsp;&nbsp;
+							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 160px"></i-input>
+							</i-col>
+
+							<i-col span="8">
+							updated_at&nbsp;&nbsp;
+							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 160px"></i-input>
+							</i-col>
+						</i-row>
+
+						&nbsp;
+						<i-row :gutter="16">
+						<br>
+							<i-col span="8">
+								agent&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px"></i-input>
+							</i-col>
+
+							<i-col span="16">
+								department_of_agent&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
+							</i-col>
+						</i-row>
+						
+						&nbsp;<Divider orientation="left">加班信息</Divider>
+
+						<i-row :gutter="16">
+							<i-col span="24">
+
+								<i-row :gutter="16">
+									<i-col span="1">
+										序号
+									</i-col>
+									<i-col span="3">
+										工号
+										<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
+									</i-col>
+									<i-col span="3">
+										姓名
+										<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
+									</i-col>
+									<i-col span="4">
+										部门
+									</i-col>
+									<i-col span="3">
+										类别
+									</i-col>
+									<i-col span="8">
+										时间
+									</i-col>
+									<i-col span="2">
+										时长
+									</i-col>
+								</i-row>
+
+								<span v-for="(application, index) in jiaban_edit_application">
+
+									<i-row :gutter="16">
+									<br>
+										<i-col span="1">
+											#@{{index+1}}
+										</i-col>
+										<i-col span="3">
+											@{{ application.uid }}
+										</i-col>
+										<i-col span="3">
+											@{{ application.applicant }}
+											<!-- <i-input v-model.lazy="application.applicant" readonly="true" style="width: 160px"></i-input> -->
+										</i-col>
+										<i-col span="4">
+											@{{ application.department }}
+										</i-col>
+										<i-col span="3">
+											@{{ application.category }}
+										</i-col>
+										<i-col span="8">
+											@{{ application.datetimerange }}
+										</i-col>
+										<i-col span="2">
+											@{{ application.duration }}
+										</i-col>
+									</i-row>
+
+								</span>
+							
+							</i-col>
+						</i-row>
+
+						&nbsp;
+						<i-row :gutter="16">
+						<br>
+							<i-col span="24">
+								理由&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_reason" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+							</i-col>
+						</i-row>
+
+						&nbsp;
+						<i-row :gutter="16">
+						<br>
+							<i-col span="24">
+								备注&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_remark" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+							</i-col>
+						</i-row>
+
+						&nbsp;<Divider orientation="left">审核信息</Divider>
+
+						<i-row :gutter="16">
+							<i-col span="24">
+							
+								<span v-for="(auditing, index) in jiaban_edit_auditing">
+
+									&nbsp;
+									<i-row :gutter="16">
+									<span v-if="index!=0"><br></span>
+										<i-col span="8">
+											审核&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
+											<!-- @{{ auditing.auditor }} -->
+										</i-col>
+										<i-col span="16">
+											&nbsp;
+										</i-col>
+									</i-row>
+
+									&nbsp;
+									<i-row :gutter="16">
+									<br>
+										<i-col span="24">
+											意见&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.opinion" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+										</i-col>
+									</i-row>
+
+								</span>
+							
+							
+							</i-col>
+						</i-row>
+
+						&nbsp;
+						<i-row :gutter="16">
+						<br>
+							<i-col span="24">
+							status&nbsp;&nbsp;
+							@{{ jiaban_edit_status }}
+							</i-col>
+						</i-row>
+						
+						&nbsp;
+					
+					</div>
+					<div slot="footer">
+						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass">通 过</i-button>
+						<br><br>
+						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
+					</div>	
+				</Modal>
+
+		
+			</i-col>
+		</i-row>
+
+	</Tab-pane>
 
 
+	<Tab-pane label="Start To Apply">
+
+	<i-row :gutter="16">
+		<i-col span="6">
+			* 加班理由&nbsp;&nbsp;
+			<i-input v-model.lazy="jiaban_add_reason" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
+		</i-col>
+
+		<i-col span="1">
+		&nbsp;
+		</i-col>
+
+		<i-col span="6">
+			备注&nbsp;&nbsp;
+			<i-input v-model.lazy="jiaban_add_remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
+		</i-col>
+
+		<i-col span="11">
+			&nbsp;&nbsp;
+		</i-col>
+	</i-row>
+
+	&nbsp;&nbsp;<br><br>
+
+	<i-row :gutter="16">
+	<br><br>
+		<i-col span="4">
+			↓ 批量提交&nbsp;&nbsp;
+			<Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
+			&nbsp;项
+		</i-col>
+		<i-col span="20">
+			&nbsp;&nbsp;<i-button @click="oncreate_applicant()" size="default" type="primary">提 交</i-button>
+			&nbsp;&nbsp;<i-button @click="onclear_applicant()" size="default">清 除</i-button>
+		</i-col>
+	</i-row>
+		
+	&nbsp;
+
+	<span v-for="(item, index) in piliangluru_applicant">
+
+	<i-row>
+	<br>
+		<!-- <i-col span="1">
+			&nbsp;(@{{index+1}})
+		</i-col> -->
+		<i-col span="4">
+			* 工号&nbsp;
+			<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
+				<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+			</i-select>
+		</i-col>
+		<i-col span="3">
+			姓名&nbsp;
+			<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
+		</i-col>
+		<i-col span="3">
+			部门&nbsp;
+			<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
+		</i-col>
+		<i-col span="4">
+			* 类别&nbsp;
+			<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
+				<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+			</i-select>
+		</i-col>
+		<i-col span="7">
+			* 时间&nbsp;
+			<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+		</i-col>
+		<i-col span="3">
+			* 时长&nbsp;
+			<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
+		</i-col>
+		
+	</i-row>
+	<br>
+	</span>
+
+	&nbsp;
 
 
+	</Tab-pane>
 
-
-
-
-
-
-&nbsp;
+</Tabs>
 
 
 @endsection
@@ -156,24 +396,78 @@ var vm_app = new Vue({
 		applicant_options: [],
 		applicant_loading: false,
 
+		tablecolumns: [
+			{
+				type: 'selection',
+				width: 50,
+				align: 'center',
+				fixed: 'left'
+			},
+			{
+				type: 'index',
+				align: 'center',
+				width: 60,
+			},
+			{
+				title: 'uuid',
+				key: 'uuid',
+				sortable: true,
+				width: 280
+			},
+			{
+				title: 'agent',
+				key: 'agent',
+				width: 160
+			},
+			{
+				title: 'department_of_agent',
+				key: 'department_of_agent',
+				width: 160
+			},
+			{
+				title: 'status',
+				key: 'status',
+				width: 80
+			},
+			{
+				title: 'created_at',
+				key: 'created_at',
+				width: 160
+			},
+			{
+				title: 'Action',
+				key: 'action',
+				align: 'center',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.jiaban_edit(params.row)
+								}
+							}
+						}, 'Edit')
+					]);
+				},
+				fixed: 'right'
+			}
+		],
+		tabledata: [],
+		tableselect: [],
 
-
-
-
-
-
-
-
-
-
-
-		
 		//分页
 		page_current: 1,
 		page_total: 1, // 记录总数，非总页数
 		page_size: {{ $config['PERPAGE_RECORDS_FOR_PERMISSION'] }},
 		page_last: 1,
-		
 		
 		// 编辑
 		modal_jiaban_edit: false,
@@ -183,19 +477,20 @@ var vm_app = new Vue({
 		jiaban_edit_uuid: '',
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
-		jiaban_edit_applicant: '',
-		jiaban_edit_department_of_applicant: '',
-		jiaban_edit_category: '',
-		jiaban_edit_start_date: '',
-		jiaban_edit_end_date: '',
-		jiaban_edit_duration: '',
+		jiaban_edit_application: '',
 		jiaban_edit_status: '',
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
-		
+
+
+
+
+
+
+
 		// 删除
 		delete_disabled: true,
 		delete_disabled_sub: true,
@@ -538,7 +833,7 @@ var vm_app = new Vue({
 		
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
-			this.jiabangets(currentpage, this.page_last);
+			this.jiabangetsapplicant(currentpage, this.page_last);
 		},
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
@@ -559,7 +854,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.page_size = pagesize;
-					_this.jiabangets(1, _this.page_last);
+					_this.jiabangetsapplicant(1, _this.page_last);
 				} else {
 					_this.warning(false, 'Warning', 'failed!');
 				}
@@ -569,7 +864,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabangets: function(page, last_page){
+		jiabangetsapplicant: function(page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -582,7 +877,7 @@ var vm_app = new Vue({
 			var queryfilter_name = _this.queryfilter_name;
 
 			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabangets') }}";
+			var url = "{{ route('renshi.jiaban.jiabangetsapplicant') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -659,27 +954,13 @@ var vm_app = new Vue({
 			_this.jiaban_edit_uuid = row.uuid;
 			_this.jiaban_edit_agent = row.agent;
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
-			_this.jiaban_edit_applicant = row.applicant;
-			_this.jiaban_edit_department_of_applicant = row.department_of_applicant;
-			_this.jiaban_edit_category = row.category;
-			_this.jiaban_edit_start_date = row.start_date;
-			_this.jiaban_edit_end_date = row.end_date;
-			_this.jiaban_edit_duration = row.duration;
+			_this.jiaban_edit_application = JSON.parse(row.application);
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
 			_this.jiaban_edit_auditing = JSON.parse(row.auditing);
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
-
-
-
-			// _this.role_edit_email = row.email;
-			// _this.user_edit_password = row.password;
-			// _this.relation_xuqiushuliang_edit[0] = row.xuqiushuliang;
-			// _this.relation_xuqiushuliang_edit[1] = row.xuqiushuliang;
-			// _this.user_created_at_edit = row.created_at;
-			// _this.user_updated_at_edit = row.updated_at;
 
 			_this.modal_jiaban_edit = true;
 		},		
@@ -727,7 +1008,7 @@ var vm_app = new Vue({
 					return false;
 				}
 				
-				_this.jiabangets(_this.page_current, _this.page_last);
+				_this.jiabangetsapplicant(_this.page_current, _this.page_last);
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
@@ -792,7 +1073,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.jiabangets(_this.page_current, _this.page_last);
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -840,7 +1121,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.success(false, 'Success', 'Permission created successfully!');
 					_this.permission_add_name = '';
-					_this.jiabangets(_this.page_current, _this.page_last);
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, 'Warning', 'Permission created failed!');
 				}
@@ -1193,7 +1474,7 @@ var vm_app = new Vue({
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '申请';
 		// 显示所有
-		_this.jiabangets(1, 1); // page: 1, last_page: 1
+		_this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
 	}
 });
 </script>

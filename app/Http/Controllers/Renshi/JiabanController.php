@@ -141,17 +141,21 @@ class JiabanController extends Controller
     }
 
     /**
-     * jiaban列表
+     * jiaban applicant列表
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function jiabanGets(Request $request)
+    public function jiabanGetsApplicant(Request $request)
     {
 		if (! $request->ajax()) return null;
 
 		// 重置角色和权限的缓存
 		app()['cache']->forget('spatie.permission.cache');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
 
 		$url = request()->url();
 		$queryParams = request()->query();
@@ -178,6 +182,60 @@ class JiabanController extends Controller
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
 				})
+				->where('agent', $user['name'])
+				->limit(1000)
+				->orderBy('created_at', 'desc')
+				->paginate($perPage, ['*'], 'page', $page);
+
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
+		}
+		// dd($result);
+		return $result;
+    }
+
+    /**
+     * jiaban todo列表
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function jiabanGetsTodo(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		
+		$url = request()->url();
+		$queryParams = request()->query();
+		
+		$perPage = $queryParams['perPage'] ?? 10000;
+		$page = $queryParams['page'] ?? 1;
+		
+		$queryfilter_name = $request->input('queryfilter_name');
+
+		//对查询参数按照键名排序
+		ksort($queryParams);
+
+		//将查询数组转换为查询字符串
+		$queryString = http_build_query($queryParams);
+
+		$fullUrl = sha1("{$url}?{$queryString}");
+		
+		
+		//首先查寻cache如果找到
+		if (Cache::has($fullUrl)) {
+			$result = Cache::get($fullUrl);    //直接读取cache
+		} else {                                   //如果cache里面没有
+			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent','application', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
+				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
+					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
+				})
+				->where('auditor', $user['name'])
 				->limit(1000)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);

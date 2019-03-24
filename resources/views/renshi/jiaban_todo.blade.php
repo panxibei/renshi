@@ -28,7 +28,7 @@ Renshi(Jiaban) -
 					<i-row :gutter="16">
 						<i-col span="4">
 							name&nbsp;&nbsp;
-							<i-input v-model.lazy="queryfilter_name" @on-change="jiabangets(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+							<i-input v-model.lazy="queryfilter_name" @on-change="jiabangetstodo(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
 						<i-col span="20">
 							&nbsp;
@@ -689,7 +689,7 @@ var vm_app = new Vue({
 		
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
-			this.jiabangets(currentpage, this.page_last);
+			this.jiabangetstodo(currentpage, this.page_last);
 		},
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
@@ -710,7 +710,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.page_size = pagesize;
-					_this.jiabangets(1, _this.page_last);
+					_this.jiabangetstodo(1, _this.page_last);
 				} else {
 					_this.warning(false, 'Warning', 'failed!');
 				}
@@ -720,7 +720,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabangets: function(page, last_page){
+		jiabangetstodo: function(page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -733,7 +733,7 @@ var vm_app = new Vue({
 			var queryfilter_name = _this.queryfilter_name;
 
 			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabangets') }}";
+			var url = "{{ route('renshi.jiaban.jiabangetstodo') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -879,7 +879,7 @@ var vm_app = new Vue({
 					return false;
 				}
 				
-				_this.jiabangets(_this.page_current, _this.page_last);
+				_this.jiabangetstodo(_this.page_current, _this.page_last);
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
@@ -944,7 +944,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.jiabangets(_this.page_current, _this.page_last);
+					_this.jiabangetstodo(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -992,7 +992,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.success(false, 'Success', 'Permission created successfully!');
 					_this.permission_add_name = '';
-					_this.jiabangets(_this.page_current, _this.page_last);
+					_this.jiabangetstodo(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, 'Warning', 'Permission created failed!');
 				}
@@ -1345,7 +1345,7 @@ var vm_app = new Vue({
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '处理';
 		// 显示所有
-		_this.jiabangets(1, 1); // page: 1, last_page: 1
+		_this.jiabangetstodo(1, 1); // page: 1, last_page: 1
 	}
 });
 </script>

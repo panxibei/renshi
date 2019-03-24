@@ -49,21 +49,23 @@ class Renshi_jiabansTableSeeder extends Seeder
         Renshi_jiaban::create([
             // 'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
             'uuid' => $uuid4->toString(),
-            'agent' => 'zhangsan',
-            'department_of_agent' => 'shengchanbu',
+            'agent' => 'user1',
+            'department_of_agent' => 'user',
+            'auditor' => 'admin',
+            'department_of_auditor' => 'admin',
             'application' => json_encode(
                 array(
                     array(
-                        "uid" => "071215958",
-                        "applicant" => "张三",
+                        "uid" => "0003",
+                        "applicant" => "user1",
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
                         'duration' => 60,
                     ),
                     array(
-                        "uid" => "071215957",
-                        "applicant" => "李四四四四",
+                        "uid" => "0004",
+                        "applicant" => "user2",
                         'department' => '生产计划管理部',
                         'category' => '节假日加班补',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
@@ -83,11 +85,11 @@ class Renshi_jiabansTableSeeder extends Seeder
             'auditing' => json_encode(
                 array(
                     array(
-                        "auditor" => "领导1",
+                        "auditor" => "admin",
                         "opinion" => "balabala1...."
                     ),
                     array(
-                        "auditor" => "领导2",
+                        "auditor" => "admin",
                         "opinion" => "balabala2...."
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -97,8 +99,10 @@ class Renshi_jiabansTableSeeder extends Seeder
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             'uuid' => $uuid4->toString(),
-            'agent' => 'zhangsan',
-            'department_of_agent' => 'shengchanbu',
+            'agent' => 'user2',
+            'department_of_agent' => 'user',
+            'auditor' => 'admin',
+            'department_of_auditor' => 'admin',
             'application' => json_encode(
                 array(
                     array(
@@ -114,17 +118,23 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 1,
             'reason' => 'reason2',
             'remark' => '',
-            // 'auditing' => ['{
-            //     "auditor": "lingdao1",
-            //     "opinion": "balabala1...."
-            // }'],
+            'auditing' => json_encode(
+                array(
+                    array(
+                        "auditor" => "admin",
+                        "opinion" => "balabala1...."
+                    )
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            ),
         ]);
 
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             'uuid' => $uuid4->toString(),
-            'agent' => 'zhangsan',
-            'department_of_agent' => 'shengchanbu',
+            'agent' => 'user3',
+            'department_of_agent' => 'user',
+            'auditor' => 'admin',
+            'department_of_auditor' => 'admin',
             'application' => json_encode(
                 array(
                     array(
@@ -140,6 +150,14 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 1,
             'reason' => 'reason3',
             'remark' => '',
+            'auditing' => json_encode(
+                array(
+                    array(
+                        "auditor" => "admin",
+                        "opinion" => "balabala1...."
+                    )
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            ),
         ]);
 
         // Renshi_jiaban_sub::create([

@@ -35,7 +35,10 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');
 
 	// jiaban列表
-	Route::get('jiabanGets', 'JiabanController@jiabanGets')->name('renshi.jiaban.jiabangets');
+	Route::get('jiabanGetsApplicant', 'JiabanController@jiabanGetsApplicant')->name('renshi.jiaban.jiabangetsapplicant');
+
+	// jiaban列表
+	Route::get('jiabanGetsTodo', 'JiabanController@jiabanGetsTodo')->name('renshi.jiaban.jiabangetstodo');
 
 
 
