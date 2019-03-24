@@ -61,7 +61,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 60,
+                        'duration' => 1.5,
                     ),
                     array(
                         "uid" => "0004",
@@ -69,7 +69,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                         'department' => '生产计划管理部',
                         'category' => '节假日加班补',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 60,
+                        'duration' => 2.5,
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
@@ -111,7 +111,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 30,
+                        'duration' => 4,
                     ),
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
@@ -143,7 +143,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                         'department' => 'caiwu',
                         'category' => 'pingshijiaban',
                         'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 30,
+                        'duration' => 8,
                     ),
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),

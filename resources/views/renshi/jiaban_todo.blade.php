@@ -95,24 +95,24 @@ Renshi(Jiaban) -
 				</Modal>
 				
 
-				<Modal v-model="modal_jiaban_edit" title="Edit - Jiaban" width="800">
+				<Modal v-model="modal_jiaban_edit" title="处理 - 加班单" width="800">
 					
 					<div style="text-align:left">
 						
 						<i-row :gutter="16">
-							<i-col span="8">
+							<i-col span="10">
 								UUID&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 160px"></i-input>
+								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 260px"></i-input>
 							</i-col>
 
-							<i-col span="8">
-							created_at&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 160px"></i-input>
+							<i-col span="7">
+							创建时间&nbsp;&nbsp;
+							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 140px"></i-input>
 							</i-col>
 
-							<i-col span="8">
-							updated_at&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 160px"></i-input>
+							<i-col span="7">
+							更新时间&nbsp;&nbsp;
+							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 140px"></i-input>
 							</i-col>
 						</i-row>
 
@@ -120,17 +120,17 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="8">
-								agent&nbsp;&nbsp;
+								代理申请人&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="16">
-								department_of_agent&nbsp;&nbsp;
+								代理申请人部门&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
 						
-						&nbsp;<Divider orientation="left">Jiaban info</Divider>
+						&nbsp;<Divider orientation="left">加班信息</Divider>
 
 						<i-row :gutter="16">
 							<i-col span="24">
@@ -203,7 +203,7 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
-								reason&nbsp;&nbsp;
+								理由&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_reason" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
 						</i-row>
@@ -211,7 +211,7 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
-								remark&nbsp;&nbsp;
+								备注&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_remark" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 							</i-col>
 						</i-row>
@@ -227,7 +227,7 @@ Renshi(Jiaban) -
 									<i-row :gutter="16">
 									<br>
 										<i-col span="8">
-											auditor:&nbsp;&nbsp;
+											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
 											<!-- @{{ auditing.auditor }} -->
 										</i-col>
@@ -239,7 +239,7 @@ Renshi(Jiaban) -
 									<i-row :gutter="16">
 									<br>
 										<i-col span="24">
-											opinion&nbsp;&nbsp;
+											意见&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.opinion" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 										</i-col>
 									</i-row>
@@ -379,9 +379,10 @@ var vm_app = new Vue({
             //     }
             // },
 			{
+				title: '序号',
 				type: 'index',
 				align: 'center',
-				width: 60,
+				width: 80,
 			},
 			// {
 			// 	title: '',
@@ -393,18 +394,18 @@ var vm_app = new Vue({
 			// 	},
 			// },
 			{
-				title: 'uuid',
+				title: 'UUID',
 				key: 'uuid',
 				sortable: true,
 				width: 280
 			},
 			{
-				title: 'agent',
+				title: '代理申请人',
 				key: 'agent',
 				width: 160
 			},
 			{
-				title: 'department_of_agent',
+				title: '代理申请人部门',
 				key: 'department_of_agent',
 				width: 160
 			},
@@ -486,7 +487,7 @@ var vm_app = new Vue({
 			// 	},
 			// },
 			{
-				title: 'created_at',
+				title: '创建时间',
 				key: 'created_at',
 				width: 160
 			},
@@ -499,7 +500,7 @@ var vm_app = new Vue({
 			// 	},
 			// },
 			{
-				title: 'Action',
+				title: '操作',
 				key: 'action',
 				align: 'center',
 				width: 80,

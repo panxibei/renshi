@@ -81,24 +81,24 @@ Renshi(Jiaban) -
 				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
-				<Modal v-model="modal_jiaban_edit" title="查看 - 加班" width="800">
+				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800">
 					
 					<div style="text-align:left">
 						
 						<i-row :gutter="16">
-							<i-col span="8">
+							<i-col span="10">
 								UUID&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 160px"></i-input>
+								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 260px"></i-input>
 							</i-col>
 
-							<i-col span="8">
-							created_at&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 160px"></i-input>
+							<i-col span="7">
+							创建时间&nbsp;&nbsp;
+							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 140px"></i-input>
 							</i-col>
 
-							<i-col span="8">
-							updated_at&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 160px"></i-input>
+							<i-col span="7">
+							更新时间&nbsp;&nbsp;
+							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 140px"></i-input>
 							</i-col>
 						</i-row>
 
@@ -106,12 +106,12 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="8">
-								agent&nbsp;&nbsp;
+								代理申请人&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
 							<i-col span="16">
-								department_of_agent&nbsp;&nbsp;
+								代理申请人部门&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
@@ -245,9 +245,11 @@ Renshi(Jiaban) -
 					
 					</div>
 					<div slot="footer">
+					<!--
 						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass">通 过</i-button>
 						<br><br>
 						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
+					-->
 					</div>	
 				</Modal>
 
@@ -403,24 +405,35 @@ var vm_app = new Vue({
 				fixed: 'left'
 			},
 			{
+				title: '序号',
 				type: 'index',
 				align: 'center',
-				width: 60,
+				width: 80,
 			},
 			{
-				title: 'uuid',
+				title: 'UUID',
 				key: 'uuid',
 				sortable: true,
 				width: 280
 			},
+			// {
+			// 	title: 'agent',
+			// 	key: 'agent',
+			// 	width: 160
+			// },
+			// {
+			// 	title: 'department_of_agent',
+			// 	key: 'department_of_agent',
+			// 	width: 160
+			// },
 			{
-				title: 'agent',
-				key: 'agent',
+				title: '当前审核人',
+				key: 'auditor',
 				width: 160
 			},
 			{
-				title: 'department_of_agent',
-				key: 'department_of_agent',
+				title: '当前审核人部门',
+				key: 'department_of_auditor',
 				width: 160
 			},
 			{
@@ -429,12 +442,12 @@ var vm_app = new Vue({
 				width: 80
 			},
 			{
-				title: 'created_at',
+				title: '创建时间',
 				key: 'created_at',
 				width: 160
 			},
 			{
-				title: 'Action',
+				title: '操作',
 				key: 'action',
 				align: 'center',
 				width: 80,
@@ -453,7 +466,7 @@ var vm_app = new Vue({
 									vm_app.jiaban_edit(params.row)
 								}
 							}
-						}, 'Edit')
+						}, '查看')
 					]);
 				},
 				fixed: 'right'
