@@ -172,7 +172,7 @@ Renshi(Jiaban) -
 											@{{ application.datetimerange }}
 										</i-col>
 										<i-col span="2">
-											@{{ application.duration }}
+											@{{ application.duration }} 小时
 										</i-col>
 									</i-row>
 
@@ -331,8 +331,10 @@ Renshi(Jiaban) -
 			<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
 		</i-col>
 		<i-col span="3">
+			<Tooltip content="单位小时" placement="top">
 			* 时长&nbsp;
 			<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
+			</Tooltip>
 		</i-col>
 		
 	</i-row>
