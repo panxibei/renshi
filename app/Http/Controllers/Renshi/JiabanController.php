@@ -368,6 +368,18 @@ class JiabanController extends Controller
 		$agent = $user['name'];
 		$department_of_agent = $user['department'];
 
+		// get auditor
+		$a = User::select('auditing')
+		->where('id', $user['id'])
+		->first();
+
+		$b = json_decode($a['auditing'], true);
+
+		$auditor = $b[0]['name'];
+		$department_of_auditor = $b[0]['department'];
+
+		// dd($department_of_auditor);
+
 		foreach ($piliangluru as $key => $value) {
 			$s[$key]['uid'] = $value['uid'];
 			$s[$key]['applicant'] = $value['applicant'];
@@ -399,8 +411,8 @@ class JiabanController extends Controller
 					'uuid' => $uuid,
 					'agent' => $agent,
 					'department_of_agent' => $department_of_agent,
-					'auditor' => $user['name'],
-					'department_of_auditor' => $user['department'],
+					'auditor' => $auditor,
+					'department_of_auditor' => $department_of_auditor,
 					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 					'application' => $application,
 					'status' => 1,
