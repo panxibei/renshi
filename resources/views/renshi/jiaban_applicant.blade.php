@@ -320,12 +320,6 @@ Renshi(Jiaban) -
 			部门&nbsp;
 			<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
 		</i-col>
-		<i-col span="4">
-			* 类别&nbsp;
-			<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
-				<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-			</i-select>
-		</i-col>
 		<i-col span="7">
 			* 时间&nbsp;
 			<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
@@ -335,6 +329,12 @@ Renshi(Jiaban) -
 			* 时长&nbsp;
 			<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
 			</Tooltip>
+		</i-col>
+		<i-col span="4">
+			* 类别&nbsp;
+			<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
+				<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+			</i-select>
 		</i-col>
 		
 	</i-row>

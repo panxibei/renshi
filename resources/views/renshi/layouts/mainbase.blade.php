@@ -307,7 +307,7 @@ function topmenuselect (name) {
 	  window.location.href = "";
 	  break;
 	case '3-2':
-	  window.location.href = "{{route('admin.logout')}}";
+	  window.location.href = "{{route('main.logout')}}";
 	  break;
 	case '3-3':
 	  window.location.href = "";
