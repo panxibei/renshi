@@ -329,7 +329,7 @@ class JiabanController extends Controller
 				})
 				->first();
 
-			Cache::put($fullUrl, $result, now()->addSeconds(30));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 
 		return $result;
