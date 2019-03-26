@@ -40,7 +40,7 @@ Renshi(Jiaban) -
 				</p>
 			</Panel>
 		</Collapse>
-		<br>
+		&nbsp;
 		
 		<i-row :gutter="16">
 			<br>
@@ -48,29 +48,13 @@ Renshi(Jiaban) -
 				<i-button @click="ondelete_permission()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
-				<i-button type="default" size="small" @click="oncreate_permission()"><Icon type="ios-color-wand-outline"></Icon> 新建权限</i-button>
+				<i-button type="default" size="small" @click="onexport_todo()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
 			</i-col>
-			<i-col span="2">
-				<i-button type="default" size="small" @click="onexport_permission()"><Icon type="ios-download-outline"></Icon> 导出权限</i-button>
-			</i-col>
-			<i-col span="2">
+			<i-col span="4">
 			&nbsp;
 			</i-col>
 			<i-col span="15">
 			&nbsp;
-				<Tooltip content="输入用户选择" placement="top">
-					<i-select v-model.lazy="test_user_select" filterable remote :remote-method="remoteMethod_sync_user" :loading="test_user_loading" @on-change="" clearable placeholder="输入用户" style="width: 200px;" size="small">
-						<i-option v-for="item in test_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Tooltip>
-				&nbsp;<Icon type="md-arrow-round-forward"></Icon>&nbsp;
-				<Tooltip content="输入权限选择" placement="top">
-					<i-select v-model.lazy="test_permission_select" filterable remote :remote-method="remoteMethod_sync_permission" :loading="test_permission_loading" @on-change="" clearable placeholder="输入权限" style="width: 200px;" size="small">
-						<i-option v-for="item in test_permission_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Tooltip>
-				&nbsp;&nbsp;
-				<i-button type="default" size="small" @click="testuserspermission"><Icon type="md-help"></Icon> 测试用户是否有权限</i-button>
 			</i-col>
 		</i-row>
 		
@@ -187,7 +171,7 @@ Renshi(Jiaban) -
 											@{{ application.datetimerange }}
 										</i-col>
 										<i-col span="2">
-											@{{ application.duration }}
+											@{{ application.duration }} 小时
 										</i-col>
 									</i-row>
 
@@ -1004,7 +988,10 @@ var vm_app = new Vue({
 		},		
 		
 		// 导出权限
-		onexport_permission: function(){
+		onexport_todo: function(){
+			alert('功能待完成！');
+			return false;
+
 			var url = "{{ route('admin.permission.excelexport') }}";
 			window.setTimeout(function(){
 				window.location.href = url;
