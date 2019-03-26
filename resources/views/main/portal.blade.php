@@ -42,9 +42,9 @@ Main(Portal) -
 				</p>
 					<p v-for="item in CardListSmt">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<!-- <span style="float:right">
 							Percent: @{{ item.percent }}%
-						</span>
+						</span> -->
 					</p>
 			</Card>
 
