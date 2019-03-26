@@ -46,7 +46,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ondelete_permission()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ondelete_applicant()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="oncreate_applicant_gototab()"><Icon type="ios-color-wand-outline"></Icon> 添加申请</i-button>
@@ -1055,8 +1055,8 @@ var vm_app = new Vue({
 			}, 2000);
 		},
 		
-		// ondelete_permission
-		ondelete_permission: function () {
+		// ondelete_applicant
+		ondelete_applicant: function () {
 			var _this = this;
 			
 			var tableselect = _this.tableselect;

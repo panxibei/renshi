@@ -31,6 +31,12 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// applicant页面 批量录入
 	Route::post('applicantCreate', 'JiabanController@applicantCreate')->name('renshi.jiaban.applicant.applicantcreate');
 
+	// applicant页面 软删除
+	Route::post('applicantTrash', 'JiabanController@applicantTrash')->name('renshi.jiaban.applicant.applicanttrash');
+
+	// applicant页面 软删除
+	Route::post('applicantDelete', 'JiabanController@applicantDelete')->name('renshi.jiaban.applicant.applicantdelete');
+
 	// 显示todo页面
 	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');
 
