@@ -1063,10 +1063,10 @@ var vm_app = new Vue({
 			
 			if (tableselect[0] == undefined) return false;
 			
-			var url = "{{ route('admin.permission.permissiondelete') }}";
+			var url = "{{ route('renshi.jiaban.applicant.applicanttrash') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				tableselect: tableselect
+				id: tableselect
 			})
 			.then(function (response) {
 				if (response.data['jwt'] == 'logout') {

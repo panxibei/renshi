@@ -438,6 +438,35 @@ class JiabanController extends Controller
 		return $result;		
     }
 
+    /**
+     * 软删除applicant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function applicantTrash(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		$trashed = Renshi_jiaban::select('deleted_at')
+			->whereIn('id', $id)
+			->first();
+
+		// 如果在回收站里，则恢复它
+		if ($trashed == null) {
+			$result = User::where('id', $userid)->restore();
+		} else {
+			$result = User::where('id', $userid)->delete();
+		}
+
+		return $result;
+    }
+
+
+
 
 
 
