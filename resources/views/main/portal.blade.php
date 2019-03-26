@@ -33,7 +33,7 @@ Main(Portal) -
 
 			<Card>
 				<p slot="title">
-					SMT管理系统（Beta版）
+					Jiaban管理系统（2019版）
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="{{ route('smt.config') }}" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;Config</a>
@@ -56,9 +56,9 @@ Main(Portal) -
 		
 		<i-col span="6">
 		
-			<Card>
+			<!-- <Card>
 				<p slot="title">
-					部品加工管理系统（Beta版）
+					考勤管理系统（2019版）
 				</p>
 					<p v-for="item in CardListBupinjiagong">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
@@ -66,7 +66,8 @@ Main(Portal) -
 							Percent: @{{ item.percent }}%
 						</span>
 					</p>
-			</Card>
+			</Card> -->
+			&nbsp;
 		
 		</i-col>
 		<i-col span="5">
@@ -97,20 +98,15 @@ var vm_app = new Vue({
 	data: {
 		CardListSmt: [
 			{
-				name: 'Mpoint',
-				url: "{{ route('smt.pdreport.mpoint') }}", //'http://172.22.15.199:8888/smt/mpoint',
+				name: 'Applicant',
+				url: "{{ route('renshi.jiaban.applicant') }}",
 				percent: 85,
 			},
-			{
-				name: '生产日报',
-				url: "{{ route('smt.pdreport.index') }}",
-				percent: 75,
-			},
-			{
-				name: '品质日报',
-				url: "{{ route('smt.qcreport.index') }}",
-				percent: 90,
-			},
+			// {
+			// 	name: 'Todo',
+			// 	url: "",
+			// 	percent: 75,
+			// },
 		],
 
 
