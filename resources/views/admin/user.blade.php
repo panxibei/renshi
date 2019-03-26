@@ -79,17 +79,22 @@ Admin(User) -
 						
 						<p>
 							name&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_name" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_add_name" placeholder="登录名称或工号" size="small" clearable style="width: 120px"></i-input>
 
 							&nbsp;&nbsp;&nbsp;&nbsp;
 
 							department&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_department" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_add_department" placeholder="部门" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
 							uid&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_uid" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_add_uid" placeholder="工号" size="small" clearable style="width: 120px"></i-input>
+
+							&nbsp;&nbsp;&nbsp;&nbsp;
+
+							displayname&nbsp;&nbsp;
+							<i-input v-model.lazy="user_add_displayname" placeholder="显示名称" size="small" clearable style="width: 120px"></i-input>
 
 							<br><br>
 
@@ -120,6 +125,11 @@ Admin(User) -
 
 							uid&nbsp;&nbsp;
 							<i-input v-model.lazy="user_edit_uid" placeholder="" size="small" clearable style="width: 120px"></i-input>
+
+							&nbsp;&nbsp;&nbsp;&nbsp;
+
+							displayname&nbsp;&nbsp;
+							<i-input v-model.lazy="user_edit_displayname" placeholder="" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
@@ -461,7 +471,7 @@ var vm_app = new Vue({
 		modal_user_add: false,
 		user_add_id: '',
 		user_add_name: '',
-		user_add_ldapname: '',
+		user_add_displayname: '',
 		user_add_department: '',
 		user_add_uid: '',
 		user_add_password: '',
@@ -470,7 +480,7 @@ var vm_app = new Vue({
 		modal_user_edit: false,
 		user_edit_id: '',
 		user_edit_name: '',
-		user_edit_ldapname: '',
+		user_edit_displayname: '',
 		user_edit_department: '',
 		user_edit_uid: '',
 		user_edit_password: '',
@@ -706,7 +716,7 @@ var vm_app = new Vue({
 			
 			_this.user_edit_id = row.id;
 			_this.user_edit_name = row.name;
-			// _this.user_edit_ldapname = row.ldapname;
+			_this.user_edit_displayname = row.displayname;
 			_this.user_edit_department = row.department;
 			_this.user_edit_uid = row.uid;
 			// _this.user_edit_password = row.password;
@@ -725,7 +735,7 @@ var vm_app = new Vue({
 			
 			var id = _this.user_edit_id;
 			var name = _this.user_edit_name;
-			// var ldapname = _this.user_edit_ldapname;
+			var displayname = _this.user_edit_displayname;
 			var department = _this.user_edit_department;
 			var uid = _this.user_edit_uid;
 			var password = _this.user_edit_password;
@@ -751,7 +761,7 @@ var vm_app = new Vue({
 			axios.post(url, {
 				id: id,
 				name: name,
-				// ldapname: ldapname,
+				displayname: displayname,
 				department: department,
 				uid: uid,
 				password: password,
@@ -775,7 +785,7 @@ var vm_app = new Vue({
 					
 					_this.user_edit_id = '';
 					_this.user_edit_name = '';
-					// _this.user_edit_ldapname = '';
+					_this.user_edit_displayname = '';
 					_this.user_edit_department = '';
 					_this.user_edit_uid = '';
 					_this.user_edit_password = '';
@@ -864,10 +874,11 @@ var vm_app = new Vue({
 			// var ldapname = _this.user_add_ldapname;
 			var department = _this.user_add_department;
 			var uid = _this.user_add_uid;
+			var displayname = _this.user_add_displayname;
 			var password = _this.user_add_password;
 			
 			if (name == '' || name == null || name == undefined
-				// || ldapname == '' || ldapname == null || ldapname == undefined
+				|| displayname == '' || displayname == null || displayname == undefined
 				|| department == '' || department == null || department == undefined
 				|| uid == '' || uid == null || uid == undefined
 				|| password == '' || password == null || password == undefined) {
@@ -889,6 +900,7 @@ var vm_app = new Vue({
 				name: name,
 				department: department,
 				uid: uid,
+				displayname: displayname,
 				password: password
 			})
 			.then(function (response) {
@@ -903,6 +915,7 @@ var vm_app = new Vue({
 					// _this.user_add_ldapname = '';
 					_this.user_add_department = '';
 					_this.user_add_uid = '';
+					_this.user_add_displayname = '';
 					_this.user_add_password = '';
 					_this.usergets(_this.page_current, _this.page_last);
 				} else {

@@ -89,7 +89,7 @@ class UserController extends Controller
 				return $query->where('login_ip', 'like', '%'.$queryfilter_loginip.'%');
 			})
 			->limit(1000)
-			->orderBy('created_at', 'desc')
+			->orderBy('id', 'desc')
 			->withTrashed()
 			->paginate($perPage, ['*'], 'page', $page);
 
@@ -112,6 +112,7 @@ class UserController extends Controller
 		$name = $request->input('name');
 		$department = $request->input('department');
 		$uid = $request->input('uid');
+		$displayname = $request->input('displayname');
 		$password = $request->input('password');
 		
 		$logintime = date("Y-m-d H:i:s", 86400);
@@ -120,6 +121,7 @@ class UserController extends Controller
 			'name'     		=> $name,
 			'department'  => $department,
 			'uid'					=> $uid,
+			'displayname'	=> $displayname,
 			'password' 		=> bcrypt($password),
 			'login_time' 	=> $logintime,
 			'login_ip' 		=> '255.255.255.255',
@@ -219,7 +221,7 @@ class UserController extends Controller
 
 		$id = $request->input('id');
 		$name = $request->input('name');
-		// $ldapname = $request->input('ldapname');
+		$displayname = $request->input('displayname');
 		$department = $request->input('department');
 		$uid = $request->input('uid');
 		$password = $request->input('password');
@@ -234,6 +236,7 @@ class UserController extends Controller
 						'name'				=>	$name,
 						'department'	=>	$department,
 						'uid'					=>	$uid,
+						'displayname' => $displayname,
 						'password'		=>	bcrypt($password)
 					]);
 			} else {
@@ -241,7 +244,8 @@ class UserController extends Controller
 					->update([
 						'name'				=>	$name,
 						'department'	=>	$department,
-						'uid'					=>	$uid
+						'uid'					=>	$uid,
+						'displayname' => $displayname
 					]);
 			}
 		}
