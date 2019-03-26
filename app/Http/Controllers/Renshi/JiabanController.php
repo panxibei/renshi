@@ -180,9 +180,9 @@ class JiabanController extends Controller
 		} else {                                   //如果cache里面没有
 			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
-					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
+					return $query->where('auditor', 'like', '%'.$queryfilter_name.'%');
 				})
-				->where('agent', $user['name'])
+				->where('uid_of_agent', $user['uid'])
 				->limit(1000)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
@@ -233,9 +233,9 @@ class JiabanController extends Controller
 		} else {                                   //如果cache里面没有
 			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
-					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
+					return $query->where('agent', 'like', '%'.$queryfilter_name.'%');
 				})
-				->where('auditor', $user['name'])
+				->where('uid_of_auditor', $user['uid'])
 				->limit(1000)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
@@ -323,7 +323,7 @@ class JiabanController extends Controller
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
 			// $result = Renshi_employee::select('applicant', 'department')
-			$result = User::select('name', 'department')
+			$result = User::select('displayname', 'department')
 				->when($employeeid, function ($query) use ($employeeid) {
 					return $query->where('uid', $employeeid);
 				})
@@ -365,7 +365,8 @@ class JiabanController extends Controller
 		// dd($user['department']);
 		// dd($user['displayname']);
 		
-		$agent = $user['name'];
+		$uid_of_agent = $user['uid'];
+		$agent = $user['displayname'];
 		$department_of_agent = $user['department'];
 
 		// get auditor
@@ -375,6 +376,7 @@ class JiabanController extends Controller
 
 		$b = json_decode($a['auditing'], true);
 
+		$uid_of_auditor = $b[0]['uid'];
 		$auditor = $b[0]['name'];
 		$department_of_auditor = $b[0]['department'];
 
@@ -409,8 +411,10 @@ class JiabanController extends Controller
 
 			Renshi_jiaban::create([
 					'uuid' => $uuid,
+					'uid_of_agent' => $uid_of_agent,
 					'agent' => $agent,
 					'department_of_agent' => $department_of_agent,
+					'uid_of_auditor' => $uid_of_auditor,
 					'auditor' => $auditor,
 					'department_of_auditor' => $department_of_auditor,
 					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
@@ -425,7 +429,7 @@ class JiabanController extends Controller
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
 			DB::rollBack();
-			// return 'Message: ' .$e->getMessage();
+			return 'Message: ' .$e->getMessage();
 			return 0;
 		}
 

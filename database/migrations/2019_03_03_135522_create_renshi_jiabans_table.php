@@ -16,8 +16,10 @@ class CreateRenshiJiabansTable extends Migration
         Schema::create('renshi_jiabans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->comment('编号');
+            $table->string('uid_of_agent')->comment('代理申请人UID');
             $table->string('agent')->comment('代理申请人');
             $table->string('department_of_agent')->comment('代理申请人部门');
+            $table->string('uid_of_auditor')->comment('申请人UID');
             $table->string('auditor')->comment('申请人');
             $table->string('department_of_auditor')->comment('申请人部门');
             $table->jsonb('application')->comment('申请信息');

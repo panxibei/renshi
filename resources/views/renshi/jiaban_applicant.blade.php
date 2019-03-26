@@ -23,7 +23,7 @@ Renshi(Jiaban) -
 
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
-				Permission Query Filter
+				Application Query Filter
 				<p slot="content">
 				
 					<i-row :gutter="16">
@@ -695,8 +695,8 @@ var vm_app = new Vue({
 				piliangluru: piliangluru_applicant
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				console.log(response.data);
+				return false;
 				
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
