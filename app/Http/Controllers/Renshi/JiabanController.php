@@ -286,7 +286,7 @@ class JiabanController extends Controller
 				->orderBy('created_at', 'desc')
 				->pluck('uid', 'uid')->toArray();
 
-			Cache::put($fullUrl, $result, now()->addSeconds(30));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 
 		return $result;
@@ -733,7 +733,7 @@ class JiabanController extends Controller
 				->orderBy('created_at', 'desc')
 				->pluck('name', 'id')->toArray();
 
-			Cache::put($fullUrl, $result, now()->addSeconds(60));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 		
 		return $result;
@@ -883,7 +883,7 @@ class JiabanController extends Controller
 				->orderBy('created_at', 'desc')
 				->pluck('name', 'id')->toArray();
 
-			Cache::put($fullUrl, $result, now()->addSeconds(30));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 
 		return $result;
@@ -928,7 +928,7 @@ class JiabanController extends Controller
 				->orderBy('created_at', 'desc')
 				->pluck('name', 'id')->toArray();
 
-			Cache::put($fullUrl, $result, now()->addSeconds(60));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 
 		return $result;
