@@ -388,6 +388,7 @@ class UserController extends Controller
 			$result = User::when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('uid', 'like', '%'.$queryfilter_name.'%');
 				})
+				->where('id', '>', 10)
 				->limit(10)
 				->orderBy('created_at', 'desc')
 				->pluck('uid', 'id')->toArray();

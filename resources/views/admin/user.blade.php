@@ -114,22 +114,22 @@ Admin(User) -
 						
 						<p>
 							name&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_name" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_edit_name" placeholder="登录名称或工号" size="small" clearable style="width: 120px"></i-input>
 
 							&nbsp;&nbsp;&nbsp;&nbsp;
 
 							department&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_department" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_edit_department" placeholder="部门" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
 							uid&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_uid" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_edit_uid" placeholder="工号" size="small" clearable style="width: 120px"></i-input>
 
 							&nbsp;&nbsp;&nbsp;&nbsp;
 
 							displayname&nbsp;&nbsp;
-							<i-input v-model.lazy="user_edit_displayname" placeholder="" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_edit_displayname" placeholder="显示名称" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
