@@ -57,7 +57,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ondelete_applicant()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_applicant()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="oncreate_applicant_gototab()"><Icon type="ios-color-wand-outline"></Icon> 添加申请</i-button>
@@ -483,7 +483,7 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.jiaban_restore(params.row)
+									vm_app.onrestore_applicant(params.row)
 								}
 							}
 						}, '恢复'),
@@ -627,20 +627,6 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 		
-		// 穿梭框显示文本转换
-		json2transfer: function (json) {
-			var arr = [];
-			for (var key in json) {
-				arr.push({
-					key: key,
-					label: json[key],
-					description: json[key],
-					disabled: false
-				});
-			}
-			return arr.reverse();
-		},
-
 		// 生成piliangluru_applicant
 		piliangluru_applicant_generate: function (counts) {
 			if (counts == undefined) counts = 1;
@@ -674,6 +660,100 @@ var vm_app = new Vue({
 					this.piliangluru_applicant.pop();
 				}
 			}
+		},
+
+		// 切换当前页
+		oncurrentpagechange: function (currentpage) {
+			this.jiabangetsapplicant(currentpage, this.page_last);
+		},
+
+		// 切换页记录数
+		onpagesizechange: function (pagesize) {
+			var _this = this;
+			var cfg_data = {};
+			cfg_data['PERPAGE_RECORDS_FOR_PERMISSION'] = pagesize;
+			var url = "{{ route('admin.config.change') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				cfg_data: cfg_data
+			})
+			.then(function (response) {
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.page_size = pagesize;
+					_this.jiabangetsapplicant(1, _this.page_last);
+				} else {
+					_this.warning(false, 'Warning', 'failed!');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', 'failed!');
+			})
+		},		
+		
+		jiabangetsapplicant: function(page, last_page){
+			var _this = this;
+			
+			if (page > last_page) {
+				page = last_page;
+			} else if (page < 1) {
+				page = 1;
+			}
+			
+
+			var queryfilter_auditor = _this.queryfilter_auditor;
+			var queryfilter_created_at = _this.queryfilter_created_at;
+			var queryfilter_trashed = _this.queryfilter_trashed;
+
+			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
+				queryfilter_created_at = '';
+			}
+
+			queryfilter_trashed = queryfilter_trashed || '';
+
+			_this.loadingbarstart();
+			var url = "{{ route('renshi.jiaban.jiabangetsapplicant') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: _this.page_size,
+					page: page,
+					queryfilter_auditor: queryfilter_auditor,
+					queryfilter_created_at: queryfilter_created_at,
+					queryfilter_trashed: queryfilter_trashed,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				// if (response.data['jwt'] == 'logout') {
+				// 	_this.alert_logout();
+				// 	return false;
+				// }
+
+				if (response.data) {
+					_this.delete_disabled = true;
+					_this.tableselect = [];
+					
+					_this.page_current = response.data.current_page;
+					_this.page_total = response.data.total;
+					_this.page_last = response.data.last_page;
+					_this.tabledata = response.data.data;
+					
+				}
+				
+				_this.loadingbarfinish();
+			})
+			.catch(function (error) {
+				_this.loadingbarerror();
+				_this.error(false, 'Error', error);
+			})
 		},
 
 		// oncreate_applicant
@@ -859,50 +939,21 @@ alert('aa');
 
 		},
 
-		jiaban_restore (row) {
-console.log(row.id);
-return false;
-
-
-		},
-
-
-
-
-
-
-
-
-
-
-
-
-		
-		// 穿梭框目标文本转换（数字转字符串）
-		arr2target: function (arr) {
-			var res = [];
-			arr.map(function( value, index) {
-				// console.log('map遍历:'+index+'--'+value);
-				res.push(value.toString());
-			});
-			return res;
-		},
-		
-		// 切换当前页
-		oncurrentpagechange: function (currentpage) {
-			this.jiabangetsapplicant(currentpage, this.page_last);
-		},
-		// 切换页记录数
-		onpagesizechange: function (pagesize) {
+		onrestore_applicant (row) {
 			var _this = this;
-			var cfg_data = {};
-			cfg_data['PERPAGE_RECORDS_FOR_PERMISSION'] = pagesize;
-			var url = "{{ route('admin.config.change') }}";
+			
+			var id = row.id;
+			
+			if (id == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicantrestore') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				cfg_data: cfg_data
+				id: id
 			})
 			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -910,80 +961,92 @@ return false;
 				}
 				
 				if (response.data) {
-					_this.page_size = pagesize;
-					_this.jiabangetsapplicant(1, _this.page_last);
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '恢复成功！');
 				} else {
-					_this.warning(false, 'Warning', 'failed!');
+					_this.error(false, '失败', '恢复失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', 'failed!');
+				_this.error(false, '错误', '恢复失败！');
 			})
-		},		
-		
-		jiabangetsapplicant: function(page, last_page){
+
+		},
+
+		// ontrash_applicant
+		ontrash_applicant () {
 			var _this = this;
 			
-			if (page > last_page) {
-				page = last_page;
-			} else if (page < 1) {
-				page = 1;
-			}
+			var tableselect = _this.tableselect;
 			
-
-			var queryfilter_auditor = _this.queryfilter_auditor;
-			var queryfilter_created_at = _this.queryfilter_created_at;
-			var queryfilter_trashed = _this.queryfilter_trashed;
-
-			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
-				queryfilter_created_at = '';
-			}
-
-			queryfilter_trashed = queryfilter_trashed || '';
-
-			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabangetsapplicant') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					perPage: _this.page_size,
-					page: page,
-					queryfilter_auditor: queryfilter_auditor,
-					queryfilter_created_at: queryfilter_created_at,
-					queryfilter_trashed: queryfilter_trashed,
-				}
+			if (tableselect[0] == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicanttrash') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: tableselect
 			})
 			.then(function (response) {
 				// console.log(response.data);
 				// return false;
 
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
-
-				if (response.data) {
-					_this.delete_disabled = true;
-					_this.tableselect = [];
-					
-					_this.page_current = response.data.current_page;
-					_this.page_total = response.data.total;
-					_this.page_last = response.data.last_page;
-					_this.tabledata = response.data.data;
-					
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
 				}
 				
-				_this.loadingbarfinish();
+				if (response.data) {
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '删除成功！');
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
 			})
 			.catch(function (error) {
-				_this.loadingbarerror();
-				_this.error(false, 'Error', error);
+				_this.error(false, '错误', '删除失败！');
 			})
 		},
-		
 
-		
-		// 表role选择
+		// ondelete_applicant
+		ondelete_applicant (row) {
+			var _this = this;
+			
+			var id = row.id;
+			
+			if (id == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicantdelete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '彻底删除成功！');
+				} else {
+					_this.error(false, '失败', '彻底删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '彻底删除失败！');
+			})
+		},
+
+		// 显示新建applicant
+		oncreate_applicant_gototab: function () {
+			this.currenttabs = 1;
+		},
+
+		// 表row选择
 		onselectchange: function (selection) {
 			var _this = this;
 
@@ -995,23 +1058,8 @@ return false;
 			_this.delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
-		onselectchangesub: function (selection) {
-			var _this = this;
 
-			_this.tableselect = [];
-			for (var i in selection) {
-				_this.tableselect.push(selection[i].main_id);
-			}
-
-			_this.tableselectsub = [];
-			for (var i in selection) {
-				_this.tableselectsub.push(selection[i].sub_id);
-			}
-			
-			_this.delete_disabled = _this.tableselectsub[0] == undefined ? true : false;
-		},
-
-		// permission编辑前查看
+		// applicant编辑前查看
 		jiaban_edit: function (row) {
 			var _this = this;
 			
@@ -1030,7 +1078,29 @@ return false;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
 			_this.modal_jiaban_edit = true;
-		},		
+		},
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+		
+		
 		
 
 		// jiaban编辑后保存（同意）
@@ -1120,44 +1190,8 @@ return false;
 			}, 2000);
 		},
 		
-		// ondelete_applicant
-		ondelete_applicant: function () {
-			var _this = this;
-			
-			var tableselect = _this.tableselect;
-			
-			if (tableselect[0] == undefined) return false;
-			
-			var url = "{{ route('renshi.jiaban.applicant.applicanttrash') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: tableselect
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '删除成功！');
-				} else {
-					_this.error(false, '失败', '删除失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
-			})
-		},		
 		
-		// 显示新建权限
-		oncreate_applicant_gototab: function () {
-			this.currenttabs = 1;
-		},
+		
 		
 		// 新建权限
 		oncreate_permission_ok: function () {
@@ -1226,52 +1260,7 @@ return false;
 		},		
 		
 		
-		// 选择role查看permission
-		onchange_role: function () {
-			var _this = this;
-			var roleid = _this.role_select;
-			// console.log(roleid);return false;
-			
-			if (roleid == undefined || roleid == '') {
-				_this.targetkeystransfer = [];
-				_this.datatransfer = [];
-				_this.boo_update = true;
-				return false;
-			}
-			_this.boo_update = false;
-			var url = "{{ route('admin.permission.rolehaspermission') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					roleid: roleid
-				}
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					var json = response.data.allpermissions;
-					_this.datatransfer = _this.json2transfer(json);
-					
-					var arr = response.data.rolehaspermission;
-					_this.targetkeystransfer = _this.arr2target(arr);
-
-				} else {
-					_this.targetkeystransfer = [];
-					_this.datatransfer = [];
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-			
-		},
 		
 		// roleupdatepermission
 		roleupdatepermission: function () {

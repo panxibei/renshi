@@ -501,7 +501,7 @@ class JiabanController extends Controller
 
 		// 如果在回收站里，则恢复它
 		// if ($trashed == null) {
-			$result = Renshi_jiaban::whereIn('id', $id)->restore();
+			$result = Renshi_jiaban::where('id', $id)->restore();
 		// }
 
 		return $result;
