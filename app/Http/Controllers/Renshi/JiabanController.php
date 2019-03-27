@@ -451,21 +451,53 @@ class JiabanController extends Controller
 
 		$id = $request->input('id');
 
-		$trashed = Renshi_jiaban::select('deleted_at')
-			->whereIn('id', $id)
-			->first();
-
-		// 如果在回收站里，则恢复它
-		if ($trashed == null) {
-			$result = User::where('id', $userid)->restore();
-		} else {
-			$result = User::where('id', $userid)->delete();
-		}
+		$result = Renshi_jiaban::whereIn('id', $id)->delete();
 
 		return $result;
     }
 
+    /**
+     * 硬删除applicant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function applicantDelete(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
 
+		$id = $request->input('id');
+
+		$result = Renshi_jiaban::whereIn('id', $id)->forceDelete();
+
+		return $result;
+    }
+
+    /**
+     * 恢复软删除applicant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function applicantRestore(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		// $trashed = Renshi_jiaban::select('deleted_at')
+		// 	->whereIn('id', $id)
+		// 	->first();
+
+		// 如果在回收站里，则恢复它
+		// if ($trashed == null) {
+			$result = Renshi_jiaban::where('id', $id)->restore();
+		// }
+
+		return $result;
+    }
 
 
 

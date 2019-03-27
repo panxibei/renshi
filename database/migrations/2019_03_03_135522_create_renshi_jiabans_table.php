@@ -33,7 +33,9 @@ class CreateRenshiJiabansTable extends Migration
             $table->text('reason')->comment('事由');
             $table->text('remark')->nullable()->comment('备注');
             $table->jsonb('auditing')->nullable()->comment('审核信息');
+            $table->boolean('archived')->nullable()->comment('是否归档');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // Schema::create('renshi_jiaban_subs', function (Blueprint $table) {
