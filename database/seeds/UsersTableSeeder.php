@@ -300,7 +300,7 @@ class UsersTableSeeder extends Seeder
             array (
                 // 'id' => 11,
                 'uid' => '071215958',
-                'name' => 'zhangsan',
+                'name' => '071215958',
                 'department' => 'abc',
                 'auditing' => json_encode(
                     array(
@@ -311,9 +311,9 @@ class UsersTableSeeder extends Seeder
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
                 ),
-                'ldapname' => 'gao',
+                'ldapname' => 'zhang san',
                 'email' => 'user8@aota.local',
-                'displayname' => 'gao',
+                'displayname' => 'zhang san',
                 'password' => '$2y$10$ihmDQIgX4hK8CPfH3PtImeeVW8mmAeP42I4Jbx0GcLtXtLiKxLaRi',
                 'login_time' => $logintime,
                 'login_ip' => '255.255.255.255',
@@ -327,7 +327,7 @@ class UsersTableSeeder extends Seeder
             array (
                 // 'id' => 12,
                 'uid' => '071015516',
-                'name' => 'lisi',
+                'name' => '071015516',
                 'department' => 'gggg',
                 'auditing' => json_encode(
                     array(
@@ -338,9 +338,9 @@ class UsersTableSeeder extends Seeder
                         ),
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
                 ),
-                'ldapname' => 'user8',
+                'ldapname' => 'li si',
                 'email' => 'user8@aota.local',
-                'displayname' => 'user8',
+                'displayname' => 'li si',
                 'password' => '$2y$10$ihmDQIgX4hK8CPfH3PtImeeVW8mmAeP42I4Jbx0GcLtXtLiKxLaRi',
                 'login_time' => $logintime,
                 'login_ip' => '255.255.255.255',
