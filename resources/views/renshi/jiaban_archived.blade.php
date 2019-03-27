@@ -36,11 +36,7 @@ Renshi(Jiaban) -
 							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsapplicant(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
 						</i-col>
 						<i-col span="2">
-							@hasanyrole('role_super_admin')
-								<Checkbox v-model="queryfilter_trashed" @on-change="jiabangetsapplicant(page_current, page_last)">已删除</Checkbox>
-							@else
-								&nbsp;
-							@endhasanyrole
+							<Checkbox v-model="queryfilter_archived" @on-change="jiabangetsapplicant(page_current, page_last)">包括归档</Checkbox>
 						</i-col>
 						<i-col span="9">
 							&nbsp;
@@ -447,16 +443,40 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
+				title: '已归档',
+				key: 'archived',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: params.row.archived
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.archived_applicant(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
+				}
+			},
+			{
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				@hasanyrole('role_super_admin')
-					width: 130,
-				@else
-					width: 80,
-				@endhasanyrole
+				width: 80,
 				render: (h, params) => {
-					
 					return h('div', [
 						h('Button', {
 							props: {
@@ -471,26 +491,8 @@ var vm_app = new Vue({
 									vm_app.jiaban_edit(params.row)
 								}
 							}
-						}, '查看'),
-						@hasanyrole('role_super_admin')
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.jiaban_restore(params.row)
-								}
-							}
-						}, '恢复'),
-						@endhasanyrole
-
+						}, '查看')
 					]);
-					
 				},
 				fixed: 'right'
 			}
@@ -536,7 +538,7 @@ var vm_app = new Vue({
 		// 查询过滤器
 		queryfilter_auditor: '',
 		queryfilter_created_at: '',
-		queryfilter_trashed: false,
+		queryfilter_archived: false,
 		
 		// 查询过滤器下拉
 		collapse_query: '',		
@@ -859,13 +861,6 @@ alert('aa');
 
 		},
 
-		jiaban_restore (row) {
-console.log(row.id);
-return false;
-
-
-		},
-
 
 
 
@@ -933,13 +928,13 @@ return false;
 
 			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_created_at = _this.queryfilter_created_at;
-			var queryfilter_trashed = _this.queryfilter_trashed;
+			var queryfilter_archived = _this.queryfilter_archived;
 
 			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
 				queryfilter_created_at = '';
 			}
 
-			queryfilter_trashed = queryfilter_trashed || '';
+			queryfilter_archived = queryfilter_archived || '';
 
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsapplicant') }}";
@@ -950,7 +945,7 @@ return false;
 					page: page,
 					queryfilter_auditor: queryfilter_auditor,
 					queryfilter_created_at: queryfilter_created_at,
-					queryfilter_trashed: queryfilter_trashed,
+					queryfilter_archived: queryfilter_archived,
 				}
 			})
 			.then(function (response) {

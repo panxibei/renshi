@@ -165,7 +165,7 @@ class JiabanController extends Controller
 		
 		$queryfilter_auditor = $request->input('queryfilter_auditor');
 		$queryfilter_created_at = $request->input('queryfilter_created_at');
-		$queryfilter_archived = $request->input('queryfilter_archived');
+		$queryfilter_trashed = $request->input('queryfilter_trashed');
 
 		//对查询参数按照键名排序
 		ksort($queryParams);
@@ -187,8 +187,8 @@ class JiabanController extends Controller
 				->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
 					return $query->whereBetween('created_at', $queryfilter_created_at);
 				})
-				->when($queryfilter_archived, function ($query) use ($queryfilter_archived) {
-					return $query->withTrashed();
+				->when($queryfilter_trashed, function ($query) use ($queryfilter_trashed) {
+					return $query->onlyTrashed();
 				})
 				->where('uid_of_agent', $user['uid'])
 				->limit(1000)
