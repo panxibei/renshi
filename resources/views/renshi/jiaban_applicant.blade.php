@@ -443,6 +443,35 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
+				title: '已归档',
+				key: 'archived',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: ! params.row.archived
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.archived_applicant(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
+				}
+			},
+			{
 				title: '操作',
 				key: 'action',
 				align: 'center',
@@ -823,6 +852,18 @@ var vm_app = new Vue({
 			})
 			
 		},
+
+
+		// 归档
+		archived_applicant () {
+alert('aa');
+
+
+		},
+
+
+
+
 
 
 
