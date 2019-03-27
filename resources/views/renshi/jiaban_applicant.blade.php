@@ -27,11 +27,18 @@ Renshi(Jiaban) -
 				<p slot="content">
 				
 					<i-row :gutter="16">
-						<i-col span="4">
-							name&nbsp;&nbsp;
-							<i-input v-model.lazy="queryfilter_name" @on-change="jiabangetsapplicant(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+						<i-col span="5">
+							当前审核人&nbsp;&nbsp;
+							<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsapplicant(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
-						<i-col span="20">
+						<i-col span="8">
+							创建时间&nbsp;
+							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsapplicant(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
+						</i-col>
+						<i-col span="2">
+							<Checkbox v-model="queryfilter_archived" @on-change="jiabangetsapplicant(page_current, page_last)">包括归档</Checkbox>
+						</i-col>
+						<i-col span="9">
 							&nbsp;
 						</i-col>
 					</i-row>
@@ -500,7 +507,9 @@ var vm_app = new Vue({
 		currenttabs: 0,
 		
 		// 查询过滤器
-		queryfilter_name: '',
+		queryfilter_auditor: '',
+		queryfilter_created_at: '',
+		queryfilter_archived: false,
 		
 		// 查询过滤器下拉
 		collapse_query: '',		
@@ -876,7 +885,15 @@ var vm_app = new Vue({
 			}
 			
 
-			var queryfilter_name = _this.queryfilter_name;
+			var queryfilter_auditor = _this.queryfilter_auditor;
+			var queryfilter_created_at = _this.queryfilter_created_at;
+			var queryfilter_archived = _this.queryfilter_archived;
+
+			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
+				queryfilter_created_at = '';
+			}
+
+			queryfilter_archived = queryfilter_archived || '';
 
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsapplicant') }}";
@@ -885,7 +902,9 @@ var vm_app = new Vue({
 				params: {
 					perPage: _this.page_size,
 					page: page,
-					queryfilter_name: queryfilter_name,
+					queryfilter_auditor: queryfilter_auditor,
+					queryfilter_created_at: queryfilter_created_at,
+					queryfilter_archived: queryfilter_archived,
 				}
 			})
 			.then(function (response) {

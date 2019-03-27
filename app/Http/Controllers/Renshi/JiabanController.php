@@ -163,7 +163,9 @@ class JiabanController extends Controller
 		$perPage = $queryParams['perPage'] ?? 10000;
 		$page = $queryParams['page'] ?? 1;
 		
-		$queryfilter_name = $request->input('queryfilter_name');
+		$queryfilter_auditor = $request->input('queryfilter_auditor');
+		$queryfilter_created_at = $request->input('queryfilter_created_at');
+		$queryfilter_archived = $request->input('queryfilter_archived');
 
 		//对查询参数按照键名排序
 		ksort($queryParams);
@@ -179,15 +181,21 @@ class JiabanController extends Controller
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
 			$result = Renshi_jiaban::select('id', 'uuid', 'uid_of_agent', 'agent', 'department_of_agent', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
-				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
-					return $query->where('auditor', 'like', '%'.$queryfilter_name.'%');
+				->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
+					return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
+				})
+				->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+					return $query->whereBetween('created_at', $queryfilter_created_at);
+				})
+				->when($queryfilter_archived, function ($query) use ($queryfilter_archived) {
+					return $query->withTrashed();
 				})
 				->where('uid_of_agent', $user['uid'])
 				->limit(1000)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
 
-			Cache::put($fullUrl, $result, now()->addSeconds(10));
+			Cache::put($fullUrl, $result, now()->addSeconds(1));
 		}
 		// dd($result);
 		return $result;
@@ -493,7 +501,7 @@ class JiabanController extends Controller
 
 		// 如果在回收站里，则恢复它
 		// if ($trashed == null) {
-			$result = Renshi_jiaban::where('id', $id)->restore();
+			$result = Renshi_jiaban::whereIn('id', $id)->restore();
 		// }
 
 		return $result;
