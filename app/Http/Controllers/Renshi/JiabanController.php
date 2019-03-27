@@ -156,6 +156,7 @@ class JiabanController extends Controller
 		// 用户信息：$user['id']、$user['name'] 等
 		$me = response()->json(auth()->user());
 		$user = json_decode($me->getContent(), true);
+		$uid = $user['uid'];
 
 		$url = request()->url();
 		$queryParams = request()->query();
@@ -190,7 +191,12 @@ class JiabanController extends Controller
 				->when($queryfilter_trashed, function ($query) use ($queryfilter_trashed) {
 					return $query->onlyTrashed();
 				})
-				->where('uid_of_agent', $user['uid'])
+				->when($uid > 10, function ($query) use ($uid) {
+					// if ($uid > 10) {
+						return $query->where('uid_of_agent', $uid);
+					// }
+				})
+				// ->where('uid_of_agent', $user['uid'])
 				->limit(1000)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
