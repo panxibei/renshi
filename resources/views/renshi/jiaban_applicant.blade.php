@@ -451,7 +451,7 @@ var vm_app = new Vue({
 				key: 'action',
 				align: 'center',
 				@hasanyrole('role_super_admin')
-					width: 130,
+					width: 200,
 				@else
 					width: 80,
 				@endhasanyrole
@@ -487,6 +487,20 @@ var vm_app = new Vue({
 								}
 							}
 						}, '恢复'),
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.ondelete_applicant(params.row)
+								}
+							}
+						}, '彻底删除'),
 						@endhasanyrole
 
 					]);
@@ -1012,7 +1026,7 @@ alert('aa');
 			var _this = this;
 			
 			var id = row.id;
-			
+
 			if (id == undefined) return false;
 			
 			var url = "{{ route('renshi.jiaban.applicant.applicantdelete') }}";

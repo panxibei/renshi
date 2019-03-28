@@ -483,7 +483,7 @@ class JiabanController extends Controller
 
 		$id = $request->input('id');
 
-		$result = Renshi_jiaban::whereIn('id', $id)->forceDelete();
+		$result = Renshi_jiaban::where('id', $id)->forceDelete();
 
 		return $result;
     }
