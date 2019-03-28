@@ -33,7 +33,7 @@ class CreateRenshiJiabansTable extends Migration
             $table->text('reason')->comment('事由');
             $table->text('remark')->nullable()->comment('备注');
             $table->jsonb('auditing')->nullable()->comment('审核信息');
-            $table->boolean('archived')->nullable()->comment('是否归档');
+            $table->boolean('archived')->default(false)->comment('是否归档');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -393,7 +393,6 @@ class JiabanController extends Controller
 					return $query->where('uid', 'like', '%'.$queryfilter_name.'%');
 				})
 				->where('id', '>', 10)
-				->where('archived', false)
 				->limit(10)
 				->orderBy('created_at', 'desc')
 				->pluck('uid', 'uid')->toArray();
