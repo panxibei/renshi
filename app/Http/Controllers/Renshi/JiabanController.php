@@ -167,7 +167,7 @@ class JiabanController extends Controller
 		$queryfilter_auditor = $request->input('queryfilter_auditor');
 		$queryfilter_created_at = $request->input('queryfilter_created_at');
 		$queryfilter_trashed = $request->input('queryfilter_trashed');
-
+// dd($queryfilter_created_at);
 		//对查询参数按照键名排序
 		ksort($queryParams);
 

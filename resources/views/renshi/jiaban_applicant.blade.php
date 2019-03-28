@@ -726,6 +726,14 @@ var vm_app = new Vue({
 
 			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
 				queryfilter_created_at = '';
+			} else {
+				const end = new Date();
+				const start = new Date();
+				// 加8小时
+				end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+				start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
+				queryfilter_created_at = [start, end];
 			}
 
 			queryfilter_trashed = queryfilter_trashed || '';
