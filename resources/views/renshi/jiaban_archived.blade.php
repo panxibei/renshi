@@ -15,7 +15,7 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">Jiaban applicant</Divider>
+<Divider orientation="left">Jiaban archived</Divider>
 
 <Tabs type="card" v-model="currenttabs">
 
@@ -359,7 +359,7 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-1',
+		sideractivename: '1-3',
 		sideropennames: ['1'],
 
 		// 创建
@@ -1540,7 +1540,7 @@ alert('aa');
 	mounted: function(){
 		var _this = this;
 		_this.current_nav = '加班管理';
-		_this.current_subnav = '申请';
+		_this.current_subnav = '归档';
 		// 显示所有
 		_this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
 	}

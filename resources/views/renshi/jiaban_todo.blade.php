@@ -18,7 +18,7 @@ Renshi(Jiaban) -
 <Divider orientation="left">Jiaban todo</Divider>
 
 <Tabs type="card" v-model="currenttabs">
-	<Tab-pane label="Permission List">
+	<Tab-pane label="Todo List">
 	
 		<Collapse v-model="collapse_query">
 			<Panel name="1">

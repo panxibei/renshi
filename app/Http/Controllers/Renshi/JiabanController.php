@@ -139,6 +139,28 @@ class JiabanController extends Controller
 		$share = compact('config', 'user');
         return view('renshi.jiaban_todo', $share);
     }
+		
+    /**
+     * 列出archived页面
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function jiabanArchived()
+    {
+		// 获取JSON格式的jwt-auth用户响应
+		$me = response()->json(auth()->user());
+
+		// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+		$user = json_decode($me->getContent(), true);
+		// 用户信息：$user['id']、$user['name'] 等
+
+        // 获取配置值
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+		
+		$share = compact('config', 'user');
+        return view('renshi.jiaban_archived', $share);
+    }
 
     /**
      * jiaban applicant列表
@@ -201,7 +223,7 @@ class JiabanController extends Controller
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
 
-			Cache::put($fullUrl, $result, now()->addSeconds(1));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 		// dd($result);
 		return $result;
@@ -223,6 +245,7 @@ class JiabanController extends Controller
 		// 用户信息：$user['id']、$user['name'] 等
 		$me = response()->json(auth()->user());
 		$user = json_decode($me->getContent(), true);
+		$uid = $user['uid'];
 		
 		$url = request()->url();
 		$queryParams = request()->query();
@@ -249,7 +272,10 @@ class JiabanController extends Controller
 				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('agent', 'like', '%'.$queryfilter_name.'%');
 				})
-				->where('uid_of_auditor', $user['uid'])
+				->when($uid > 10, function ($query) use ($uid) {
+						return $query->where('uid_of_auditor', $uid);
+				})
+				// ->where('uid_of_auditor', $user['uid'])
 				->limit(1000)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
