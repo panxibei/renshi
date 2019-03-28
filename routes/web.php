@@ -28,11 +28,14 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// 显示archived页面
 	Route::get('jiabanArchived', 'JiabanController@jiabanArchived')->name('renshi.jiaban.archived');
 
-	// jiaban列表
+	// jiaban gets列表
 	Route::get('jiabanGetsApplicant', 'JiabanController@jiabanGetsApplicant')->name('renshi.jiaban.jiabangetsapplicant');
 
-	// jiaban列表
+	// jiaban gets列表
 	Route::get('jiabanGetsTodo', 'JiabanController@jiabanGetsTodo')->name('renshi.jiaban.jiabangetstodo');
+
+	// jiaban gets列表
+	Route::get('jiabanGetsArchived', 'JiabanController@jiabanGetsArchived')->name('renshi.jiaban.jiabangetsarchived');
 
 	// applicant页面 查询employee_uid
 	Route::get('uidList', 'JiabanController@uidList')->name('renshi.jiaban.applicant.uidlist');

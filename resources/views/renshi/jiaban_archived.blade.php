@@ -29,14 +29,14 @@ Renshi(Jiaban) -
 					<i-row :gutter="16">
 						<i-col span="5">
 							当前审核人&nbsp;&nbsp;
-							<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsapplicant(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+							<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsarchived(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
 						<i-col span="8">
 							创建时间&nbsp;
-							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsapplicant(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
+							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsarchived(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
 						</i-col>
 						<i-col span="2">
-							<Checkbox v-model="queryfilter_archived" @on-change="jiabangetsapplicant(page_current, page_last)">包括归档</Checkbox>
+							<Checkbox v-model="queryfilter_archived" @on-change="jiabangetsarchived(page_current, page_last)">包括归档</Checkbox>
 						</i-col>
 						<i-col span="9">
 							&nbsp;
@@ -730,7 +730,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.onclear_applicant();
-					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.jiabangetsarchived(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '提交成功！');
 				} else {
 					_this.error(false, '失败', '提交失败！');
@@ -885,7 +885,7 @@ alert('aa');
 		
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
-			this.jiabangetsapplicant(currentpage, this.page_last);
+			this.jiabangetsarchived(currentpage, this.page_last);
 		},
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
@@ -906,7 +906,7 @@ alert('aa');
 				
 				if (response.data) {
 					_this.page_size = pagesize;
-					_this.jiabangetsapplicant(1, _this.page_last);
+					_this.jiabangetsarchived(1, _this.page_last);
 				} else {
 					_this.warning(false, 'Warning', 'failed!');
 				}
@@ -916,7 +916,7 @@ alert('aa');
 			})
 		},		
 		
-		jiabangetsapplicant: function(page, last_page){
+		jiabangetsarchived: function(page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -937,7 +937,7 @@ alert('aa');
 			queryfilter_archived = queryfilter_archived || '';
 
 			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabangetsapplicant') }}";
+			var url = "{{ route('renshi.jiaban.jiabangetsarchived') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -1070,7 +1070,7 @@ alert('aa');
 					return false;
 				}
 				
-				_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+				_this.jiabangetsarchived(_this.page_current, _this.page_last);
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
@@ -1138,7 +1138,7 @@ alert('aa');
 				}
 				
 				if (response.data) {
-					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.jiabangetsarchived(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -1186,7 +1186,7 @@ alert('aa');
 				if (response.data) {
 					_this.success(false, 'Success', 'Permission created successfully!');
 					_this.permission_add_name = '';
-					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.jiabangetsarchived(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, 'Warning', 'Permission created failed!');
 				}
@@ -1542,7 +1542,7 @@ alert('aa');
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '归档';
 		// 显示所有
-		_this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
+		_this.jiabangetsarchived(1, 1); // page: 1, last_page: 1
 	}
 });
 </script>

@@ -168,11 +168,11 @@
 
 							<Submenu name="1">
 									<template slot="title">
-											<Icon type="ios-key"></Icon> 加班管理
+											<Icon type="ios-build"></Icon> 加班管理
 									</template>
-									<Menu-item name="1-1"><Icon type="ios-create-outline"></Icon> 申请</Menu-item>
-									<Menu-item name="1-2"><Icon type="ios-open-outline"></Icon> 处理</Menu-item>
-									<Menu-item name="1-3"><Icon type="ios-folder-outline"></Icon> 归档</Menu-item>
+									<Menu-item name="1-1"><Icon type="ios-paper"></Icon> 申请</Menu-item>
+									<Menu-item name="1-2"><Icon type="ios-create"></Icon> 处理</Menu-item>
+									<Menu-item name="1-3"><Icon type="ios-folder"></Icon> 归档</Menu-item>
 							</Submenu>
 		
 						</i-menu>
