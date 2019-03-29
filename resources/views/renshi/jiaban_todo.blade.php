@@ -22,15 +22,26 @@ Renshi(Jiaban) -
 	
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
-				Permission Query Filter
+				Todo Query Filter
 				<p slot="content">
 				
 					<i-row :gutter="16">
-						<i-col span="4">
-							name&nbsp;&nbsp;
-							<i-input v-model.lazy="queryfilter_name" @on-change="jiabangetstodo(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+						<i-col span="5">
+							代理申请人&nbsp;&nbsp;
+							<i-input v-model.lazy="queryfilter_applicant" @on-change="jiabangetstodo(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
-						<i-col span="20">
+						<i-col span="8">
+							创建时间&nbsp;
+							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetstodo(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
+						</i-col>
+						<i-col span="2">
+							@hasanyrole('role_super_admin')
+								<Checkbox v-model="queryfilter_trashed" @on-change="jiabangetstodo(page_current, page_last)">已删除</Checkbox>
+							@else
+								&nbsp;
+							@endhasanyrole
+						</i-col>
+						<i-col span="9">
 							&nbsp;
 						</i-col>
 					</i-row>
@@ -557,7 +568,9 @@ var vm_app = new Vue({
 		currenttabs: 0,
 		
 		// 查询过滤器
-		queryfilter_name: '',
+		queryfilter_applicant: '',
+		queryfilter_created_at: '',
+		queryfilter_trashed: false,
 		
 		// 查询过滤器下拉
 		collapse_query: '',		
@@ -715,7 +728,23 @@ var vm_app = new Vue({
 			}
 			
 
-			var queryfilter_name = _this.queryfilter_name;
+			var queryfilter_applicant = _this.queryfilter_applicant;
+			var queryfilter_created_at = _this.queryfilter_created_at;
+			var queryfilter_trashed = _this.queryfilter_trashed;
+
+			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
+				queryfilter_created_at = '';
+			} else {
+				const end = new Date();
+				const start = new Date();
+				// 加8小时
+				end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+				start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
+				queryfilter_created_at = [start, end];
+			}
+
+			queryfilter_trashed = queryfilter_trashed || '';
 
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetstodo') }}";
@@ -724,7 +753,9 @@ var vm_app = new Vue({
 				params: {
 					perPage: _this.page_size,
 					page: page,
-					queryfilter_name: queryfilter_name,
+					queryfilter_applicant: queryfilter_applicant,
+					queryfilter_created_at: queryfilter_created_at,
+					queryfilter_trashed: queryfilter_trashed,
 				}
 			})
 			.then(function (response) {

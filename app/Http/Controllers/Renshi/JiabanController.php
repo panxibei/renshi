@@ -254,7 +254,9 @@ class JiabanController extends Controller
 		$perPage = $queryParams['perPage'] ?? 10000;
 		$page = $queryParams['page'] ?? 1;
 		
-		$queryfilter_name = $request->input('queryfilter_name');
+		$queryfilter_applicant = $request->input('queryfilter_applicant');
+		$queryfilter_created_at = $request->input('queryfilter_created_at');
+		$queryfilter_trashed = $request->input('queryfilter_trashed');
 
 		//对查询参数按照键名排序
 		ksort($queryParams);
@@ -270,8 +272,14 @@ class JiabanController extends Controller
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
 			$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'created_at', 'updated_at')
-				->when($queryfilter_name, function ($query) use ($queryfilter_name) {
-					return $query->where('agent', 'like', '%'.$queryfilter_name.'%');
+				->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
+					return $query->where('agent', 'like', '%'.$queryfilter_applicant.'%');
+				})
+				->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+					return $query->whereBetween('created_at', $queryfilter_created_at);
+				})
+				->when($queryfilter_trashed, function ($query) use ($queryfilter_trashed) {
+					return $query->onlyTrashed();
 				})
 				->when($uid > 10, function ($query) use ($uid) {
 						return $query->where('uid_of_auditor', $uid);
