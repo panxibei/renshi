@@ -200,25 +200,29 @@ Renshi(Jiaban) -
 						&nbsp;<Divider orientation="left">审核信息</Divider>
 
 						<i-row :gutter="16">
+						
 							<i-col span="24">
 							
 								<span v-for="(auditing, index) in jiaban_edit_auditing">
 
-									&nbsp;
+								<!-- <span v-if="index!=0"><Divider dashed>@{{index+1}}</Divider></span> -->
+								<!-- <Divider orientation="left" dashed size="small">No.@{{index+1}}</Divider> -->
 									<i-row :gutter="16">
-									<span v-if="index!=0"><br></span>
+									<br>
 										<i-col span="8">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
 										</i-col>
 										<i-col span="16">
-											&nbsp;
+											时间&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>
 									</i-row>
 
-									&nbsp;
+&nbsp;
+									
 									<i-row :gutter="16">
-									<br>
+									
 										<i-col span="24">
 											意见&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.opinion" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>

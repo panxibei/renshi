@@ -88,11 +88,13 @@ class Renshi_jiabansTableSeeder extends Seeder
                 array(
                     array(
                         "auditor" => "admin",
-                        "opinion" => "balabala1...."
+                        "opinion" => "balabala1....",
+                        "created_at" => $nowtime
                     ),
                     array(
                         "auditor" => "admin",
-                        "opinion" => "balabala2...."
+                        "opinion" => "balabala2....",
+                        "created_at" => $nowtime
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
@@ -126,7 +128,8 @@ class Renshi_jiabansTableSeeder extends Seeder
                 array(
                     array(
                         "auditor" => "admin",
-                        "opinion" => "balabala1...."
+                        "opinion" => "balabala1....",
+                        "created_at" => $nowtime
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
@@ -160,7 +163,8 @@ class Renshi_jiabansTableSeeder extends Seeder
                 array(
                     array(
                         "auditor" => "admin",
-                        "opinion" => "balabala1...."
+                        "opinion" => "balabala1....",
+                        "created_at" => $nowtime
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),

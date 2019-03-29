@@ -19,11 +19,11 @@ Renshi(Jiaban) -
 
 <Tabs type="card" v-model="currenttabs">
 
-	<Tab-pane label="Application List">
+	<Tab-pane label="Archives List">
 
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
-				Application Query Filter
+				Archives Query Filter
 				<p slot="content">
 				
 					<i-row :gutter="16">
@@ -56,12 +56,9 @@ Renshi(Jiaban) -
 				<i-button @click="ondelete_applicant()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
-				<i-button type="default" size="small" @click="oncreate_applicant_gototab()"><Icon type="ios-color-wand-outline"></Icon> 添加申请</i-button>
-			</i-col>
-			<i-col span="2">
 				<i-button type="default" size="small" @click="onexport_applicant()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
 			</i-col>
-			<i-col span="2">
+			<i-col span="4">
 			&nbsp;
 			</i-col>
 			<i-col span="15">
@@ -254,91 +251,7 @@ Renshi(Jiaban) -
 	</Tab-pane>
 
 
-	<Tab-pane Icon="ios-color-wand-outline" label="Start To Apply">
 
-	<i-row :gutter="16">
-		<i-col span="6">
-			* 加班理由&nbsp;&nbsp;
-			<i-input v-model.lazy="jiaban_add_reason" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
-		</i-col>
-
-		<i-col span="1">
-		&nbsp;
-		</i-col>
-
-		<i-col span="6">
-			备注&nbsp;&nbsp;
-			<i-input v-model.lazy="jiaban_add_remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
-		</i-col>
-
-		<i-col span="11">
-			&nbsp;&nbsp;
-		</i-col>
-	</i-row>
-
-	&nbsp;&nbsp;<br><br>
-
-	<i-row :gutter="16">
-	<br><br>
-		<i-col span="4">
-			↓ 批量提交&nbsp;&nbsp;
-			<Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
-			&nbsp;项
-		</i-col>
-		<i-col span="20">
-			&nbsp;&nbsp;<i-button @click="oncreate_applicant()" size="default" type="primary">提 交</i-button>
-			&nbsp;&nbsp;<i-button @click="onclear_applicant()" size="default">清 除</i-button>
-		</i-col>
-	</i-row>
-		
-	&nbsp;
-
-	<span v-for="(item, index) in piliangluru_applicant">
-
-	<i-row>
-	<br>
-		<!-- <i-col span="1">
-			&nbsp;(@{{index+1}})
-		</i-col> -->
-		<i-col span="4">
-			* 工号&nbsp;
-			<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
-				<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-			</i-select>
-		</i-col>
-		<i-col span="3">
-			姓名&nbsp;
-			<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
-		</i-col>
-		<i-col span="3">
-			部门&nbsp;
-			<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
-		</i-col>
-		<i-col span="7">
-			* 时间&nbsp;
-			<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
-		</i-col>
-		<i-col span="3">
-			<Tooltip content="单位小时" placement="top">
-			* 时长&nbsp;
-			<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
-			</Tooltip>
-		</i-col>
-		<i-col span="4">
-			* 类别&nbsp;
-			<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
-				<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-			</i-select>
-		</i-col>
-		
-	</i-row>
-	<br>
-	</span>
-
-	&nbsp;
-
-
-	</Tab-pane>
 
 </Tabs>
 
@@ -412,26 +325,26 @@ var vm_app = new Vue({
 				sortable: true,
 				width: 280
 			},
-			// {
-			// 	title: 'agent',
-			// 	key: 'agent',
-			// 	width: 160
-			// },
-			// {
-			// 	title: 'department_of_agent',
-			// 	key: 'department_of_agent',
-			// 	width: 160
-			// },
 			{
-				title: '当前审核人',
-				key: 'auditor',
+				title: '代理申请人',
+				key: 'agent',
 				width: 160
 			},
 			{
-				title: '当前审核人部门',
-				key: 'department_of_auditor',
+				title: '代理申请人部门',
+				key: 'department_of_agent',
 				width: 160
 			},
+			// {
+			// 	title: '当前审核人',
+			// 	key: 'auditor',
+			// 	width: 160
+			// },
+			// {
+			// 	title: '当前审核人部门',
+			// 	key: 'department_of_auditor',
+			// 	width: 160
+			// },
 			{
 				title: 'status',
 				key: 'status',
