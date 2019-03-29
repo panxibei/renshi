@@ -207,8 +207,18 @@ Renshi(Jiaban) -
 
 								<!-- <span v-if="index!=0"><Divider dashed>@{{index+1}}</Divider></span> -->
 								<!-- <Divider orientation="left" dashed size="small">No.@{{index+1}}</Divider> -->
+									
+									
 									<i-row :gutter="16">
-									<br>
+										<i-col span="24">
+										<span v-if="index!=0"><Divider dashed></Divider></span>
+										</i-col>
+									</i-row>
+									
+									
+									
+									<i-row :gutter="16">
+									<!-- <span v-if="index!=0"><br>&nbsp;<Divider dashed></Divider></span> -->
 										<i-col span="8">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
@@ -219,7 +229,6 @@ Renshi(Jiaban) -
 										</i-col>
 									</i-row>
 
-&nbsp;
 									
 									<i-row :gutter="16">
 									
