@@ -200,7 +200,6 @@ Renshi(Jiaban) -
 						&nbsp;<Divider orientation="left">审核信息</Divider>
 
 						<i-row :gutter="16">
-						
 							<i-col span="24">
 							
 								<span v-for="(auditing, index) in jiaban_edit_auditing">
@@ -208,14 +207,11 @@ Renshi(Jiaban) -
 								<!-- <span v-if="index!=0"><Divider dashed>@{{index+1}}</Divider></span> -->
 								<!-- <Divider orientation="left" dashed size="small">No.@{{index+1}}</Divider> -->
 									
-									
 									<i-row :gutter="16">
 										<i-col span="24">
 										<span v-if="index!=0"><Divider dashed></Divider></span>
 										</i-col>
 									</i-row>
-									
-									
 									
 									<i-row :gutter="16">
 									<!-- <span v-if="index!=0"><br>&nbsp;<Divider dashed></Divider></span> -->

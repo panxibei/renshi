@@ -111,7 +111,7 @@ Renshi(Jiaban) -
 							</i-col>
 						</i-row>
 
-						
+						&nbsp;
 						<i-row :gutter="16">
 						<br>
 							<i-col span="8">
@@ -159,7 +159,7 @@ Renshi(Jiaban) -
 
 								<span v-for="(application, index) in jiaban_edit_application">
 
-
+									&nbsp;
 									<i-row :gutter="16">
 									<br>
 										<i-col span="1">
@@ -194,7 +194,7 @@ Renshi(Jiaban) -
 
 
 
-
+						&nbsp;
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
@@ -203,6 +203,7 @@ Renshi(Jiaban) -
 							</i-col>
 						</i-row>
 
+						&nbsp;
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
@@ -211,16 +212,20 @@ Renshi(Jiaban) -
 							</i-col>
 						</i-row>
 
+						&nbsp;<Divider orientation="left">审核信息</Divider>
+
 						<i-row :gutter="16">
-						<br>
 							<i-col span="24">
-								<!-- auditing&nbsp;&nbsp; -->
-								<!-- <i-input v-model.lazy="jiaban_edit_auditing" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input> -->
 							
-								<span v-for="auditing in jiaban_edit_auditing">
+								<span v-for="(auditing, index) in jiaban_edit_auditing">
 
 									<i-row :gutter="16">
-									<br>
+										<i-col span="24">
+										<span v-if="index!=0"><Divider dashed></Divider></span>
+										</i-col>
+									</i-row>
+
+									<i-row :gutter="16">
 										<i-col span="8">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
@@ -232,7 +237,6 @@ Renshi(Jiaban) -
 									</i-row>
 
 									<i-row :gutter="16">
-									<br>
 										<i-col span="24">
 											意见&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.opinion" type="textarea" readonly="true" :autosize="{minRows: 2,maxRows: 5}"></i-input>
@@ -514,7 +518,7 @@ var vm_app = new Vue({
 									vm_app.jiaban_edit(params.row)
 								}
 							}
-						}, 'Edit')
+						}, '处理')
 					]);
 				},
 				fixed: 'right'
