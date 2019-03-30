@@ -113,6 +113,66 @@ Renshi(Jiaban) -
 								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 						</i-row>
+
+
+						&nbsp;<Divider orientation="left">审核流程</Divider>
+
+						<i-row :gutter="16">
+							<i-col span="24">
+
+								<i-row :gutter="16">
+									<i-col span="2">
+										序号
+									</i-col>
+									<i-col span="4">
+										审核人
+									</i-col>
+									<i-col span="4">
+										部门
+									</i-col>
+									<i-col span="5">
+										处理时间
+									</i-col>
+									<i-col span="4">
+										当前节点
+									</i-col>
+									<i-col span="5">
+										操作
+									</i-col>
+								</i-row>
+
+								<span v-for="(auditing, index) in jiaban_edit_auditing">
+
+									&nbsp;
+									<i-row :gutter="16">
+									<br>
+										<i-col span="2">
+											#@{{index+1}}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.auditor }}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.department }}
+										</i-col>
+										<i-col span="5">
+											@{{ auditing.created_at }}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.current ? '<-' : '&nbsp;' }}
+										</i-col>
+										<i-col span="5">
+											操作
+										</i-col>
+									</i-row>
+
+								</span>
+							
+							</i-col>
+						</i-row>
+
+
+
 						
 						&nbsp;<Divider orientation="left">加班信息</Divider>
 
