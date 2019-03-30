@@ -229,10 +229,10 @@ Renshi(Jiaban) -
 										<i-col span="8">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
-											<!-- @{{ auditing.auditor }} -->
 										</i-col>
 										<i-col span="16">
-											&nbsp;
+											时间&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>
 									</i-row>
 
