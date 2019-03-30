@@ -40,6 +40,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// applicant页面 查询employee_uid
 	Route::get('uidList', 'JiabanController@uidList')->name('renshi.jiaban.applicant.uidlist');
 
+	// applicant页面 查询auditing
+	Route::get('auditingList', 'JiabanController@auditingList')->name('renshi.jiaban.applicant.auditinglist');
+
 	// applicant页面 查询employee
 	Route::get('employeeList', 'JiabanController@employeeList')->name('renshi.jiaban.applicant.employeelist');
 

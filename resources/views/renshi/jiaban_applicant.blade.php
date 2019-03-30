@@ -121,8 +121,14 @@ Renshi(Jiaban) -
 							<i-col span="24">
 
 								<i-row :gutter="16">
+									<i-col span="1">
+										&nbsp;
+									</i-col>
 									<i-col span="2">
 										序号
+									</i-col>
+									<i-col span="4">
+										UID
 									</i-col>
 									<i-col span="4">
 										审核人
@@ -130,39 +136,42 @@ Renshi(Jiaban) -
 									<i-col span="4">
 										部门
 									</i-col>
-									<i-col span="5">
-										处理时间
-									</i-col>
-									<i-col span="4">
-										当前节点
-									</i-col>
-									<i-col span="5">
+									<i-col span="9">
 										操作
 									</i-col>
 								</i-row>
 
-								<span v-for="(auditing, index) in jiaban_edit_auditing">
+								<span v-for="(auditing, index) in jiaban_edit_auditing_circulation">
 
 									&nbsp;
 									<i-row :gutter="16">
 									<br>
+										<i-col span="1">
+											<span v-if="auditing.uid==jiaban_edit_auditing_uid">
+												<Tooltip content="流程当前位置" placement="top">
+													<Icon type="ios-cafe"></Icon>
+												</Tooltip>
+											</span>
+											<span v-else>
+												&nbsp;
+											</span>
+										</i-col>
 										<i-col span="2">
 											#@{{index+1}}
 										</i-col>
 										<i-col span="4">
-											@{{ auditing.auditor }}
+											@{{ auditing.uid }}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.name }}
 										</i-col>
 										<i-col span="4">
 											@{{ auditing.department }}
 										</i-col>
-										<i-col span="5">
-											@{{ auditing.created_at }}
-										</i-col>
-										<i-col span="4">
-											@{{ auditing.current ? '<-' : '&nbsp;' }}
-										</i-col>
-										<i-col span="5">
-											操作
+										<i-col span="9">
+											<Tooltip content="转至此用户" placement="top">
+												<Icon type="ios-paper-plane"></Icon>
+											</Tooltip>
 										</i-col>
 									</i-row>
 
@@ -600,6 +609,8 @@ var vm_app = new Vue({
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
 		jiaban_edit_auditing: '',
+		jiaban_edit_auditing_circulation: '',
+		jiaban_edit_auditing_uid: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
 
@@ -1168,7 +1179,39 @@ alert('aa');
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
-			_this.modal_jiaban_edit = true;
+			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
+// console.log(row.uid_of_auditor);
+// return false;
+			var url = "{{ route('renshi.jiaban.applicant.auditinglist') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					id: _this.jiaban_edit_id
+				}
+			})
+			.then(function (response) {
+                // alert(index);
+				console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+                    _this.jiaban_edit_auditing_circulation = response.data;
+                }
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+			setTimeout(() => {
+				_this.modal_jiaban_edit = true;
+			}, 500);
+
+			
 		},
 
 
