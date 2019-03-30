@@ -169,9 +169,12 @@ Renshi(Jiaban) -
 											@{{ auditing.department }}
 										</i-col>
 										<i-col span="9">
-											<Tooltip content="转至此用户" placement="top">
-												<Icon type="ios-paper-plane"></Icon>
-											</Tooltip>
+											<span v-if="auditing.uid!=jiaban_edit_auditing_uid">
+												<Tooltip content="转至此用户" placement="top">
+													<Icon type="ios-paper-plane"></Icon>
+												</Tooltip>
+											</span>
+											<span v-else>&nbsp;</span>
 										</i-col>
 									</i-row>
 
