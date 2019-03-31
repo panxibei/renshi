@@ -117,6 +117,13 @@ Renshi(Jiaban) -
 
 						&nbsp;<Divider orientation="left">审核流程</Divider>
 
+						<Steps :current="jiaban_edit_status" size="small">
+							<Step :title="jiaban_edit_agent" content="申请人"></Step>
+							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
+						</Steps>
+
+						<Divider dashed></Divider>
+
 						<i-row :gutter="16">
 							<i-col span="24">
 
@@ -608,7 +615,7 @@ var vm_app = new Vue({
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
 		jiaban_edit_application: '',
-		jiaban_edit_status: '',
+		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
 		jiaban_edit_auditing: '',
