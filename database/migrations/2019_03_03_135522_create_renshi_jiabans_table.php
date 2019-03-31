@@ -19,9 +19,10 @@ class CreateRenshiJiabansTable extends Migration
             $table->string('uid_of_agent')->comment('代理申请人UID');
             $table->string('agent')->comment('代理申请人');
             $table->string('department_of_agent')->comment('代理申请人部门');
-            $table->string('uid_of_auditor')->comment('申请人UID');
-            $table->string('auditor')->comment('申请人');
-            $table->string('department_of_auditor')->comment('申请人部门');
+            $table->string('id_of_auditor')->comment('审核人ID');
+            $table->string('uid_of_auditor')->comment('审核人UID');
+            $table->string('auditor')->comment('审核人');
+            $table->string('department_of_auditor')->comment('审核人部门');
             $table->jsonb('application')->comment('申请信息');
             // $table->string('applicant')->comment('申请人');
             // $table->string('department_of_applicant')->comment('申请部门');

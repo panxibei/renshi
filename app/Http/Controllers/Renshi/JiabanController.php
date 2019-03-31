@@ -536,6 +536,7 @@ class JiabanController extends Controller
 
 		$b = json_decode($a['auditing'], true);
 
+		$id_of_auditor = $b[0]['id'];
 		$uid_of_auditor = $b[0]['uid'];
 		$auditor = $b[0]['name'];
 		$department_of_auditor = $b[0]['department'];
@@ -574,6 +575,7 @@ class JiabanController extends Controller
 					'uid_of_agent' => $uid_of_agent,
 					'agent' => $agent,
 					'department_of_agent' => $department_of_agent,
+					'id_of_auditor' => $id_of_auditor,
 					'uid_of_auditor' => $uid_of_auditor,
 					'auditor' => $auditor,
 					'department_of_auditor' => $department_of_auditor,

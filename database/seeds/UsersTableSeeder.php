@@ -30,11 +30,13 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
                         ),
                         array(
+                            "id" => "2",
                             "uid" => "0002",
                             "name" => "root",
                             "department" => "root"
@@ -62,6 +64,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -89,6 +92,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -116,6 +120,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -143,6 +148,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -170,6 +176,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -197,6 +204,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -224,6 +232,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -251,6 +260,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -278,6 +288,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -305,6 +316,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"
@@ -332,6 +344,7 @@ class UsersTableSeeder extends Seeder
                 'auditing' => json_encode(
                     array(
                         array(
+                            "id" => "1",
                             "uid" => "0001",
                             "name" => "admin",
                             "department" => "admin"

@@ -449,10 +449,11 @@ class UserController extends Controller
 
 		// if ($id_current == $id_auditing) return 0;
 
-		$user_auditing_tmp = User::select('uid', 'displayname', 'department')
+		$user_auditing_tmp = User::select('id', 'uid', 'displayname', 'department')
 			->where('id', $id_auditing)
 			->first()->toArray();
 		
+		$user_auditing['id'] = $user_auditing_tmp['id'];
 		$user_auditing['uid'] = $user_auditing_tmp['uid'];
 		$user_auditing['name'] = $user_auditing_tmp['displayname'];
 		$user_auditing['department'] = $user_auditing_tmp['department'];

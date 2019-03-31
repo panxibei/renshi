@@ -122,6 +122,7 @@ Renshi(Jiaban) -
 							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
 						</Steps>
 
+						@hasanyrole('role_super_admin')
 						<Divider dashed></Divider>
 
 						<i-row :gutter="16">
@@ -189,6 +190,7 @@ Renshi(Jiaban) -
 							
 							</i-col>
 						</i-row>
+						@endhasanyrole
 
 
 
@@ -281,6 +283,7 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 							<i-col span="24">
 							
+							<span v-if="jiaban_edit_auditing">
 								<span v-for="(auditing, index) in jiaban_edit_auditing">
 
 								<!-- <span v-if="index!=0"><Divider dashed>@{{index+1}}</Divider></span> -->
@@ -314,20 +317,23 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
+							</span>
+							<span v-else>暂无内容</span>
 							
 							</i-col>
 						</i-row>
 
-						&nbsp;
+						<!-- &nbsp;
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
 							status&nbsp;&nbsp;
 							@{{ jiaban_edit_status }}
 							</i-col>
-						</i-row>
+						</i-row> -->
 						
 						&nbsp;
+
 					
 					</div>
 					<div slot="footer">
