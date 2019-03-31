@@ -692,12 +692,12 @@ class JiabanController extends Controller
 			->first();
 
 
-
+		$nowtime = date("Y-m-d H:i:s",time());
 		$auditing_after = [];
 		if ($auditing_before['auditing']) {
-			$auditing_after.array_push($auditing_before['auditing']);
+			$auditing_after = json_decode($auditing_before['auditing'], true);
 		}
-		$auditing_after.push(
+		array_push($auditing_after,
 			array(
 				"auditor" => $auditor,
 				"department" => $department_of_auditor,
@@ -706,7 +706,7 @@ class JiabanController extends Controller
 			)
 		);
 
-		dd($auditing_after);
+		// dd($auditing_after);
 
 		$auditing =  json_encode(
 			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES

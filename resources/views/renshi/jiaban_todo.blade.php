@@ -1055,8 +1055,8 @@ var vm_app = new Vue({
 				opinion: opinion,
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 				
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1065,12 +1065,12 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.jiabangetstodo(_this.page_current, _this.page_last);
-					// _this.success(false, '成功', '提交成功！');
-					setTimeout(() => {
-						this.modal_jiaban_pass_loading = false;
-						this.modal_jiaban_edit = false;
-						this.$Message.success('成功通过！');
-					}, 2000);
+					_this.success(false, '成功', '成功通过！');
+					// setTimeout(() => {
+					// 	this.modal_jiaban_pass_loading = false;
+					// 	this.modal_jiaban_edit = false;
+					// 	this.$Message.success('成功通过！');
+					// }, 2000);
 
 				} else {
 					_this.error(false, '失败', '提交失败！');
@@ -1084,9 +1084,9 @@ var vm_app = new Vue({
 
 
 			// setTimeout(() => {
-			// 	this.modal_jiaban_pass_loading = false;
-			// 	this.modal_jiaban_edit = false;
-			// 	this.$Message.success('成功通过！');
+				this.modal_jiaban_pass_loading = false;
+				this.modal_jiaban_edit = false;
+				// this.$Message.success('成功通过！');
 			// }, 2000);
 		},
 
