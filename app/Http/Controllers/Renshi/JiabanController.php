@@ -203,7 +203,7 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban::select('id', 'uuid', 'uid_of_agent', 'agent', 'department_of_agent', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+			$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 				->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 					return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 				})
@@ -271,7 +271,7 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban::select('id', 'uuid', 'uid_of_agent', 'agent', 'department_of_agent', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+			$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 				->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
 					return $query->where('agent', 'like', '%'.$queryfilter_applicant.'%');
 				})
@@ -338,7 +338,7 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban::select('id', 'uuid', 'uid_of_agent', 'agent', 'department_of_agent', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+			$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 				->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 					return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 				})
@@ -448,7 +448,7 @@ class JiabanController extends Controller
 
 			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
-
+// dd($result['auditing']);
 		return $result['auditing'];
     }
 
@@ -525,6 +525,7 @@ class JiabanController extends Controller
 		// dd($user['department']);
 		// dd($user['displayname']);
 		
+		$id_of_agent = $user['id'];
 		$uid_of_agent = $user['uid'];
 		$agent = $user['displayname'];
 		$department_of_agent = $user['department'];
@@ -572,6 +573,7 @@ class JiabanController extends Controller
 
 			Renshi_jiaban::create([
 					'uuid' => $uuid,
+					'id_of_agent' => $id_of_agent,
 					'uid_of_agent' => $uid_of_agent,
 					'agent' => $agent,
 					'department_of_agent' => $department_of_agent,

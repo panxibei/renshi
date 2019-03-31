@@ -49,6 +49,7 @@ class Renshi_jiabansTableSeeder extends Seeder
         Renshi_jiaban::create([
             // 'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
             'uuid' => $uuid4->toString(),
+            'id_of_agent' => '3',
             'uid_of_agent' => '0003',
             'agent' => 'user1',
             'department_of_agent' => 'user',
@@ -108,6 +109,7 @@ class Renshi_jiabansTableSeeder extends Seeder
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             'uuid' => $uuid4->toString(),
+            'id_of_agent' => '4',
             'uid_of_agent' => '0004',
             'agent' => 'user2',
             'department_of_agent' => 'user',
@@ -146,6 +148,7 @@ class Renshi_jiabansTableSeeder extends Seeder
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             'uuid' => $uuid4->toString(),
+            'id_of_agent' => '5',
             'uid_of_agent' => '0005',
             'agent' => 'user3',
             'department_of_agent' => 'user',

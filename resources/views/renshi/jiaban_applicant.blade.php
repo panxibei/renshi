@@ -155,7 +155,7 @@ Renshi(Jiaban) -
 									<i-row :gutter="16">
 									<br>
 										<i-col span="1">
-											<span v-if="auditing.uid==jiaban_edit_auditing_uid">
+											<span v-if="auditing.id==jiaban_edit_auditing_id">
 												<Tooltip content="流程当前位置" placement="top">
 													<Icon type="ios-cafe"></Icon>
 												</Tooltip>
@@ -177,7 +177,7 @@ Renshi(Jiaban) -
 											@{{ auditing.department }}
 										</i-col>
 										<i-col span="9">
-											<span v-if="auditing.uid!=jiaban_edit_auditing_uid">
+											<span v-if="auditing.id!=jiaban_edit_auditing_id">
 												<Tooltip content="转至此用户" placement="top">
 													<Icon type="ios-paper-plane"></Icon>
 												</Tooltip>
@@ -618,6 +618,7 @@ var vm_app = new Vue({
 		modal_jiaban_deny_loading: false,
 		jiaban_edit_id: '',
 		jiaban_edit_uuid: '',
+		jiaban_edit_id_of_agent: '',
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
 		jiaban_edit_application: '',
@@ -626,6 +627,7 @@ var vm_app = new Vue({
 		jiaban_edit_remark: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_auditing_circulation: '',
+		jiaban_edit_auditing_id: '',
 		jiaban_edit_auditing_uid: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
@@ -1185,6 +1187,7 @@ alert('aa');
 			_this.permission_edit_name = row.name;
 
 			_this.jiaban_edit_uuid = row.uuid;
+			_this.jiaban_edit_id_of_agent = row.id_of_agent;
 			_this.jiaban_edit_agent = row.agent;
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
 			_this.jiaban_edit_application = JSON.parse(row.application);
@@ -1195,14 +1198,16 @@ alert('aa');
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
+			_this.jiaban_edit_auditing_id = row.id_of_auditor;
 			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
-// console.log(row.uid_of_auditor);
+// console.log(row.id_of_auditor);
+console.log(_this.jiaban_edit_id_of_agent);
 // return false;
 			var url = "{{ route('renshi.jiaban.applicant.auditinglist') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
-					id: _this.jiaban_edit_id
+					id: _this.jiaban_edit_id_of_agent
 				}
 			})
 			.then(function (response) {
