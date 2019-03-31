@@ -155,7 +155,7 @@ Renshi(Jiaban) -
 									<i-row :gutter="16">
 									<br>
 										<i-col span="1">
-											<span v-if="auditing.id==jiaban_edit_auditing_id">
+											<span v-if="index==jiaban_edit_status-1">
 												<Tooltip content="流程当前位置" placement="top">
 													<Icon type="ios-cafe"></Icon>
 												</Tooltip>
@@ -177,7 +177,7 @@ Renshi(Jiaban) -
 											@{{ auditing.department }}
 										</i-col>
 										<i-col span="9">
-											<span v-if="auditing.id!=jiaban_edit_auditing_id">
+											<span v-if="index!=jiaban_edit_status-1">
 												<Tooltip content="转至此用户" placement="top">
 													<Icon type="ios-paper-plane"></Icon>
 												</Tooltip>

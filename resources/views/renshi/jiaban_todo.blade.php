@@ -166,7 +166,7 @@ Renshi(Jiaban) -
 									<i-row :gutter="16">
 									<br>
 										<i-col span="1">
-											<span v-if="auditing.id==jiaban_edit_auditing_id">
+											<span v-if="index==jiaban_edit_status-1">
 												<Tooltip content="流程当前位置" placement="top">
 													<Icon type="ios-cafe"></Icon>
 												</Tooltip>
@@ -188,7 +188,7 @@ Renshi(Jiaban) -
 											@{{ auditing.department }}
 										</i-col>
 										<i-col span="9">
-											<span v-if="auditing.id!=jiaban_edit_auditing_id">
+											<span v-if="index!=jiaban_edit_status-1">
 												<Tooltip content="转至此用户" placement="top">
 													<Icon type="ios-paper-plane"></Icon>
 												</Tooltip>
@@ -343,7 +343,12 @@ Renshi(Jiaban) -
 					
 					</div>
 					<div slot="footer">
-						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass">通 过</i-button>
+					<div style="text-align:center;font-size:14px;">
+						意&nbsp;&nbsp;&nbsp;&nbsp;见
+						<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+						</div>
+						<br><br>
+						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">通 过</i-button>
 						<br><br>
 						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
 					</div>	
@@ -650,6 +655,7 @@ var vm_app = new Vue({
 		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
+		jiaban_edit_opinion: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_auditing_circulation: '',
 		jiaban_edit_auditing_uid: '',
@@ -1032,14 +1038,56 @@ var vm_app = new Vue({
 
 
 		// 通过
-		jiaban_edit_pass () {
+		jiaban_edit_pass (jiaban_id) {
+			var _this = this;
+
+			var id = jiaban_id;
+			var opinion = _this.jiaban_edit_opinion;
+			// console.log(id);
+			// return false;
+
 			this.modal_jiaban_pass_loading = true;
 
-			setTimeout(() => {
-				this.modal_jiaban_pass_loading = false;
-				this.modal_jiaban_edit = false;
-				this.$Message.success('成功通过！');
-			}, 2000);
+			var url = "{{ route('renshi.jiaban.todo.pass') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				opinion: opinion,
+			})
+			.then(function (response) {
+				console.log(response.data);
+				return false;
+				
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.jiabangetstodo(_this.page_current, _this.page_last);
+					// _this.success(false, '成功', '提交成功！');
+					setTimeout(() => {
+						this.modal_jiaban_pass_loading = false;
+						this.modal_jiaban_edit = false;
+						this.$Message.success('成功通过！');
+					}, 2000);
+
+				} else {
+					_this.error(false, '失败', '提交失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '提交失败！');
+			})
+
+
+
+
+			// setTimeout(() => {
+			// 	this.modal_jiaban_pass_loading = false;
+			// 	this.modal_jiaban_edit = false;
+			// 	this.$Message.success('成功通过！');
+			// }, 2000);
 		},
 
 		// 拒绝

@@ -92,14 +92,12 @@ class Renshi_jiabansTableSeeder extends Seeder
                         "auditor" => "admin",
                         "department" => "admin",
                         "opinion" => "balabala1....",
-                        "current" => true,
                         "created_at" => $nowtime
                     ),
                     array(
                         "auditor" => "admin",
                         "department" => "admin",
                         "opinion" => "balabala2....",
-                        "current" => false,
                         "created_at" => $nowtime
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -138,7 +136,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                         "auditor" => "admin",
                         "department" => "admin",
                         "opinion" => "balabala1....",
-                        "current" => true,
                         "created_at" => $nowtime
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -177,7 +174,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                         "auditor" => "admin",
                         "department" => "admin",
                         "opinion" => "balabala1....",
-                        "current" => true,
                         "created_at" => $nowtime
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES

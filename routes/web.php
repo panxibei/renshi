@@ -19,23 +19,12 @@
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth']], function() {
 
+	// 111111111111111
 	// 显示applicant页面
 	Route::get('jiabanApplicant', 'JiabanController@jiabanApplicant')->name('renshi.jiaban.applicant');
 
-	// 显示todo页面
-	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');
-
-	// 显示archived页面
-	Route::get('jiabanArchived', 'JiabanController@jiabanArchived')->name('renshi.jiaban.archived');
-
 	// jiaban gets列表
 	Route::get('jiabanGetsApplicant', 'JiabanController@jiabanGetsApplicant')->name('renshi.jiaban.jiabangetsapplicant');
-
-	// jiaban gets列表
-	Route::get('jiabanGetsTodo', 'JiabanController@jiabanGetsTodo')->name('renshi.jiaban.jiabangetstodo');
-
-	// jiaban gets列表
-	Route::get('jiabanGetsArchived', 'JiabanController@jiabanGetsArchived')->name('renshi.jiaban.jiabangetsarchived');
 
 	// applicant页面 查询employee_uid
 	Route::get('uidList', 'JiabanController@uidList')->name('renshi.jiaban.applicant.uidlist');
@@ -57,6 +46,31 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 
 	// applicant页面 硬删除
 	Route::post('applicantDelete', 'JiabanController@applicantDelete')->name('renshi.jiaban.applicant.applicantdelete');
+
+
+	// 22222222222
+	// 显示todo页面
+	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');
+
+	// jiaban gets列表
+	Route::get('jiabanGetsTodo', 'JiabanController@jiabanGetsTodo')->name('renshi.jiaban.jiabangetstodo');
+
+	// todo页面 pass
+	Route::post('todoPass', 'JiabanController@todoPass')->name('renshi.jiaban.todo.pass');
+
+
+	// 3333333333
+	// 显示archived页面
+	Route::get('jiabanArchived', 'JiabanController@jiabanArchived')->name('renshi.jiaban.archived');
+
+	// jiaban gets列表
+	Route::get('jiabanGetsArchived', 'JiabanController@jiabanGetsArchived')->name('renshi.jiaban.jiabangetsarchived');
+
+
+
+
+
+
 
 
 

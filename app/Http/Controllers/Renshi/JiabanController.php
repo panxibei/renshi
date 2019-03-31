@@ -664,6 +664,91 @@ class JiabanController extends Controller
     }
 
 
+		/**
+     * todoPass
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function todoPass(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+		
+		$created_at = date('Y-m-d H:i:s');
+		$id = $request->input('id');
+		$opinion = $request->input('opinion');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		
+		$id_of_auditor = $user['id'];
+		$uid_of_auditor = $user['uid'];
+		$auditor = $user['displayname'];
+		$department_of_auditor = $user['department'];
+
+		$auditing_before = Renshi_jiaban::select('auditing')
+			->where('id', $id)
+			->first();
+
+
+
+		$auditing_after = [];
+		if ($auditing_before['auditing']) {
+			$auditing_after.array_push($auditing_before['auditing']);
+		}
+		$auditing_after.push(
+			array(
+				"auditor" => $auditor,
+				"department" => $department_of_auditor,
+				"opinion" => $opinion,
+				"created_at" => $nowtime
+			)
+		);
+
+		dd($auditing_after);
+
+		$auditing =  json_encode(
+			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+// dd($application);
+// dd($s);
+// dd($user);
+		
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// foreach ($s as $value) {
+				// Bpjg_zhongricheng_main::create($value);
+			// }
+			// Bpjg_zhongricheng_relation::insert($s);
+
+			$result = Renshi_jiaban::where('id', $id)
+				->update([
+					'id_of_auditor' => $id_of_auditor,
+					'uid_of_auditor' => $uid_of_auditor,
+					'auditor' => $auditor,
+					'department_of_auditor' => $department_of_auditor,
+					'auditing' => $auditing,
+					'status' => 2,
+				]);
+
+			// $result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;		
+    }
 
 
 
