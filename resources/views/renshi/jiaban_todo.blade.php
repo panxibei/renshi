@@ -128,6 +128,14 @@ Renshi(Jiaban) -
 
 						&nbsp;<Divider orientation="left">审核流程</Divider>
 
+						<Steps :current="jiaban_edit_status" size="small">
+							<Step :title="jiaban_edit_agent" content="申请人"></Step>
+							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
+						</Steps>
+
+						@hasanyrole('role_super_admin')
+						<Divider dashed></Divider>
+
 						<i-row :gutter="16">
 							<i-col span="24">
 
@@ -158,7 +166,7 @@ Renshi(Jiaban) -
 									<i-row :gutter="16">
 									<br>
 										<i-col span="1">
-											<span v-if="auditing.uid==jiaban_edit_auditing_uid">
+											<span v-if="auditing.id==jiaban_edit_auditing_id">
 												<Tooltip content="流程当前位置" placement="top">
 													<Icon type="ios-cafe"></Icon>
 												</Tooltip>
@@ -180,7 +188,7 @@ Renshi(Jiaban) -
 											@{{ auditing.department }}
 										</i-col>
 										<i-col span="9">
-											<span v-if="auditing.uid!=jiaban_edit_auditing_uid">
+											<span v-if="auditing.id!=jiaban_edit_auditing_id">
 												<Tooltip content="转至此用户" placement="top">
 													<Icon type="ios-paper-plane"></Icon>
 												</Tooltip>
@@ -193,6 +201,7 @@ Renshi(Jiaban) -
 							
 							</i-col>
 						</i-row>
+						@endhasanyrole
 
 
 						&nbsp;<Divider orientation="left">加班信息</Divider>
@@ -287,6 +296,7 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 							<i-col span="24">
 							
+							<span v-if="jiaban_edit_auditing">
 								<span v-for="(auditing, index) in jiaban_edit_auditing">
 
 									<i-row :gutter="16">
@@ -314,18 +324,20 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
-							
+							</span>
+							<span v-else>暂无内容</span>
 							
 							</i-col>
 						</i-row>
 
+						<!-- &nbsp;
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
 							status&nbsp;&nbsp;
 							@{{ jiaban_edit_status }}
 							</i-col>
-						</i-row>
+						</i-row> -->
 						
 						&nbsp;
 					
@@ -618,6 +630,7 @@ var vm_app = new Vue({
 		modal_jiaban_deny_loading: false,
 		jiaban_edit_id: '',
 		jiaban_edit_uuid: '',
+		jiaban_edit_id_of_agent: '',
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
 		jiaban_edit_application: '',
@@ -627,7 +640,7 @@ var vm_app = new Vue({
 		// jiaban_edit_start_date: '',
 		// jiaban_edit_end_date: '',
 		// jiaban_edit_duration: '',
-		jiaban_edit_status: '',
+		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
 		jiaban_edit_auditing: '',
@@ -900,6 +913,7 @@ var vm_app = new Vue({
 			_this.permission_edit_name = row.name;
 
 			_this.jiaban_edit_uuid = row.uuid;
+			_this.jiaban_edit_id_of_agent = row.id_of_agent;
 			_this.jiaban_edit_agent = row.agent;
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
 			_this.jiaban_edit_application = JSON.parse(row.application);
@@ -911,15 +925,14 @@ var vm_app = new Vue({
 			_this.jiaban_edit_updated_at = row.updated_at;
 
 
-
+			_this.jiaban_edit_auditing_id = row.id_of_auditor;
 			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
-// console.log(row.uid_of_auditor);
-// return false;
+
 			var url = "{{ route('renshi.jiaban.applicant.auditinglist') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
-					id: _this.jiaban_edit_id
+					id: _this.jiaban_edit_id_of_agent
 				}
 			})
 			.then(function (response) {

@@ -1201,7 +1201,7 @@ alert('aa');
 			_this.jiaban_edit_auditing_id = row.id_of_auditor;
 			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
 // console.log(row.id_of_auditor);
-console.log(_this.jiaban_edit_id_of_agent);
+// console.log(_this.jiaban_edit_id_of_agent);
 // return false;
 			var url = "{{ route('renshi.jiaban.applicant.auditinglist') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -1212,7 +1212,7 @@ console.log(_this.jiaban_edit_id_of_agent);
 			})
 			.then(function (response) {
                 // alert(index);
-				console.log(response.data);
+				// console.log(response.data);
 				// return false;
 
 				if (response.data['jwt'] == 'logout') {
