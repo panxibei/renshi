@@ -539,9 +539,16 @@ var vm_app = new Vue({
 			// 	},
 			// },
 			{
-				title: 'status',
+				title: '状态',
 				key: 'status',
-				width: 80
+				width: 80,
+				render: (h, params) => {
+					if (params.row.status != 0) {
+						return h('div', {}, '待处理')
+					} else {
+						return h('div', {}, '已归档')
+					}
+				},
 			},
 			// {
 			// 	title: '',

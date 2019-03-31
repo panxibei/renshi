@@ -531,9 +531,16 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
-				title: 'status',
+				title: '状态',
 				key: 'status',
-				width: 80
+				width: 80,
+				render: (h, params) => {
+					if (params.row.status != 0) {
+						return h('div', {}, '待处理')
+					} else {
+						return h('div', {}, '已归档')
+					}
+				},
 			},
 			{
 				title: '创建时间',
@@ -550,7 +557,6 @@ var vm_app = new Vue({
 					width: 80,
 				@endhasanyrole
 				render: (h, params) => {
-					
 					return h('div', [
 						h('Button', {
 							props: {
