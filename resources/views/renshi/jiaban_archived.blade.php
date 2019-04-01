@@ -107,6 +107,85 @@ Renshi(Jiaban) -
 							</i-col>
 						</i-row>
 						
+
+						&nbsp;<Divider orientation="left">审核流程</Divider>
+
+						<Steps :current="jiaban_edit_status" size="small">
+							<Step :title="jiaban_edit_agent" content="申请人"></Step>
+							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
+						</Steps>
+
+						@hasanyrole('role_super_admin')
+						<Divider dashed></Divider>
+
+						<i-row :gutter="16">
+							<i-col span="24">
+
+								<i-row :gutter="16">
+									<i-col span="1">
+										&nbsp;
+									</i-col>
+									<i-col span="2">
+										序号
+									</i-col>
+									<i-col span="4">
+										UID
+									</i-col>
+									<i-col span="4">
+										审核人
+									</i-col>
+									<i-col span="4">
+										部门
+									</i-col>
+									<i-col span="9">
+										操作
+									</i-col>
+								</i-row>
+
+								<span v-for="(auditing, index) in jiaban_edit_auditing_circulation">
+
+									&nbsp;
+									<i-row :gutter="16">
+									<br>
+										<i-col span="1">
+											<span v-if="index==jiaban_edit_status-1">
+												<Tooltip content="流程当前位置" placement="top">
+													<Icon type="ios-cafe"></Icon>
+												</Tooltip>
+											</span>
+											<span v-else>
+												&nbsp;
+											</span>
+										</i-col>
+										<i-col span="2">
+											#@{{index+1}}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.uid }}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.name }}
+										</i-col>
+										<i-col span="4">
+											@{{ auditing.department }}
+										</i-col>
+										<i-col span="9">
+											<span v-if="index!=jiaban_edit_status-1">
+												<Tooltip content="转至此用户" placement="top">
+													<Icon type="ios-paper-plane"></Icon>
+												</Tooltip>
+											</span>
+											<span v-else>&nbsp;</span>
+										</i-col>
+									</i-row>
+
+								</span>
+							
+							</i-col>
+						</i-row>
+						@endhasanyrole
+
+
 						&nbsp;<Divider orientation="left">加班信息</Divider>
 
 						<i-row :gutter="16">
@@ -205,7 +284,8 @@ Renshi(Jiaban) -
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
 										</i-col>
 										<i-col span="16">
-											&nbsp;
+											时间&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>
 									</i-row>
 
@@ -227,8 +307,13 @@ Renshi(Jiaban) -
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
-							status&nbsp;&nbsp;
-							@{{ jiaban_edit_status }}
+								status:&nbsp;&nbsp;
+								<span v-if="jiaban_edit_status==99">
+									已结案 <Icon type="md-checkmark"></Icon>
+								</span>
+								<span v-else>
+									待处理 <Icon type="md-close"></Icon>
+								</span>
 							</i-col>
 						</i-row>
 						
@@ -241,6 +326,7 @@ Renshi(Jiaban) -
 						<br><br>
 						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
 					-->
+						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
 					</div>	
 				</Modal>
 
@@ -335,20 +421,27 @@ var vm_app = new Vue({
 				key: 'department_of_agent',
 				width: 160
 			},
-			// {
-			// 	title: '当前审核人',
-			// 	key: 'auditor',
-			// 	width: 160
-			// },
-			// {
-			// 	title: '当前审核人部门',
-			// 	key: 'department_of_auditor',
-			// 	width: 160
-			// },
 			{
-				title: 'status',
+				title: '当前审核人',
+				key: 'auditor',
+				width: 160
+			},
+			{
+				title: '当前审核人部门',
+				key: 'department_of_auditor',
+				width: 160
+			},
+			{
+				title: '状态',
 				key: 'status',
-				width: 80
+				width: 80,
+				render: (h, params) => {
+					if (params.row.status == 99) {
+						return h('div', {}, '已结案')
+					} else {
+						return h('div', {}, '待处理')
+					}
+				},
 			},
 			{
 				title: '创建时间',
@@ -428,10 +521,13 @@ var vm_app = new Vue({
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
 		jiaban_edit_application: '',
-		jiaban_edit_status: '',
+		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
 		jiaban_edit_auditing: '',
+		jiaban_edit_auditing_circulation: '',
+		jiaban_edit_auditing_id: '',
+		jiaban_edit_auditing_uid: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
 
@@ -927,6 +1023,7 @@ alert('aa');
 			_this.permission_edit_name = row.name;
 
 			_this.jiaban_edit_uuid = row.uuid;
+			_this.jiaban_edit_id_of_agent = row.id_of_agent;
 			_this.jiaban_edit_agent = row.agent;
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
 			_this.jiaban_edit_application = JSON.parse(row.application);
@@ -937,7 +1034,37 @@ alert('aa');
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
-			_this.modal_jiaban_edit = true;
+			_this.jiaban_edit_auditing_id = row.id_of_auditor;
+			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
+
+			var url = "{{ route('renshi.jiaban.applicant.auditinglist') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					id: _this.jiaban_edit_id_of_agent
+				}
+			})
+			.then(function (response) {
+                // alert(index);
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+                    _this.jiaban_edit_auditing_circulation = response.data;
+                }
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+			setTimeout(() => {
+				_this.modal_jiaban_edit = true;
+			}, 500);
 		},		
 		
 
