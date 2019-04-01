@@ -434,13 +434,34 @@ var vm_app = new Vue({
 			{
 				title: '状态',
 				key: 'status',
-				width: 80,
+				width: 90,
 				render: (h, params) => {
 					if (params.row.status == 99) {
-						return h('div', {}, '已结案')
+						// return h('div', {}, '已结案')
+							return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-checkmark-circle-outline',
+									// size: 14,
+									}
+								}
+							),
+							h('span',' 已结案')
+						])
+
 					} else {
-						return h('div', {}, '待处理')
-					}
+						// return h('div', {}, '待处理')
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-help-circle-outline',
+									// size: 14,
+									}
+								}
+							),
+							h('span',' 待处理')
+						])
+					}	
 				},
 			},
 			{

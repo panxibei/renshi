@@ -536,10 +536,20 @@ var vm_app = new Vue({
 			{
 				title: '状态',
 				key: 'status',
-				width: 110,
+				width: 90,
 				render: (h, params) => {
 					if (params.row.archived == 1) {
-						return h('div', {}, '已归档')
+						// return h('div', {}, '已归档')
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-archive-outline',
+									// size: 14,
+									}
+								}
+							),
+							h('span',' 已归档')
+						])
 					} else if (params.row.status == 99) {
 						// return h('div', {}, '已结案')
 						return h('div', {}, [
@@ -552,13 +562,24 @@ var vm_app = new Vue({
 							),
 							h('span',' 已结案')
 						])
-
+					} else if (params.row.status == 0) {
+						// return h('div', {}, '已结案')
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-help-circle-outline',
+									// size: 14,
+									}
+								}
+							),
+							h('span',' 待修改')
+						])
 					} else {
 						// return h('div', {}, '待处理')
 						return h('div', {}, [
 							h('Icon',{
 								props: {
-									type: 'ios-help-circle-outline',
+									type: 'ios-cafe-outline',
 									// size: 14,
 									}
 								}

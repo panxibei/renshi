@@ -172,7 +172,7 @@
 									</template>
 									<Menu-item name="1-1"><Icon type="ios-paper"></Icon> 申请</Menu-item>
 									<Menu-item name="1-2"><Icon type="ios-create"></Icon> 处理</Menu-item>
-									<Menu-item name="1-3"><Icon type="ios-folder"></Icon> 归档</Menu-item>
+									<Menu-item name="1-3"><Icon type="ios-archive"></Icon> 归档</Menu-item>
 							</Submenu>
 		
 						</i-menu>
