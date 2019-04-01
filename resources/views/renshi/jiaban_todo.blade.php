@@ -342,15 +342,20 @@ Renshi(Jiaban) -
 						&nbsp;
 					
 					</div>
-					<div slot="footer">
-					<div style="text-align:center;font-size:14px;">
-						意&nbsp;&nbsp;&nbsp;&nbsp;见
-						<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+
+					
+					<div slot="footer" v-if="jiaban_edit_status!=99">
+						<div style="text-align:center;font-size:14px;">
+							意&nbsp;&nbsp;&nbsp;&nbsp;见
+							<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 						</div>
 						<br><br>
 						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">通 过</i-button>
 						<br><br>
 						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
+					</div>	
+					<div slot="footer" v-else>
+						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
 					</div>	
 				</Modal>
 		
@@ -555,6 +560,7 @@ var vm_app = new Vue({
 					} else {
 						return h('div', {}, '待处理')
 					}
+				},
 			},
 			// {
 			// 	title: '',

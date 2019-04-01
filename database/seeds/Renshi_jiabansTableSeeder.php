@@ -87,22 +87,22 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 1,
             'reason' => 'reason1',
             'remark' => '',
-            'auditing' => json_encode(
-                array(
-                    array(
-                        "auditor" => "admin",
-                        "department" => "admin",
-                        "opinion" => "balabala1....",
-                        "created_at" => $nowtime
-                    ),
+            // 'auditing' => json_encode(
+            //     array(
+            //         array(
+            //             "auditor" => "admin",
+            //             "department" => "admin",
+            //             "opinion" => "balabala1....",
+            //             "created_at" => $nowtime
+            //         ),
                     // array(
                     //     "auditor" => "admin",
                     //     "department" => "admin",
                     //     "opinion" => "balabala2....",
                     //     "created_at" => $nowtime
                     // )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-            ),
+            //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            // ),
         ]);
 
         // 第二条记录
@@ -129,19 +129,19 @@ class Renshi_jiabansTableSeeder extends Seeder
                     ),
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
-            'status' => 0,
+            'status' => 99,
             'reason' => 'reason2',
             'remark' => '',
-            // 'auditing' => json_encode(
-            //     array(
-            //         array(
-            //             "auditor" => "admin",
-            //             "department" => "admin",
-            //             "opinion" => "balabala1....",
-            //             "created_at" => $nowtime
-            //         )
-            //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-            // ),
+            'auditing' => json_encode(
+                array(
+                    array(
+                        "auditor" => "admin",
+                        "department" => "admin",
+                        "opinion" => "balabala1....",
+                        "created_at" => $nowtime
+                    )
+                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            ),
         ]);
 
         // 第三条记录
@@ -181,6 +181,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
+            'archived' => true,
         ]);
 
         // Renshi_jiaban_sub::create([

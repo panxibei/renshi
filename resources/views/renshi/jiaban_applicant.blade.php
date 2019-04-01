@@ -333,16 +333,14 @@ Renshi(Jiaban) -
 						</i-row> -->
 						
 						&nbsp;
+					</div>
 
 					
-					</div>
 					<div slot="footer">
-					<!--
-						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass">通 过</i-button>
-						<br><br>
-						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
-					-->
+						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
+					<br>
 					</div>	
+					
 				</Modal>
 
 		
