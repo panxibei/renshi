@@ -1068,14 +1068,14 @@ var vm_app = new Vue({
 		onarchived_applicant () {
 			var _this = this;
 			
-			var id = _this.jiaban_edit_id;
+			var jiaban_id = _this.jiaban_edit_id;
 			
-			if (id == undefined) return false;
+			if (jiaban_id == undefined) return false;
 			
 			var url = "{{ route('renshi.jiaban.applicant.applicantarchived') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id: id
+				jiaban_id: jiaban_id
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -1087,14 +1087,15 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
+					_this.modal_jiaban_edit = false;
 					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '恢复成功！');
+					_this.success(false, '成功', '归档成功！');
 				} else {
-					_this.error(false, '失败', '恢复失败！');
+					_this.error(false, '失败', '归档失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '恢复失败！');
+				_this.error(false, '错误', '归档失败！');
 			})
 
 

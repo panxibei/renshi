@@ -674,15 +674,35 @@ class JiabanController extends Controller
         //
 		if (! $request->isMethod('post') || ! $request->ajax())  return false;
 
-		$id = $request->input('id');
+		$jiaban_id = $request->input('jiaban_id');
 
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// foreach ($s as $value) {
+				// Bpjg_zhongricheng_main::create($value);
+			// }
+			// Bpjg_zhongricheng_relation::insert($s);
 
-		// 如果在回收站里，则恢复它
-		// if ($trashed == null) {
-			$result = Renshi_jiaban::where('id', $id)->restore();
-		// }
+			$result = Renshi_jiaban::where('id', $jiaban_id)
+				->update([
+					'archived' => true,
+				]);
 
-		return $result;
+			// $result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			// return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;	
     }
 
 
