@@ -675,7 +675,8 @@ class JiabanController extends Controller
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 		
 		$created_at = date('Y-m-d H:i:s');
-		$id = $request->input('id');
+		$jiaban_id = $request->input('jiaban_id');
+		$jiaban_id_of_agent = $request->input('jiaban_id_of_agent');
 		$opinion = $request->input('opinion');
 
 		// 用户信息：$user['id']、$user['name'] 等
@@ -687,10 +688,9 @@ class JiabanController extends Controller
 		$auditor = $user['displayname'];
 		$department_of_auditor = $user['department'];
 
-		$auditing_before = Renshi_jiaban::select('auditing')
-			->where('id', $id)
+		$auditing_before = Renshi_jiaban::select('status', 'auditing')
+			->where('id', $jiaban_id)
 			->first();
-
 
 		$nowtime = date("Y-m-d H:i:s",time());
 		$auditing_after = [];
@@ -712,6 +712,24 @@ class JiabanController extends Controller
 			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
+		// get agent
+		$agent = User::select('auditing')
+		->where('id', $jiaban_id_of_agent)
+		->first();
+
+		// 代理人相应的审核人的数量
+		$agent_count = count(json_decode($agent['auditing'], true));
+
+		// 订单的状态数字
+		$jiaban_status = $auditing_before['status'];
+
+		$jiaban_status++;
+		if ($jiaban_status > $agent_count) $jiaban_status = 99; // 状态99为结案
+
+		// dd($jiaban_status);
+
+
+
 // dd($application);
 // dd($s);
 // dd($user);
@@ -726,14 +744,14 @@ class JiabanController extends Controller
 			// }
 			// Bpjg_zhongricheng_relation::insert($s);
 
-			$result = Renshi_jiaban::where('id', $id)
+			$result = Renshi_jiaban::where('id', $jiaban_id)
 				->update([
 					'id_of_auditor' => $id_of_auditor,
 					'uid_of_auditor' => $uid_of_auditor,
 					'auditor' => $auditor,
 					'department_of_auditor' => $department_of_auditor,
 					'auditing' => $auditing,
-					'status' => 2,
+					'status' => $jiaban_status,
 				]);
 
 			// $result = 1;

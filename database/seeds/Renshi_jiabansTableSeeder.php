@@ -45,6 +45,7 @@ class Renshi_jiabansTableSeeder extends Seeder
         //     }',
         // ]);
 
+        // 第一条记录
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             // 'uuid' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
@@ -94,16 +95,17 @@ class Renshi_jiabansTableSeeder extends Seeder
                         "opinion" => "balabala1....",
                         "created_at" => $nowtime
                     ),
-                    array(
-                        "auditor" => "admin",
-                        "department" => "admin",
-                        "opinion" => "balabala2....",
-                        "created_at" => $nowtime
-                    )
+                    // array(
+                    //     "auditor" => "admin",
+                    //     "department" => "admin",
+                    //     "opinion" => "balabala2....",
+                    //     "created_at" => $nowtime
+                    // )
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
         ]);
 
+        // 第二条记录
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             'uuid' => $uuid4->toString(),
@@ -127,21 +129,22 @@ class Renshi_jiabansTableSeeder extends Seeder
                     ),
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
-            'status' => 1,
+            'status' => 0,
             'reason' => 'reason2',
             'remark' => '',
-            'auditing' => json_encode(
-                array(
-                    array(
-                        "auditor" => "admin",
-                        "department" => "admin",
-                        "opinion" => "balabala1....",
-                        "created_at" => $nowtime
-                    )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-            ),
+            // 'auditing' => json_encode(
+            //     array(
+            //         array(
+            //             "auditor" => "admin",
+            //             "department" => "admin",
+            //             "opinion" => "balabala1....",
+            //             "created_at" => $nowtime
+            //         )
+            //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            // ),
         ]);
 
+        // 第三条记录
         $uuid4 = Uuid::uuid4();
         Renshi_jiaban::create([
             'uuid' => $uuid4->toString(),
@@ -165,7 +168,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     ),
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
-            'status' => 1,
+            'status' => 99,
             'reason' => 'reason3',
             'remark' => '',
             'auditing' => json_encode(

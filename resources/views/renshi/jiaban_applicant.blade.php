@@ -535,10 +535,12 @@ var vm_app = new Vue({
 				key: 'status',
 				width: 80,
 				render: (h, params) => {
-					if (params.row.status != 0) {
-						return h('div', {}, '待处理')
-					} else {
+					if (params.row.archived == 1) {
 						return h('div', {}, '已归档')
+					} else if (params.row.status == 99) {
+						return h('div', {}, '已结案')
+					} else {
+						return h('div', {}, '待处理')
 					}
 				},
 			},

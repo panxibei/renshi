@@ -548,12 +548,13 @@ var vm_app = new Vue({
 				key: 'status',
 				width: 80,
 				render: (h, params) => {
-					if (params.row.status != 0) {
-						return h('div', {}, '待处理')
-					} else {
+					if (params.row.archived == 1) {
 						return h('div', {}, '已归档')
+					} else if (params.row.status == 99) {
+						return h('div', {}, '已结案')
+					} else {
+						return h('div', {}, '待处理')
 					}
-				},
 			},
 			// {
 			// 	title: '',
@@ -1041,9 +1042,10 @@ var vm_app = new Vue({
 		jiaban_edit_pass (jiaban_id) {
 			var _this = this;
 
-			var id = jiaban_id;
+			var jiaban_id = jiaban_id;
+			var jiaban_id_of_agent = _this.jiaban_edit_id_of_agent;
 			var opinion = _this.jiaban_edit_opinion;
-			// console.log(id);
+			// console.log(jiaban_id_of_agent);
 			// return false;
 
 			this.modal_jiaban_pass_loading = true;
@@ -1051,7 +1053,8 @@ var vm_app = new Vue({
 			var url = "{{ route('renshi.jiaban.todo.pass') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id: id,
+				jiaban_id: jiaban_id,
+				jiaban_id_of_agent: jiaban_id_of_agent,
 				opinion: opinion,
 			})
 			.then(function (response) {
@@ -1100,6 +1103,18 @@ var vm_app = new Vue({
 				this.$Message.success('成功拒绝！');
 			}, 2000);
 		},
+
+
+
+
+
+
+
+
+
+
+
+
 		
 		// ondelete_permission
 		ondelete_permission: function () {
