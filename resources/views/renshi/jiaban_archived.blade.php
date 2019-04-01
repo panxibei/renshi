@@ -36,7 +36,7 @@ Renshi(Jiaban) -
 							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsarchived(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
 						</i-col>
 						<i-col span="2">
-							<Checkbox v-model="queryfilter_archived" @on-change="jiabangetsarchived(page_current, page_last)">包括归档</Checkbox>
+							<Checkbox v-model="queryfilter_trashed" @on-change="jiabangetsarchived(page_current, page_last)">已删除</Checkbox>
 						</i-col>
 						<i-col span="9">
 							&nbsp;
@@ -568,7 +568,7 @@ var vm_app = new Vue({
 		// 查询过滤器
 		queryfilter_auditor: '',
 		queryfilter_created_at: '',
-		queryfilter_archived: false,
+		queryfilter_trashed: false,
 		
 		// 查询过滤器下拉
 		collapse_query: '',		
@@ -958,13 +958,21 @@ alert('aa');
 
 			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_created_at = _this.queryfilter_created_at;
-			var queryfilter_archived = _this.queryfilter_archived;
+			var queryfilter_trashed = _this.queryfilter_trashed;
 
 			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
 				queryfilter_created_at = '';
+			} else {
+				const end = new Date();
+				const start = new Date();
+				// 加8小时
+				end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+				start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
+				queryfilter_created_at = [start, end];
 			}
 
-			queryfilter_archived = queryfilter_archived || '';
+			queryfilter_trashed = queryfilter_trashed || '';
 
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsarchived') }}";
@@ -975,7 +983,7 @@ alert('aa');
 					page: page,
 					queryfilter_auditor: queryfilter_auditor,
 					queryfilter_created_at: queryfilter_created_at,
-					queryfilter_archived: queryfilter_archived,
+					queryfilter_trashed: queryfilter_trashed,
 				}
 			})
 			.then(function (response) {
