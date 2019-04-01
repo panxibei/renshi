@@ -661,6 +661,28 @@ class JiabanController extends Controller
 		// }
 
 		return $result;
+		}
+		
+    /**
+     * applicantArchived
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function applicantArchived(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+
+		// 如果在回收站里，则恢复它
+		// if ($trashed == null) {
+			$result = Renshi_jiaban::where('id', $id)->restore();
+		// }
+
+		return $result;
     }
 
 
@@ -683,8 +705,8 @@ class JiabanController extends Controller
 		$me = response()->json(auth()->user());
 		$user = json_decode($me->getContent(), true);
 		
-		$id_of_auditor = $user['id'];
-		$uid_of_auditor = $user['uid'];
+		// $id_of_auditor = $user['id'];
+		// $uid_of_auditor = $user['uid'];
 		$auditor = $user['displayname'];
 		$department_of_auditor = $user['department'];
 
@@ -718,17 +740,32 @@ class JiabanController extends Controller
 		->first();
 
 		// 代理人相应的审核人的数量
-		$agent_count = count(json_decode($agent['auditing'], true));
+		$agent_auditing = json_decode($agent['auditing'], true);
+		$agent_count = count($agent_auditing);
 
 		// 订单的状态数字
 		$jiaban_status = $auditing_before['status'];
 
-		$jiaban_status++;
-		if ($jiaban_status > $agent_count) $jiaban_status = 99; // 状态99为结案
+		if ($jiaban_status >= $agent_count) {
+			$id_of_auditor = $user['id'];
+			$uid_of_auditor = $user['uid'];
+			$auditor = $user['displayname'];
+			$department_of_auditor = $user['department'];
 
-		// dd($jiaban_status);
+			// 状态99为结案
+			$jiaban_status = 99;
+		} else {
+			//获取下一个auditor
+			$id_of_auditor = $agent_auditing[$jiaban_status]['id'];
+			$uid_of_auditor = $agent_auditing[$jiaban_status]['uid'];
+			$auditor = $agent_auditing[$jiaban_status]['name'];
+			$department_of_auditor = $agent_auditing[$jiaban_status]['department'];
+
+			$jiaban_status++;
+		}
 
 
+		// dd($agent_auditing);
 
 // dd($application);
 // dd($s);
@@ -759,7 +796,7 @@ class JiabanController extends Controller
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
 			DB::rollBack();
-			return 'Message: ' .$e->getMessage();
+			// return 'Message: ' .$e->getMessage();
 			return 0;
 		}
 

@@ -337,9 +337,14 @@ Renshi(Jiaban) -
 
 					
 					<div slot="footer">
-						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
-					<br>
-					</div>	
+						<div slot="footer" v-if="jiaban_edit_status==99">
+							<i-button type="primary" size="large" long :loading="modal_jiaban_archived_loading" @click="onarchived_applicant">归 档</i-button>
+							<br><br>
+						</div>
+						<i-button type="text" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
+					</div>
+					
+
 					
 				</Modal>
 
@@ -622,6 +627,7 @@ var vm_app = new Vue({
 		modal_jiaban_edit: false,
 		modal_jiaban_pass_loading: false,
 		modal_jiaban_deny_loading: false,
+		modal_jiaban_archived_loading: false,
 		jiaban_edit_id: '',
 		jiaban_edit_uuid: '',
 		jiaban_edit_id_of_agent: '',
@@ -1059,8 +1065,37 @@ var vm_app = new Vue({
 
 
 		// 归档
-		archived_applicant () {
-alert('aa');
+		onarchived_applicant () {
+			var _this = this;
+			
+			var id = _this.jiaban_edit_id;
+			
+			if (id == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicantarchived') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '恢复成功！');
+				} else {
+					_this.error(false, '失败', '恢复失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '恢复失败！');
+			})
 
 
 		},
