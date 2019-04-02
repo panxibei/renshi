@@ -17,8 +17,20 @@ Renshi(Jiaban) -
 @parent
 
 something here.
+<br>
+LOGO HERE
+<br><br>
 
-<cube-button @click="showToastTime">Button</cube-button>
+
+<cube-form
+  :model="model_add"
+  :schema="schema_add"
+  :immediate-validate="false"
+  :options="options_add"
+  @validate="validateHandler"
+  @submit="submitHandler"
+  @reset="resetHandler"></cube-form>
+
 
 something others here.
 
@@ -36,6 +48,169 @@ something others here.
 var vm_app = new Vue({
 	el: '#app',
 	data: {
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        model_add: {
+            jiaban_add_reason: '',
+            jiaban_add_remark: '',
+            jiaban_add_uid: '',
+			jiaban_add_applicant: '',
+			jiaban_add_department: '',
+			jiaban_add_datetimerange: [],
+			jiaban_add_category: '',
+			jiaban_add_duration: '',
+
+
+
+            checkboxValue: false,
+            checkboxGroupValue: [],
+            inputValue: '',
+            radioValue: '',
+            rateValue: 0,
+            selectValue: 2018,
+            switchValue: true,
+            textareaValue: '',
+            uploadValue: [],
+        },
+        schema_add: {
+            groups: [
+            {
+                legend: '基础',
+                fields: [
+                    {
+                        type: 'textarea',
+                        modelKey: 'jiaban_add_reason',
+                        label: '加班理由',
+                        rules: {
+                            required: true
+                        },
+                        props: {
+                            placeholder: "加班理由",
+                            maxlength: 100,
+                            // autofocus: true
+                        },
+                        // debounce validate
+                        // if set to true, the default debounce time will be 200(ms)
+                        debounce: 100
+                    },
+                    {
+                        type: 'textarea',
+                        modelKey: 'jiaban_add_remark',
+                        label: '备注',
+                        rules: {
+                            required: false
+                        },
+                        props: {
+                            placeholder: "备注",
+                            maxlength: 100,
+                            // autofocus: true
+                        },
+                        debounce: 100
+                    },
+                    {
+                        type: 'select',
+                        modelKey: 'jiaban_add_uid',
+                        label: '工号',
+                        props: {
+                            placeholder: "请选择工号",
+                            options: [2015, 2016, 2017, 2018, 2019, 2020]
+                        },
+                        rules: {
+                            required: true
+                        }
+                    },
+                    {
+                        type: 'input',
+                        modelKey: 'jiaban_add_applicant',
+                        label: '申请人姓名',
+                        props: {
+                            placeholder: '',
+                            readonly: true
+                        },
+                        rules: {
+                            required: false
+                        },
+                        // validating when blur
+                        trigger: 'blur'
+                    },
+                    {
+                        type: 'input',
+                        modelKey: 'jiaban_add_department',
+                        label: '申请人部门',
+                        props: {
+                            placeholder: '',
+                            readonly: true
+                        },
+                        rules: {
+                            required: false
+                        },
+                        // validating when blur
+                        trigger: 'blur'
+                    },
+                    {
+                        type: 'button',
+                        modelKey: 'jiaban_add_datetimerange',
+                        label: '时间',
+                        props: {
+                            placeholder: '',
+                            // readonly: true
+                        },
+                        rules: {
+                            required: true
+                        },
+                        // validating when blur
+                        trigger: 'click'
+                    },
+
+
+                    
+
+                ]
+            },
+            {
+                fields: [
+                {
+                    type: 'submit',
+                    label: 'Submit'
+                },
+                {
+                    type: 'reset',
+                    label: 'Reset'
+                }
+                ]
+            }
+            ]
+        },
+        options_add: {
+            scrollToInvalidField: true,
+            layout: 'standard' // classic fresh
+        },
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
 
         column1: [{ text: '剧毒', value: '剧毒'}, { text: '蚂蚁', value: '蚂蚁' },
             { text: '幽鬼', value: '幽鬼' }],
@@ -78,6 +253,29 @@ var vm_app = new Vue({
             {
                 legend: '基础',
                 fields: [
+                    {
+                        type: 'textarea',
+                        modelKey: 'textareaValue',
+                        label: '加班理由',
+                        rules: {
+                        required: true
+                        },
+                        // debounce validate
+                        // if set to true, the default debounce time will be 200(ms)
+                        debounce: 100
+                    },
+                    {
+                        type: 'textarea',
+                        modelKey: 'textareaValue',
+                        label: '备注',
+                        rules: {
+                        required: true
+                        },
+                        // debounce validate
+                        // if set to true, the default debounce time will be 200(ms)
+                        debounce: 100
+                    },
+                    
                 {
                     type: 'checkbox',
                     modelKey: 'checkboxValue',
@@ -238,6 +436,40 @@ var vm_app = new Vue({
 
 	},
 	methods: {
+
+        showDatePicker() {
+            var _this = this;
+            _this.$refs.datePicker.show()
+        },
+        dateSelectHandler(selectedVal) {
+            this.model.dateValue = new Date(selectedVal[0], selectedVal[1] - 1, selectedVal[2]).toDateString()
+        },
+
+        // showDateTimePicker
+        showDateTimePicker() {
+            if (!this.dateTimePicker) {
+                this.dateTimePicker = this.$createDatePicker({
+                title: 'Date Time Picker',
+                min: new Date(2008, 7, 8, 8, 0, 0),
+                max: new Date(2020, 9, 20, 20, 59, 59),
+                value: new Date(),
+                columnCount: 6,
+                onSelect: this.selectHandle,
+                onCancel: this.cancelHandle
+                })
+            }
+
+            this.dateTimePicker.show()
+        },
+
+
+
+
+
+
+
+
+
         handleClick() {
 			console.log('aaaaaaa');
 			this.$dialog.alert({
