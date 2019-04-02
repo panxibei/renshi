@@ -672,6 +672,11 @@ class JiabanController extends Controller
 
 		$jiaban_id = $request->input('jiaban_id');
 
+		$flag = Renshi_jiaban::select('archived')
+			->where('id', $jiaban_id)
+			->first();
+
+
 		// 写入数据库
 		try	{
 			DB::beginTransaction();
@@ -684,7 +689,7 @@ class JiabanController extends Controller
 
 			$result = Renshi_jiaban::where('id', $jiaban_id)
 				->update([
-					'archived' => true,
+					'archived' => ! $flag['archived'],
 				]);
 
 			// $result = 1;

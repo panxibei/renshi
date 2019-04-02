@@ -470,6 +470,7 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
+				@hasanyrole('role_super_admin')
 				title: '已归档',
 				key: 'archived',
 				width: 80,
@@ -490,13 +491,14 @@ var vm_app = new Vue({
 							on: {
 								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
 									//参数value是回调值，并没有使用到
-									vm_app.archived_applicant(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
+									vm_app.onarchived_applicant(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
 								}
 							}
 						}, 'Edit')
 						
 					]);
 				}
+				@endhasanyrole
 			},
 			{
 				title: '操作',
@@ -885,9 +887,39 @@ var vm_app = new Vue({
 
 
 		// 归档
-		archived_applicant () {
-alert('aa');
+		onarchived_applicant (jiaban_id) {
+			var _this = this;
+			
+			// var jiaban_id = _this.jiaban_edit_id;
+			// console.log(jiaban_id);
+			
+			if (jiaban_id == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicantarchived') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				jiaban_id: jiaban_id
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.modal_jiaban_edit = false;
+					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '归档状态改变成功！');
+				} else {
+					_this.error(false, '失败', '归档状态改变失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '归档状态改变失败！');
+			})
 
 		},
 

@@ -365,54 +365,7 @@ Renshi(Jiaban) -
 	
 	</Tab-pane>
 
-	<Tab-pane label="Advance">
 
-		<i-row :gutter="16">
-			<i-col span="9">
-				<i-select v-model.lazy="role_select" filterable remote :remote-method="remoteMethod_role" :loading="role_loading" @on-change="onchange_role" clearable placeholder="输入角色名称后选择" style="width: 280px;">
-					<i-option v-for="item in role_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-				&nbsp;&nbsp;
-				<i-button type="primary" :disabled="boo_update" @click="roleupdatepermission">Update</i-button>
-			</i-col>
-			<i-col span="6">
-				&nbsp;
-			</i-col>
-			<i-col span="6">
-				<i-select v-model.lazy="permission2role_select" filterable remote :remote-method="remoteMethod_permission2role" :loading="permission2role_loading" @on-change="onchange_permission2role" clearable placeholder="输入权限名称查看哪些角色正在使用">
-					<i-option v-for="item in permission2role_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-			</i-col>
-			<i-col span="3">
-				&nbsp;
-			</i-col>
-		</i-row>
-		
-		<br><br><br>
-			
-		<i-row :gutter="16">
-			<i-col span="14">
-				<Transfer
-					:titles="titlestransfer"
-					:data="datatransfer"
-					filterable
-					:target-keys="targetkeystransfer"
-					:render-format="rendertransfer"
-					@on-change="onChangeTransfer">
-				</Transfer>
-			</i-col>
-			<i-col span="1">
-			&nbsp;
-			</i-col>
-			<i-col span="6">
-				<i-input v-model.lazy="permission2role_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
-			</i-col>
-			<i-col span="3">
-			&nbsp;
-			</i-col>
-		</i-row>
-
-	</Tab-pane>
 
 </Tabs>
 @endsection

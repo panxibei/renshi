@@ -442,6 +442,11 @@ Renshi(Jiaban) -
 	&nbsp;
 
 
+	<Modal	v-model="modal_archived" title="归档 - 加班单" ok-text="开始归档" @on-ok="archived_ok" @on-cancel="archived_cancel" width="400">
+		<p>确定要归档吗？ 归档后无法再编辑或处理！</p>
+	</Modal>	
+
+
 	</Tab-pane>
 
 </Tabs>
@@ -632,7 +637,7 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.onarchived_applicant
+									vm_app.jiaban_archived(params.row)
 								}
 							}
 						}, '归档'),
@@ -702,6 +707,9 @@ var vm_app = new Vue({
 		jiaban_edit_auditing_uid: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
+
+		// 归档窗口
+		modal_archived: false,
 
 
 
@@ -1336,7 +1344,25 @@ var vm_app = new Vue({
 			
 		},
 
+		// 显示归档窗口
+		jiaban_archived (row) {
+			this.jiaban_edit_id = row.id;
+			this.modal_archived = true;
+		},
 
+		// 归档确定
+		archived_ok () {
+			// alert('abc');
+			// return false;
+			this.onarchived_applicant();
+		},
+
+		// 分析取消
+		archived_cancel () {
+			// this.modal_fenxi = false;
+			// this.analytics_disabled = false;
+			// this.analytics_loading = false;
+		},
 
 
 
