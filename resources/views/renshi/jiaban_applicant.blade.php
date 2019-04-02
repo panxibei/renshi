@@ -57,7 +57,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ontrash_applicant()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_applicant()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="oncreate_applicant_gototab()"><Icon type="ios-color-wand-outline"></Icon> 添加申请</i-button>
@@ -602,9 +602,9 @@ var vm_app = new Vue({
 				key: 'action',
 				align: 'center',
 				@hasanyrole('role_super_admin')
-					width: 200,
+					width: 250,
 				@else
-					width: 80,
+					width: 130,
 				@endhasanyrole
 				render: (h, params) => {
 					return h('div', [
@@ -622,6 +622,20 @@ var vm_app = new Vue({
 								}
 							}
 						}, '查看'),
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.onarchived_applicant
+								}
+							}
+						}, '归档'),
 						@hasanyrole('role_super_admin')
 						h('Button', {
 							props: {

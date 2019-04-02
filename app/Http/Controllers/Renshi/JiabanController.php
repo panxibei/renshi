@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Renshi\Renshi_jiaban;
-// use App\Models\Renshi\Renshi_employee;
 use DB;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
@@ -396,7 +395,6 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			// $result = Renshi_employee::when($queryfilter_name, function ($query) use ($queryfilter_name) {
 			$result = User::when($queryfilter_name, function ($query) use ($queryfilter_name) {
 					return $query->where('uid', 'like', '%'.$queryfilter_name.'%');
 				})
@@ -441,7 +439,6 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			// $result = Renshi_employee::select('applicant', 'department')
 			$result = User::select('auditing')
 				->where('id', $id)
 				->first();
@@ -482,7 +479,6 @@ class JiabanController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			// $result = Renshi_employee::select('applicant', 'department')
 			$result = User::select('displayname', 'department')
 				->when($employeeid, function ($query) use ($employeeid) {
 					return $query->where('uid', $employeeid);
@@ -767,10 +763,14 @@ class JiabanController extends Controller
 		$jiaban_status = $auditing_before['status'];
 
 		if ($jiaban_status >= $agent_count) {
-			$id_of_auditor = $user['id'];
-			$uid_of_auditor = $user['uid'];
-			$auditor = $user['displayname'];
-			$department_of_auditor = $user['department'];
+			// $id_of_auditor = $user['id'];
+			// $uid_of_auditor = $user['uid'];
+			// $auditor = $user['displayname'];
+			// $department_of_auditor = $user['department'];
+			$id_of_auditor = '无';
+			$uid_of_auditor = '无';
+			$auditor = '无';
+			$department_of_auditor = '无';
 
 			// 状态99为结案
 			$jiaban_status = 99;

@@ -53,7 +53,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ondelete_applicant()" :disabled="delete_disabled" type="warning" size="small">Delete</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ondelete_applicant()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="onexport_applicant()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
