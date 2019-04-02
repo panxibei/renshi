@@ -340,8 +340,11 @@ Renshi(Jiaban) -
 						<div slot="footer" v-if="jiaban_edit_status==99">
 							<i-button type="primary" size="large" long :loading="modal_jiaban_archived_loading" @click="onarchived_applicant">归 档</i-button>
 							<br><br>
+							<i-button type="text" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
 						</div>
-						<i-button type="text" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
+						<div v-else>
+							<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
+						</div>
 					</div>
 					
 
