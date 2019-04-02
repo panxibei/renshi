@@ -108,9 +108,19 @@ Renshi(Jiaban) -
 								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px"></i-input>
 							</i-col>
 
-							<i-col span="16">
+							<i-col span="9">
 								代理申请人部门&nbsp;&nbsp;
 								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px"></i-input>
+							</i-col>
+
+							<i-col span="7">
+							状态：
+								<span v-if="jiaban_edit_status==99">
+									已结案 <Icon type="md-checkmark"></Icon>
+								</span>
+								<span v-else>
+									未完成 <Icon type="md-close"></Icon>
+								</span>
 							</i-col>
 						</i-row>
 

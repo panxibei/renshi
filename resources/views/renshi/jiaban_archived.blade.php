@@ -314,7 +314,7 @@ Renshi(Jiaban) -
 							</i-col>
 						</i-row>
 
-						&nbsp;
+						<!-- &nbsp;
 						<i-row :gutter="16">
 						<br>
 							<i-col span="24">
@@ -326,7 +326,7 @@ Renshi(Jiaban) -
 									未完成 <Icon type="md-close"></Icon>
 								</span>
 							</i-col>
-						</i-row>
+						</i-row> -->
 						
 						&nbsp;
 					
