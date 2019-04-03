@@ -24,18 +24,24 @@ LOGO HERE
 <cube-form :model="model" @validate="validateHandler" @submit="submitHandler">
   <cube-form-group>
     <cube-form-item :field="fields[0]">
-        <cube-select v-model="jiaban_add_uid" :options="options_jiaban_add_uid" placeholder="请选择工号"></cube-select>
+        <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
     </cube-form-item>
-    <cube-form-item :field="fields[1]"></cube-form-item>
-    <cube-form-item :field="fields[2]"></cube-form-item>
-    <cube-form-item :field="fields[3]"></cube-form-item>
+    <cube-form-item :field="fields[1]">
+        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名"></cube-input>
+    </cube-form-item>
+    <cube-form-item :field="fields[2]">
+        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门"></cube-input>
+    </cube-form-item>
+    <cube-form-item :field="fields[3]">
+        <cube-input v-model.lazy="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="选择开始时间"></cube-input>
+        <!-- <cube-button @click="showDateTimePicker">@{{model.dateValue || 'Please select date'}}</cube-button> -->
+        <!-- <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker> -->
+    </cube-form-item>
     <cube-form-item :field="fields[4]">
-      <cube-input v-model="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="输入开始时间"></cube-input>
-      <!-- <cube-button @click="showDateTimePicker">@{{model.dateValue || 'Please select date'}}</cube-button> -->
-      <!-- <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker> -->
+        <cube-input v-model.lazy="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="选择结束时间"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[5]">
-      <cube-input v-model="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="输入结束时间"></cube-input>
+        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" placeholder="选择时长"></cube-select>
     </cube-form-item>
   </cube-form-group>
   <cube-form-group>
@@ -76,13 +82,12 @@ var vm_app = new Vue({
 	data: {
 
         jiaban_add_uid: '',
-        options_jiaban_add_uid: [2015, 2016, 2017, 2018, 2019, 2020],
-
         jiaban_add_applicant: '',
         jiaban_add_department: '',
         jiaban_add_startdate: '',
         jiaban_add_enddate: '',
         jiaban_add_duration: '',
+        jiaban_add_duration_options: [],
         jiaban_add_category: '',
         jiaban_add_reason: '',
         jiaban_add_remark: '',
@@ -97,25 +102,17 @@ var vm_app = new Vue({
         },
         fields: [
             { //0
-                type: 'select',
+                // type: 'select',
                 // modelKey: 'jiaban_add_uid',
                 label: '工号',
-                props: {
-                    placeholder: "请选择工号",
-                    options: [2015, 2016, 2017, 2018, 2019, 2020]
-                },
                 rules: {
                     required: true
                 }
             },
             { //1
-                type: 'input',
-                modelKey: 'jiaban_add_applicant',
+                // type: 'input',
+                // modelKey: 'jiaban_add_applicant',
                 label: '申请人姓名',
-                props: {
-                    placeholder: '',
-                    // readonly: true
-                },
                 rules: {
                     required: false
                 },
@@ -123,21 +120,16 @@ var vm_app = new Vue({
                 trigger: 'blur'
             },
             { //2
-                type: 'input',
-                modelKey: 'jiaban_add_department',
+                // type: 'input',
+                // modelKey: 'jiaban_add_department',
                 label: '申请人部门',
-                props: {
-                    placeholder: '',
-                    // readonly: true
-                },
                 rules: {
                     required: false
                 },
-                // validating when blur
                 trigger: 'blur'
             },
             { //3
-                modelKey: 'jiaban_add_startdate',
+                // modelKey: 'jiaban_add_startdate',
                 label: '开始时间',
                 rules: {
                     required: true
