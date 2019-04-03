@@ -16,14 +16,24 @@
 // });
 
 // Renshi路由
+Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], function() {
+
+	// 111111111111111
+	// 显示applicantcube页面
+	Route::get('jiabancubeApplicant', 'JiabancubeController@jiabancubeApplicant')->name('renshi.jiaban.applicantcube');
+
+	// applicantcubeCreate
+	Route::post('applicantcubeCreate', 'JiabancubeController@applicantcubeCreate')->name('renshi.jiaban.applicantcube.applicantcubecreate');
+
+});
+
+
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth']], function() {
 
 	// 111111111111111
 	// 显示applicant页面
 	Route::get('jiabanApplicant', 'JiabanController@jiabanApplicant')->name('renshi.jiaban.applicant');
-
-	Route::get('jiabancubeApplicant', 'JiabanController@jiabancubeApplicant')->name('renshi.jiaban.applicant_cube');
 
 	// jiaban gets列表
 	Route::get('jiabanGetsApplicant', 'JiabanController@jiabanGetsApplicant')->name('renshi.jiaban.jiabangetsapplicant');

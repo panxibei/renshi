@@ -27,10 +27,10 @@ LOGO HERE
         <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[1]">
-        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" readonly="true"></cube-input>
+        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" ></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[2]">
-        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" readonly="true"></cube-input>
+        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" ></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[3]">
         <cube-input v-model.lazy="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="选择开始时间"></cube-input>
@@ -321,7 +321,92 @@ var vm_app = new Vue({
         },
 
 
+        // form
+        submitHandler(e) {
+            e.preventDefault()
+            // console.log('submit', e)
+            // alert('submit');
+            var _this = this;
 
+            var uid = _this.jiaban_add_uid;
+            var applicant = _this.jiaban_add_applicant;
+            var department = _this.jiaban_add_department;
+            var startdate = _this.jiaban_add_startdate;
+            var enddate = _this.jiaban_add_enddate;
+            var duration = _this.jiaban_add_duration;
+            var category = _this.jiaban_add_category;
+            var reason = _this.jiaban_add_reason;
+            var remark = _this.jiaban_add_remark;
+
+            if (uid == '' || applicant == '' || department == '' || startdate == '' || enddate == '' || category == ''  || duration == '' || reason == ''
+            || uid == undefined || applicant == undefined || department == undefined || startdate == undefined || enddate == undefined || category == undefined  || duration == undefined || reason == undefined) {
+                // _this.warning(false, '警告', '输入内容为空或不正确！');
+                const toast = _this.$createToast({
+                    txt: '输入内容为空或不正确！',
+                    type: 'warn'
+                })
+                toast.show()
+				return false;
+			}
+
+			var url = "{{ route('renshi.jiaban.applicantcube.applicantcubecreate') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+                uid: uid,
+                applicant: applicant,
+                department: department,
+                startdate: startdate,
+                enddate: enddate,
+                duration: duration,
+                category: category,
+                reason: reason,
+                remark: remark,
+			})
+			.then(function (response) {
+				console.log(response.data);
+				return false;
+				
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.onclear_applicant();
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+                    // _this.success(false, '成功', '提交成功！');
+                    const toast = _this.$createToast({
+                    txt: '输入内容为空或不正确！',
+                    type: 'warn'
+                })
+                toast.show()
+
+				} else {
+					// _this.error(false, '失败', '提交失败！');
+				}
+			})
+			.catch(function (error) {
+				// _this.error(false, '错误', '提交失败！');
+			})
+
+        },
+        validateHandler(result) {
+            // this.validity = result.validity
+            // this.valid = result.valid
+            // console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
+        },
+        resetHandler(e) {
+            // console.log('reset', e)
+            this.jiaban_add_uid = '';
+            this.jiaban_add_applicant = '';
+            this.jiaban_add_department = '';
+            this.jiaban_add_startdate = '';
+            this.jiaban_add_enddate = '';
+            this.jiaban_add_duration = '';
+            this.jiaban_add_category = '';
+            this.jiaban_add_reason = '';
+            this.jiaban_add_remark = '';
+        },
 
 
 
@@ -384,42 +469,7 @@ var vm_app = new Vue({
 
         
 
-        // form
-        submitHandler(e) {
-            e.preventDefault()
-            // console.log('submit', e)
-            alert('submit');
 
-            var this.jiaban_add_uid = '';
-            this.jiaban_add_applicant = '';
-            this.jiaban_add_department = '';
-            this.jiaban_add_startdate = '';
-            this.jiaban_add_enddate = '';
-            this.jiaban_add_duration = '';
-            this.jiaban_add_category = '';
-            this.jiaban_add_reason = '';
-            this.jiaban_add_remark = '';
-
-
-
-        },
-        validateHandler(result) {
-            // this.validity = result.validity
-            // this.valid = result.valid
-            // console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
-        },
-        resetHandler(e) {
-            // console.log('reset', e)
-            this.jiaban_add_uid = '';
-            this.jiaban_add_applicant = '';
-            this.jiaban_add_department = '';
-            this.jiaban_add_startdate = '';
-            this.jiaban_add_enddate = '';
-            this.jiaban_add_duration = '';
-            this.jiaban_add_category = '';
-            this.jiaban_add_reason = '';
-            this.jiaban_add_remark = '';
-        },
 
 		
 
