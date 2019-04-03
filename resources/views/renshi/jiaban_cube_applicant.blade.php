@@ -66,14 +66,6 @@ LOGO HERE
 <br><br>
 
 
-<cube-form
-  :model="model_add"
-  :schema="schema_add"
-  :immediate-validate="false"
-  :options="options_add"
-  @validate="validateHandler"
-  @submit="submitHandler"
-  @reset="resetHandler"></cube-form>
 
 
 something others here.
@@ -217,141 +209,7 @@ var vm_app = new Vue({
 
         
 
-        model_add: {
-            jiaban_add_reason: '',
-            jiaban_add_remark: '',
-            jiaban_add_uid: '',
-			jiaban_add_applicant: '',
-			jiaban_add_department: '',
-			jiaban_add_datetimerange: [],
-			jiaban_add_category: '',
-			jiaban_add_duration: '',
 
-
-
-            checkboxValue: false,
-            checkboxGroupValue: [],
-            inputValue: '',
-            radioValue: '',
-            rateValue: 0,
-            selectValue: 2018,
-            switchValue: true,
-            textareaValue: '',
-            uploadValue: [],
-        },
-        schema_add: {
-            groups: [
-            {
-                legend: '基础',
-                fields: [
-                    {
-                        type: 'textarea',
-                        modelKey: 'jiaban_add_reason',
-                        label: '加班理由',
-                        rules: {
-                            required: true
-                        },
-                        props: {
-                            placeholder: "加班理由",
-                            maxlength: 100,
-                            // autofocus: true
-                        },
-                        // debounce validate
-                        // if set to true, the default debounce time will be 200(ms)
-                        debounce: 100
-                    },
-                    {
-                        type: 'textarea',
-                        modelKey: 'jiaban_add_remark',
-                        label: '备注',
-                        rules: {
-                            required: false
-                        },
-                        props: {
-                            placeholder: "备注",
-                            maxlength: 100,
-                            // autofocus: true
-                        },
-                        debounce: 100
-                    },
-                    {
-                        type: 'select',
-                        modelKey: 'jiaban_add_uid',
-                        label: '工号',
-                        props: {
-                            placeholder: "请选择工号",
-                            options: [2015, 2016, 2017, 2018, 2019, 2020]
-                        },
-                        rules: {
-                            required: true
-                        }
-                    },
-                    {
-                        type: 'input',
-                        modelKey: 'jiaban_add_applicant',
-                        label: '申请人姓名',
-                        props: {
-                            placeholder: '',
-                            readonly: true
-                        },
-                        rules: {
-                            required: false
-                        },
-                        // validating when blur
-                        trigger: 'blur'
-                    },
-                    {
-                        type: 'input',
-                        modelKey: 'jiaban_add_department',
-                        label: '申请人部门',
-                        props: {
-                            placeholder: '',
-                            readonly: true
-                        },
-                        rules: {
-                            required: false
-                        },
-                        // validating when blur
-                        trigger: 'blur'
-                    },
-                    {
-                        type: 'input',
-                        modelKey: 'jiaban_add_datetimerange',
-                        label: '时间',
-                        props: {
-                            placeholder: '',
-                            // readonly: true
-                        },
-                        rules: {
-                            required: true
-                        },
-                        // validating when blur
-                        // trigger: 'click'
-                    },
-
-
-                    
-
-                ]
-            },
-            {
-                fields: [
-                {
-                    type: 'submit',
-                    label: 'Submit'
-                },
-                {
-                    type: 'reset',
-                    label: 'Reset'
-                }
-                ]
-            }
-            ]
-        },
-        options_add: {
-            scrollToInvalidField: true,
-            layout: 'standard' // classic fresh
-        },
 
 
 
@@ -390,8 +248,8 @@ var vm_app = new Vue({
         ],
 
 
-        validity: {},
-        valid: undefined,
+        // validity: {},
+        // valid: undefined,
         model: {
             checkboxValue: false,
             checkboxGroupValue: [],
@@ -592,15 +450,14 @@ var vm_app = new Vue({
 	},
 	methods: {
 
-
-
         // showDateTimePicker
         showDateTimePicker_startdate() {
             if (!this.dateTimePicker_startdate) {
                 this.dateTimePicker_startdate = this.$createDatePicker({
                 title: '选择开始时间',
-                min: new Date(2008, 7, 8, 8, 0, 0),
-                max: new Date(2020, 9, 20, 20, 59, 59),
+                min: new Date(2018, 12, 1, 0, 0, 0),
+                // max: new Date(2020, 9, 20, 20, 59, 59),
+                max: new Date(this.jiaban_add_enddate || '2099-12-31 23:59:59'),
                 value: new Date(),
                 columnCount: 6,
                 onSelect: this.selectHandle_startdate,
@@ -619,11 +476,11 @@ var vm_app = new Vue({
             // }).show()
         },
         cancelHandle_startdate() {
-            this.$createToast({
-                type: 'correct',
-                txt: 'Picker canceled',
-                time: 1000
-            }).show()
+            // this.$createToast({
+            //     type: 'correct',
+            //     txt: 'Picker canceled',
+            //     time: 1000
+            // }).show()
         },
 
         // showDateTimePicker
@@ -632,8 +489,8 @@ var vm_app = new Vue({
                 this.dateTimePicker_enddate = this.$createDatePicker({
                 title: '选择结束时间',
                 // min: new Date(2008, 7, 8, 8, 0, 0),
-                min: new Date(this.jiaban_add_startdate),
-                max: new Date(2020, 9, 20, 20, 59, 59),
+                min: new Date(this.jiaban_add_startdate || '2019-01-01 00:00:00'),
+                max: new Date(2099, 12, 31, 23, 59, 59),
                 value: new Date(),
                 columnCount: 6,
                 onSelect: this.selectHandle_enddate,
@@ -652,11 +509,11 @@ var vm_app = new Vue({
             // }).show()
         },
         cancelHandle_enddate() {
-            this.$createToast({
-                type: 'correct',
-                txt: 'Picker canceled',
-                time: 1000
-            }).show()
+            // this.$createToast({
+            //     type: 'correct',
+            //     txt: 'Picker canceled',
+            //     time: 1000
+            // }).show()
         },
 
 
@@ -725,15 +582,24 @@ var vm_app = new Vue({
 
         // form
         submitHandler(e) {
+            alert('submit');
+            return false;
+
             e.preventDefault()
             console.log('submit', e)
         },
         validateHandler(result) {
+            alert('validate');
+            return false;
+
             this.validity = result.validity
             this.valid = result.valid
             console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
         },
         resetHandler(e) {
+            alert('reset');
+            return false;
+            
             console.log('reset', e)
         },
 
