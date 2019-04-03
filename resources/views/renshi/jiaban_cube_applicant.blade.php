@@ -21,6 +21,24 @@ something here.
 LOGO HERE
 <br><br>
 
+<cube-form :model="model" @validate="validateHandler" @submit="submitHandler">
+  <cube-form-group>
+    <cube-form-item :field="fields[0]"></cube-form-item>
+    <cube-form-item :field="fields[1]">
+      <cube-input v-model="ddd" @focus="showDateTimePicker" placeholder="输入日期"></cube-input>
+      <!-- <cube-button @click="showDateTimePicker">@{{model.dateValue || 'Please select date'}}</cube-button> -->
+      <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker>
+    </cube-form-item>
+  </cube-form-group>
+  <cube-form-group>
+    <cube-button type="submit">Submit</cube-button>
+  </cube-form-group>
+</cube-form>
+
+
+
+<br><br>
+
 
 <cube-form
   :model="model_add"
@@ -49,7 +67,33 @@ var vm_app = new Vue({
 	el: '#app',
 	data: {
 
+        ddd: '',
 
+        model: {
+            inputValue: '',
+            pcaValue: [],
+            dateValue: ''
+        },
+        fields: [
+            {
+            type: 'input',
+            modelKey: 'inputValue',
+            label: 'Input',
+            props: {
+                placeholder: '请输入'
+            },
+            rules: {
+                required: true
+            }
+            },
+            {
+            modelKey: 'dateValue',
+            label: 'Date',
+            rules: {
+                required: true
+            }
+            }
+        ],
 
 
 
@@ -160,7 +204,7 @@ var vm_app = new Vue({
                         trigger: 'blur'
                     },
                     {
-                        type: 'button',
+                        type: 'input',
                         modelKey: 'jiaban_add_datetimerange',
                         label: '时间',
                         props: {
@@ -171,7 +215,7 @@ var vm_app = new Vue({
                             required: true
                         },
                         // validating when blur
-                        trigger: 'click'
+                        // trigger: 'click'
                     },
 
 
@@ -439,28 +483,14 @@ var vm_app = new Vue({
 
         showDatePicker() {
             var _this = this;
+            // alert();
+            // return false;
             _this.$refs.datePicker.show()
         },
         dateSelectHandler(selectedVal) {
             this.model.dateValue = new Date(selectedVal[0], selectedVal[1] - 1, selectedVal[2]).toDateString()
         },
 
-        // showDateTimePicker
-        showDateTimePicker() {
-            if (!this.dateTimePicker) {
-                this.dateTimePicker = this.$createDatePicker({
-                title: 'Date Time Picker',
-                min: new Date(2008, 7, 8, 8, 0, 0),
-                max: new Date(2020, 9, 20, 20, 59, 59),
-                value: new Date(),
-                columnCount: 6,
-                onSelect: this.selectHandle,
-                onCancel: this.cancelHandle
-                })
-            }
-
-            this.dateTimePicker.show()
-        },
 
 
 
@@ -570,6 +600,8 @@ var vm_app = new Vue({
             this.dateTimePicker.show()
         },
         selectHandle(date, selectedVal, selectedText) {
+            // this.model.dateValue = 'sssssssssss'
+            this.ddd = date
             this.$createDialog({
                 type: 'warn',
                 content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
