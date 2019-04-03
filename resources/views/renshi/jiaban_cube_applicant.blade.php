@@ -25,9 +25,12 @@ LOGO HERE
   <cube-form-group>
     <cube-form-item :field="fields[0]"></cube-form-item>
     <cube-form-item :field="fields[1]">
-      <cube-input v-model="ddd" @focus="showDateTimePicker" placeholder="输入日期"></cube-input>
+      <cube-input v-model="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="输入开始时间"></cube-input>
       <!-- <cube-button @click="showDateTimePicker">@{{model.dateValue || 'Please select date'}}</cube-button> -->
-      <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker>
+      <!-- <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker> -->
+    </cube-form-item>
+    <cube-form-item :field="fields[2]">
+      <cube-input v-model="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="输入结束时间"></cube-input>
     </cube-form-item>
   </cube-form-group>
   <cube-form-group>
@@ -67,7 +70,10 @@ var vm_app = new Vue({
 	el: '#app',
 	data: {
 
-        ddd: '',
+        jiaban_add_startdate: '',
+        jiaban_add_enddate: '',
+
+
 
         model: {
             inputValue: '',
@@ -76,23 +82,30 @@ var vm_app = new Vue({
         },
         fields: [
             {
-            type: 'input',
-            modelKey: 'inputValue',
-            label: 'Input',
-            props: {
-                placeholder: '请输入'
-            },
-            rules: {
-                required: true
-            }
+                type: 'input',
+                modelKey: 'inputValue',
+                label: 'Input',
+                props: {
+                    placeholder: '请输入'
+                },
+                rules: {
+                    required: true
+                }
             },
             {
-            modelKey: 'dateValue',
-            label: 'Date',
-            rules: {
-                required: true
-            }
-            }
+                // modelKey: 'dateValue',
+                label: '开始时间',
+                rules: {
+                    required: true
+                }
+            },
+            {
+                // modelKey: 'dateValue',
+                label: '结束时间',
+                rules: {
+                    required: true
+                }
+            },
         ],
 
 
@@ -481,15 +494,102 @@ var vm_app = new Vue({
 	},
 	methods: {
 
-        showDatePicker() {
-            var _this = this;
-            // alert();
-            // return false;
-            _this.$refs.datePicker.show()
+
+
+        // showDateTimePicker
+        showDateTimePicker_startdate() {
+            if (!this.dateTimePicker_startdate) {
+                this.dateTimePicker_startdate = this.$createDatePicker({
+                title: '选择开始时间',
+                min: new Date(2008, 7, 8, 8, 0, 0),
+                max: new Date(2020, 9, 20, 20, 59, 59),
+                value: new Date(),
+                columnCount: 6,
+                onSelect: this.selectHandle_startdate,
+                onCancel: this.cancelHandle_startdate
+                })
+            }
+
+            this.dateTimePicker_startdate.show()
         },
-        dateSelectHandler(selectedVal) {
-            this.model.dateValue = new Date(selectedVal[0], selectedVal[1] - 1, selectedVal[2]).toDateString()
+        selectHandle_startdate(date, selectedVal, selectedText) {
+            this.jiaban_add_startdate = date.Format("yyyy-MM-dd hh:mm:ss")
+            // this.$createDialog({
+            //     type: 'warn',
+            //     content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
+            //     icon: 'cubeic-alert'
+            // }).show()
         },
+        cancelHandle_startdate() {
+            this.$createToast({
+                type: 'correct',
+                txt: 'Picker canceled',
+                time: 1000
+            }).show()
+        },
+
+        // showDateTimePicker
+        showDateTimePicker_enddate() {
+            if (!this.dateTimePicker_enddate) {
+                this.dateTimePicker_enddate = this.$createDatePicker({
+                title: '选择结束时间',
+                // min: new Date(2008, 7, 8, 8, 0, 0),
+                min: new Date(this.jiaban_add_startdate),
+                max: new Date(2020, 9, 20, 20, 59, 59),
+                value: new Date(),
+                columnCount: 6,
+                onSelect: this.selectHandle_enddate,
+                onCancel: this.cancelHandle_enddate
+                })
+            }
+
+            this.dateTimePicker_enddate.show()
+        },
+        selectHandle_enddate(date, selectedVal, selectedText) {
+            this.jiaban_add_enddate = date.Format("yyyy-MM-dd hh:mm:ss")
+            // this.$createDialog({
+            //     type: 'warn',
+            //     content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
+            //     icon: 'cubeic-alert'
+            // }).show()
+        },
+        cancelHandle_enddate() {
+            this.$createToast({
+                type: 'correct',
+                txt: 'Picker canceled',
+                time: 1000
+            }).show()
+        },
+
+        // showDatePicker() {
+        //     var _this = this;
+        //     // alert();
+        //     // return false;
+        //     _this.$refs.datePicker.show()
+        // },
+        // dateSelectHandler(selectedVal) {
+        //     this.model.dateValue = new Date(selectedVal[0], selectedVal[1] - 1, selectedVal[2]).toDateString()
+        // },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -529,92 +629,9 @@ var vm_app = new Vue({
             this.toast.show()
         },
 
-        // showPicker
-		showPicker1() {
-            if (!this.picker1) {
-                this.picker1 = this.$createPicker({
-                title: 'Picker1',
-                data: [this.column1],
-                onSelect: this.selectHandle,
-                onCancel: this.cancelHandle
-                })
-            }
-            this.picker1.show()
-        },
-        selectHandle(selectedVal, selectedIndex, selectedText) {
-        this.$createDialog({
-            type: 'warn',
-            content: `Selected Item: <br/> - value: ${selectedVal.join(', ')} <br/> - index: ${selectedIndex.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
-            icon: 'cubeic-alert'
-        }).show()
-        },
-        cancelHandle() {
-            this.$createToast({
-                type: 'correct',
-                txt: 'Picker canceled',
-                time: 1000
-            }).show()
-        },
-
-		showPicker2() {
-            if (!this.picker2) {
-                this.picker2 = this.$createPicker({
-                title: 'Picker2',
-                data: [this.column2],
-                onSelect: this.selectHandle2,
-                onCancel: this.cancelHandle2
-                })
-            }
-            this.picker2.show()
-        },
-        selectHandle2(selectedVal, selectedIndex, selectedText) {
-        this.$createDialog({
-            type: 'warn',
-            content: `Selected Item: <br/> - value: ${selectedVal.join(', ')} <br/> - index: ${selectedIndex.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
-            icon: 'cubeic-alert'
-        }).show()
-        },
-        cancelHandle2() {
-            this.$createToast({
-                type: 'correct',
-                txt: 'Picker canceled',
-                time: 1000
-            }).show()
-        },
 
 
-        // showDateTimePicker
-        showDateTimePicker() {
-            if (!this.dateTimePicker) {
-                this.dateTimePicker = this.$createDatePicker({
-                title: 'Date Time Picker',
-                min: new Date(2008, 7, 8, 8, 0, 0),
-                max: new Date(2020, 9, 20, 20, 59, 59),
-                value: new Date(),
-                columnCount: 6,
-                onSelect: this.selectHandle,
-                onCancel: this.cancelHandle
-                })
-            }
 
-            this.dateTimePicker.show()
-        },
-        selectHandle(date, selectedVal, selectedText) {
-            // this.model.dateValue = 'sssssssssss'
-            this.ddd = date
-            this.$createDialog({
-                type: 'warn',
-                content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
-                icon: 'cubeic-alert'
-            }).show()
-        },
-        cancelHandle() {
-            this.$createToast({
-                type: 'correct',
-                txt: 'Picker canceled',
-                time: 1000
-            }).show()
-        },
         
 
         // form
