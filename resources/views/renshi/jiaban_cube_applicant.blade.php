@@ -21,7 +21,7 @@ something here.
 LOGO HERE
 <br><br>
 
-<cube-form :model="model" @validate="validateHandler" @submit="submitHandler">
+<cube-form :model="model" @validate="validateHandler" @submit="submitHandler" @reset="resetHandler">
   <cube-form-group>
     <cube-form-item :field="fields[0]">
         <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
@@ -65,7 +65,6 @@ LOGO HERE
 
 <br><br>
 something others here.
-
 
 @endsection
 
@@ -387,25 +386,39 @@ var vm_app = new Vue({
 
         // form
         submitHandler(e) {
-            alert('submit');
-            return false;
-
             e.preventDefault()
-            console.log('submit', e)
+            // console.log('submit', e)
+            alert('submit');
+
+            var this.jiaban_add_uid = '';
+            this.jiaban_add_applicant = '';
+            this.jiaban_add_department = '';
+            this.jiaban_add_startdate = '';
+            this.jiaban_add_enddate = '';
+            this.jiaban_add_duration = '';
+            this.jiaban_add_category = '';
+            this.jiaban_add_reason = '';
+            this.jiaban_add_remark = '';
+
+
+
         },
         validateHandler(result) {
-            alert('validate');
-            return false;
-
-            this.validity = result.validity
-            this.valid = result.valid
-            console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
+            // this.validity = result.validity
+            // this.valid = result.valid
+            // console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
         },
         resetHandler(e) {
-            alert('reset');
-            return false;
-            
-            console.log('reset', e)
+            // console.log('reset', e)
+            this.jiaban_add_uid = '';
+            this.jiaban_add_applicant = '';
+            this.jiaban_add_department = '';
+            this.jiaban_add_startdate = '';
+            this.jiaban_add_enddate = '';
+            this.jiaban_add_duration = '';
+            this.jiaban_add_category = '';
+            this.jiaban_add_reason = '';
+            this.jiaban_add_remark = '';
         },
 
 		
