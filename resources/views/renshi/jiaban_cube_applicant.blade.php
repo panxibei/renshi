@@ -55,9 +55,9 @@ LOGO HERE
   </cube-form-group>
   <cube-form-group>
   <br>
-    <cube-button type="submit">Submit</cube-button>
+    <cube-button type="submit">提 交</cube-button>
     <br>
-    <cube-button type="reset">Reset</cube-button>
+    <cube-button type="reset">清 除</cube-button>
   </cube-form-group>
 </cube-form>
 
@@ -363,8 +363,8 @@ var vm_app = new Vue({
                 remark: remark,
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 				
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -376,17 +376,26 @@ var vm_app = new Vue({
 					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
                     // _this.success(false, '成功', '提交成功！');
                     const toast = _this.$createToast({
-                    txt: '输入内容为空或不正确！',
-                    type: 'warn'
-                })
-                toast.show()
-
+                        txt: '提交成功！',
+                        type: 'correct'
+                    })
+                    toast.show()
 				} else {
-					// _this.error(false, '失败', '提交失败！');
+                    // _this.error(false, '失败', '提交失败！');
+                    const toast = _this.$createToast({
+                        txt: '提交失败！',
+                        type: 'error'
+                    })
+                    toast.show()
 				}
 			})
 			.catch(function (error) {
-				// _this.error(false, '错误', '提交失败！');
+                // _this.error(false, '错误', '提交失败！');
+                const toast = _this.$createToast({
+                    txt: '提交失败！',
+                    type: 'error'
+                })
+                toast.show()
 			})
 
         },

@@ -93,12 +93,12 @@ class JiabancubeController extends Controller
 		// dd($department_of_auditor);
 
 		// foreach ($piliangluru as $key => $value) {
-			$s[$key]['uid'] = $uid;
-			$s[$key]['applicant'] = $applicant;
-			$s[$key]['department'] = $department;
-			$s[$key]['category'] = $category;
-			$s[$key]['datetimerange'] = $startdate . ' - ' . $enddate;
-			$s[$key]['duration'] = $duration;
+			$s[0]['uid'] = $uid;
+			$s[0]['applicant'] = $applicant;
+			$s[0]['department'] = $department;
+			$s[0]['category'] = $category;
+			$s[0]['datetimerange'] = $startdate . ' - ' . $enddate;
+			$s[0]['duration'] = $duration;
 		// }
 
 		$application = json_encode(
@@ -141,7 +141,7 @@ class JiabancubeController extends Controller
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
 			DB::rollBack();
-			return 'Message: ' .$e->getMessage();
+			// return 'Message: ' .$e->getMessage();
 			return 0;
 		}
 
