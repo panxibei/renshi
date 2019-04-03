@@ -27,10 +27,10 @@ LOGO HERE
         <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[1]">
-        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名"></cube-input>
+        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" readonly="true"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[2]">
-        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门"></cube-input>
+        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" readonly="true"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[3]">
         <cube-input v-model.lazy="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="选择开始时间"></cube-input>
@@ -41,7 +41,7 @@ LOGO HERE
         <cube-input v-model.lazy="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="选择结束时间"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[5]">
-        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" title="选择时长" placeholder="选择时长"></cube-select>
+        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" title="选择时长（小时）" placeholder="选择时长"></cube-select>
     </cube-form-item>
     <cube-form-item :field="fields[6]">
         <cube-select v-model.lazy="jiaban_add_category" :options="jiaban_add_category_options" title="选择类别" placeholder="选择类别"></cube-select>
@@ -64,10 +64,6 @@ LOGO HERE
 
 
 <br><br>
-
-
-
-
 something others here.
 
 
@@ -91,7 +87,12 @@ var vm_app = new Vue({
         jiaban_add_startdate: '',
         jiaban_add_enddate: '',
         jiaban_add_duration: '',
-        jiaban_add_duration_options: [2018, 2019, 2020],
+        jiaban_add_duration_options: [
+            0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5,
+            6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5,
+            12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5,
+            18, 18.5, 19, 19.5, 20, 20.5, 21, 21.5, 22, 22.5, 23, 23.5, 24
+        ],
         jiaban_add_category: '',
         jiaban_add_category_options: ['平时加班', '双休加班', '节假日加班'],
         jiaban_add_reason: '',
@@ -248,203 +249,7 @@ var vm_app = new Vue({
         ],
 
 
-        // validity: {},
-        // valid: undefined,
-        model: {
-            checkboxValue: false,
-            checkboxGroupValue: [],
-            inputValue: '',
-            radioValue: '',
-            rateValue: 0,
-            selectValue: 2018,
-            switchValue: true,
-            textareaValue: '',
-            uploadValue: [],
-        },
-        schema: {
-            groups: [
-            {
-                legend: '基础',
-                fields: [
-                    {
-                        type: 'textarea',
-                        modelKey: 'textareaValue',
-                        label: '加班理由',
-                        rules: {
-                        required: true
-                        },
-                        // debounce validate
-                        // if set to true, the default debounce time will be 200(ms)
-                        debounce: 100
-                    },
-                    {
-                        type: 'textarea',
-                        modelKey: 'textareaValue',
-                        label: '备注',
-                        rules: {
-                        required: true
-                        },
-                        // debounce validate
-                        // if set to true, the default debounce time will be 200(ms)
-                        debounce: 100
-                    },
-                    
-                {
-                    type: 'checkbox',
-                    modelKey: 'checkboxValue',
-                    props: {
-                        option: {
-                            label: 'Checkbox',
-                            value: true
-                        }
-                    },
-                    rules: {
-                    required: true
-                    },
-                    messages: {
-                    required: 'Please check this field'
-                    }
-                },
-                {
-                    type: 'checkbox-group',
-                    modelKey: 'checkboxGroupValue',
-                    label: 'CheckboxGroup',
-                    props: {
-                    options: ['1', '2', '3']
-                    },
-                    rules: {
-                    required: true
-                    }
-                },
-                {
-                    type: 'input',
-                    modelKey: 'inputValue',
-                    label: 'Input',
-                    props: {
-                    placeholder: '请输入'
-                    },
-                    rules: {
-                    required: true
-                    },
-                    // validating when blur
-                    trigger: 'blur'
-                },
-                {
-                    type: 'radio-group',
-                    modelKey: 'radioValue',
-                    label: 'Radio',
-                    props: {
-                    options: ['1', '2', '3']
-                    },
-                    rules: {
-                    required: true
-                    }
-                },
-                {
-                    type: 'select',
-                    modelKey: 'selectValue',
-                    label: 'Select',
-                    props: {
-                    options: [2015, 2016, 2017, 2018, 2019, 2020]
-                    },
-                    rules: {
-                    required: true
-                    }
-                },
-                {
-                    type: 'switch',
-                    modelKey: 'switchValue',
-                    label: 'Switch',
-                    rules: {
-                    required: true
-                    }
-                },
-                {
-                    type: 'textarea',
-                    modelKey: 'textareaValue',
-                    label: 'Textarea',
-                    rules: {
-                    required: true
-                    },
-                    // debounce validate
-                    // if set to true, the default debounce time will be 200(ms)
-                    debounce: 100
-                }
-                ]
-            },
-            {
-                legend: '高级',
-                fields: [
-                {
-                    type: 'rate',
-                    modelKey: 'rateValue',
-                    label: 'Rate',
-                    rules: {
-                    required: true
-                    }
-                },
-                {
-                    type: 'upload',
-                    modelKey: 'uploadValue',
-                    label: 'Upload',
-                    events: {
-                    'file-removed': (...args) => {
-                        console.log('file removed', args)
-                    }
-                    },
-                    rules: {
-                    required: true,
-                    uploaded: (val, config) => {
-                        return Promise.all(val.map((file, i) => {
-                        return new Promise((resolve, reject) => {
-                            if (file.uploadedUrl) {
-                            return resolve()
-                            }
-                            // fake request
-                            setTimeout(() => {
-                            if (i % 2) {
-                                reject(new Error())
-                            } else {
-                                file.uploadedUrl = 'uploaded/url'
-                                resolve()
-                            }
-                            }, 1000)
-                        })
-                        })).then(() => {
-                        return true
-                        })
-                    }
-                    },
-                    messages: {
-                    uploaded: '上传失败'
-                    }
-                }
-                ]
-            },
-            {
-                fields: [
-                {
-                    type: 'submit',
-                    label: 'Submit'
-                },
-                {
-                    type: 'reset',
-                    label: 'Reset'
-                }
-                ]
-            }
-            ]
-        },
-        options: {
-            scrollToInvalidField: true,
-            layout: 'standard' // classic fresh
-        },
 
-        inputvalue: '',
-        clearable: {
-            visible: true,
-            blurHidden: true
-        }
 
 
 	},
