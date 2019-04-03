@@ -41,11 +41,23 @@ LOGO HERE
         <cube-input v-model.lazy="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="选择结束时间"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[5]">
-        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" placeholder="选择时长"></cube-select>
+        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" title="选择时长" placeholder="选择时长"></cube-select>
+    </cube-form-item>
+    <cube-form-item :field="fields[6]">
+        <cube-select v-model.lazy="jiaban_add_category" :options="jiaban_add_category_options" title="选择类别" placeholder="选择类别"></cube-select>
+    </cube-form-item>
+    <cube-form-item :field="fields[7]">
+        <cube-textarea v-model.lazy="jiaban_add_reason" maxlength="100" placeholder="在此填写理由..."></cube-textarea>
+    </cube-form-item>
+    <cube-form-item :field="fields[8]">
+        <cube-textarea v-model.lazy="jiaban_add_remark" maxlength="100" placeholder="在些填写备注..."></cube-textarea>
     </cube-form-item>
   </cube-form-group>
   <cube-form-group>
+  <br>
     <cube-button type="submit">Submit</cube-button>
+    <br>
+    <cube-button type="reset">Reset</cube-button>
   </cube-form-group>
 </cube-form>
 
@@ -87,8 +99,9 @@ var vm_app = new Vue({
         jiaban_add_startdate: '',
         jiaban_add_enddate: '',
         jiaban_add_duration: '',
-        jiaban_add_duration_options: [],
+        jiaban_add_duration_options: [2018, 2019, 2020],
         jiaban_add_category: '',
+        jiaban_add_category_options: ['平时加班', '双休加班', '节假日加班'],
         jiaban_add_reason: '',
         jiaban_add_remark: '',
 
@@ -143,45 +156,50 @@ var vm_app = new Vue({
                 }
             },
             { //5
-                type: 'input',
+                // type: 'input',
                 // modelKey: 'inputValue',
                 label: '时长',
-                props: {
-                    placeholder: '请输入时长'
-                },
                 rules: {
                     required: true
                 }
             },
             { //6
-                type: 'textarea',
-                modelKey: 'jiaban_add_reason',
-                label: '加班理由',
+                // type: 'input',
+                // modelKey: 'inputValue',
+                label: '类别',
+                rules: {
+                    required: true
+                }
+            },
+            { //7
+                // type: 'textarea',
+                // modelKey: 'jiaban_add_reason',
+                label: '理由',
                 rules: {
                     required: true
                 },
-                props: {
-                    placeholder: "加班理由",
-                    maxlength: 100,
-                    // autofocus: true
-                },
+                // props: {
+                //     placeholder: "加班理由",
+                //     maxlength: 100,
+                //     // autofocus: true
+                // },
                 // debounce validate
                 // if set to true, the default debounce time will be 200(ms)
-                debounce: 100
+                // debounce: 100
             },
-            { //7
-                type: 'textarea',
-                modelKey: 'jiaban_add_remark',
+            { //8
+                // type: 'textarea',
+                // modelKey: 'jiaban_add_remark',
                 label: '备注',
                 rules: {
                     required: false
                 },
-                props: {
-                    placeholder: "备注",
-                    maxlength: 100,
-                    // autofocus: true
-                },
-                debounce: 100
+                // props: {
+                //     placeholder: "备注",
+                //     maxlength: 100,
+                //     // autofocus: true
+                // },
+                // debounce: 100
             },
 
 
