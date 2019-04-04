@@ -100,7 +100,6 @@ Login -
 
 @section('my_js_others')
 <script>
-// ajax 获取数据
 var vm_app = new Vue({
     el: '#app',
     data: {

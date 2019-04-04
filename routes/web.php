@@ -230,7 +230,9 @@ Route::group(['prefix'=>'release', 'namespace'=>'Main', 'middleware'=>['jwtauth'
 // home模块
 Route::group(['prefix' => 'login', 'namespace' =>'Home'], function() {
 	Route::get('/', 'LoginController@index')->name('login');
+	Route::get('cube', 'LogincubeController@index')->name('logincube');
 	Route::post('checklogin', 'LoginController@checklogin')->name('login.checklogin');
+	// Route::post('checklogin', 'LoginController@checklogin')->name('login.checklogin');
 });
 
 

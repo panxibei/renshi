@@ -67,6 +67,22 @@
 </style>
 @yield('my_style')
 <script src="{{ asset('js/functions.js') }}"></script>
+<script>
+	checkBrowser();
+</script>
+<script>
+isMobile = mobile();
+if (isMobile) {
+	// alert('系统暂不支持移动端！');
+	// document.execCommand("Stop");
+    // window.stop();
+    
+    // window.setTimeout(function(){
+        var url = "{{route('renshi.jiaban.applicantcube')}}";
+        window.location.href = url;
+    // }, 1000);
+}
+</script>
 @yield('my_js')
 </head>
 <body>
