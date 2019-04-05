@@ -6,6 +6,19 @@ Renshi(Jiaban) -
 @endsection
 
 @section('my_style')
+<style>
+.title-jiaban-applicant {
+	position: relative;
+	height: 44px;
+	line-height: 44px;
+	text-align: center;
+	background-color: #edf0f4;
+	box-shadow: 0 1px 6px #ccc;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	z-index: 5;
+}
+</style>
 @endsection
 
 @section('my_js')
@@ -16,10 +29,10 @@ Renshi(Jiaban) -
 @section('my_body')
 @parent
 
-something here.
+<header class="title-jiaban-applicant">
+<h1>加班申请单</h1>
+</header>
 <br>
-LOGO HERE
-<br><br>
 
 <cube-form :model="model" @validate="validateHandler" @submit="submitHandler" @reset="resetHandler">
   <cube-form-group>
@@ -27,10 +40,10 @@ LOGO HERE
         <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[1]">
-        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" ></cube-input>
+        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" readonly></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[2]">
-        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" ></cube-input>
+        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" readonly></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[3]">
         <cube-input v-model.lazy="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="选择开始时间"></cube-input>

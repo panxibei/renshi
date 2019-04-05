@@ -8,6 +8,10 @@ Login -
 @section('my_style')
 @endsection
 
+@section('my_logo_and_title')
+@parent
+@endsection
+
 @section('my_js')
 <script type="text/javascript">
 </script>
@@ -16,48 +20,21 @@ Login -
 @section('my_body')
 @parent
 
-something here.
-<br>
-LOGO HERE LOGO HERE LOGO HERE LOGO HERE
-<br><br>
 
 <cube-form :model="model" @validate="validateHandler" @submit="submitHandler" @reset="resetHandler">
   <cube-form-group>
     <cube-form-item :field="fields[0]">
-        <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
+        <cube-input v-model.lazy="username" placeholder="输入用户名"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[1]">
-        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" ></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[2]">
-        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" ></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[3]">
-        <cube-input v-model.lazy="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="选择开始时间"></cube-input>
-        <!-- <cube-button @click="showDateTimePicker">@{{model.dateValue || 'Please select date'}}</cube-button> -->
-        <!-- <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker> -->
-    </cube-form-item>
-    <cube-form-item :field="fields[4]">
-        <cube-input v-model.lazy="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="选择结束时间"></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[5]">
-        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" title="选择时长（小时）" placeholder="选择时长"></cube-select>
-    </cube-form-item>
-    <cube-form-item :field="fields[6]">
-        <cube-select v-model.lazy="jiaban_add_category" :options="jiaban_add_category_options" title="选择类别" placeholder="选择类别"></cube-select>
-    </cube-form-item>
-    <cube-form-item :field="fields[7]">
-        <cube-textarea v-model.lazy="jiaban_add_reason" maxlength="100" placeholder="在此填写理由..."></cube-textarea>
-    </cube-form-item>
-    <cube-form-item :field="fields[8]">
-        <cube-textarea v-model.lazy="jiaban_add_remark" maxlength="100" placeholder="在些填写备注..."></cube-textarea>
+        <cube-input v-model.lazy="password" placeholder="输入密码"></cube-input>
     </cube-form-item>
   </cube-form-group>
   <cube-form-group>
-  <br>
-    <cube-button type="submit">提 交</cube-button>
     <br>
-    <cube-button type="reset">清 除</cube-button>
+    <cube-button :primary="true" type="submit">登 录</cube-button>
+    <br>
+    <!-- <cube-button type="reset">清 除</cube-button> -->
   </cube-form-group>
 </cube-form>
 
@@ -79,6 +56,10 @@ something others here.
 var vm_app = new Vue({
 	el: '#app',
 	data: {
+
+        username: '',
+        password: '',
+
 
         jiaban_add_uid: '',
         jiaban_add_applicant: '',
@@ -109,90 +90,23 @@ var vm_app = new Vue({
             { //0
                 // type: 'select',
                 // modelKey: 'jiaban_add_uid',
-                label: '工号',
+                label: '用户',
                 rules: {
-                    required: true
-                }
+                    required: false
+                },
+                trigger: 'blur'
             },
             { //1
                 // type: 'input',
                 // modelKey: 'jiaban_add_applicant',
-                label: '申请人姓名',
+                label: '密码',
                 rules: {
                     required: false
                 },
                 // validating when blur
                 trigger: 'blur'
             },
-            { //2
-                // type: 'input',
-                // modelKey: 'jiaban_add_department',
-                label: '申请人部门',
-                rules: {
-                    required: false
-                },
-                trigger: 'blur'
-            },
-            { //3
-                // modelKey: 'jiaban_add_startdate',
-                label: '开始时间',
-                rules: {
-                    required: true
-                }
-            },
-            { //4
-                // modelKey: 'dateValue',
-                label: '结束时间',
-                rules: {
-                    required: true
-                }
-            },
-            { //5
-                // type: 'input',
-                // modelKey: 'inputValue',
-                label: '时长',
-                rules: {
-                    required: true
-                }
-            },
-            { //6
-                // type: 'input',
-                // modelKey: 'inputValue',
-                label: '类别',
-                rules: {
-                    required: true
-                }
-            },
-            { //7
-                // type: 'textarea',
-                // modelKey: 'jiaban_add_reason',
-                label: '理由',
-                rules: {
-                    required: true
-                },
-                // props: {
-                //     placeholder: "加班理由",
-                //     maxlength: 100,
-                //     // autofocus: true
-                // },
-                // debounce validate
-                // if set to true, the default debounce time will be 200(ms)
-                // debounce: 100
-            },
-            { //8
-                // type: 'textarea',
-                // modelKey: 'jiaban_add_remark',
-                label: '备注',
-                rules: {
-                    required: false
-                },
-                // props: {
-                //     placeholder: "备注",
-                //     maxlength: 100,
-                //     // autofocus: true
-                // },
-                // debounce: 100
-            },
+
 
 
 
