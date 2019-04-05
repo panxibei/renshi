@@ -8,7 +8,7 @@
 <meta name="author" content="">
 <title>
 @section('my_title')
-@{{$config['SITE_TITLE']}}  Ver: @{{$config['SITE_VERSION']}}
+{{$SITE_TITLE}}  Ver: {{$SITE_VERSION}}
 @show
 </title>
 <link rel="stylesheet" href="{{ asset('statics/cube/cube.min.css') }}">
@@ -37,29 +37,42 @@
 <body>
 <div id="app" v-cloak>
 
-    <!-- 头部 -->
-    <br><br><br>
-    
-    @section('my_logo_and_title')
-    <Header class="header">
-    <h1>
-        {{$SITE_TITLE}}
+    <Layout>
+        <!-- 头部 -->
+        <br><br><br>
+        @section('my_logo_and_title')
+        <Header class="header">
+        <h1>
+            {{$SITE_TITLE}}
+            <br>
+            <small>
+                {{$SITE_VERSION}}
+            </small>
+        </h1>
+        </Header>
+        <br><br><br><br><br><br>
+        @show
+        <!-- /头部 -->
+
+        <Content>
+        <!-- 主体 -->
+        @section('my_body')
+        @show
+        <!-- /主体 -->
+        </Content>
+    </Layout>
+
+    <Footer>
+        <!-- 底部 -->
+        <Footer style="{position: relative;text-align: center;}">
+        @section('my_footer')
         <br>
-        <small>
-            {{$SITE_VERSION}}
-        </small>
-    </h1>
-    </Header>
-    <br><br><br><br><br><br>
-    @show
-    <!-- /头部 -->
-
-
-    <!-- 主体 -->
-    @section('my_body')
-    @show
-    <!-- /主体 -->
-
+        <a href="{{route('portal')}}">{{$SITE_TITLE}}</a>
+        {{$SITE_COPYRIGHT}}
+        @show
+        </Footer>
+        <!-- /底部 -->
+    </Footer>
 
 	
 </div>

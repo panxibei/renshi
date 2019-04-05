@@ -23,13 +23,35 @@
 <body>
 <div id="app" v-cloak>
 
-    <!-- 主体 -->
-    @section('my_body')
-    @show
-    <!-- /主体 -->
+    <Layout>
+        @section('my_logo_and_title')
+        <Header>
+            <!-- 头部 -->
+            <!-- /头部 -->
+        </Header>
+        @show
+
+        <Content>
+            <!-- 主体 -->
+            @section('my_body')
+            @show
+            <!-- /主体 -->
+        </Content>
+    </Layout>
+
+    <Footer>
+        <!-- 底部 -->
+        <Footer style="{position: relative;text-align: center;}">
+        @section('my_footer')
+        <br>
+        <a href="{{route('portal')}}">{{$config['SITE_TITLE']}}</a>
+        {{$config['SITE_COPYRIGHT']}}
+        @show
+        </Footer>
+        <!-- /底部 -->
+    </Footer>
 
 
-	
 </div>
 <script src="{{ asset('js/vue.min.js') }}"></script>
 <script src="{{ asset('js/axios.min.js') }}"></script>

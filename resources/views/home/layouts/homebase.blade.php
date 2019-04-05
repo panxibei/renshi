@@ -8,7 +8,7 @@
 <meta name="author" content="">
 <title>
 @section('my_title')
-@{{$SITE_TITLE}}  Ver: @{{$SITE_VERSION}}
+{{$SITE_TITLE}}  Ver: {{$SITE_VERSION}}
 @show
 </title>
 <link rel="stylesheet" href="{{ asset('statics/iview/styles/iview.css') }}">

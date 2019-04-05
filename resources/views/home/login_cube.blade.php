@@ -41,7 +41,6 @@ Login -
 
 
 <br><br>
-something others here.
 
 @endsection
 

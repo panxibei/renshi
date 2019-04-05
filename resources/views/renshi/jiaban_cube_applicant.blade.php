@@ -74,11 +74,12 @@ Renshi(Jiaban) -
   </cube-form-group>
 </cube-form>
 
+<br>
+
 @endsection
 
 @section('my_footer')
 @parent
-
 @endsection
 
 @section('my_js_others')

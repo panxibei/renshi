@@ -35,7 +35,7 @@ class JiabancubeController extends Controller
 		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 		
 		$share = compact('config', 'user');
-        return view('renshi.jiaban_cube_applicant', $share);
+		return view('renshi.jiaban_cube_applicant', $share);
 		}
 
     
