@@ -74,11 +74,6 @@ Renshi(Jiaban) -
   </cube-form-group>
 </cube-form>
 
-
-
-<br><br>
-something others here.
-
 @endsection
 
 @section('my_footer')
