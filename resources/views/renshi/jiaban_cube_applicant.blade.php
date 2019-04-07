@@ -29,6 +29,8 @@ Renshi(Jiaban) -
 @section('my_body')
 @parent
 
+<cube-toolbar :actions="actions_toolbar" @click="clickHandler_toolbar"></cube-toolbar>
+
 <header class="title-jiaban-applicant">
 <h1>加班申请单</h1>
 </header>
@@ -74,6 +76,7 @@ Renshi(Jiaban) -
   </cube-form-group>
 </cube-form>
 
+
 <br>
 
 @endsection
@@ -105,8 +108,6 @@ var vm_app = new Vue({
         jiaban_add_category_options: ['平时加班', '双休加班', '节假日加班'],
         jiaban_add_reason: '',
         jiaban_add_remark: '',
-
-
 
 
         model: {
@@ -208,8 +209,20 @@ var vm_app = new Vue({
         ],
 
 
-
-
+        actions_toolbar: [
+            {
+            text: '<i class="cubeic-home"></i> 返回首页',
+            action: 'gotoPortal'
+            },
+            {
+            text: '<i class="cubeic-edit"></i> 处理加班',
+            action: 'gotoTodo'
+            },
+            {
+            text: '<i class="cubeic-red-packet"></i> 查看归档',
+            action: 'gotoArchived'
+            }
+        ],
 
 
 
@@ -426,8 +439,30 @@ var vm_app = new Vue({
             this.jiaban_add_remark = '';
         },
 
+        // toolbar - start
+        gotoPortal(item) {
+            this.$createToast({
+                type: 'correct',
+                txt: 'clicked ' + item.text,
+                time: 1000
+            }).show()
+        },
 
+        gotoTodo() {
+            console.log('gotoTodo');
+        },
 
+        gotoArchived() {
+            console.log('gotoArchived');
+            alert();
+        },
+
+        clickHandler_toolbar(item) {
+            if (item.action) {
+                this[item.action](item)
+            }
+        },
+        // toolbar - end
 
 
 
