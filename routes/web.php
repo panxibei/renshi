@@ -15,10 +15,13 @@
     // return view('index');
 // });
 
-// Renshi路由
+// Renshi cube 路由
 Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], function() {
 
 	// 111111111111111
+	// 显示applicantcube portal页面
+	Route::get('jiabancubeApplicant', 'JiabancubeController@jiabancubeApplicant')->name('renshi.jiaban.applicantcube');
+
 	// 显示applicantcube页面
 	Route::get('jiabancubeApplicant', 'JiabancubeController@jiabancubeApplicant')->name('renshi.jiaban.applicantcube');
 
@@ -28,6 +31,7 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], func
 });
 
 
+// Renshi路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth']], function() {
 
@@ -205,6 +209,7 @@ Route::group(['prefix'=>'smt', 'namespace'=>'Smt', 'middleware'=>['jwtauth','per
 Route::group(['prefix'=>'', 'namespace'=>'Main', 'middleware'=>['jwtauth']], function() {
 	Route::get('/', 'mainController@mainPortal')->name('portal');
 	Route::get('portal', 'mainController@mainPortal')->name('portal');
+	Route::get('portalcube', 'mainController@mainPortalcube')->name('portalcube');
 	Route::get('configgets', 'mainController@configGets')->name('smt.configgets');
 
 	// logout
