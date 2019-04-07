@@ -167,10 +167,10 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			var url = "{{ route('renshi.jiaban.applicantcube.applicantcubecreate') }}";
+			var url = "{{ route('logincube.checklogin') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-                username: username,
+                name: username,
                 password: password,
 			})
 			.then(function (response) {
@@ -206,13 +206,10 @@ var vm_app = new Vue({
                     toast.show()
 
                 }
-
-
 			})
 			.catch(function (error) {
-                // _this.error(false, '错误', '提交失败！');
                 const toast = _this.$createToast({
-                    txt: '提交失败！',
+                    txt: '登录失败！',
                     type: 'error'
                 })
                 toast.show()

@@ -237,6 +237,7 @@ Route::group(['prefix' => 'login', 'namespace' =>'Home'], function() {
 	Route::get('/', 'LoginController@index')->name('login');
 	Route::get('cube', 'LogincubeController@index')->name('logincube');
 	Route::post('checklogin', 'LoginController@checklogin')->name('login.checklogin');
+	Route::post('checklogin', 'LogincubeController@checklogin')->name('logincube.checklogin');
 	// Route::post('checklogin', 'LoginController@checklogin')->name('login.checklogin');
 });
 
