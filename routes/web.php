@@ -16,12 +16,9 @@
 // });
 
 // Renshi cube 路由
-Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>[]], function() {
+Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth']], function() {
 
 	// 111111111111111
-	// 显示applicantcube portal页面
-	Route::get('jiabancubeApplicant', 'JiabancubeController@jiabancubeApplicant')->name('renshi.jiaban.applicantcube');
-
 	// 显示applicantcube页面
 	Route::get('jiabancubeApplicant', 'JiabancubeController@jiabancubeApplicant')->name('renshi.jiaban.applicantcube');
 

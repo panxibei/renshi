@@ -76,7 +76,7 @@ if (isMobile) {
     // window.stop();
     
     // window.setTimeout(function(){
-        var url = "{{route('renshi.jiaban.applicantcube')}}";
+        var url = "{{route('logincube')}}";
         window.location.href = url;
     // }, 1000);
 }

@@ -445,11 +445,8 @@ var vm_app = new Vue({
 
         // toolbar - start
         gotoPortal(item) {
-            this.$createToast({
-                type: 'correct',
-                txt: 'clicked ' + item.text,
-                time: 1000
-            }).show()
+            var url = "{{ route('portalcube') }}";
+            window.location.href = url;
         },
 
         gotoTodo() {
@@ -462,6 +459,11 @@ var vm_app = new Vue({
         },
 
         gotoLogoff() {
+            this.$createToast({
+                type: 'correct',
+                txt: '正在注销...',
+                time: 1000
+            }).show()
             window.setTimeout(function(){
                 var url = "{{ route('main.logout') }}";
                 window.location.href = url;

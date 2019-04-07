@@ -21,8 +21,7 @@ class LoginController extends Controller
 	public function index()
 	{
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
-
-			return view('home.login', $config);
+	return view('home.login', $config);
 	}
 
 	public function checklogin(Request $request)
