@@ -27,7 +27,7 @@ Login -
         <cube-input v-model.lazy="username" placeholder="输入用户名"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[1]">
-        <cube-input v-model.lazy="password" type="password" :eye="{open:true,reverse:true}" placeholder="输入密码"></cube-input>
+        <cube-input v-model.lazy="password" type="password" :eye="{open:false,reverse:false}" placeholder="输入密码"></cube-input>
     </cube-form-item>
   </cube-form-group>
   <cube-form-group>

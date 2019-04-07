@@ -221,6 +221,10 @@ var vm_app = new Vue({
             {
             text: '<i class="cubeic-red-packet"></i> 查看归档',
             action: 'gotoArchived'
+            },
+            {
+            text: '<i class="cubeic-share"></i> 注销用户',
+            action: 'gotoLogoff'
             }
         ],
 
@@ -455,6 +459,13 @@ var vm_app = new Vue({
         gotoArchived() {
             console.log('gotoArchived');
             alert();
+        },
+
+        gotoLogoff() {
+            window.setTimeout(function(){
+                var url = "{{ route('main.logout') }}";
+                window.location.href = url;
+            }, 1000);
         },
 
         clickHandler_toolbar(item) {

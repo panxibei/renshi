@@ -210,6 +210,7 @@ Route::group(['prefix'=>'', 'namespace'=>'Main', 'middleware'=>['jwtauth']], fun
 	Route::get('/', 'mainController@mainPortal')->name('portal');
 	Route::get('portal', 'mainController@mainPortal')->name('portal');
 	Route::get('portalcube', 'mainController@mainPortalcube')->name('portalcube');
+	Route::get('portalcubeuser', 'mainController@portalcubeUser')->name('portalcubeuser');
 	Route::get('configgets', 'mainController@configGets')->name('smt.configgets');
 
 	// logout
@@ -237,7 +238,7 @@ Route::group(['prefix' => 'login', 'namespace' =>'Home'], function() {
 	Route::get('/', 'LoginController@index')->name('login');
 	Route::get('cube', 'LogincubeController@index')->name('logincube');
 	Route::post('checklogin', 'LoginController@checklogin')->name('login.checklogin');
-	Route::post('checklogin', 'LogincubeController@checklogin')->name('logincube.checklogin');
+	Route::post('checklogincube', 'LogincubeController@checklogin')->name('logincube.checklogin');
 	// Route::post('checklogin', 'LoginController@checklogin')->name('login.checklogin');
 });
 
