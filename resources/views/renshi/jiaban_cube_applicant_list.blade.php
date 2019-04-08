@@ -19,7 +19,8 @@ Renshi(Jiaban List) -
 	z-index: 5;
 }
 .scroll-list-wrap {
-  height: 200px;
+  /* height: 200px; */
+  height: 40rem;
 }
 </style>
 @endsection
@@ -39,7 +40,8 @@ Renshi(Jiaban List) -
 </header>
 <br>
 
-<div class="scroll-list-wrap">
+<!-- <div class="scroll-list-wrap"> -->
+<div :style="class_scroll">
   <cube-scroll
     ref="scroll"
     :data="data_scroll"
@@ -68,7 +70,39 @@ var vm_app = new Vue({
 	el: '#app',
 	data: {
 
+        class_scroll: {
+            'height': '640px'
+        },
+
         data_scroll: [
+            '😀 😁 😂 🤣 😃 😄 ',
+            '🙂 🤗 🤩 🤔 🤨 😐 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '😔 😕 🙃 🤑 😲 ☹️ ',
+            '🐣 🐣 🐣 🐣 🐣 🐣 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🐥 🐥 🐥 🐥 🐥 🐥 ',
+            '🤓 🤓 🤓 🤓 🤓 🤓 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🦔 🦔 🦔 🦔 🦔 🦔 ',
+            '🙈 🙈 🙈 🙈 🙈 🙈 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🚖 🚖 🚖 🚖 🚖 🚖 ',
+            '✌🏻 ✌🏻 ✌🏻 ✌🏻 ✌🏻 ✌🏻 ',
+            '😀 😁 😂 🤣 😃 😄 ',
+            '🙂 🤗 🤩 🤔 🤨 😐 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '😔 😕 🙃 🤑 😲 ☹️ ',
+            '🐣 🐣 🐣 🐣 🐣 🐣 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🐥 🐥 🐥 🐥 🐥 🐥 ',
+            '🤓 🤓 🤓 🤓 🤓 🤓 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🦔 🦔 🦔 🦔 🦔 🦔 ',
+            '🙈 🙈 🙈 🙈 🙈 🙈 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🚖 🚖 🚖 🚖 🚖 🚖 ',
+            '✌🏻 ✌🏻 ✌🏻 ✌🏻 ✌🏻 ✌🏻 ',
             '😀 😁 😂 🤣 😃 😄 ',
             '🙂 🤗 🤩 🤔 🤨 😐 ',
             '👆🏻 scroll up/down 👇🏻 ',
@@ -486,7 +520,11 @@ var vm_app = new Vue({
 
     },
 	mounted: function () {
-
+        let window_screen_height = window.screen.height - 200;
+        this.class_scroll = {
+            'height': window_screen_height + 'px'
+        };
+        console.log(this.class_scroll);
 	}
 })
 </script>
