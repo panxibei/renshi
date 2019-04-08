@@ -51,10 +51,20 @@ Renshi(Jiaban List) -
   
     <ul>
         <li v-for="item in data_scroll">
-        <div>
-            <span style="{height:14px;line-height:14px;font-size:14px;color:#07111b;}">@{{item.category}}</span>
-            <span style="{height:14px;line-height:14px;font-size:14px;color:#07111b;}">duration @{{item.duration}}</span>
-            <div style="{line-height: 10px;font-size: 10px;color: #93999f;}">datetimerange @{{item.datetimerange}}</div>
+        <div style="{display: flex;padding: 8px 14px 8px 20px;border-bottom: 1px solid rgba(7,17,27,.1);}">
+            <div style="{font-weight: 700;line-height: 24px;}">
+                <span style="{height:14px;line-height:14px;font-size:14px;color:#07111b;}">@{{item.category}}</span>
+                &nbsp;&nbsp;
+                <span style="{height:12px;line-height:12px;font-size:12px;color:#07111b;}">@{{item.duration}}小时</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="{height:12px;line-height:12px;font-size:12px;color:#07111b;}">[@{{item.created_at}}]</span>
+            </div>
+            <div style="{font-weight: 700;line-height: 10px;}">
+                <span style="{line-height:10px;font-size:10px;color:#93999f;}">时间：@{{item.datetimerange}}</span>
+            </div>
+            <div style="{font-weight: 700;line-height: 24px;}">
+                <span style="{margin-right: 8px;font-size: 12px;color: #f01414;}">状态：@{{item.status}}</span>
+            </div>
         </div>
         </li>
     </ul>
@@ -89,49 +99,67 @@ var vm_app = new Vue({
 
         data_scroll: [
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': '大家好',
                 'duration': 1,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a2',
                 'duration': 1.5,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a3',
                 'duration': 2.5,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a1',
                 'duration': 1,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a2',
                 'duration': 1.5,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a3',
                 'duration': 2.5,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a1',
                 'duration': 1,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a2',
                 'duration': 1.5,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
             {
+                'created_at': '2019-01-01 12:12:12',
                 'category': 'a3',
                 'duration': 2.5,
-                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                'status': 1
             },
 
         ],
