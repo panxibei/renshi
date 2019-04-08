@@ -18,6 +18,9 @@ Renshi(Jiaban List) -
 	backface-visibility: hidden;
 	z-index: 5;
 }
+.scroll-list-wrap {
+  height: 200px;
+}
 </style>
 @endsection
 
@@ -32,49 +35,22 @@ Renshi(Jiaban List) -
 <cube-toolbar :actions="actions_toolbar" @click="clickHandler_toolbar"></cube-toolbar>
 
 <header class="title-jiaban-applicant">
-<h1>加班申请单</h1>
+<h1>列表</h1>
 </header>
 <br>
 
-<cube-form :model="model" @validate="validateHandler" @submit="submitHandler" @reset="resetHandler">
-  <cube-form-group>
-    <cube-form-item :field="fields[0]">
-        <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[1]">
-        <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" readonly></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[2]">
-        <cube-input v-model.lazy="jiaban_add_department" placeholder="部门" readonly></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[3]">
-        <cube-input v-model.lazy="jiaban_add_startdate" @focus="showDateTimePicker_startdate" placeholder="选择开始时间"></cube-input>
-        <!-- <cube-button @click="showDateTimePicker">@{{model.dateValue || 'Please select date'}}</cube-button> -->
-        <!-- <date-picker ref="datePicker" :min="[2008, 8, 8]" :max="[2020, 10, 20]" @select="dateSelectHandler"></date-picker> -->
-    </cube-form-item>
-    <cube-form-item :field="fields[4]">
-        <cube-input v-model.lazy="jiaban_add_enddate" @focus="showDateTimePicker_enddate" placeholder="选择结束时间"></cube-input>
-    </cube-form-item>
-    <cube-form-item :field="fields[5]">
-        <cube-select v-model.lazy="jiaban_add_duration" :options="jiaban_add_duration_options" title="选择时长（小时）" placeholder="选择时长"></cube-select>
-    </cube-form-item>
-    <cube-form-item :field="fields[6]">
-        <cube-select v-model.lazy="jiaban_add_category" :options="jiaban_add_category_options" title="选择类别" placeholder="选择类别"></cube-select>
-    </cube-form-item>
-    <cube-form-item :field="fields[7]">
-        <cube-textarea v-model.lazy="jiaban_add_reason" maxlength="100" placeholder="在此填写理由..."></cube-textarea>
-    </cube-form-item>
-    <cube-form-item :field="fields[8]">
-        <cube-textarea v-model.lazy="jiaban_add_remark" maxlength="100" placeholder="在些填写备注..."></cube-textarea>
-    </cube-form-item>
-  </cube-form-group>
-  <cube-form-group>
-  <br>
-    <cube-button type="submit">提 交</cube-button>
-    <br>
-    <cube-button type="reset">清 除</cube-button>
-  </cube-form-group>
-</cube-form>
+<div class="scroll-list-wrap">
+  <cube-scroll
+    ref="scroll"
+    :data="data_scroll"
+    :options="options_scroll"
+    @pulling-down="onPullingDown"
+    @pulling-up="onPullingUp">
+  </cube-scroll>
+</div>
+
+<br>
+abc
 
 
 <br>
@@ -91,6 +67,47 @@ Renshi(Jiaban List) -
 var vm_app = new Vue({
 	el: '#app',
 	data: {
+
+        data_scroll: [
+            '😀 😁 😂 🤣 😃 😄 ',
+            '🙂 🤗 🤩 🤔 🤨 😐 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '😔 😕 🙃 🤑 😲 ☹️ ',
+            '🐣 🐣 🐣 🐣 🐣 🐣 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🐥 🐥 🐥 🐥 🐥 🐥 ',
+            '🤓 🤓 🤓 🤓 🤓 🤓 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🦔 🦔 🦔 🦔 🦔 🦔 ',
+            '🙈 🙈 🙈 🙈 🙈 🙈 ',
+            '👆🏻 scroll up/down 👇🏻 ',
+            '🚖 🚖 🚖 🚖 🚖 🚖 ',
+            '✌🏻 ✌🏻 ✌🏻 ✌🏻 ✌🏻 ✌🏻 ',
+
+        ],
+
+        options_scroll: {
+            pullDownRefresh: {
+                threshold: 90,
+                stop: 40,
+                txt: '刷新成功！'
+            },
+            pullUpLoad: {
+                threshold: 0,
+                txt: {
+                    more: '上拉加载更多...',
+                    noMore: '没有更多数据...'
+                }
+            }
+        },
+
+
+
+
+
+
+
+
 
         jiaban_add_uid: '',
         jiaban_add_applicant: '',
@@ -110,103 +127,7 @@ var vm_app = new Vue({
         jiaban_add_remark: '',
 
 
-        model: {
-            inputValue: '',
-            pcaValue: [],
-            dateValue: ''
-        },
-        fields: [
-            { //0
-                // type: 'select',
-                // modelKey: 'jiaban_add_uid',
-                label: '工号',
-                rules: {
-                    required: true
-                }
-            },
-            { //1
-                // type: 'input',
-                // modelKey: 'jiaban_add_applicant',
-                label: '申请人姓名',
-                rules: {
-                    required: false
-                },
-                // validating when blur
-                trigger: 'blur'
-            },
-            { //2
-                // type: 'input',
-                // modelKey: 'jiaban_add_department',
-                label: '申请人部门',
-                rules: {
-                    required: false
-                },
-                trigger: 'blur'
-            },
-            { //3
-                // modelKey: 'jiaban_add_startdate',
-                label: '开始时间',
-                rules: {
-                    required: true
-                }
-            },
-            { //4
-                // modelKey: 'dateValue',
-                label: '结束时间',
-                rules: {
-                    required: true
-                }
-            },
-            { //5
-                // type: 'input',
-                // modelKey: 'inputValue',
-                label: '时长',
-                rules: {
-                    required: true
-                }
-            },
-            { //6
-                // type: 'input',
-                // modelKey: 'inputValue',
-                label: '类别',
-                rules: {
-                    required: true
-                }
-            },
-            { //7
-                // type: 'textarea',
-                // modelKey: 'jiaban_add_reason',
-                label: '理由',
-                rules: {
-                    required: true
-                },
-                // props: {
-                //     placeholder: "加班理由",
-                //     maxlength: 100,
-                //     // autofocus: true
-                // },
-                // debounce validate
-                // if set to true, the default debounce time will be 200(ms)
-                // debounce: 100
-            },
-            { //8
-                // type: 'textarea',
-                // modelKey: 'jiaban_add_remark',
-                label: '备注',
-                rules: {
-                    required: false
-                },
-                // props: {
-                //     placeholder: "备注",
-                //     maxlength: 100,
-                //     // autofocus: true
-                // },
-                // debounce: 100
-            },
 
-
-
-        ],
 
 
         actions_toolbar: [
@@ -247,34 +168,65 @@ var vm_app = new Vue({
 
 
 
-        column1: [{ text: '剧毒', value: '剧毒'}, { text: '蚂蚁', value: '蚂蚁' },
-            { text: '幽鬼', value: '幽鬼' }],
-
-        column2: [{ text: '剧毒2', value: '剧毒2'}, { text: '蚂蚁2', value: '蚂蚁2' },
-            { text: '幽鬼2', value: '幽鬼2' }],
-
-        checkList: ['1', '4'],
-        options0: [
-            '1',
-            '2',
-            {
-            label: '3',
-            value: '3',
-            disabled: true
-            },
-            {
-            label: '4',
-            value: '4',
-            disabled: true
-            }
-        ],
 
 
 
 
-
-	},
+    },
 	methods: {
+
+        onPullingDown() {
+            // 下拉刷新数据
+            setTimeout(() => {
+            if (Math.random() > 0.5) {
+                // 如果有新数据
+                // this.data_scroll.unshift(_foods[1])
+
+                                // 如果有新数据
+                                let _foods = [
+                    '🙈 🙈 🙈 🙈 🙈 🙈',
+                    '🙈 🙈 🙈 🙈 🙈 🙈',
+                    '🙈 🙈 🙈 🙈 🙈 🙈',
+                ]
+                let newPage = _foods.slice(0, 5)
+                // this.data_scroll = this.data_scroll.concat(newPage)
+                this.data_scroll = _foods
+            } else {
+                // 如果没有新数据
+                this.$refs.scroll.forceUpdate()
+            }
+            }, 1000)
+        },
+        onPullingUp() {
+            // 上拉追加数据
+            setTimeout(() => {
+            if (Math.random() > 0.5) {
+                // 如果有新数据
+                let _foods = [
+                    '🤓 🤓 🤓 🤓 🤓 🤓',
+                    '🤓 🤓 🤓 🤓 🤓 🤓',
+                    '🤓 🤓 🤓 🤓 🤓 🤓',
+                ]
+                let newPage = _foods.slice(0, 5)
+                this.data_scroll = this.data_scroll.concat(newPage)
+            } else {
+                // 如果没有新数据
+                this.$refs.scroll.forceUpdate()
+            }
+            }, 1000)
+        },
+
+
+
+
+
+
+
+
+
+
+
+
 
         // showDateTimePicker
         showDateTimePicker_startdate() {
@@ -532,7 +484,7 @@ var vm_app = new Vue({
 
 
 
-	},
+    },
 	mounted: function () {
 
 	}
