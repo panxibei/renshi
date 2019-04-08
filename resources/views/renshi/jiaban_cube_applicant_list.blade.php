@@ -95,6 +95,12 @@ var vm_app = new Vue({
 	el: '#app',
 	data: {
 
+        //分页
+		page_current: 1,
+		page_total: 1, // 记录总数，非总页数
+		page_size: 10,
+		page_last: 1,
+
         class_scroll: {
             'height': '640px'
         },
@@ -191,34 +197,6 @@ var vm_app = new Vue({
         },
 
 
-
-
-
-
-
-
-
-        jiaban_add_uid: '',
-        jiaban_add_applicant: '',
-        jiaban_add_department: '',
-        jiaban_add_startdate: '',
-        jiaban_add_enddate: '',
-        jiaban_add_duration: '',
-        jiaban_add_duration_options: [
-            0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5,
-            6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5,
-            12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5,
-            18, 18.5, 19, 19.5, 20, 20.5, 21, 21.5, 22, 22.5, 23, 23.5, 24
-        ],
-        jiaban_add_category: '',
-        jiaban_add_category_options: ['平时加班', '双休加班', '节假日加班'],
-        jiaban_add_reason: '',
-        jiaban_add_remark: '',
-
-
-
-
-
         actions_toolbar: [
             {
             text: '<i class="cubeic-home"></i> 返回首页',
@@ -264,8 +242,8 @@ var vm_app = new Vue({
     },
 	methods: {
 
+        // 下拉刷新数据
         onPullingDown() {
-            // 下拉刷新数据
             setTimeout(() => {
             if (Math.random() > 0.5) {
                 // 如果有新数据
@@ -287,8 +265,9 @@ var vm_app = new Vue({
             }
             }, 1000)
         },
+
+        // 上拉追加数据
         onPullingUp() {
-            // 上拉追加数据
             setTimeout(() => {
             if (Math.random() > 0.5) {
                 // 如果有新数据
@@ -307,7 +286,69 @@ var vm_app = new Vue({
         },
 
 
+        jiabancubeGetsApplicant(page, last_page) {
+            var _this = this;
 
+            if (page > last_page) {
+				page = last_page;
+			} else if (page < 1) {
+				page = 1;
+			}
+
+			var url = "{{ route('renshi.jiaban.applicantcube.applicantcubegets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url, {
+                perPage: _this.page_size,
+				page: page,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+				
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+                    // _this.success(false, '成功', '提交成功！');
+
+                    var orignal_data = response.data.data;
+
+                    orignal_data.map(function (v,i) {
+console.log(v.application);
+
+                    });
+
+                    console.log(orignal_data);
+                    console.log(orignal_data[0]['application']);
+                    return false;
+
+                    const toast = _this.$createToast({
+                        txt: '提交成功！',
+                        type: 'correct'
+                    })
+                    toast.show()
+				} else {
+                    // _this.error(false, '失败', '提交失败！');
+                    const toast = _this.$createToast({
+                        txt: '提交失败！',
+                        type: 'error'
+                    })
+                    toast.show()
+				}
+			})
+			.catch(function (error) {
+                // _this.error(false, '错误', '提交失败！');
+                const toast = _this.$createToast({
+                    txt: '提交失败！',
+                    type: 'error'
+                })
+                toast.show()
+			})
+
+
+        },
 
 
 
@@ -580,7 +621,8 @@ var vm_app = new Vue({
         this.class_scroll = {
             'height': window_screen_height + 'px'
         };
-        console.log(this.class_scroll);
+        
+        this.jiabancubeGetsApplicant(1, 1);
 	}
 })
 </script>

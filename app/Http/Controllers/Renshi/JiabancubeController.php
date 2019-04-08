@@ -175,6 +175,73 @@ class JiabancubeController extends Controller
 
 
 
+    /**
+     * jiaban cube applicant列表
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function jiabancubeGetsApplicant(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		$uid = $user['uid'];
+
+		$url = request()->url();
+		$queryParams = request()->query();
+		
+		$perPage = $queryParams['perPage'] ?? 10;
+		$page = $queryParams['page'] ?? 1;
+		
+// dd($queryfilter_created_at);
+		//对查询参数按照键名排序
+		ksort($queryParams);
+
+		//将查询数组转换为查询字符串
+		$queryString = http_build_query($queryParams);
+
+		$fullUrl = sha1("{$url}?{$queryString}");
+		
+		
+		//首先查寻cache如果找到
+		if (Cache::has($fullUrl)) {
+			$result = Cache::get($fullUrl);    //直接读取cache
+		} else {                                   //如果cache里面没有
+			$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+				// ->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
+				// 	return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
+				// })
+				// ->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+				// 	return $query->whereBetween('created_at', $queryfilter_created_at);
+				// })
+				// ->when($queryfilter_trashed, function ($query) use ($queryfilter_trashed) {
+				// 	return $query->onlyTrashed();
+				// })
+				// ->when($uid > 10, function ($query) use ($uid) {
+				// 	// if ($uid > 10) {
+				// 		return $query->where('uid_of_agent', $uid);
+				// 	// }
+				// })
+				// ->where('uid_of_agent', $user['uid'])
+				->where('archived', false)
+				// ->where('uid_of_agent', '>', 10)
+				// ->onlyTrashed()
+				// ->offset(10)
+				->limit(10)
+				->orderBy('created_at', 'desc')
+				->paginate($perPage, ['*'], 'page', $page);
+
+			Cache::put($fullUrl, $result, now()->addSeconds(1));
+		}
+		// dd($result);
+		return $result;
+    }
 
 
 
