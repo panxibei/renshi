@@ -48,6 +48,19 @@ Renshi(Jiaban List) -
     :options="options_scroll"
     @pulling-down="onPullingDown"
     @pulling-up="onPullingUp">
+  
+    <ul>
+        <li v-for="item in data_scroll">
+        <div>
+            <span style="{height:14px;line-height:14px;font-size:14px;color:#07111b;}">@{{item.category}}</span>
+            <span style="{height:14px;line-height:14px;font-size:14px;color:#07111b;}">duration @{{item.duration}}</span>
+            <div style="{line-height: 10px;font-size: 10px;color: #93999f;}">datetimerange @{{item.datetimerange}}</div>
+        </div>
+        </li>
+    </ul>
+  
+  
+  
   </cube-scroll>
 </div>
 
@@ -75,6 +88,55 @@ var vm_app = new Vue({
         },
 
         data_scroll: [
+            {
+                'category': '大家好',
+                'duration': 1,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a2',
+                'duration': 1.5,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a3',
+                'duration': 2.5,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a1',
+                'duration': 1,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a2',
+                'duration': 1.5,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a3',
+                'duration': 2.5,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a1',
+                'duration': 1,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a2',
+                'duration': 1.5,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+            {
+                'category': 'a3',
+                'duration': 2.5,
+                datetimerange: '2019-01-01 12:12:12 - 2019-01-01 22:22:22'
+            },
+
+        ],
+
+        data_scroll0: [
             '😀 😁 😂 🤣 😃 😄 ',
             '🙂 🤗 🤩 🤔 🤨 😐 ',
             '👆🏻 scroll up/down 👇🏻 ',
@@ -222,8 +284,9 @@ var vm_app = new Vue({
                     '🙈 🙈 🙈 🙈 🙈 🙈',
                     '🙈 🙈 🙈 🙈 🙈 🙈',
                 ]
-                let newPage = _foods.slice(0, 5)
-                // this.data_scroll = this.data_scroll.concat(newPage)
+                // let newPage = _foods.slice(0, 5)
+                // // this.data_scroll = this.data_scroll.concat(newPage)
+                // this.data_scroll = _foods
                 this.data_scroll = _foods
             } else {
                 // 如果没有新数据
