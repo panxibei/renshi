@@ -1,7 +1,7 @@
 @extends('renshi.layouts.mainbase_cube')
 
 @section('my_title')
-Renshi(Jiaban Application) - 
+Renshi(Jiaban List) - 
 @parent
 @endsection
 
@@ -446,8 +446,7 @@ var vm_app = new Vue({
         },
 
         gotoJiabanList() {
-            var url = "{{ route('renshi.jiaban.applicantcube.list') }}";
-            window.location.href = url;
+            console.log('gotoTodo');
         },
 
         gotoLogoff() {

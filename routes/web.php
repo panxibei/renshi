@@ -22,6 +22,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// 显示applicantcube页面
 	Route::get('jiabancubeApplicant', 'JiabancubeController@jiabancubeApplicant')->name('renshi.jiaban.applicantcube');
 
+	// 显示applicant list cube页面
+	Route::get('jiabancubeApplicantList', 'JiabancubeController@jiabancubeApplicantList')->name('renshi.jiaban.applicantcube.list');
+
 	// applicantcubeCreate
 	Route::post('applicantcubeCreate', 'JiabancubeController@applicantcubeCreate')->name('renshi.jiaban.applicantcube.applicantcubecreate');
 

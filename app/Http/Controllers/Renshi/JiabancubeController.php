@@ -38,6 +38,29 @@ class JiabancubeController extends Controller
 		return view('renshi.jiaban_cube_applicant', $share);
 		}
 
+
+    /**
+     * 列出applicant list 页面
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function jiabancubeApplicantList()
+    {
+		// 获取JSON格式的jwt-auth用户响应
+		$me = response()->json(auth()->user());
+
+		// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+		$user = json_decode($me->getContent(), true);
+		// 用户信息：$user['id']、$user['name'] 等
+
+        // 获取配置值
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+		
+		$share = compact('config', 'user');
+		return view('renshi.jiaban_cube_applicant_list', $share);
+		}
+
     
 
 	/**

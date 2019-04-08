@@ -112,12 +112,8 @@ var vm_app = new Vue({
             action: 'gotoApplicant'
             },
             {
-            text: '<i class="cubeic-edit"></i> 处理加班',
-            action: 'gotoTodo'
-            },
-            {
-            text: '<i class="cubeic-red-packet"></i> 查看归档',
-            action: 'gotoArchived'
+            text: '<i class="cubeic-calendar"></i> 查看加班',
+            action: 'gotoJiabanList'
             },
             {
             text: '<i class="cubeic-share"></i> 注销用户',
@@ -147,13 +143,9 @@ var vm_app = new Vue({
             window.location.href = url;
         },
 
-        gotoTodo() {
-            console.log('gotoTodo');
-        },
-
-        gotoArchived() {
-            console.log('gotoArchived');
-            alert();
+        gotoJiabanList() {
+            var url = "{{ route('renshi.jiaban.applicantcube.list') }}";
+            window.location.href = url;
         },
 
         gotoLogoff() {
