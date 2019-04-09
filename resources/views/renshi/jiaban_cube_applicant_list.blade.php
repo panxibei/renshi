@@ -91,7 +91,7 @@ var vm_app = new Vue({
         //分页
 		page_current: 1,
 		page_total: 1, // 记录总数，非总页数
-		page_size: 10,
+		page_size: 5,
 		page_last: 1,
 
         class_scroll: {
