@@ -229,7 +229,7 @@ class JiabancubeController extends Controller
 				// 		return $query->where('uid_of_agent', $uid);
 				// 	// }
 				// })
-				// ->where('uid_of_agent', $user['uid'])
+				->where('uid_of_agent', $uid)
 				->where('archived', false)
 				// ->where('uid_of_agent', '>', 10)
 				// ->onlyTrashed()

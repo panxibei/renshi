@@ -71,17 +71,10 @@ Renshi(Jiaban List) -
         </li>
     </ul>
   
-  
-  
   </cube-scroll>
 </div>
 
 <br>
-abc
-
-
-<br>
-
 @endsection
 
 @section('my_footer')
@@ -745,7 +738,7 @@ var vm_app = new Vue({
 
     },
 	mounted: function () {
-        let window_screen_height = window.screen.height - 200;
+        let window_screen_height = window.screen.height - 300;
         this.class_scroll = {
             'height': window_screen_height + 'px'
         };
