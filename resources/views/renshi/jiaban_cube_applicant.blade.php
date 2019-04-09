@@ -39,7 +39,7 @@ Renshi(Jiaban Application) -
 <cube-form :model="model" @validate="validateHandler" @submit="submitHandler" @reset="resetHandler">
   <cube-form-group>
     <cube-form-item :field="fields[0]">
-        <cube-input v-model.lazy="jiaban_add_uid" placeholder="输入工号"></cube-input>
+        <cube-input v-model.lazy="jiaban_add_uid" @blur="onchange_applicant" clearable placeholder="输入工号"></cube-input>
     </cube-form-item>
     <cube-form-item :field="fields[1]">
         <cube-input v-model.lazy="jiaban_add_applicant" placeholder="姓名" readonly></cube-input>
@@ -247,27 +247,6 @@ var vm_app = new Vue({
 
 
 
-        column1: [{ text: '剧毒', value: '剧毒'}, { text: '蚂蚁', value: '蚂蚁' },
-            { text: '幽鬼', value: '幽鬼' }],
-
-        column2: [{ text: '剧毒2', value: '剧毒2'}, { text: '蚂蚁2', value: '蚂蚁2' },
-            { text: '幽鬼2', value: '幽鬼2' }],
-
-        checkList: ['1', '4'],
-        options0: [
-            '1',
-            '2',
-            {
-            label: '3',
-            value: '3',
-            disabled: true
-            },
-            {
-            label: '4',
-            value: '4',
-            disabled: true
-            }
-        ],
 
 
 
@@ -470,59 +449,53 @@ var vm_app = new Vue({
         // toolbar - end
 
 
+        // 选择uid查看applicant和department
+		onchange_applicant() {
+			var _this = this;
 
+			var employeeid = _this.jiaban_add_uid;
+			// console.log(roleid);return false;
+			
+			if (employeeid == undefined || employeeid == '') {
+                _this.jiaban_add_applicant = '';
+                _this.jiaban_add_department = '';
+				return false;
+			}
 
+			var url = "{{ route('renshi.jiaban.applicant.employeelist') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					employeeid: employeeid
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        handleClick() {
-			console.log('aaaaaaa');
-			this.$dialog.alert({
-                title: '标题',
-                message: '弹窗内容'
-                }).then(() => {
-                // on close
-            });
-
-        },
-
-
-        // showToast
-		showToastTime() {
-            const toast = this.$createToast({
-                time: 2000,
-                txt: 'Toast time 2s'
-            })
-            toast.show()
-        },
-
-        showToastTxtOnly() {
-            this.toast = this.$createToast({
-                txt: 'Plain txt here!!!!!!!!!!!!!!!',
-                type: 'txt'
-            })
-            this.toast.show()
-        },
-
-
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+                    var json = response.data;
+                    var arr = [];
+                    for (var key in json) {
+                        arr.push(json[key]);
+                    }
+                    _this.jiaban_add_applicant = arr[0];
+                    _this.jiaban_add_department = arr[1];
+				} else {
+                    _this.jiaban_add_applicant = '';
+                    _this.jiaban_add_department = '';
+                }
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
+		},
 
 
         

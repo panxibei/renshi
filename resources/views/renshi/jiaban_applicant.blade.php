@@ -1091,7 +1091,7 @@ var vm_app = new Vue({
 			}
 		},
 
-        // 选择role查看permission
+        // 选择uid查看applicant和department
 		onchange_applicant: function (value, index) {
 			var _this = this;
 
@@ -1116,10 +1116,10 @@ var vm_app = new Vue({
 				// console.log(response.data);
 				// return false;
 
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
 				
 				if (response.data) {
                     var json = response.data;
