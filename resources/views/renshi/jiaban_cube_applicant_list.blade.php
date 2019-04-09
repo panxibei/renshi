@@ -196,8 +196,8 @@ var vm_app = new Vue({
             action: 'gotoPortal'
             },
             {
-            text: '<i class="cubeic-calendar"></i> 查看加班',
-            action: 'gotoJiabanList'
+            text: '<i class="cubeic-person"></i> 申请加班',
+            action: 'gotoApplicant'
             },
             {
             text: '<i class="cubeic-share"></i> 注销用户',
@@ -471,186 +471,15 @@ var vm_app = new Vue({
 
         },
 
-
-
-
-
-
-
-
-
-
-        // showDateTimePicker
-        showDateTimePicker_startdate() {
-            if (!this.dateTimePicker_startdate) {
-                this.dateTimePicker_startdate = this.$createDatePicker({
-                title: '选择开始时间',
-                min: new Date(2018, 12, 1, 0, 0, 0),
-                // max: new Date(2020, 9, 20, 20, 59, 59),
-                max: new Date(this.jiaban_add_enddate || '2099-12-31 23:59:59'),
-                value: new Date(),
-                columnCount: 6,
-                onSelect: this.selectHandle_startdate,
-                onCancel: this.cancelHandle_startdate
-                })
-            }
-
-            this.dateTimePicker_startdate.show()
-        },
-        selectHandle_startdate(date, selectedVal, selectedText) {
-            this.jiaban_add_startdate = date.Format("yyyy-MM-dd hh:mm:ss")
-            // this.$createDialog({
-            //     type: 'warn',
-            //     content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
-            //     icon: 'cubeic-alert'
-            // }).show()
-        },
-        cancelHandle_startdate() {
-            // this.$createToast({
-            //     type: 'correct',
-            //     txt: 'Picker canceled',
-            //     time: 1000
-            // }).show()
-        },
-
-        // showDateTimePicker
-        showDateTimePicker_enddate() {
-            if (!this.dateTimePicker_enddate) {
-                this.dateTimePicker_enddate = this.$createDatePicker({
-                title: '选择结束时间',
-                // min: new Date(2008, 7, 8, 8, 0, 0),
-                min: new Date(this.jiaban_add_startdate || '2019-01-01 00:00:00'),
-                max: new Date(2099, 12, 31, 23, 59, 59),
-                value: new Date(),
-                columnCount: 6,
-                onSelect: this.selectHandle_enddate,
-                onCancel: this.cancelHandle_enddate
-                })
-            }
-
-            this.dateTimePicker_enddate.show()
-        },
-        selectHandle_enddate(date, selectedVal, selectedText) {
-            this.jiaban_add_enddate = date.Format("yyyy-MM-dd hh:mm:ss")
-            // this.$createDialog({
-            //     type: 'warn',
-            //     content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
-            //     icon: 'cubeic-alert'
-            // }).show()
-        },
-        cancelHandle_enddate() {
-            // this.$createToast({
-            //     type: 'correct',
-            //     txt: 'Picker canceled',
-            //     time: 1000
-            // }).show()
-        },
-
-
-        // form
-        submitHandler(e) {
-            e.preventDefault()
-            // console.log('submit', e)
-            // alert('submit');
-            var _this = this;
-
-            var uid = _this.jiaban_add_uid;
-            var applicant = _this.jiaban_add_applicant;
-            var department = _this.jiaban_add_department;
-            var startdate = _this.jiaban_add_startdate;
-            var enddate = _this.jiaban_add_enddate;
-            var duration = _this.jiaban_add_duration;
-            var category = _this.jiaban_add_category;
-            var reason = _this.jiaban_add_reason;
-            var remark = _this.jiaban_add_remark;
-
-            if (uid == '' || applicant == '' || department == '' || startdate == '' || enddate == '' || category == ''  || duration == '' || reason == ''
-            || uid == undefined || applicant == undefined || department == undefined || startdate == undefined || enddate == undefined || category == undefined  || duration == undefined || reason == undefined) {
-                // _this.warning(false, '警告', '输入内容为空或不正确！');
-                const toast = _this.$createToast({
-                    txt: '输入内容为空或不正确！',
-                    type: 'warn'
-                })
-                toast.show()
-				return false;
-			}
-
-			var url = "{{ route('renshi.jiaban.applicantcube.applicantcubecreate') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-                uid: uid,
-                applicant: applicant,
-                department: department,
-                startdate: startdate,
-                enddate: enddate,
-                duration: duration,
-                category: category,
-                reason: reason,
-                remark: remark,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-				
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.onclear_applicant();
-					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
-                    // _this.success(false, '成功', '提交成功！');
-                    const toast = _this.$createToast({
-                        txt: '提交成功！',
-                        type: 'correct'
-                    })
-                    toast.show()
-				} else {
-                    // _this.error(false, '失败', '提交失败！');
-                    const toast = _this.$createToast({
-                        txt: '提交失败！',
-                        type: 'error'
-                    })
-                    toast.show()
-				}
-			})
-			.catch(function (error) {
-                // _this.error(false, '错误', '提交失败！');
-                const toast = _this.$createToast({
-                    txt: '提交失败！',
-                    type: 'error'
-                })
-                toast.show()
-			})
-
-        },
-        validateHandler(result) {
-            // this.validity = result.validity
-            // this.valid = result.valid
-            // console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
-        },
-        resetHandler(e) {
-            // console.log('reset', e)
-            this.jiaban_add_uid = '';
-            this.jiaban_add_applicant = '';
-            this.jiaban_add_department = '';
-            this.jiaban_add_startdate = '';
-            this.jiaban_add_enddate = '';
-            this.jiaban_add_duration = '';
-            this.jiaban_add_category = '';
-            this.jiaban_add_reason = '';
-            this.jiaban_add_remark = '';
-        },
-
         // toolbar - start
         gotoPortal(item) {
             var url = "{{ route('portalcube') }}";
             window.location.href = url;
         },
 
-        gotoJiabanList() {
-            console.log('gotoTodo');
+        gotoApplicant(item) {
+            var url = "{{ route('renshi.jiaban.applicantcube') }}";
+            window.location.href = url;
         },
 
         gotoLogoff() {
@@ -673,66 +502,6 @@ var vm_app = new Vue({
         // toolbar - end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        handleClick() {
-			console.log('aaaaaaa');
-			this.$dialog.alert({
-                title: '标题',
-                message: '弹窗内容'
-                }).then(() => {
-                // on close
-            });
-
-        },
-
-
-        // showToast
-		showToastTime() {
-            const toast = this.$createToast({
-                time: 2000,
-                txt: 'Toast time 2s'
-            })
-            toast.show()
-        },
-
-        showToastTxtOnly() {
-            this.toast = this.$createToast({
-                txt: 'Plain txt here!!!!!!!!!!!!!!!',
-                type: 'txt'
-            })
-            this.toast.show()
-        },
-
-
-
-
-        
-
-
-
-		
 
 
 
