@@ -44,10 +44,9 @@
         <Header class="header">
         <h1>
             {{$SITE_TITLE}}
-            <br>
-            <small style="{line-height:11px;font-size:11px;color:#93999f;}">
+            <div style="{line-height:11px;font-size:11px;color:#93999f;}">
                 {{$SITE_VERSION}}
-            </small>
+            </div>
         </h1>
         </Header>
         <br><br><br><br><br><br>
