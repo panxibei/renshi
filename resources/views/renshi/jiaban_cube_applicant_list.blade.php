@@ -314,14 +314,27 @@ var vm_app = new Vue({
                     // _this.success(false, '成功', '提交成功！');
 
                     var orignal_data = response.data.data;
+                    var result_data = [];
+
+                    console.log(orignal_data[0]);
+                    return false;
 
                     orignal_data.map(function (v,i) {
-console.log(v.application);
+                        console.log(v.application);
+                        result_data = {
+                            'created_at': '2019-01-01 12:12:12',
+                            'category': 'a3',
+                            'duration': 2.5,
+                            'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+                            'status': 1,
+                            'auditor': 'admin'
+
+                        };
 
                     });
 
-                    console.log(orignal_data);
-                    console.log(orignal_data[0]['application']);
+                    // console.log(orignal_data);
+                    // console.log(orignal_data[0]['application']);
                     return false;
 
                     const toast = _this.$createToast({
