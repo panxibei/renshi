@@ -353,7 +353,7 @@ var vm_app = new Vue({
 					return false;
 				}
                 
-                if (response.data.data.length) {
+                if (response.data.data.length!=0) {
 
                     _this.page_last = response.data.last_page;
                     let orignal_data = response.data.data;
@@ -373,8 +373,11 @@ var vm_app = new Vue({
                         });
 
                     });
+                    // console.log(_this.data_scroll);
+                    // console.log(result_data);
 
-                    _this.data_scroll.push(result_data);
+                    _this.data_scroll = _this.data_scroll.concat(result_data);
+                    // console.log(_this.data_scroll);
                 } else {
                     // 如果没有新数据
                     _this.$refs.scroll.forceUpdate()
