@@ -198,8 +198,9 @@ class JiabancubeController extends Controller
 		
 		$perPage = $queryParams['perPage'] ?? 10;
 		$page = $queryParams['page'] ?? 1;
-		
-// dd($queryfilter_created_at);
+
+// dd($page);
+		// dd($queryfilter_created_at);
 		//对查询参数按照键名排序
 		ksort($queryParams);
 
@@ -236,6 +237,7 @@ class JiabancubeController extends Controller
 				->limit(10)
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
+				// ->simplePaginate(10);
 
 			Cache::put($fullUrl, $result, now()->addSeconds(1));
 		}

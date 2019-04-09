@@ -63,7 +63,7 @@ Renshi(Jiaban List) -
                 <span style="{line-height:10px;font-size:10px;color:#93999f;}">时间：@{{item.datetimerange}}</span>
             </div>
             <div style="{font-weight: 700;line-height: 24px;}">
-                <span style="{margin-right: 8px;font-size: 12px;color: #f01414;}">状态：@{{item.status}}</span>
+                <span style="{margin-right: 8px;font-size: 12px;color: #f01414;}">状态：@{{item.status == 99 ? '已结案' : '处理中'}}</span>
                 &nbsp;&nbsp;
                 <span style="{margin-right: 8px;font-size: 12px;color: #f01414;}">当前审核：@{{item.auditor}}</span>
             </div>
@@ -106,78 +106,78 @@ var vm_app = new Vue({
         },
 
         data_scroll: [
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': '大家好',
-                'duration': 1,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a2',
-                'duration': 1.5,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a3',
-                'duration': 2.5,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a1',
-                'duration': 1,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a2',
-                'duration': 1.5,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a3',
-                'duration': 2.5,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a1',
-                'duration': 1,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a2',
-                'duration': 1.5,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
-            {
-                'created_at': '2019-01-01 12:12:12',
-                'category': 'a3',
-                'duration': 2.5,
-                'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                'status': 1,
-                'auditor': 'admin'
-            },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': '大家好',
+            //     'duration': 1,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a2',
+            //     'duration': 1.5,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a3',
+            //     'duration': 2.5,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a1',
+            //     'duration': 1,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a2',
+            //     'duration': 1.5,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a3',
+            //     'duration': 2.5,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a1',
+            //     'duration': 1,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a2',
+            //     'duration': 1.5,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
+            // {
+            //     'created_at': '2019-01-01 12:12:12',
+            //     'category': 'a3',
+            //     'duration': 2.5,
+            //     'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
+            //     'status': 1,
+            //     'auditor': 'admin'
+            // },
 
         ],
 
@@ -244,45 +244,152 @@ var vm_app = new Vue({
 
         // 下拉刷新数据
         onPullingDown() {
-            setTimeout(() => {
-            if (Math.random() > 0.5) {
-                // 如果有新数据
-                // this.data_scroll.unshift(_foods[1])
+            var _this = this;
 
-                                // 如果有新数据
-                                let _foods = [
-                    '🙈 🙈 🙈 🙈 🙈 🙈',
-                    '🙈 🙈 🙈 🙈 🙈 🙈',
-                    '🙈 🙈 🙈 🙈 🙈 🙈',
-                ]
-                // let newPage = _foods.slice(0, 5)
-                // // this.data_scroll = this.data_scroll.concat(newPage)
-                // this.data_scroll = _foods
-                this.data_scroll = _foods
-            } else {
-                // 如果没有新数据
-                this.$refs.scroll.forceUpdate()
-            }
-            }, 1000)
+            _this.page_current = 1;
+
+            var url = "{{ route('renshi.jiaban.applicantcube.applicantcubegets') }}";
+            axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+            axios.get(url, {
+                params: {
+                    perPage: _this.page_size,
+                    page: _this.page_current,
+                }
+            })
+            .then(function (response) {
+                // console.log(response.data);
+                // console.log(response.data.data.length);
+                // return false;
+                
+                if (response.data['jwt'] == 'logout') {
+                    _this.alert_logout();
+                    return false;
+                }
+                
+                if (response.data.data.length) {
+
+                    _this.page_last = response.data.last_page;
+                    let orignal_data = response.data.data;
+                    let result_data = [];
+
+                    orignal_data.map(function (v,i) {
+
+                        let application = JSON.parse(v.application);
+
+                        result_data.push({
+                            'created_at': v.created_at,
+                            'category': application[0].category,
+                            'duration': application[0].duration,
+                            'datetimerange': application[0].datetimerange,
+                            'status': v.status,
+                            'auditor': v.auditor
+                        });
+
+                    });
+
+                    _this.data_scroll = result_data;
+                } else {
+                    // 如果没有新数据
+                    _this.$refs.scroll.forceUpdate()
+                }
+            })
+            .catch(function (error) {
+                _this.$refs.scroll.forceUpdate()
+            })
+
+            // setTimeout(() => {
+            // if (Math.random() > 0.5) {
+            //     // 如果有新数据
+            //     // this.data_scroll.unshift(_foods[1])
+
+            //                     // 如果有新数据
+            //                     let _foods = [
+            //         '🙈 🙈 🙈 🙈 🙈 🙈',
+            //         '🙈 🙈 🙈 🙈 🙈 🙈',
+            //         '🙈 🙈 🙈 🙈 🙈 🙈',
+            //     ]
+            //     // let newPage = _foods.slice(0, 5)
+            //     // // this.data_scroll = this.data_scroll.concat(newPage)
+            //     // this.data_scroll = _foods
+            //     this.data_scroll = _foods
+            // } else {
+            //     // 如果没有新数据
+            //     this.$refs.scroll.forceUpdate()
+            // }
+            // }, 1000)
         },
 
         // 上拉追加数据
         onPullingUp() {
-            setTimeout(() => {
-            if (Math.random() > 0.5) {
-                // 如果有新数据
-                let _foods = [
-                    '🤓 🤓 🤓 🤓 🤓 🤓',
-                    '🤓 🤓 🤓 🤓 🤓 🤓',
-                    '🤓 🤓 🤓 🤓 🤓 🤓',
-                ]
-                let newPage = _foods.slice(0, 5)
-                this.data_scroll = this.data_scroll.concat(newPage)
-            } else {
-                // 如果没有新数据
-                this.$refs.scroll.forceUpdate()
-            }
-            }, 1000)
+            var _this = this;
+
+            _this.page_current++;
+
+            var url = "{{ route('renshi.jiaban.applicantcube.applicantcubegets') }}";
+            axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+            axios.get(url, {
+                params: {
+                    perPage: _this.page_size,
+                    page: _this.page_current,
+                }
+            })
+            .then(function (response) {
+                // console.log(_this.page_current);
+                // console.log(response.data.data);
+                // console.log(response.data.data==false);
+                // return false;
+                
+                if (response.data['jwt'] == 'logout') {
+                    _this.alert_logout();
+                    return false;
+                }
+                
+                if (response.data.data.length) {
+
+                    _this.page_last = response.data.last_page;
+                    let orignal_data = response.data.data;
+                    let result_data = [];
+
+                    orignal_data.map(function (v,i) {
+
+                        let application = JSON.parse(v.application);
+
+                        result_data.push({
+                            'created_at': v.created_at,
+                            'category': application[0].category,
+                            'duration': application[0].duration,
+                            'datetimerange': application[0].datetimerange,
+                            'status': v.status,
+                            'auditor': v.auditor
+                        });
+
+                    });
+
+                    _this.data_scroll.push(result_data);
+                } else {
+                    // 如果没有新数据
+                    _this.$refs.scroll.forceUpdate()
+                }
+            })
+            .catch(function (error) {
+                _this.$refs.scroll.forceUpdate()
+            })
+
+            // setTimeout(() => {
+                // if (Math.random() > 0.5) {
+                //     // 如果有新数据
+                //     let _foods = [
+                //         '🤓 🤓 🤓 🤓 🤓 🤓',
+                //         '🤓 🤓 🤓 🤓 🤓 🤓',
+                //         '🤓 🤓 🤓 🤓 🤓 🤓',
+                //     ]
+                //     let newPage = _foods.slice(0, 5)
+                //     this.data_scroll = this.data_scroll.concat(newPage)
+                // } else {
+                //     // 如果没有新数据
+                //     this.$refs.scroll.forceUpdate()
+                // }
+            // }, 1000)
         },
 
 
@@ -298,8 +405,10 @@ var vm_app = new Vue({
 			var url = "{{ route('renshi.jiaban.applicantcube.applicantcubegets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url, {
-                perPage: _this.page_size,
-				page: page,
+                params: {
+                    perPage: _this.page_size,
+                    page: page,
+                }
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -311,53 +420,59 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-                    // _this.success(false, '成功', '提交成功！');
+                    // console.log(response.data);
+                    // return false;
 
+                    this.page_last = response.data.last_page;
                     var orignal_data = response.data.data;
                     var result_data = [];
 
-                    console.log(orignal_data[0]);
-                    return false;
+                    // console.log(orignal_data[0]);
+                    // return false;
 
                     orignal_data.map(function (v,i) {
-                        console.log(v.application);
-                        result_data = {
-                            'created_at': '2019-01-01 12:12:12',
-                            'category': 'a3',
-                            'duration': 2.5,
-                            'datetimerange': '2019-01-01 12:12:12 - 2019-01-01 22:22:22',
-                            'status': 1,
-                            'auditor': 'admin'
+                        // console.log(v.application);
+                        // return false;
 
-                        };
+                        let application = JSON.parse(v.application);
+
+                        result_data.push({
+                            'created_at': v.created_at,
+                            'category': application[0].category,
+                            'duration': application[0].duration,
+                            'datetimerange': application[0].datetimerange,
+                            'status': v.status,
+                            'auditor': v.auditor
+                        });
 
                     });
 
+                    _this.data_scroll = result_data;
+
+                    // console.log(result_data);
                     // console.log(orignal_data);
                     // console.log(orignal_data[0]['application']);
-                    return false;
+                    // return false;
 
-                    const toast = _this.$createToast({
-                        txt: '提交成功！',
-                        type: 'correct'
-                    })
-                    toast.show()
+                    // const toast = _this.$createToast({
+                    //     txt: '提交成功！',
+                    //     type: 'correct'
+                    // })
+                    // toast.show()
 				} else {
-                    // _this.error(false, '失败', '提交失败！');
-                    const toast = _this.$createToast({
-                        txt: '提交失败！',
-                        type: 'error'
-                    })
-                    toast.show()
+                    // const toast = _this.$createToast({
+                    //     txt: '提交失败！',
+                    //     type: 'error'
+                    // })
+                    // toast.show()
 				}
 			})
 			.catch(function (error) {
-                // _this.error(false, '错误', '提交失败！');
-                const toast = _this.$createToast({
-                    txt: '提交失败！',
-                    type: 'error'
-                })
-                toast.show()
+                // const toast = _this.$createToast({
+                //     txt: '提交失败！',
+                //     type: 'error'
+                // })
+                // toast.show()
 			})
 
 
@@ -636,6 +751,7 @@ var vm_app = new Vue({
         };
         
         this.jiabancubeGetsApplicant(1, 1);
+
 	}
 })
 </script>
