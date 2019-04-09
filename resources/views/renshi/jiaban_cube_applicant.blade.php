@@ -381,25 +381,21 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.onclear_applicant();
-					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
-                    // _this.success(false, '成功', '提交成功！');
+					_this.resetHandler();
                     const toast = _this.$createToast({
                         txt: '提交成功！',
                         type: 'correct'
                     })
                     toast.show()
 				} else {
-                    // _this.error(false, '失败', '提交失败！');
                     const toast = _this.$createToast({
                         txt: '提交失败！',
-                        type: 'error'
+                        type: 'warn'
                     })
                     toast.show()
 				}
 			})
 			.catch(function (error) {
-                // _this.error(false, '错误', '提交失败！');
                 const toast = _this.$createToast({
                     txt: '提交失败！',
                     type: 'error'
@@ -478,7 +474,7 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				// console.log(response.data);
 				// return false;
 
 				if (response.data['jwt'] == 'logout') {
