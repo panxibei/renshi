@@ -368,7 +368,15 @@ var vm_app = new Vue({
 				// return false;
 				
 				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
+                    _this.$createToast({
+                        type: 'warn',
+                        txt: '会话超时！正在注销...',
+                        time: 1000
+                    }).show()
+                    window.setTimeout(function(){
+                        var url = "{{ route('main.logout') }}";
+                        window.location.href = url;
+                    }, 1000);
 					return false;
 				}
 				
@@ -470,11 +478,19 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
+				console.log(response.data);
 				// return false;
 
 				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
+                    _this.$createToast({
+                        type: 'warn',
+                        txt: '会话超时！正在注销...',
+                        time: 1000
+                    }).show()
+                    window.setTimeout(function(){
+                        var url = "{{ route('main.logout') }}";
+                        window.location.href = url;
+                    }, 1000);
 					return false;
 				}
 				

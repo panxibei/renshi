@@ -177,6 +177,20 @@ var vm_app = new Vue({
                 }
             })
             .then(function (response) {
+
+				if (response.data['jwt'] == 'logout') {
+                    _this.$createToast({
+                        type: 'warn',
+                        txt: '会话超时！正在注销...',
+                        time: 1000
+                    }).show()
+                    window.setTimeout(function(){
+                        var url = "{{ route('main.logout') }}";
+                        window.location.href = url;
+                    }, 1000);
+					return false;
+				}
+
                 if (response.data) {
                     _this.jiaban_info_uid = response.data.uid;
                     _this.jiaban_info_applicant = response.data.displayname;

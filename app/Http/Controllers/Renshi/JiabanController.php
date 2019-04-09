@@ -390,6 +390,8 @@ class JiabanController extends Controller
 		$queryParams = request()->query();
 		
 		$employeeid = $request->input('employeeid');
+
+		if (empty($employeeid)) return null;
 		
 		//对查询参数按照键名排序
 		ksort($queryParams);
@@ -407,6 +409,7 @@ class JiabanController extends Controller
 				->when($employeeid, function ($query) use ($employeeid) {
 					return $query->where('uid', $employeeid);
 				})
+				->where('id', '>', 10)
 				->first();
 
 			Cache::put($fullUrl, $result, now()->addSeconds(10));
