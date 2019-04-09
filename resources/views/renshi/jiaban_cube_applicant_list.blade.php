@@ -36,7 +36,7 @@ Renshi(Jiaban List) -
 <cube-toolbar :actions="actions_toolbar" @click="clickHandler_toolbar"></cube-toolbar>
 
 <header class="title-jiaban-applicant">
-<h1>列表</h1>
+<h1>查看加班列表</h1>
 </header>
 <br>
 

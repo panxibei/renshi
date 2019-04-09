@@ -45,7 +45,7 @@
         <h1>
             {{$SITE_TITLE}}
             <br>
-            <small>
+            <small style="{line-height:11px;font-size:11px;color:#93999f;}">
                 {{$SITE_VERSION}}
             </small>
         </h1>
