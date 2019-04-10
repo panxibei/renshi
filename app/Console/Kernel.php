@@ -64,8 +64,8 @@ class Kernel extends ConsoleKernel
 
 
         // })->dailyAt('13:00');
-        })->everyMinute()
-        // })->everyFiveMinutes()
+        // })->everyMinute()
+        })->everyFiveMinutes()
         ->name('auto_archive_every_month')
             ->withoutOverlapping()
             ->appendOutputTo($filePath);
