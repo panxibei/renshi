@@ -1,0 +1,1 @@
+C:\wamp\bin\php\php7.1.9\php.exe C:\wamp\www\renshi\artisan schedule:run
