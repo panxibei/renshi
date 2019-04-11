@@ -31,11 +31,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $filePath = 'cron.log';
 
+        // 1.超过一个月自动归档
         $schedule->call(function () {
-
-            // 超过一个月自动归档
+            
             try	{
                 DB::beginTransaction();
                 
@@ -53,22 +52,27 @@ class Kernel extends ConsoleKernel
                 // echo 'Message: ' .$e->getMessage();
                 DB::rollBack();
                 // return 'Message: ' .$e->getMessage();
-                dd('Message: ' .$e->getMessage());
+                // dd('Message: ' .$e->getMessage());
                 return 0;
             }
 
             DB::commit();
             Cache::flush();
 
-
-
-
         // })->dailyAt('13:00');
         // })->everyMinute()
         })->everyFiveMinutes()
-        ->name('auto_archive_every_month')
-            ->withoutOverlapping()
-            ->appendOutputTo($filePath);
+            ->name('auto_archive_every_month')
+            ->withoutOverlapping();
+
+        // 2.任务计划二
+        // $schedule->call(function () {
+
+        // })->dailyAt('13:00');
+        // })->everyMinute()
+        // })->everyFiveMinutes()
+        // ->name('auto_archive_every_month')
+            // ->withoutOverlapping();
 
 
 
