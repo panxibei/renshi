@@ -419,6 +419,52 @@ class JiabanController extends Controller
     }
 
 
+
+    /**
+     * departmentList
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function departmentList(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		$url = request()->url();
+		$queryParams = request()->query();
+		
+		//对查询参数按照键名排序
+		ksort($queryParams);
+
+		//将查询数组转换为查询字符串
+		$queryString = http_build_query($queryParams);
+
+		$fullUrl = sha1("{$url}?{$queryString}");
+		
+		//首先查寻cache如果找到
+		if (Cache::has($fullUrl)) {
+			$result = Cache::get($fullUrl);    //直接读取cache
+		} else {                                   //如果cache里面没有
+			$result = User::select('department')
+				->distinct()
+				->get()->toArray();
+
+			Cache::put($fullUrl, $result, now()->addSeconds(1));
+		}
+		
+		$res = [];
+		foreach ($result as $value) {
+			// array_push($res, $value['department']); 
+			$res[$value['department']] = $value['department']; 
+		}
+		// dd($res);
+		return $res;
+    }
+
+
 		/**
      * applicantCreate
      *

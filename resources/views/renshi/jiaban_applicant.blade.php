@@ -404,11 +404,11 @@ Renshi(Jiaban) -
 
 				<i-row :gutter="16">
 					<i-col span="15">
-						<i-select v-model.lazy="" filterable remote :remote-method="" :loading="" @on-change="" clearable placeholder="输入用户名后选择" style="width: 280px;">
-							<i-option v-for="item in user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="" clearable placeholder="选择部门名称" style="width: 280px;">
+							<i-option v-for="item in department_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
-						<i-button type="primary" :disabled="" @click="">Update</i-button>
+						<!-- <i-button type="primary" :disabled="" @click="">Update</i-button> -->
 						&nbsp;&nbsp;
 						
 					</i-col>
@@ -781,9 +781,9 @@ var vm_app = new Vue({
 		modal_archived: false,
 
 		// 选择角色查看编辑相应权限
-		user_select: '',
-		user_options: [],
-		user_loading: false,
+		department_select: '',
+		department_options: [],
+		department_loading: false,
 		boo_update: false,
 		titlestransfer: ['待选', '已选'], // ['源列表', '目的列表']
 		datatransfer: [],
@@ -1439,7 +1439,41 @@ var vm_app = new Vue({
 			// this.analytics_loading = false;
 		},
 
+		onopenchange_department (value) {
+			// select收起则直接退出
+			if (!value) return false;
 
+			var _this = this;
+
+			var url = "{{ route('renshi.jiaban.applicant.departmentlist') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+                    // _this.jiaban_edit_auditing_circulation = response.data;
+					var json = response.data;
+					// var arr = [];
+					// for (var key in json) {
+					// 	arr.push({ value: json[key], label: json[key] });
+					// }
+					_this.department_options = _this.json2selectvalue(json);
+                }
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+		},
 
 
 

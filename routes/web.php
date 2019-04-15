@@ -69,6 +69,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// applicant页面 归档
 	Route::post('applicantArchived', 'JiabanController@applicantArchived')->name('renshi.jiaban.applicant.applicantarchived');
 
+	// applicant页面 查询department
+	Route::get('departmentList', 'JiabanController@departmentList')->name('renshi.jiaban.applicant.departmentlist');
+	
 
 	// 22222222222
 	// 显示todo页面
