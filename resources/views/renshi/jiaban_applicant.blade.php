@@ -404,20 +404,15 @@ Renshi(Jiaban) -
 
 				<i-row :gutter="16">
 					<i-col span="15">
-						<i-select v-model.lazy="user_select" filterable remote :remote-method="remoteMethod_user" :loading="user_loading" @on-change="onchange_user" clearable placeholder="输入用户名后选择" style="width: 280px;">
+						<i-select v-model.lazy="" filterable remote :remote-method="" :loading="" @on-change="" clearable placeholder="输入用户名后选择" style="width: 280px;">
 							<i-option v-for="item in user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
-						<i-button type="primary" :disabled="boo_update" @click="userupdaterole">Update</i-button>
+						<i-button type="primary" :disabled="" @click="">Update</i-button>
 						&nbsp;&nbsp;
-						当前用户：@{{ displayname }}
+						
 					</i-col>
-					<i-col span="6">
-						<i-select v-model.lazy="role2user_select" filterable remote :remote-method="remoteMethod_role2user" :loading="role2user_loading" @on-change="onchange_role2user" clearable placeholder="输入角色名称查看哪些用户正在使用">
-							<i-option v-for="item in role2user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-						</i-select>
-					</i-col>
-					<i-col span="3">
+					<i-col span="9">
 						&nbsp;
 					</i-col>
 				</i-row>
@@ -438,10 +433,7 @@ Renshi(Jiaban) -
 					<i-col span="1">
 					&nbsp;
 					</i-col>
-					<i-col span="6">
-						<i-input v-model.lazy="role2user_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
-					</i-col>
-					<i-col span="3">
+					<i-col span="9">
 					&nbsp;
 					</i-col>
 				</i-row>
@@ -788,6 +780,19 @@ var vm_app = new Vue({
 		// 归档窗口
 		modal_archived: false,
 
+		// 选择角色查看编辑相应权限
+		user_select: '',
+		user_options: [],
+		user_loading: false,
+		boo_update: false,
+		titlestransfer: ['待选', '已选'], // ['源列表', '目的列表']
+		datatransfer: [],
+		targetkeystransfer: [], // ['1', '2'] key
+		displayname: '',
+
+
+
+
 
 
 
@@ -810,14 +815,6 @@ var vm_app = new Vue({
 		// 查询过滤器下拉
 		collapse_query: '',		
 		
-		// 选择角色查看编辑相应权限
-		role_select: '',
-		role_options: [],
-		role_loading: false,
-		boo_update: false,
-		titlestransfer: ['待选', '已选'], // ['源列表', '目的列表']
-		datatransfer: [],
-		targetkeystransfer: [], // ['1', '2'] key
 		
 		// 选择权限查看哪些角色在使用
 		permission2role_select: '',
