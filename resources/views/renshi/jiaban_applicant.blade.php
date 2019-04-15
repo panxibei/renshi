@@ -404,7 +404,7 @@ Renshi(Jiaban) -
 
 				<i-row :gutter="16">
 					<i-col span="15">
-						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="" clearable placeholder="选择部门名称" style="width: 280px;">
+						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="onchange_department" clearable placeholder="选择部门名称" style="width: 280px;">
 							<i-option v-for="item in department_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
@@ -780,7 +780,7 @@ var vm_app = new Vue({
 		// 归档窗口
 		modal_archived: false,
 
-		// 选择角色查看编辑相应权限
+		// 选择部门查看编辑相应人员
 		department_select: '',
 		department_options: [],
 		department_loading: false,
@@ -891,6 +891,31 @@ var vm_app = new Vue({
 			}
 			return arr;
 			// return arr.reverse();
+		},
+
+		// 穿梭框显示文本转换
+		json2transfer: function (json) {
+			var arr = [];
+			for (var key in json) {
+				arr.push({
+					key: key,
+					label: json[key],
+					description: json[key],
+					disabled: false
+				});
+			}
+			// return arr.reverse();
+			return arr;
+		},
+		
+		// 穿梭框目标文本转换（数字转字符串）
+		arr2target: function (arr) {
+			var res = [];
+			arr.map(function( value, index) {
+				// console.log('map遍历:'+index+'--'+value);
+				res.push(value.toString());
+			});
+			return res;
 		},
 		
 		// 生成piliangluru_applicant
@@ -1439,6 +1464,7 @@ var vm_app = new Vue({
 			// this.analytics_loading = false;
 		},
 
+		// 查询部门列表
 		onopenchange_department (value) {
 			// select收起则直接退出
 			if (!value) return false;
@@ -1473,6 +1499,58 @@ var vm_app = new Vue({
 				_this.error(false, 'Error', error);
 			})
 
+		},
+
+
+		// 选择department查看applicant
+		onchange_department () {
+			var _this = this;
+			var department = _this.department_select;
+			// console.log(department);return false;
+			
+			if (department == undefined || department == '') {
+				// _this.displayname = '';
+				_this.targetkeystransfer = [];
+				_this.datatransfer = [];
+				_this.boo_update = true;
+				return false;
+			}
+			_this.boo_update = false;
+			var url = "{{ route('renshi.jiaban.applicant.department2applicant') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					department: department
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data;
+					_this.datatransfer = _this.json2transfer(json);
+					
+					// var arr = response.data.userhasrole;
+					// _this.targetkeystransfer = _this.arr2target(arr);
+
+					// _this.displayname = response.data.displayname;
+
+				} else {
+					_this.targetkeystransfer = [];
+					_this.datatransfer = [];
+					_this.displayname = '';
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
 		},
 
 

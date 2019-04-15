@@ -419,7 +419,6 @@ class JiabanController extends Controller
     }
 
 
-
     /**
      * departmentList
      *
@@ -452,7 +451,7 @@ class JiabanController extends Controller
 				->distinct()
 				->get()->toArray();
 
-			Cache::put($fullUrl, $result, now()->addSeconds(1));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 		
 		$res = [];
@@ -463,6 +462,39 @@ class JiabanController extends Controller
 		// dd($res);
 		return $res;
     }
+
+	
+    /**
+     * department2Applicant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function department2Applicant(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		$department = $request->input('department');
+		
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		// 获取当前用户拥有的角色
+		$department2applicant = User::select('id', 'displayname')
+			->where('department', $department)
+			->orderBy('id', 'asc')
+			->pluck('displayname', 'id')->toArray();
+			// ->get()->toArray();
+		// $department2applicant = array_column($department2applicant, 'id'); //变成一维数组
+
+// dd($department2applicant);
+		// $result['userhasrole'] = $userhasrole;
+		// $result['allroles'] = $allroles;
+		// $result = compact('userhasrole', 'allroles', 'displayname');
+
+		return $department2applicant;
+    }
+
 
 
 		/**

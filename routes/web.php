@@ -72,6 +72,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// applicant页面 查询department
 	Route::get('departmentList', 'JiabanController@departmentList')->name('renshi.jiaban.applicant.departmentlist');
 	
+	// 列出当前用户拥有的角色
+	Route::get('department2Applicant', 'JiabanController@department2Applicant')->name('renshi.jiaban.applicant.department2applicant');
+
 
 	// 22222222222
 	// 显示todo页面
