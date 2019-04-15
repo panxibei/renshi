@@ -434,8 +434,23 @@ Renshi(Jiaban) -
 					&nbsp;
 					</i-col>
 					<i-col span="9">
-					&nbsp;
+						* 时间&nbsp;
+						<Date-picker v-model.lazy="datetimerange1" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+						<br><br>
+						<Tooltip content="单位小时" placement="top">
+						* 时长&nbsp;
+						<Input-number v-model.lazy="duration1" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
+						</Tooltip>
+						<br><br>
+						* 类别&nbsp;
+						<i-select v-model.lazy="category1" size="small" style="width:120px" placeholder="选择加班类别">
+							<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+						<br><br>
+						<i-button @click="oncreate_applicant1()" size="default" type="primary">提 交</i-button>
+						&nbsp;&nbsp;<i-button @click="onclear_applicant1()" size="default">清 除</i-button>
 					</i-col>
+
 				</i-row>
 
 					
@@ -543,6 +558,10 @@ var vm_app = new Vue({
 		// 创建
 		jiaban_add_reason: '',
 		jiaban_add_remark: '',
+
+		datetimerange1: [],
+		category1: '',
+		duration1: '',
 		
 		// 批量录入applicant表
 		piliangluru_applicant: [
@@ -1053,6 +1072,68 @@ var vm_app = new Vue({
 				_this.loadingbarerror();
 				_this.error(false, 'Error', error);
 			})
+		},
+
+		// oncreate_applicant1
+		oncreate_applicant1: function () {
+			var _this = this;
+
+			var jiaban_add_reason = _this.jiaban_add_reason;
+			var jiaban_add_remark = _this.jiaban_add_remark;
+			var jiaban_add_applicant_id = _this.targetkeystransfer;
+
+			if (jiaban_add_applicant_id[0] == '' || jiaban_add_reason == '' || category1 == ''  || duration1 == '' || datetimerange1[0] == ''
+				|| jiaban_add_applicant_id[0] == undefined|| jiaban_add_reason == undefined || category1 == undefined || duration1 == undefined || datetimerange1[0] == undefined) {
+				_this.warning(false, '警告', '输入内容为空或不正确！');
+				return false;
+			}
+			
+			var piliangluru_applicant = _this.piliangluru_applicant;
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicantcreate') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				reason: jiaban_add_reason,
+				remark: jiaban_add_remark,
+				piliangluru: piliangluru_applicant
+			})
+			.then(function (response) {
+				console.log(response.data);
+				return false;
+				
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.onclear_applicant2();
+					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '提交成功！');
+				} else {
+					_this.error(false, '失败', '提交失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '提交失败！');
+			})
+		},
+
+        // onclear_applicant1
+		onclear_applicant1: function () {
+			var _this = this;
+			_this.jiaban_add_reason = '';
+			_this.jiaban_add_remark = '';
+			_this.piliangluru_applicant.map(function (v,i) {
+				v.uid = '';
+				v.applicant = '';
+				v.department = '';
+				v.datetimerange = [];
+				v.category = '';
+				v.duration = '';
+			});
+			
+			// _this.$refs.xianti.focus();
 		},
 
 		// oncreate_applicant2
