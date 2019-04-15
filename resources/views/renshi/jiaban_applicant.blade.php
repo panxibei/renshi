@@ -390,66 +390,133 @@ Renshi(Jiaban) -
 		</i-col>
 	</i-row>
 
-	&nbsp;&nbsp;<br><br>
+	<i-row :gutter="16">
+		<i-col span="24">
+		&nbsp;
+		</i-col>
+	</i-row>
 
 	<i-row :gutter="16">
-	<br><br>
-		<i-col span="4">
-			↓ 批量提交&nbsp;&nbsp;
-			<Input-number v-model.lazy="piliangluruxiang_applicant" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
-			&nbsp;项
-		</i-col>
-		<i-col span="20">
-			&nbsp;&nbsp;<i-button @click="oncreate_applicant()" size="default" type="primary">提 交</i-button>
-			&nbsp;&nbsp;<i-button @click="onclear_applicant()" size="default">清 除</i-button>
+		<i-col span="24">
+
+			<Tabs type="card" v-model="currenttabssub">
+				<Tab-pane label="批量同组录入">
+
+				<i-row :gutter="16">
+					<i-col span="15">
+						<i-select v-model.lazy="user_select" filterable remote :remote-method="remoteMethod_user" :loading="user_loading" @on-change="onchange_user" clearable placeholder="输入用户名后选择" style="width: 280px;">
+							<i-option v-for="item in user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+						&nbsp;&nbsp;
+						<i-button type="primary" :disabled="boo_update" @click="userupdaterole">Update</i-button>
+						&nbsp;&nbsp;
+						当前用户：@{{ displayname }}
+					</i-col>
+					<i-col span="6">
+						<i-select v-model.lazy="role2user_select" filterable remote :remote-method="remoteMethod_role2user" :loading="role2user_loading" @on-change="onchange_role2user" clearable placeholder="输入角色名称查看哪些用户正在使用">
+							<i-option v-for="item in role2user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</i-col>
+					<i-col span="3">
+						&nbsp;
+					</i-col>
+				</i-row>
+				
+				<br><br><br>
+					
+				<i-row :gutter="16">
+					<i-col span="14">
+						<Transfer
+							:titles="titlestransfer"
+							:data="datatransfer"
+							filterable
+							:target-keys="targetkeystransfer"
+							:render-format="rendertransfer"
+							@on-change="onChangeTransfer">
+						</Transfer>
+					</i-col>
+					<i-col span="1">
+					&nbsp;
+					</i-col>
+					<i-col span="6">
+						<i-input v-model.lazy="role2user_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
+					</i-col>
+					<i-col span="3">
+					&nbsp;
+					</i-col>
+				</i-row>
+
+					
+
+
+
+
+					&nbsp;
+				</Tab-pane>
+
+				<Tab-pane label="批量非同组录入">
+					<i-row :gutter="16">
+						<i-col span="4">
+							↓ 批量提交&nbsp;&nbsp;
+							<Input-number v-model.lazy="piliangluruxiang_applicant2" @on-change="value=>piliangluru_applicant_generate(value)" :min="1" :max="20" size="small" style="width: 60px"></Input-number>
+							&nbsp;项
+						</i-col>
+						<i-col span="20">
+							&nbsp;&nbsp;<i-button @click="oncreate_applicant2()" size="default" type="primary">提 交</i-button>
+							&nbsp;&nbsp;<i-button @click="onclear_applicant2()" size="default">清 除</i-button>
+						</i-col>
+					</i-row>
+						
+					&nbsp;
+
+					<span v-for="(item, index) in piliangluru_applicant">
+
+					<i-row>
+					<br>
+						<!-- <i-col span="1">
+							&nbsp;(@{{index+1}})
+						</i-col> -->
+						<i-col span="4">
+							* 工号&nbsp;
+							<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
+								<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+							</i-select>
+						</i-col>
+						<i-col span="3">
+							姓名&nbsp;
+							<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
+						</i-col>
+						<i-col span="3">
+							部门&nbsp;
+							<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
+						</i-col>
+						<i-col span="7">
+							* 时间&nbsp;
+							<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+						</i-col>
+						<i-col span="3">
+							<Tooltip content="单位小时" placement="top">
+							* 时长&nbsp;
+							<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
+							</Tooltip>
+						</i-col>
+						<i-col span="4">
+							* 类别&nbsp;
+							<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
+								<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+							</i-select>
+						</i-col>
+						
+					</i-row>
+					<br>
+					</span>
+					&nbsp;
+				</Tab-pane>
+			</Tabs>
+
 		</i-col>
 	</i-row>
-		
-	&nbsp;
 
-	<span v-for="(item, index) in piliangluru_applicant">
-
-	<i-row>
-	<br>
-		<!-- <i-col span="1">
-			&nbsp;(@{{index+1}})
-		</i-col> -->
-		<i-col span="4">
-			* 工号&nbsp;
-			<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
-				<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-			</i-select>
-		</i-col>
-		<i-col span="3">
-			姓名&nbsp;
-			<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
-		</i-col>
-		<i-col span="3">
-			部门&nbsp;
-			<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
-		</i-col>
-		<i-col span="7">
-			* 时间&nbsp;
-			<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
-		</i-col>
-		<i-col span="3">
-			<Tooltip content="单位小时" placement="top">
-			* 时长&nbsp;
-			<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
-			</Tooltip>
-		</i-col>
-		<i-col span="4">
-			* 类别&nbsp;
-			<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
-				<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-			</i-select>
-		</i-col>
-		
-	</i-row>
-	<br>
-	</span>
-
-	&nbsp;
 
 
 	<Modal	v-model="modal_archived" title="归档 - 加班单" ok-text="开始归档" @on-ok="archived_ok" @on-cancel="archived_cancel" width="400">
@@ -498,7 +565,7 @@ var vm_app = new Vue({
 		],
 
 		// 批量录入项
-		piliangluruxiang_applicant: 1,
+		piliangluruxiang_applicant2: 1,
 
 		//加班类别
 		option_category: [
@@ -733,6 +800,7 @@ var vm_app = new Vue({
 
 		// tabs索引
 		currenttabs: 0,
+		currenttabssub: 0,
 		
 		// 查询过滤器
 		queryfilter_auditor: '',
@@ -848,10 +916,10 @@ var vm_app = new Vue({
 					);
 				}
 			} else if (counts < len) {
-				if (this.piliangluruxiang_applicant != '') {
+				if (this.piliangluruxiang_applicant2 != '') {
 					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_applicant == this.piliangluru_applicant[i].value) {
-							this.piliangluruxiang_applicant = '';
+						if (this.piliangluruxiang_applicant2 == this.piliangluru_applicant[i].value) {
+							this.piliangluruxiang_applicant2 = '';
 							break;
 						}
 					}
@@ -965,8 +1033,8 @@ var vm_app = new Vue({
 			})
 		},
 
-		// oncreate_applicant
-		oncreate_applicant: function () {
+		// oncreate_applicant2
+		oncreate_applicant2: function () {
 			var _this = this;
 
 			var booFlagOk = true;
@@ -1016,7 +1084,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.onclear_applicant();
+					_this.onclear_applicant2();
 					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '提交成功！');
 				} else {
@@ -1028,8 +1096,8 @@ var vm_app = new Vue({
 			})
 		},
 
-        // onclear_applicant
-		onclear_applicant: function () {
+        // onclear_applicant2
+		onclear_applicant2: function () {
 			var _this = this;
 			_this.jiaban_add_reason = '';
 			_this.jiaban_add_remark = '';
