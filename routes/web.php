@@ -78,8 +78,11 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// 列出当前用户拥有的角色
 	Route::get('department2Applicant', 'JiabanController@department2Applicant')->name('renshi.jiaban.applicant.department2applicant');
 
-	// 列出当前用户拥有的角色
+	// 列出Tree用户
 	Route::get('loadApplicant', 'JiabanController@loadApplicant')->name('renshi.jiaban.applicant.loadapplicant');
+
+	// 添加人员组
+	Route::post('createApplicantGroup', 'JiabanController@createApplicantGroup')->name('renshi.jiaban.applicant.createapplicantgroup');
 
 
 	// 22222222222

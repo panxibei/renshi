@@ -507,12 +507,16 @@ class JiabanController extends Controller
 		if (! $request->ajax()) return null;
 
 		$node = $request->input('node');
+		$title = $request->input('title');
 		
 		// 重置角色和权限的缓存
 		app()['cache']->forget('spatie.permission.cache');
 
-		if ($node == '公司') {
+		// 公司总node
+		if ($node != 'department') {
 			$res = User::select('department')
+				->where('department', '<>', 'admin')
+				// ->where('department', '<>', 'user')
 				->distinct()
 				->get()->toArray();
 			
@@ -521,27 +525,121 @@ class JiabanController extends Controller
 				array_push($result, $value['department']); 
 				// $result[$value['department']] = $value['department']; 
 			}
-		
 
 		} else {
-			// 部门
-			$res = User::select('displayname')
+			// 部门node
+			$res = User::select('id', 'displayname')
+			->where('department', $title)
 				->get()->toArray();
 
 				$result = [];
 				foreach ($res as $value) {
-					array_push($result, $value['displayname']); 
+					array_push($result, $value['displayname'] . ' (ID:' . $value['id'] . ')'); 
 					// $result[$value['department']] = $value['department']; 
 				}
-	// dd($result);
-
+				// dd($result);
 		}
 
 		return $result;
-		
     }
 
 
+		/**
+     * createApplicantGroup
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function createApplicantGroup(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+		
+		// $created_at = date('Y-m-d H:i:s');
+		// $updated_at = date('Y-m-d H:i:s');
+
+		$reason = $request->input('reason');
+		$remark = $request->input('remark');
+		$category = $request->input('category');
+		$duration = $request->input('duration');
+		$datetimerange = $request->input('datetimerange');
+		$applicant_id = $request->input('applicant_id');
+
+		$uuid4 = Uuid::uuid4();
+		$uuid = $uuid4->toString();
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+
+		$id_of_agent = $user['id'];
+		$uid_of_agent = $user['uid'];
+		$agent = $user['displayname'];
+		$department_of_agent = $user['department'];
+
+		// get auditor
+		$a = User::select('auditing')
+			->where('id', $user['id'])
+			->first();
+
+		$b = json_decode($a['auditing'], true);
+
+		$id_of_auditor = $b[0]['id'];
+		$uid_of_auditor = $b[0]['uid'];
+		$auditor = $b[0]['name'];
+		$department_of_auditor = $b[0]['department'];
+
+		// get applicant info
+		$users = User::select('uid', 'displayname as applicant', 'department')
+			->whereIn('id', $applicant_id)
+			->get()->toArray();
+
+		foreach ($users as $key => $value) {
+			$s[$key]['uid'] = $value['uid'];
+			$s[$key]['applicant'] = $value['applicant'];
+			$s[$key]['department'] = $value['department'];
+			$s[$key]['category'] = $category;
+			$s[$key]['datetimerange'] = date('Y-m-d H:i', strtotime($datetimerange[0])) . ' - ' . date('Y-m-d H:i', strtotime($datetimerange[1]));
+			$s[$key]['duration'] = $duration;
+		}
+
+		$application = json_encode(
+			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			Renshi_jiaban::create([
+					'uuid' => $uuid,
+					'id_of_agent' => $id_of_agent,
+					'uid_of_agent' => $uid_of_agent,
+					'agent' => $agent,
+					'department_of_agent' => $department_of_agent,
+					'id_of_auditor' => $id_of_auditor,
+					'uid_of_auditor' => $uid_of_auditor,
+					'auditor' => $auditor,
+					'department_of_auditor' => $department_of_auditor,
+					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+					'application' => $application,
+					'status' => 1,
+					'reason' => $reason,
+					'remark' => $remark,
+			]);
+
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			// return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;		
+    }
 
 		/**
      * applicantCreate1

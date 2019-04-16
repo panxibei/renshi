@@ -434,8 +434,8 @@ Renshi(Jiaban) -
 <br>
 				<Divider dashed></Divider>
 
-				<Tree :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
-
+				<i-button @click="oncreate_applicantgroup()" size="default" type="default">添加人员组</i-button>
+				<Tree ref="tree" :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
 				<br><br>
 
 				<i-row :gutter="16">
@@ -1692,13 +1692,15 @@ var vm_app = new Vue({
 		loadTreeData (item, callback) {
 			var _this = this;
 
-			var node = item.title;
+			var node = item.node;
+			var title = item.title;
 
 			var url = "{{ route('renshi.jiaban.applicant.loadapplicant') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
-					node: node
+					node: node,
+					title: title
 				}
 			})
 			.then(function (response) {
@@ -1715,11 +1717,12 @@ var vm_app = new Vue({
 
 					var arr = [];
 					setTimeout(() => {
-						if (node=='公司') {
+						if (node!='department') {
 							for (var key in json) {
 								arr.push({
 									title: json[key],
 									loading: false,
+									node: 'department',
 									children: []
 								});
 							}
@@ -1727,18 +1730,83 @@ var vm_app = new Vue({
 							for (var key in json) {
 								arr.push({
 									title: json[key],
-									loading: false,
-									children: []
 								});
 							}
 						}
 						callback(arr);
-					}, 1000);
+					}, 500);
 				}
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
 			})
+
+		},
+
+		// 添加人员组
+		oncreate_applicantgroup () {
+			// console.log(this.$refs.tree.getCheckedNodes());
+
+			var json = this.$refs.tree.getCheckedNodes();
+
+			var arr = [];
+			for (var key in json) {
+				arr.push(
+					json[key]['title'],
+				);
+			}
+
+			console.log(arr);return false;
+
+
+
+			var url = "{{ route('renshi.jiaban.applicant.createapplicantgroup') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					node: node,
+					title: title
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data;
+
+					var arr = [];
+					setTimeout(() => {
+						if (node!='department') {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+									loading: false,
+									node: 'department',
+									children: []
+								});
+							}
+						} else {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+								});
+							}
+						}
+						callback(arr);
+					}, 500);
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+
 
 		},
 
