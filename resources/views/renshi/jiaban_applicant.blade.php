@@ -434,8 +434,24 @@ Renshi(Jiaban) -
 <br>
 				<Divider dashed></Divider>
 
-				<i-button @click="oncreate_applicantgroup()" size="default" type="default">添加人员组</i-button>
-				<Tree ref="tree" :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
+				<i-row :gutter="16">
+					<i-col span="24">
+
+						* 人员组名称&nbsp;&nbsp;
+						<i-input v-model.lazy="applicantgroup_title" size="small" style="width: 160px"></i-input>
+						&nbsp;&nbsp;
+						<i-button @click="oncreate_applicantgroup()" size="small" type="default">添加人员组</i-button>
+				
+				
+				
+					</i-col>
+				</i-row>
+				<i-row :gutter="16">
+					<i-col span="24">
+						<Tree ref="tree" :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
+					</i-col>
+				</i-row>
+				
 				<br><br>
 
 				<i-row :gutter="16">
@@ -1751,9 +1767,17 @@ var vm_app = new Vue({
 			var _this = this;
 			var json = _this.$refs.tree.getCheckedNodes();
 			var title = _this.applicantgroup_title;
+
+			if (title == '' || json == ''
+				|| title == undefined || json == undefined) {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
 			var applicants = [];
 			var str = '';
 			for (var key in json) {
+				// 截取字符
 				// let tmp = json[key]['title'].split(' (ID:');
 
 				// if (tmp[1]) {
@@ -1767,12 +1791,12 @@ var vm_app = new Vue({
 			var url = "{{ route('renshi.jiaban.applicant.createapplicantgroup') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
-				title: '人员组一',
+				title: title,
 				applicants: applicants,
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1780,28 +1804,8 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					var json = response.data;
-
-					var arr = [];
-					setTimeout(() => {
-						if (node!='department') {
-							for (var key in json) {
-								arr.push({
-									title: json[key],
-									loading: false,
-									node: 'department',
-									children: []
-								});
-							}
-						} else {
-							for (var key in json) {
-								arr.push({
-									title: json[key],
-								});
-							}
-						}
-						callback(arr);
-					}, 500);
+					_this.applicantgroup_title = '';
+					_this.success(false, '成功', '添加人员组成功！');
 				}
 			})
 			.catch(function (error) {
