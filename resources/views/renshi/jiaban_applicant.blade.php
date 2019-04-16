@@ -435,32 +435,31 @@ Renshi(Jiaban) -
 				<Divider dashed></Divider>
 
 				<i-row :gutter="16">
-					<i-col span="9">
+					<i-col span="10">
 						* 人员组名称&nbsp;&nbsp;
 						<i-input v-model.lazy="applicantgroup_title" size="small" style="width: 160px"></i-input>
 						&nbsp;&nbsp;
 						<i-button @click="oncreate_applicantgroup()" icon="ios-people-outline" size="small" type="default">新增人员组</i-button>
 					</i-col>
-					<i-col span="6">
+					<i-col span="14">
 						<i-select v-model.lazy="applicantgroup_select" @on-change="onchange_applicantgroup" clearable size="small" placeholder="选择人员组名称查看成员" style="width: 260px;">
 							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
-					</i-col>
-					<i-col span="9">
-						&nbsp;
+						&nbsp;&nbsp;
+						<i-button @click="ondelete_applicantgroup()" icon="ios-close" size="small" type="default">删除人员组</i-button>
 					</i-col>
 
 				</i-row>
 
 				<br><br>
 				<i-row :gutter="16">
-					<i-col span="9">
+					<i-col span="10">
 						<Tree ref="tree" :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
 					</i-col>
 					<i-col span="6">
 						<i-input v-model.lazy="applicantgroup_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
 					</i-col>
-					<i-col span="9">
+					<i-col span="8">
 					&nbsp;
 					</i-col>
 
@@ -1831,8 +1830,6 @@ var vm_app = new Vue({
 
 					applicants.push(json[key]['title']);
 				}
-
-				
 			}
 
 			var url = "{{ route('renshi.jiaban.applicant.createapplicantgroup') }}";
@@ -1861,6 +1858,43 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
 			})
+		},
+
+		// 删除人员组
+		ondelete_applicantgroup () {
+			var _this = this;
+
+			var title = _this.applicantgroup_select;
+			alert(applicantgroup);
+
+			var url = "{{ route('renshi.jiaban.applicant.deleteapplicantgroup') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				title: title,
+			})
+			.then(function (response) {
+				console.log(response.data);
+				return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.applicantgroup_title = '';
+					_this.loadapplicantgroup();
+					_this.success(false, '成功', '新增人员组成功！');
+				} else {
+					_this.warning(false, '失败', '新增人员组失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+
+
 		},
 
 		loadapplicantgroup () {
