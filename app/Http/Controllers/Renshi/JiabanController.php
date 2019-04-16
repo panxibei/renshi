@@ -494,6 +494,52 @@ class JiabanController extends Controller
 
 		return $department2applicant;
     }
+	
+
+    /**
+     * loadApplicant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function loadApplicant(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		$node = $request->input('node');
+		
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		if ($node == '公司') {
+			$res = User::select('department')
+				->distinct()
+				->get()->toArray();
+			
+			$result = [];
+			foreach ($res as $value) {
+				array_push($result, $value['department']); 
+				// $result[$value['department']] = $value['department']; 
+			}
+		
+
+		} else {
+			// 部门
+			$res = User::select('displayname')
+				->get()->toArray();
+
+				$result = [];
+				foreach ($res as $value) {
+					array_push($result, $value['displayname']); 
+					// $result[$value['department']] = $value['department']; 
+				}
+	// dd($result);
+
+		}
+
+		return $result;
+		
+    }
 
 
 

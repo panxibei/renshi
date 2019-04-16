@@ -434,6 +434,10 @@ Renshi(Jiaban) -
 <br>
 				<Divider dashed></Divider>
 
+				<Tree :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
+
+				<br><br>
+
 				<i-row :gutter="16">
 					<i-col span="15">
 						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="onchange_department" clearable placeholder="选择部门名称" style="width: 260px;">
@@ -840,6 +844,16 @@ var vm_app = new Vue({
 		applicantgroup_select: '',
 		applicantgroup_options: [],
 		applicantgroup_input: '',
+
+		//
+		treedata: [
+			{
+				title: '公司',
+				loading: false,
+				children: []
+			}
+		],
+
 
 
 
@@ -1674,8 +1688,59 @@ var vm_app = new Vue({
 
 		},
 
+		// 加载各部门人员
+		loadTreeData (item, callback) {
+			var _this = this;
 
+			var node = item.title;
 
+			var url = "{{ route('renshi.jiaban.applicant.loadapplicant') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					node: node
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data;
+
+					var arr = [];
+					setTimeout(() => {
+						if (node=='公司') {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+									loading: false,
+									children: []
+								});
+							}
+						} else {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+									loading: false,
+									children: []
+								});
+							}
+						}
+						callback(arr);
+					}, 1000);
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+		},
 
 
 
