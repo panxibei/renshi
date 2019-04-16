@@ -1160,10 +1160,10 @@ var vm_app = new Vue({
 			var category = _this.jiaban_add_category1;
 			var duration = _this.jiaban_add_duration1;
 			var datetimerange = _this.jiaban_add_datetimerange1;
-			var applicant_id = _this.targetkeystransfer;
+			var applicantgroup = _this.jiaban_add_applicantgroup;
 
-			if (applicant_id[0] == '' || reason == '' || category == ''  || duration == '' || datetimerange[0] == ''
-				|| applicant_id[0] == undefined|| reason == undefined || category == undefined || duration == undefined || datetimerange[0] == undefined) {
+			if (applicantgroup == '' || reason == '' || category == ''  || duration == '' || datetimerange[0] == ''
+				|| applicantgroup == undefined|| reason == undefined || category == undefined || duration == undefined || datetimerange[0] == undefined) {
 				_this.warning(false, '警告', '输入内容为空或不正确！');
 				return false;
 			}
@@ -1176,7 +1176,7 @@ var vm_app = new Vue({
 				category: category,
 				duration: duration,
 				datetimerange: datetimerange,
-				applicant_id: applicant_id,
+				applicantgroup: applicantgroup,
 			})
 			.then(function (response) {
 				console.log(response.data);

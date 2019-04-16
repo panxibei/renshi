@@ -769,7 +769,7 @@ class JiabanController extends Controller
 		$category = $request->input('category');
 		$duration = $request->input('duration');
 		$datetimerange = $request->input('datetimerange');
-		$applicant_id = $request->input('applicant_id');
+		$applicantgroup = $request->input('applicantgroup');
 
 		$uuid4 = Uuid::uuid4();
 		$uuid = $uuid4->toString();
@@ -794,6 +794,24 @@ class JiabanController extends Controller
 		$uid_of_auditor = $b[0]['uid'];
 		$auditor = $b[0]['name'];
 		$department_of_auditor = $b[0]['department'];
+
+		// 查找批量applicant信息
+		$res1 = User::select('applicant_group')
+			->where('id', $id_of_agent)
+			->first();
+
+		$res2 = json_decode($res1['applicant_group'], true);
+
+		foreach ($res2 as $key => $value) {
+			if ($applicantgroup == $value['title']) {
+				$result = $value['applicants'];
+				break;
+			}
+		}
+		// dd($result);
+
+
+
 
 		// get applicant info
 		$users = User::select('uid', 'displayname as applicant', 'department')
