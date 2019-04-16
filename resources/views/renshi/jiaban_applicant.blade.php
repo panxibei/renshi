@@ -1751,24 +1751,24 @@ var vm_app = new Vue({
 			var _this = this;
 			var json = _this.$refs.tree.getCheckedNodes();
 			var title = _this.applicantgroup_title;
-			var userids = [];
+			var applicants = [];
 			var str = '';
 			for (var key in json) {
-				let tmp = json[key]['title'].split(' (ID:');
+				// let tmp = json[key]['title'].split(' (ID:');
 
-				if (tmp[1]) {
-					str = tmp[1].substr(0, tmp[1].length-1);
-					userids.push(str);
-				}
+				// if (tmp[1]) {
+				// 	str = tmp[1].substr(0, tmp[1].length-1);
+				// 	applicants.push(str);
+				// }
+
+				applicants.push(json[key]['title']);
 			}
-
-			// console.log(userid);return false;
 
 			var url = "{{ route('renshi.jiaban.applicant.createapplicantgroup') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
 				title: '人员组一',
-				userids: userids,
+				applicants: applicants,
 			})
 			.then(function (response) {
 				console.log(response.data);

@@ -555,10 +555,10 @@ class JiabanController extends Controller
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 		
 		$title = $request->input('title');
-		$userids = $request->input('userids');
+		$applicants = $request->input('applicants');
 
 		$ag['title'] = $title;
-		$ag['userids'] = $userids;
+		$ag['applicants'] = $applicants;
 
 		// 用户信息：$user['id']、$user['name'] 等
 		$me = response()->json(auth()->user());
@@ -609,7 +609,6 @@ class JiabanController extends Controller
 
 		DB::commit();
 		Cache::flush();
-		dd($result);
 		return $result;		
     }
 
