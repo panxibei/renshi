@@ -439,7 +439,7 @@ Renshi(Jiaban) -
 						* 人员组名称&nbsp;&nbsp;
 						<i-input v-model.lazy="applicantgroup_title" size="small" style="width: 160px"></i-input>
 						&nbsp;&nbsp;
-						<i-button @click="oncreate_applicantgroup()" icon="ios-people-outline" size="small" type="default">添加人员组</i-button>
+						<i-button @click="oncreate_applicantgroup()" icon="ios-people-outline" size="small" type="default">新增人员组</i-button>
 					</i-col>
 					<i-col span="6">
 						<i-select v-model.lazy="applicantgroup_select" @on-change="onchange_applicantgroup" clearable size="small" placeholder="选择人员组名称查看成员" style="width: 260px;">
@@ -1719,6 +1719,35 @@ var vm_app = new Vue({
 
 		// 查看人员组成员
 		onchange_applicantgroup () {
+			var _this = this;
+			var applicantgroup = _this.applicantgroup_select;
+			if (applicantgroup == '') return false;
+			var url = "{{ route('renshi.jiaban.applicant.loadapplicantgroupdetails') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					applicantgroup: applicantgroup,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var arr = response.data;
+					_this.applicantgroup_input = arr.join('\r\n');
+				} else {
+					_this.applicantgroup_input = '';
+				}
+			})
+			.catch(function (error) {
+				_this.applicantgroup_input = '';
+			})
 
 		},
 
@@ -1777,7 +1806,7 @@ var vm_app = new Vue({
 
 		},
 
-		// 添加人员组
+		// 新增人员组
 		oncreate_applicantgroup () {
 			// console.log(this.$refs.tree.getCheckedNodes());
 			var _this = this;
@@ -1794,14 +1823,16 @@ var vm_app = new Vue({
 			var str = '';
 			for (var key in json) {
 				// 截取字符
-				// let tmp = json[key]['title'].split(' (ID:');
+				let tmp = json[key]['title'].split(' (ID:');
 
-				// if (tmp[1]) {
+				if (tmp[1]) {
 				// 	str = tmp[1].substr(0, tmp[1].length-1);
 				// 	applicants.push(str);
-				// }
 
-				applicants.push(json[key]['title']);
+					applicants.push(json[key]['title']);
+				}
+
+				
 			}
 
 			var url = "{{ route('renshi.jiaban.applicant.createapplicantgroup') }}";
@@ -1822,7 +1853,9 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.applicantgroup_title = '';
 					_this.loadapplicantgroup();
-					_this.success(false, '成功', '添加人员组成功！');
+					_this.success(false, '成功', '新增人员组成功！');
+				} else {
+					_this.warning(false, '失败', '新增人员组失败！');
 				}
 			})
 			.catch(function (error) {

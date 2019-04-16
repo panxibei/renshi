@@ -640,6 +640,45 @@ class JiabanController extends Controller
 		// dd($result);
 
 		return $result;
+		}
+		
+
+    /**
+     * loadApplicantGroupDetails
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function loadApplicantGroupDetails(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		$applicantgroup = $request->input('applicantgroup');
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		$userid = $user['id'];
+		
+		$res1 = User::select('applicant_group')
+			->where('id', $userid)
+			->first();
+		// dd($res['applicant_group']);
+
+		$res2 = json_decode($res1['applicant_group'], true);
+
+		foreach ($res2 as $key => $value) {
+			if ($applicantgroup == $value['title']) {
+				$result = $value['applicants'];
+				break;
+			}
+		}
+		// dd($result);
+
+		return $result;
     }
 
 
