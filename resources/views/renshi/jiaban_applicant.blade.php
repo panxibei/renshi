@@ -403,6 +403,38 @@ Renshi(Jiaban) -
 				<Tab-pane label="批量同组录入">
 
 				<i-row :gutter="16">
+					<i-col span="24">
+						* 人员组&nbsp;
+						<i-select v-model.lazy="jiaban_add_category1" size="small" style="width:120px" placeholder="选择加班类别">
+							<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+						&nbsp;&nbsp;
+						* 时间&nbsp;
+						<Date-picker v-model.lazy="jiaban_add_datetimerange1" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+						&nbsp;&nbsp;
+						<Tooltip content="单位小时" placement="top">
+						* 时长&nbsp;
+						<Input-number v-model.lazy="jiaban_add_duration1" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
+						</Tooltip>
+						&nbsp;&nbsp;
+						* 类别&nbsp;
+						<i-select v-model.lazy="jiaban_add_category1" size="small" style="width:120px" placeholder="选择加班类别">
+							<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+						&nbsp;&nbsp;
+						<i-button @click="oncreate_applicant1()" size="default" type="primary">提 交</i-button>
+						&nbsp;&nbsp;<i-button @click="onclear_applicant1()" size="default">清 除</i-button>
+					
+						<br>
+						* 请在以下添加人员组。
+					</i-col>
+
+				</i-row>
+
+<br>
+				<Divider dashed></Divider>
+
+				<i-row :gutter="16">
 					<i-col span="15">
 						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="onchange_department" clearable placeholder="选择部门名称" style="width: 280px;">
 							<i-option v-for="item in department_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
