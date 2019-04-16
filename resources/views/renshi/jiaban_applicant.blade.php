@@ -854,6 +854,8 @@ var vm_app = new Vue({
 			}
 		],
 
+		applicantgroup_title: '',
+
 
 
 
@@ -1746,31 +1748,31 @@ var vm_app = new Vue({
 		// 添加人员组
 		oncreate_applicantgroup () {
 			// console.log(this.$refs.tree.getCheckedNodes());
-
-			var json = this.$refs.tree.getCheckedNodes();
-
-			var arr = [];
+			var _this = this;
+			var json = _this.$refs.tree.getCheckedNodes();
+			var title = _this.applicantgroup_title;
+			var userids = [];
+			var str = '';
 			for (var key in json) {
-				arr.push(
-					json[key]['title'],
-				);
+				let tmp = json[key]['title'].split(' (ID:');
+
+				if (tmp[1]) {
+					str = tmp[1].substr(0, tmp[1].length-1);
+					userids.push(str);
+				}
 			}
 
-			console.log(arr);return false;
-
-
+			// console.log(userid);return false;
 
 			var url = "{{ route('renshi.jiaban.applicant.createapplicantgroup') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					node: node,
-					title: title
-				}
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				title: '人员组一',
+				userids: userids,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				console.log(response.data);
+				return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();

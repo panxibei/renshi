@@ -554,77 +554,48 @@ class JiabanController extends Controller
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 		
-		// $created_at = date('Y-m-d H:i:s');
-		// $updated_at = date('Y-m-d H:i:s');
+		$title = $request->input('title');
+		$userids = $request->input('userids');
 
-		$reason = $request->input('reason');
-		$remark = $request->input('remark');
-		$category = $request->input('category');
-		$duration = $request->input('duration');
-		$datetimerange = $request->input('datetimerange');
-		$applicant_id = $request->input('applicant_id');
-
-		$uuid4 = Uuid::uuid4();
-		$uuid = $uuid4->toString();
+		$ag['title'] = $title;
+		$ag['userids'] = $userids;
 
 		// 用户信息：$user['id']、$user['name'] 等
 		$me = response()->json(auth()->user());
 		$user = json_decode($me->getContent(), true);
+		$userid = $user['id'];
 
-		$id_of_agent = $user['id'];
-		$uid_of_agent = $user['uid'];
-		$agent = $user['displayname'];
-		$department_of_agent = $user['department'];
-
-		// get auditor
-		$a = User::select('auditing')
-			->where('id', $user['id'])
+		// 查询已有applicant_group信息
+		$t = User::select('applicant_group')
+			->where('id', $userid)
 			->first();
+		// dd(json_decode($t['applicant_group'], true));
+		
+		if ($t['applicant_group']) {
 
-		$b = json_decode($a['auditing'], true);
+			$applicant_group = json_decode($t['applicant_group'], true);
+			// dd($applicant_group);
 
-		$id_of_auditor = $b[0]['id'];
-		$uid_of_auditor = $b[0]['uid'];
-		$auditor = $b[0]['name'];
-		$department_of_auditor = $b[0]['department'];
-
-		// get applicant info
-		$users = User::select('uid', 'displayname as applicant', 'department')
-			->whereIn('id', $applicant_id)
-			->get()->toArray();
-
-		foreach ($users as $key => $value) {
-			$s[$key]['uid'] = $value['uid'];
-			$s[$key]['applicant'] = $value['applicant'];
-			$s[$key]['department'] = $value['department'];
-			$s[$key]['category'] = $category;
-			$s[$key]['datetimerange'] = date('Y-m-d H:i', strtotime($datetimerange[0])) . ' - ' . date('Y-m-d H:i', strtotime($datetimerange[1]));
-			$s[$key]['duration'] = $duration;
+			// $after_applicant_group = $before_applicant_group;
+			array_push($applicant_group, $ag);
+			// dd($applicant_group);
+		} else {
+			$applicant_group[] = $ag;
 		}
 
-		$application = json_encode(
-			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		$applicant_group = json_encode(
+			$applicant_group, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
+
+		// dd($applicant_group);
 
 		// 写入数据库
 		try	{
 			DB::beginTransaction();
 			
-			Renshi_jiaban::create([
-					'uuid' => $uuid,
-					'id_of_agent' => $id_of_agent,
-					'uid_of_agent' => $uid_of_agent,
-					'agent' => $agent,
-					'department_of_agent' => $department_of_agent,
-					'id_of_auditor' => $id_of_auditor,
-					'uid_of_auditor' => $uid_of_auditor,
-					'auditor' => $auditor,
-					'department_of_auditor' => $department_of_auditor,
-					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-					'application' => $application,
-					'status' => 1,
-					'reason' => $reason,
-					'remark' => $remark,
+			$result = User::where('id', $userid)
+			->update([
+				'applicant_group' => $applicant_group,
 			]);
 
 			$result = 1;
@@ -638,6 +609,7 @@ class JiabanController extends Controller
 
 		DB::commit();
 		Cache::flush();
+		dd($result);
 		return $result;		
     }
 
