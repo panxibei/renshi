@@ -611,6 +611,75 @@ class JiabanController extends Controller
 		Cache::flush();
 		return $result;		
 		}
+
+
+		/**
+     * deleteApplicantGroup
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteApplicantGroup(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+		
+		$title = $request->input('title');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		$userid = $user['id'];
+
+		// 查询已有applicant_group信息
+		$t = User::select('applicant_group')
+			->where('id', $userid)
+			->first();
+		// dd(json_decode($t['applicant_group'], true));
+		
+		if ($t['applicant_group']) {
+
+			$applicant_group = json_decode($t['applicant_group'], true);
+
+			$applicant_group_result = [];
+			foreach ($applicant_group as $key => $value) {
+				if ($value['title'] != $title) {
+					array_push($applicant_group_result, $value);
+				}
+			}
+		} else {
+			return 0;
+		}
+
+		// dd($applicant_group_result);
+
+		$applicant_group_result = json_encode(
+			$applicant_group_result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		// dd($applicant_group_result);
+
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			$result = User::where('id', $userid)
+			->update([
+				'applicant_group' => $applicant_group_result,
+			]);
+
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			// return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;		
+		}
 		
 
     /**

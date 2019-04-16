@@ -1865,7 +1865,6 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var title = _this.applicantgroup_select;
-			alert(applicantgroup);
 
 			var url = "{{ route('renshi.jiaban.applicant.deleteapplicantgroup') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1873,8 +1872,8 @@ var vm_app = new Vue({
 				title: title,
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1884,16 +1883,14 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.applicantgroup_title = '';
 					_this.loadapplicantgroup();
-					_this.success(false, '成功', '新增人员组成功！');
+					_this.success(false, '成功', '删除人员组成功！');
 				} else {
-					_this.warning(false, '失败', '新增人员组失败！');
+					_this.warning(false, '失败', '删除人员组失败！');
 				}
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
 			})
-
-
 
 		},
 
