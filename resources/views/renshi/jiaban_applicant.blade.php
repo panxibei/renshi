@@ -405,8 +405,8 @@ Renshi(Jiaban) -
 				<i-row :gutter="16">
 					<i-col span="24">
 						* 人员组&nbsp;
-						<i-select v-model.lazy="jiaban_add_category1" size="small" style="width:120px" placeholder="选择加班类别">
-							<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" style="width:160px" placeholder="选择加班类别">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
 						* 时间&nbsp;
@@ -426,33 +426,48 @@ Renshi(Jiaban) -
 						&nbsp;&nbsp;<i-button @click="onclear_applicant1()" size="default">清 除</i-button>
 					
 						<br>
-						* 请在以下添加人员组。
+						<font color="#2db7f5">* 请先在以下界面添加快捷人员组。</font>
 					</i-col>
 
 				</i-row>
 
-<br>
+				<br><br>
 				<Divider dashed></Divider>
 
 				<i-row :gutter="16">
-					<i-col span="24">
-
+					<i-col span="9">
 						* 人员组名称&nbsp;&nbsp;
 						<i-input v-model.lazy="applicantgroup_title" size="small" style="width: 160px"></i-input>
 						&nbsp;&nbsp;
-						<i-button @click="oncreate_applicantgroup()" size="small" type="default">添加人员组</i-button>
-				
-				
-				
+						<i-button @click="oncreate_applicantgroup()" icon="ios-people-outline" size="small" type="default">添加人员组</i-button>
 					</i-col>
+					<i-col span="6">
+						<i-select v-model.lazy="applicantgroup_select" @on-change="onchange_applicantgroup" clearable size="small" placeholder="选择人员组名称查看成员" style="width: 260px;">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</i-col>
+					<i-col span="9">
+						&nbsp;
+					</i-col>
+
 				</i-row>
+
+				<br><br>
 				<i-row :gutter="16">
-					<i-col span="24">
+					<i-col span="9">
 						<Tree ref="tree" :data="treedata" :load-data="loadTreeData" show-checkbox></Tree>
 					</i-col>
+					<i-col span="6">
+						<i-input v-model.lazy="applicantgroup_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
+					</i-col>
+					<i-col span="9">
+					&nbsp;
+					</i-col>
+
 				</i-row>
 				
-				<br><br>
+				<br><br><br><br><br><br>
+				<Divider dashed></Divider>
 
 				<i-row :gutter="16">
 					<i-col span="15">
@@ -606,6 +621,7 @@ var vm_app = new Vue({
 		jiaban_add_reason: '',
 		jiaban_add_remark: '',
 
+		jiaban_add_applicantgroup: '',
 		jiaban_add_datetimerange1: [],
 		jiaban_add_category1: '',
 		jiaban_add_duration1: '',
@@ -1805,18 +1821,47 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.applicantgroup_title = '';
+					_this.loadapplicantgroup();
 					_this.success(false, '成功', '添加人员组成功！');
 				}
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
 			})
-
-
-
 		},
 
+		loadapplicantgroup () {
+			var _this = this;
+			var url = "{{ route('renshi.jiaban.applicant.loadapplicantgroup') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data;
+					var arr = [];
+					for (var key in json) {
+						arr.push({
+							label: json[key]['title'],
+							value: json[key]['title'],
+						});
+					}
+
+					_this.applicantgroup_options = arr;
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
+		},
 
 
 
@@ -2265,6 +2310,7 @@ var vm_app = new Vue({
 		_this.current_subnav = '申请';
 		// 显示所有
 		_this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
+		_this.loadapplicantgroup();
 	}
 });
 </script>

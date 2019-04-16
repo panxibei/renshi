@@ -610,7 +610,38 @@ class JiabanController extends Controller
 		DB::commit();
 		Cache::flush();
 		return $result;		
+		}
+		
+
+    /**
+     * loadApplicantGroup
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function loadApplicantGroup(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		$userid = $user['id'];
+		
+		$res = User::select('applicant_group')
+			->where('id', $userid)
+			->first();
+		// dd($res['applicant_group']);
+
+		$result = json_decode($res['applicant_group'], true);
+		// dd($result);
+
+		return $result;
     }
+
 
 		/**
      * applicantCreate1
