@@ -436,7 +436,7 @@ Renshi(Jiaban) -
 
 				<i-row :gutter="16">
 					<i-col span="15">
-						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="onchange_department" clearable placeholder="选择部门名称" style="width: 280px;">
+						<i-select v-model.lazy="department_select" @on-open-change="onopenchange_department" @on-change="onchange_department" clearable placeholder="选择部门名称" style="width: 260px;">
 							<i-option v-for="item in department_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
@@ -444,8 +444,13 @@ Renshi(Jiaban) -
 						&nbsp;&nbsp;
 						
 					</i-col>
-					<i-col span="9">
-						&nbsp;
+					<i-col span="6">
+						<i-select v-model.lazy="applicantgroup_select" @on-change="onchange_applicantgroup" clearable placeholder="选择人员组名称" style="width: 260px;">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</i-col>
+					<i-col span="3">
+					&nbsp;
 					</i-col>
 				</i-row>
 				
@@ -465,23 +470,13 @@ Renshi(Jiaban) -
 					<i-col span="1">
 					&nbsp;
 					</i-col>
-					<i-col span="9">
-						* 时间&nbsp;
-						<Date-picker v-model.lazy="jiaban_add_datetimerange1" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
-						<br><br>
-						<Tooltip content="单位小时" placement="top">
-						* 时长&nbsp;
-						<Input-number v-model.lazy="jiaban_add_duration1" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 60px"></Input-number>
-						</Tooltip>
-						<br><br>
-						* 类别&nbsp;
-						<i-select v-model.lazy="jiaban_add_category1" size="small" style="width:120px" placeholder="选择加班类别">
-							<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-						</i-select>
-						<br><br>
-						<i-button @click="oncreate_applicant1()" size="default" type="primary">提 交</i-button>
-						&nbsp;&nbsp;<i-button @click="onclear_applicant1()" size="default">清 除</i-button>
+					<i-col span="6">
+						<i-input v-model.lazy="applicantgroup_input" type="textarea" :rows="14" placeholder="" :readonly="true"></i-input>
 					</i-col>
+					<i-col span="3">
+						&nbsp;
+					</i-col>
+
 
 				</i-row>
 
@@ -841,7 +836,10 @@ var vm_app = new Vue({
 		targetkeystransfer: [], // ['1', '2'] key
 		displayname: '',
 
-
+		// 查看人员组
+		applicantgroup_select: '',
+		applicantgroup_options: [],
+		applicantgroup_input: '',
 
 
 
@@ -1670,6 +1668,11 @@ var vm_app = new Vue({
 			
 		},
 
+
+		// 查看人员组成员
+		onchange_applicantgroup () {
+
+		},
 
 
 
