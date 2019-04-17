@@ -1188,27 +1188,37 @@ class JiabanController extends Controller
 		// 代理人相应的审核人的数量
 		$agent_auditing = json_decode($agent['auditing'], true);
 		$agent_count = count($agent_auditing);
+		// dd($agent_auditing);
 
 		// 订单的状态数字
 		$jiaban_status = $auditing_before['status'];
-// dd($agent);
+
+		// 第一种，返回到上一级
 		// 获取上一个auditor
-		if ($jiaban_status <= 1) {
-			// 如果是第一个审核人，则退回到申请人处
-			$id_of_auditor = $agent['id'];
-			$uid_of_auditor = $agent['uid'];
-			$auditor = $agent['displayname'];
-			$department_of_auditor = $agent['department'];
+		// if ($jiaban_status <= 1) {
+		// 	// 如果是第一个审核人，则退回到申请人处
+		// 	$id_of_auditor = $agent['id'];
+		// 	$uid_of_auditor = $agent['uid'];
+		// 	$auditor = $agent['displayname'];
+		// 	$department_of_auditor = $agent['department'];
 
-		} else {
-			// 否则退回到上一个auditor
-			$jiaban_status--;
-			$id_of_auditor = $agent_auditing[$jiaban_status]['id'];
-			$uid_of_auditor = $agent_auditing[$jiaban_status]['uid'];
-			$auditor = $agent_auditing[$jiaban_status]['name'];
-			$department_of_auditor = $agent_auditing[$jiaban_status]['department'];
-		}
+		// } else {
+		// 	// 否则退回到上一个auditor
+		// 	$jiaban_status--;
+		// 	$id_of_auditor = $agent_auditing[$jiaban_status-1]['id'];
+		// 	$uid_of_auditor = $agent_auditing[$jiaban_status-1]['uid'];
+		// 	$auditor = $agent_auditing[$jiaban_status-1]['name'];
+		// 	$department_of_auditor = $agent_auditing[$jiaban_status-1]['department'];
+		// }
 
+		// 第二种，直接结束
+			$jiaban_status = 0;
+			$id_of_auditor = '无';
+			$uid_of_auditor = '无';
+			$auditor = '无';
+			$department_of_auditor = '无';
+
+		// dd($agent_auditing[$jiaban_status]);
 
 		
 		// 写入数据库

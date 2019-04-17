@@ -302,7 +302,7 @@ Renshi(Jiaban) -
 											状态&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.status==1?'同意':'否决'" readonly="true" style="width: 80px"></i-input>
 										</i-col>
-										<i-col span="13">
+										<i-col span="12">
 											时间&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>

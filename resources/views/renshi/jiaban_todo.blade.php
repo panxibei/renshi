@@ -312,7 +312,7 @@ Renshi(Jiaban) -
 											状态&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.status==1?'同意':'否决'" readonly="true" style="width: 80px"></i-input>
 										</i-col>
-										<i-col span="13">
+										<i-col span="12">
 											时间&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>
@@ -354,7 +354,7 @@ Renshi(Jiaban) -
 						<br><br>
 						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">通 过</i-button>
 						<br><br>
-						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">拒 绝</i-button>
+						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">否 决</i-button>
 					</div>	
 					<div slot="footer" v-else>
 						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
