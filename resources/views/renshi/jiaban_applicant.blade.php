@@ -1179,8 +1179,8 @@ var vm_app = new Vue({
 				applicantgroup: applicantgroup,
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 				
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();

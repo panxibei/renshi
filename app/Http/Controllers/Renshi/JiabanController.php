@@ -804,14 +804,16 @@ class JiabanController extends Controller
 
 		foreach ($res2 as $key => $value) {
 			if ($applicantgroup == $value['title']) {
-				$result = $value['applicants'];
+				$res3 = $value['applicants'];
 				break;
 			}
 		}
-		// dd($result);
 
-
-
+		foreach ($res3 as $key => $value) {
+			$tmpstr = explode(' (ID:', $value);
+			$applicant_id[] = substr($tmpstr[1], 0, strlen($tmpstr[1]) - 1);
+		}
+		// dd($applicant_id);
 
 		// get applicant info
 		$users = User::select('uid', 'displayname as applicant', 'department')
