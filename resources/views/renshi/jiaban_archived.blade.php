@@ -465,7 +465,11 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('span',' 已结案')
+							h('span',{
+								style:{
+									color: '#19be6b'
+								}
+							},' 已结案')
 						])
 
 					} else {
@@ -478,7 +482,11 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('span',' 待处理')
+							h('span',{
+								style:{
+									color: '#ff9900'
+								}
+							},' 待处理')
 						])
 					}	
 				},

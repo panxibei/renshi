@@ -521,7 +521,6 @@ var vm_app = new Vue({
 							h('span',' 已归档')
 						])
 					} else if (params.row.status == 99) {
-						// return h('div', {}, '已结案')
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -530,7 +529,11 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('span',' 已结案')
+							h('span',{
+								style:{
+									color: '#19be6b'
+								}
+							},' 已结案')
 						])
 
 					} else {
@@ -543,7 +546,11 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('span',' 待处理')
+							h('span',{
+								style:{
+									color: '#ff9900'
+								}
+							},' 待处理')
 						])
 					}
 				},

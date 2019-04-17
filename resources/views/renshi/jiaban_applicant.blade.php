@@ -673,9 +673,9 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('font',{
-								props: {
-									color: '#19be6b',
+							h('span',{
+								style:{
+									color: '#19be6b'
 								}
 							},' 已结案')
 						])
@@ -688,9 +688,9 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('font',{
-								props: {
-									color: '#ed4014',
+							h('span',{
+								style:{
+									color: '#ed4014'
 								}
 							},' 已否决')
 						])
@@ -704,9 +704,9 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('font',{
-								props: {
-									color: '#ff9900',
+							h('span',{
+								style:{
+									color: '#ff9900'
 								}
 							},' 待处理')
 						])
