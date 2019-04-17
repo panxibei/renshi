@@ -673,7 +673,11 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('span',' 已结案')
+							h('font',{
+								props: {
+									color: '#19be6b',
+								}
+							},' 已结案')
 						])
 					} else if (params.row.status == 0) {
 						return h('div', {}, [
@@ -700,7 +704,11 @@ var vm_app = new Vue({
 									}
 								}
 							),
-							h('span',' 待处理')
+							h('font',{
+								props: {
+									color: '#ff9900',
+								}
+							},' 待处理')
 						])
 					}
 				},
