@@ -203,13 +203,12 @@ Renshi(Jiaban) -
 						@endhasanyrole
 
 
-
 						
 						&nbsp;<Divider orientation="left">加班信息</Divider>
 
 						<i-row :gutter="16">
 							<i-col span="24">
-
+							
 								<i-row :gutter="16">
 									<i-col span="1">
 										序号
@@ -236,6 +235,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
+								<div style="position:relative; width:100%; height:100px; overflow-y:scroll">
 								<span v-for="(application, index) in jiaban_edit_application">
 
 									&nbsp;
@@ -266,7 +266,7 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
-							
+								</div>
 							</i-col>
 						</i-row>
 
@@ -812,7 +812,7 @@ var vm_app = new Vue({
 		applicantgroup_options: [],
 		applicantgroup_input: '',
 
-		//
+		// 公司组织架构
 		treedata: [
 			{
 				title: '公司',
@@ -821,19 +821,12 @@ var vm_app = new Vue({
 			}
 		],
 
+		// 人员组名称，用于查看成员
 		applicantgroup_title: '',
-
-
-
-
-
-
-
 
 
 		// 删除
 		delete_disabled: true,
-		delete_disabled_sub: true,
 
 		// tabs索引
 		currenttabs: 0,
@@ -848,19 +841,6 @@ var vm_app = new Vue({
 		collapse_query: '',		
 		
 		
-		// 选择权限查看哪些角色在使用
-		permission2role_select: '',
-		permission2role_options: [],
-		permission2role_loading: false,
-		permission2role_input: '',		
-		
-		// 测试用户是否有相应权限
-		test_permission_select: '',
-		test_permission_options: [],
-		test_permission_loading: false,
-		test_user_select: '',
-		test_user_options: [],
-		test_user_loading: false,
 		
 		
     },
@@ -1762,31 +1742,17 @@ var vm_app = new Vue({
 			
 		},
 
-
-
-		
-
-
-
-
-
-
-		
-		
-		
-
-
 		
 		// 导出权限
 		onexport_applicant: function(){
 			alert('功能待完成！');
 			return false;
 
-			var url = "{{ route('admin.permission.excelexport') }}";
-			window.setTimeout(function(){
-				window.location.href = url;
-			}, 1000);
-			return false;
+			// var url = "{{ route('admin.permission.excelexport') }}";
+			// window.setTimeout(function(){
+			// 	window.location.href = url;
+			// }, 1000);
+			// return false;
 		},		
 		
 
