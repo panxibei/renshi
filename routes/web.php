@@ -104,6 +104,15 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// todo页面 pass
 	Route::post('todoPass', 'JiabanController@todoPass')->name('renshi.jiaban.todo.pass');
 
+	// todo页面 软删除
+	Route::post('todoTrash', 'JiabanController@todoTrash')->name('renshi.jiaban.todo.todotrash');
+
+	// todo页面 软删除恢复
+	Route::post('todoRestore', 'JiabanController@todoRestore')->name('renshi.jiaban.todo.todorestore');
+	
+	// todo 硬删除
+	Route::post('todoDelete', 'JiabanController@todoDelete')->name('renshi.jiaban.todo.tododelete');
+	
 
 	// 3333333333
 	// 显示archived页面
@@ -112,14 +121,14 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// archived gets列表
 	Route::get('jiabanGetsArchived', 'JiabanController@jiabanGetsArchived')->name('renshi.jiaban.jiabangetsarchived');
 
-	// applicant页面 软删除
+	// archived页面 软删除
 	Route::post('archivedTrash', 'JiabanController@archivedTrash')->name('renshi.jiaban.archived.archivedtrash');
 
-	// applicant页面 软删除恢复
+	// archived页面 软删除恢复
 	Route::post('archivedRestore', 'JiabanController@archivedRestore')->name('renshi.jiaban.archived.archivedrestore');
 	
 	// archived 硬删除
-	Route::post('archivedDelete', 'JiabanController@archivedDelete')->name('renshi.jiaban.archived.archivedelete');
+	Route::post('archivedDelete', 'JiabanController@archivedDelete')->name('renshi.jiaban.archived.archiveddelete');
 
 
 

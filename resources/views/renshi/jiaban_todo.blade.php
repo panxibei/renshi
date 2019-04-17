@@ -56,7 +56,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ondelete_permission()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_todo()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="onexport_todo()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
@@ -75,21 +75,6 @@ Renshi(Jiaban) -
 				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
-				<Modal v-model="modal_permission_add" @on-ok="oncreate_permission_ok" ok-text="新建" title="Create - Permission" width="420">
-					<div style="text-align:left">
-						
-						<p>
-							name&nbsp;&nbsp;
-							<i-input v-model.lazy="permission_add_name" placeholder="" size="small" clearable style="width: 240px"></i-input>
-
-						</p>
-						
-						&nbsp;
-					
-					</div>	
-				</Modal>
-				
-
 				<Modal v-model="modal_jiaban_edit" title="处理 - 加班单" width="800">
 					
 					<div style="text-align:left">
@@ -600,7 +585,11 @@ var vm_app = new Vue({
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 80,
+				@hasanyrole('role_super_admin')
+					width: 200,
+				@else
+					width: 80,
+				@endhasanyrole
 				render: (h, params) => {
 					return h('div', [
 						h('Button', {
@@ -616,7 +605,37 @@ var vm_app = new Vue({
 									vm_app.jiaban_edit(params.row)
 								}
 							}
-						}, '处理')
+						}, '处理'),
+						@hasanyrole('role_super_admin')
+						h('Button', {
+							props: {
+								type: 'warning',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.onrestore_todo(params.row)
+								}
+							}
+						}, '恢复'),
+						h('Button', {
+							props: {
+								type: 'error',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.ondelete_todo(params.row)
+								}
+							}
+						}, '彻底删除'),
+						@endhasanyrole
 					]);
 				},
 				fixed: 'right'
@@ -1108,31 +1127,56 @@ var vm_app = new Vue({
 		},
 
 
+		onrestore_todo (row) {
+			var _this = this;
+			
+			var id = row.id;
+			
+			if (id == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.todo.todorestore') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.jiabangetstodo(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '恢复成功！');
+				} else {
+					_this.error(false, '失败', '恢复失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '恢复失败！');
+			})
 
+		},
 
-
-
-
-
-
-
-
-		
-		// ondelete_permission
-		ondelete_permission: function () {
+		ontrash_todo () {
 			var _this = this;
 			
 			var tableselect = _this.tableselect;
 			
 			if (tableselect[0] == undefined) return false;
 			
-			var url = "{{ route('admin.permission.permissiondelete') }}";
+			var url = "{{ route('renshi.jiaban.todo.todotrash') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				tableselect: tableselect
+				id: tableselect
 			})
 			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
@@ -1148,394 +1192,74 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '删除失败！');
 			})
-		},		
-		
-		// 显示新建权限
-		oncreate_permission: function () {
-			this.modal_permission_add = true;
 		},
 		
-		// 新建权限
-		oncreate_permission_ok: function () {
+		ondelete_todo () {
 			var _this = this;
-			var name = _this.permission_add_name;
 			
-			if (name == '' || name == null || name == undefined) {
-				_this.warning(false, '警告', '内容不能为空！');
-				return false;
-			}
+			var tableselect = _this.tableselect;
 			
-			// var re = new RegExp(“a”);  //RegExp对象。参数就是我们想要制定的规则。有一种情况必须用这种方式，下面会提到。
-			// var re = /a/;   // 简写方法 推荐使用 性能更好  不能为空 不然以为是注释 ，
-			// var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-			// if (! regexp.test(email)) {
-				// _this.warning(false, 'Warning', 'Email is incorrect!');
-				// return false;
-			// }
-
-			var url = "{{ route('admin.permission.create') }}";
+			if (tableselect[0] == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.todo.tododelete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				name: name,
+				id: tableselect
 			})
 			.then(function (response) {
+				console.log(response.data);
+				return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				
 				if (response.data) {
-					_this.success(false, 'Success', 'Permission created successfully!');
-					_this.permission_add_name = '';
 					_this.jiabangetstodo(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '删除成功！');
 				} else {
-					_this.error(false, 'Warning', 'Permission created failed!');
+					_this.error(false, '失败', '删除失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', 'Permission created failed!');
+				_this.error(false, '错误', '删除失败！');
 			})
-		},		
+		},
+
+
+
+
+
+
+
+
+
+
+
+		
+
 		
 		// 导出权限
 		onexport_todo: function(){
 			alert('功能待完成！');
 			return false;
 
-			var url = "{{ route('admin.permission.excelexport') }}";
-			window.setTimeout(function(){
-				window.location.href = url;
-			}, 1000);
-			return false;
-		},		
-		
-		// 穿梭框显示文本
-		rendertransfer: function (item) {
-			return item.label + ' (ID:' + item.key + ')';
-		},
-		
-		onChangeTransfer: function (newTargetKeys, direction, moveKeys) {
-			// console.log(newTargetKeys);
-			// console.log(direction);
-			// console.log(moveKeys);
-			this.targetkeystransfer = newTargetKeys;
-		},		
-		
-		
-		// 选择role查看permission
-		onchange_role: function () {
-			var _this = this;
-			var roleid = _this.role_select;
-			// console.log(roleid);return false;
-			
-			if (roleid == undefined || roleid == '') {
-				_this.targetkeystransfer = [];
-				_this.datatransfer = [];
-				_this.boo_update = true;
-				return false;
-			}
-			_this.boo_update = false;
-			var url = "{{ route('admin.permission.rolehaspermission') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					roleid: roleid
-				}
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					var json = response.data.allpermissions;
-					_this.datatransfer = _this.json2transfer(json);
-					
-					var arr = response.data.rolehaspermission;
-					_this.targetkeystransfer = _this.arr2target(arr);
-
-				} else {
-					_this.targetkeystransfer = [];
-					_this.datatransfer = [];
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-			
-		},
-		
-		// roleupdatepermission
-		roleupdatepermission: function () {
-			var _this = this;
-			var roleid = _this.role_select;
-			var permissionid = _this.targetkeystransfer;
-
-			if (roleid == undefined || roleid == '') return false;
-			
-			var url = "{{ route('admin.permission.roleupdatepermission') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				roleid: roleid,
-				permissionid: permissionid
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, 'Success', 'Update OK!');
-				} else {
-					_this.warning(false, 'Warning', 'Update failed!');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
+			// var url = "{{ route('admin.permission.excelexport') }}";
+			// window.setTimeout(function(){
+			// 	window.location.href = url;
+			// }, 1000);
+			// return false;
 		},
 
-		// 远程查询角色
-		remoteMethod_role (query) {
-			var _this = this;
 
-			if (query !== '') {
-				_this.role_loading = true;
-				
-				var queryfilter_name = query;
-				
-				var url = "{{ route('admin.permission.rolelist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.role_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				
-				setTimeout(() => {
-					_this.role_loading = false;
-					// const list = this.list.map(item => {
-						// return {
-							// value: item,
-							// label: item
-						// };
-					// });
-					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
-				}, 200);
-			} else {
-				_this.slot_options = [];
-			}
-		},
-		
-		
-		// 选择permission查看role
-		onchange_permission2role: function () {
-			var _this = this;
-			var permissionid = _this.permission2role_select;
-			// console.log(permissionid);return false;
-			
-			if (permissionid == undefined || permissionid == '') {
-				_this.permission2role_input = '';
-				return false;
-			}
 
-			var url = "{{ route('admin.permission.permissiontoviewrole') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					permissionid: permissionid
-				}
-			})
-			.then(function (response) {
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					var json = response.data;
-					var str = '';
-					for (var key in json) {
-						str += json[key] + '\n';
-					}
-					// _this.permission2role_input = str.slice(0, -2);
-					_this.permission2role_input = str.replace(/\n$/, '');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-		},		
 
-		// 远程查询权限
-		remoteMethod_permission2role (query) {
-			var _this = this;
 
-			if (query !== '') {
-				_this.permission2role_loading = true;
-				
-				var queryfilter_name = query;
-				
-				var url = "{{ route('admin.permission.permissionlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-					if (response.data['jwt'] == 'logout') {
-						_this.alert_logout();
-						return false;
-					}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.permission2role_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				
-				setTimeout(() => {
-					_this.permission2role_loading = false;
-				}, 200);
-			} else {
-				_this.permission2role_options = [];
-			}
-		},
 
-		
-		// 远程查询权限（同步）
-		remoteMethod_sync_permission (query) {
-			var _this = this;
-			if (query !== '') {
-				_this.test_permission_loading = true;
-				var queryfilter_name = query;
-				var url = "{{ route('admin.permission.permissionlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-					if (response.data['jwt'] == 'logout') {
-						_this.alert_logout();
-						return false;
-					}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.test_permission_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				setTimeout(() => {
-					_this.test_permission_loading = false;
-				}, 200);
-			} else {
-				_this.test_permission_options = [];
-			}
-		},
-		
-		
-		// 远程查询用户（同步）
-		remoteMethod_sync_user (query) {
-			var _this = this;
-			if (query !== '') {
-				_this.test_user_loading = true;
-				var queryfilter_name = query;
-				var url = "{{ route('admin.permission.userlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-					if (response.data['jwt'] == 'logout') {
-						_this.alert_logout();
-						return false;
-					}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.test_user_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				setTimeout(() => {
-					_this.test_user_loading = false;
-				}, 200);
-			} else {
-				_this.test_user_options = [];
-			}
-		},		
-		
 
-		// 测试用户是否有权限
-		testuserspermission: function () {
-			var _this = this;
-			var permissionid = _this.test_permission_select;
-			var userid = _this.test_user_select;
-
-			if (userid == undefined || userid == '' ||
-				permissionid == undefined || permissionid == '') {
-				_this.warning(false, 'Warning', '内容不能为空！');
-				return false;
-			}
-			
-			var url = "{{ route('admin.permission.testuserspermission') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				permissionid: permissionid,
-				userid: userid
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, 'Success', 'Permission(s) test successfully!');
-				} else {
-					_this.warning(false, 'Warning', 'Permission(s) test failed!');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', 'Permission(s) test failed!');
-			})
-		},
 
 	},
 	mounted: function(){

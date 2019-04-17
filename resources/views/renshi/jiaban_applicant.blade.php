@@ -727,7 +727,7 @@ var vm_app = new Vue({
 						}, '查看'),
 						h('Button', {
 							props: {
-								type: 'primary',
+								type: 'default',
 								size: 'small'
 							},
 							style: {
@@ -742,7 +742,7 @@ var vm_app = new Vue({
 						@hasanyrole('role_super_admin')
 						h('Button', {
 							props: {
-								type: 'primary',
+								type: 'warning',
 								size: 'small'
 							},
 							style: {
@@ -756,7 +756,7 @@ var vm_app = new Vue({
 						}, '恢复'),
 						h('Button', {
 							props: {
-								type: 'primary',
+								type: 'error',
 								size: 'small'
 							},
 							style: {

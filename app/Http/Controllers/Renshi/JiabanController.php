@@ -1132,6 +1132,119 @@ class JiabanController extends Controller
 
 
 
+    /**
+     * 软删除todo
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function todoTrash(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		$result = Renshi_jiaban::whereIn('id', $id)->delete();
+		Cache::flush();
+		return $result;
+    }
+
+    /**
+     * 硬删除todo
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function todoDelete(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		$result = Renshi_jiaban::where('id', $id)->forceDelete();
+		Cache::flush();
+		return $result;
+    }
+
+    /**
+     * 恢复软删除todo
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function todoRestore(Request $request)
+    {
+
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		// 如果在回收站里，则恢复它
+		$result = Renshi_jiaban::where('id', $id)->restore();
+		Cache::flush();
+		return $result;
+		}
+
+
+
+    /**
+     * 软删除archived
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function archivedTrash(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		$result = Renshi_jiaban::whereIn('id', $id)->delete();
+		Cache::flush();
+		return $result;
+    }
+
+    /**
+     * 硬删除archived
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function archivedDelete(Request $request)
+    {
+        //
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		$result = Renshi_jiaban::where('id', $id)->forceDelete();
+		Cache::flush();
+		return $result;
+    }
+
+    /**
+     * 恢复软删除archived
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function archivedRestore(Request $request)
+    {
+
+		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+		$id = $request->input('id');
+
+		// 如果在回收站里，则恢复它
+		$result = Renshi_jiaban::where('id', $id)->restore();
+		Cache::flush();
+		return $result;
+		}
+
+
 
 
 
@@ -1217,61 +1330,6 @@ class JiabanController extends Controller
     }
 	
 	
-
-    /**
-     * 软删除archived
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function archivedTrash(Request $request)
-    {
-        //
-		if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-		$id = $request->input('id');
-
-		$result = Renshi_jiaban::whereIn('id', $id)->delete();
-		Cache::flush();
-		return $result;
-    }
-
-    /**
-     * 硬删除archived
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function archivedDelete(Request $request)
-    {
-        //
-		if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-		$id = $request->input('id');
-
-		$result = Renshi_jiaban::where('id', $id)->forceDelete();
-		Cache::flush();
-		return $result;
-    }
-
-    /**
-     * 恢复软删除archived
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function archivedRestore(Request $request)
-    {
-
-		if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-		$id = $request->input('id');
-
-		// 如果在回收站里，则恢复它
-		$result = Renshi_jiaban::where('id', $id)->restore();
-		Cache::flush();
-		return $result;
-		}
 
 
 

@@ -543,7 +543,7 @@ var vm_app = new Vue({
 						@hasanyrole('role_super_admin')
 						h('Button', {
 							props: {
-								type: 'primary',
+								type: 'warning',
 								size: 'small'
 							},
 							style: {
@@ -557,7 +557,7 @@ var vm_app = new Vue({
 						}, '恢复'),
 						h('Button', {
 							props: {
-								type: 'primary',
+								type: 'error',
 								size: 'small'
 							},
 							style: {
@@ -977,7 +977,7 @@ var vm_app = new Vue({
 			
 			if (tableselect[0] == undefined) return false;
 			
-			var url = "{{ route('renshi.jiaban.archived.archivedelete') }}";
+			var url = "{{ route('renshi.jiaban.archived.archiveddelete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: tableselect
