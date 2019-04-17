@@ -170,6 +170,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
+								<div style="position:relative; width:100%; height:120px; overflow-y:scroll">
 								<span v-for="(auditing, index) in jiaban_edit_auditing_circulation">
 
 									&nbsp;
@@ -208,6 +209,7 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
+								</div>
 							
 							</i-col>
 						</i-row>
@@ -245,7 +247,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
-
+								<div style="position:relative; width:100%; height:120px; overflow-y:scroll">
 								<span v-for="(application, index) in jiaban_edit_application">
 
 									&nbsp;
@@ -276,6 +278,7 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
+								</div>
 							
 							
 							</i-col>

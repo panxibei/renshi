@@ -53,7 +53,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ondelete_applicant()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_archived()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="onexport_applicant()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
@@ -153,6 +153,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
+								<div style="position:relative; width:100%; height:120px; overflow-y:scroll">
 								<span v-for="(auditing, index) in jiaban_edit_auditing_circulation">
 
 									&nbsp;
@@ -191,6 +192,7 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
+								</div>
 							
 							</i-col>
 						</i-row>
@@ -228,6 +230,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
+								<div style="position:relative; width:100%; height:120px; overflow-y:scroll">
 								<span v-for="(application, index) in jiaban_edit_application">
 
 									&nbsp;
@@ -258,6 +261,7 @@ Renshi(Jiaban) -
 									</i-row>
 
 								</span>
+								</div>
 							
 							</i-col>
 						</i-row>
@@ -515,7 +519,11 @@ var vm_app = new Vue({
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 80,
+				@hasanyrole('role_super_admin')
+					width: 200,
+				@else
+					width: 80,
+				@endhasanyrole
 				render: (h, params) => {
 					return h('div', [
 						h('Button', {
@@ -531,7 +539,37 @@ var vm_app = new Vue({
 									vm_app.jiaban_edit(params.row)
 								}
 							}
-						}, '查看')
+						}, '查看'),
+						@hasanyrole('role_super_admin')
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.onrestore_archived(params.row)
+								}
+							}
+						}, '恢复'),
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.ondelete_archived(params.row)
+								}
+							}
+						}, '彻底删除'),
+						@endhasanyrole
 					]);
 				},
 				fixed: 'right'
@@ -659,243 +697,6 @@ var vm_app = new Vue({
 			return false;
 		},
 		
-		// 把laravel返回的结果转换成select能接受的格式
-		json2selectvalue: function (json) {
-			var arr = [];
-			for (var key in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
-			}
-			return arr;
-			// return arr.reverse();
-		},
-		
-		// 穿梭框显示文本转换
-		json2transfer: function (json) {
-			var arr = [];
-			for (var key in json) {
-				arr.push({
-					key: key,
-					label: json[key],
-					description: json[key],
-					disabled: false
-				});
-			}
-			return arr.reverse();
-		},
-
-		// 生成piliangluru_applicant
-		piliangluru_applicant_generate: function (counts) {
-			if (counts == undefined) counts = 1;
-			var len = this.piliangluru_applicant.length;
-			
-			if (counts > len) {
-				for (var i=0;i<counts-len;i++) {
-					// this.piliangluru_applicant.push({value: 'piliangluru_applicant'+parseInt(len+i+1)});
-					this.piliangluru_applicant.push(
-						{
-                            uid: '',
-                            applicant: '',
-                            department: '',
-                            datetimerange: [],
-                            category: '',
-                            duration: ''
-                        }
-					);
-				}
-			} else if (counts < len) {
-				if (this.piliangluruxiang_applicant != '') {
-					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_applicant == this.piliangluru_applicant[i].value) {
-							this.piliangluruxiang_applicant = '';
-							break;
-						}
-					}
-				}
-				
-				for (var i=0;i<len-counts;i++) {
-					this.piliangluru_applicant.pop();
-				}
-			}
-		},
-
-		// oncreate_applicant
-		oncreate_applicant: function () {
-			var _this = this;
-
-			var booFlagOk = true;
-
-			var jiaban_add_reason = _this.jiaban_add_reason;
-			var jiaban_add_remark = _this.jiaban_add_remark;
-
-			if (jiaban_add_reason == ''
-				|| jiaban_add_reason == undefined) {
-				booFlagOk = false;
-			} else {
-				_this.piliangluru_applicant.map(function (v,i) {
-					// applicant: '',
-					// department: '',
-					// datetimerange: [],
-					// category: '',
-					// duration: ''
-					
-					if (v.applicant == '' || v.department == '' || v.category == ''  || v.duration == '' || v.datetimerange[0] == ''
-						|| v.applicant == undefined || v.department == undefined || v.category == undefined || v.duration == undefined || v.datetimerange[0] == undefined) {
-						booFlagOk = false;
-					}
-				});
-			}
-			
-			if (booFlagOk == false) {
-				_this.warning(false, '警告', '输入内容为空或不正确！');
-				return false;
-			}
-			
-			var piliangluru_applicant = _this.piliangluru_applicant;
-			
-			var url = "{{ route('renshi.jiaban.applicant.applicantcreate') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				reason: jiaban_add_reason,
-				remark: jiaban_add_remark,
-				piliangluru: piliangluru_applicant
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-				
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.onclear_applicant();
-					_this.jiabangetsarchived(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '提交成功！');
-				} else {
-					_this.error(false, '失败', '提交失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '提交失败！');
-			})
-		},
-
-        // onclear_applicant
-		onclear_applicant: function () {
-			var _this = this;
-			_this.jiaban_add_reason = '';
-			_this.jiaban_add_remark = '';
-			_this.piliangluru_applicant.map(function (v,i) {
-				v.uid = '';
-				v.applicant = '';
-				v.department = '';
-				v.datetimerange = [];
-				v.category = '';
-				v.duration = '';
-			});
-			
-			// _this.$refs.xianti.focus();
-		},
-
-		// 远程查询角色
-		remoteMethod_applicant (query) {
-			var _this = this;
-
-			if (query !== '') {
-				_this.applicant_loading = true;
-				
-				var queryfilter_name = query;
-				
-				var url = "{{ route('renshi.jiaban.applicant.uidlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-
-					// if (response.data['jwt'] == 'logout') {
-					// 	_this.alert_logout();
-					// 	return false;
-					// }
-					
-					if (response.data) {
-						var json = response.data;
-						_this.applicant_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				
-				setTimeout(() => {
-					_this.applicant_loading = false;
-					// const list = this.list.map(item => {
-						// return {
-							// value: item,
-							// label: item
-						// };
-					// });
-					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
-				}, 200);
-			} else {
-				_this.applicant_options = [];
-			}
-		},
-
-        // 选择role查看permission
-		onchange_applicant: function (value, index) {
-			var _this = this;
-
-			var employeeid = value;
-			// console.log(roleid);return false;
-			
-			if (employeeid == undefined || employeeid == '') {
-                _this.piliangluru_applicant[index].applicant = '';
-                _this.piliangluru_applicant[index].department = '';
-				return false;
-			}
-
-			var url = "{{ route('renshi.jiaban.applicant.employeelist') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					employeeid: employeeid
-				}
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
-				
-				if (response.data) {
-                    var json = response.data;
-                    var arr = [];
-                    for (var key in json) {
-                        arr.push(json[key]);
-                    }
-                    _this.piliangluru_applicant[index].applicant = arr[0];
-                    _this.piliangluru_applicant[index].department = arr[1];
-				} else {
-                    _this.piliangluru_applicant[index].applicant = '';
-                    _this.piliangluru_applicant[index].department = '';
-                }
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-			
-		},
-
 
 		// 归档
 		onarchived_applicant (jiaban_id) {
@@ -934,27 +735,6 @@ var vm_app = new Vue({
 
 		},
 
-
-
-
-
-
-
-
-
-
-
-
-		
-		// 穿梭框目标文本转换（数字转字符串）
-		arr2target: function (arr) {
-			var res = [];
-			arr.map(function( value, index) {
-				// console.log('map遍历:'+index+'--'+value);
-				res.push(value.toString());
-			});
-			return res;
-		},
 		
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
@@ -989,7 +769,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabangetsarchived: function(page, last_page){
+		jiabangetsarchived (page, last_page) {
 			var _this = this;
 			
 			if (page > last_page) {
@@ -1033,10 +813,10 @@ var vm_app = new Vue({
 				// console.log(response.data);
 				// return false;
 
-				// if (response.data['jwt'] == 'logout') {
-				// 	_this.alert_logout();
-				// 	return false;
-				// }
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
 
 				if (response.data) {
 					_this.delete_disabled = true;
@@ -1058,8 +838,7 @@ var vm_app = new Vue({
 		},
 		
 
-		
-		// 表role选择
+		// 表archived选择
 		onselectchange: function (selection) {
 			var _this = this;
 
@@ -1071,23 +850,8 @@ var vm_app = new Vue({
 			_this.delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
-		onselectchangesub: function (selection) {
-			var _this = this;
 
-			_this.tableselect = [];
-			for (var i in selection) {
-				_this.tableselect.push(selection[i].main_id);
-			}
-
-			_this.tableselectsub = [];
-			for (var i in selection) {
-				_this.tableselectsub.push(selection[i].sub_id);
-			}
-			
-			_this.delete_disabled = _this.tableselectsub[0] == undefined ? true : false;
-		},
-
-		// permission编辑前查看
+		// jiaban编辑前查看
 		jiaban_edit: function (row) {
 			var _this = this;
 			
@@ -1139,39 +903,17 @@ var vm_app = new Vue({
 			}, 500);
 		},		
 		
-
-		// jiaban编辑后保存（同意）
-		jiaban_edit_ok: function () {
+		onrestore_archived (row) {
 			var _this = this;
 			
-			var id = _this.jiaban_edit_id;
-			var name = _this.permission_edit_name;
-			// var email = _this.user_edit_email;
-			// var password = _this.user_edit_password;
-			// var created_at = _this.relation_created_at_edit;
-			// var updated_at = _this.relation_updated_at_edit;
+			var id = row.id;
 			
-			if (name == '' || name == null || name == undefined) {
-				_this.warning(false, '警告', '内容不能为空！');
-				return false;
-			}
+			if (id == undefined) return false;
 			
-			// var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-			// if (! regexp.test(email)) {
-				// _this.warning(false, 'Warning', 'Email is incorrect!');
-				// return false;
-			// }
-			
-			var url = "{{ route('admin.permission.update') }}";
+			var url = "{{ route('renshi.jiaban.archived.archivedrestore') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id: id,
-				name: name,
-				// email: email,
-				// password: password,
-				// xuqiushuliang: xuqiushuliang[1],
-				// created_at: created_at,
-				// updated_at: updated_at
+				id: id
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -1182,60 +924,27 @@ var vm_app = new Vue({
 					return false;
 				}
 				
-				_this.jiabangetsarchived(_this.page_current, _this.page_last);
-				
 				if (response.data) {
-					_this.success(false, '成功', '更新成功！');
-					
-					_this.jiaban_edit_id = '';
-					_this.permission_edit_name = '';
-					// _this.role_edit_email = '';
-					// _this.role_edit_password = '';
-					
-					// _this.relation_xuqiushuliang_edit = [0, 0];
-					// _this.relation_created_at_edit = '';
-					// _this.relation_updated_at_edit = '';
+					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '恢复成功！');
 				} else {
-					_this.error(false, '失败', '更新失败！请刷新查询条件后再试！');
+					_this.error(false, '失败', '恢复失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '更新失败！');
-			})			
+				_this.error(false, '错误', '恢复失败！');
+			})
+
 		},
 
-
-		// 通过
-		jiaban_edit_pass () {
-			this.modal_jiaban_pass_loading = true;
-
-			setTimeout(() => {
-				this.modal_jiaban_pass_loading = false;
-				this.modal_jiaban_edit = false;
-				this.$Message.success('成功通过！');
-			}, 2000);
-		},
-
-		// 拒绝
-		jiaban_edit_deny () {
-			this.modal_jiaban_deny_loading = true;
-
-			setTimeout(() => {
-				this.modal_jiaban_deny_loading = false;
-				this.modal_jiaban_edit = false;
-				this.$Message.success('成功拒绝！');
-			}, 2000);
-		},
-		
-		// ondelete_applicant
-		ondelete_applicant: function () {
+		ontrash_archived () {
 			var _this = this;
 			
 			var tableselect = _this.tableselect;
 			
 			if (tableselect[0] == undefined) return false;
 			
-			var url = "{{ route('renshi.jiaban.applicant.applicanttrash') }}";
+			var url = "{{ route('renshi.jiaban.archived.archivedtrash') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: tableselect
@@ -1259,394 +968,48 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '删除失败！');
 			})
-		},		
-		
-		// 显示新建权限
-		oncreate_applicant_gototab: function () {
-			this.currenttabs = 1;
 		},
 		
-		// 新建权限
-		oncreate_permission_ok: function () {
+		ondelete_archived () {
 			var _this = this;
-			var name = _this.permission_add_name;
 			
-			if (name == '' || name == null || name == undefined) {
-				_this.warning(false, '警告', '内容不能为空！');
-				return false;
-			}
+			var tableselect = _this.tableselect;
 			
-			// var re = new RegExp(“a”);  //RegExp对象。参数就是我们想要制定的规则。有一种情况必须用这种方式，下面会提到。
-			// var re = /a/;   // 简写方法 推荐使用 性能更好  不能为空 不然以为是注释 ，
-			// var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-			// if (! regexp.test(email)) {
-				// _this.warning(false, 'Warning', 'Email is incorrect!');
-				// return false;
-			// }
-
-			var url = "{{ route('admin.permission.create') }}";
+			if (tableselect[0] == undefined) return false;
+			
+			var url = "{{ route('renshi.jiaban.archived.archivedelete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				name: name,
+				id: tableselect
 			})
 			.then(function (response) {
+				console.log(response.data);
+				return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				
 				if (response.data) {
-					_this.success(false, 'Success', 'Permission created successfully!');
-					_this.permission_add_name = '';
 					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '删除成功！');
 				} else {
-					_this.error(false, 'Warning', 'Permission created failed!');
+					_this.error(false, '失败', '删除失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', 'Permission created failed!');
+				_this.error(false, '错误', '删除失败！');
 			})
 		},		
 		
-		// 导出权限
-		onexport_applicant: function(){
-			alert('功能待完成！');
-			return false;
-
-			var url = "{{ route('admin.permission.excelexport') }}";
-			window.setTimeout(function(){
-				window.location.href = url;
-			}, 1000);
-			return false;
-		},		
-		
-		// 穿梭框显示文本
-		rendertransfer: function (item) {
-			return item.label + ' (ID:' + item.key + ')';
-		},
-		
-		onChangeTransfer: function (newTargetKeys, direction, moveKeys) {
-			// console.log(newTargetKeys);
-			// console.log(direction);
-			// console.log(moveKeys);
-			this.targetkeystransfer = newTargetKeys;
-		},		
-		
-		
-		// 选择role查看permission
-		onchange_role: function () {
-			var _this = this;
-			var roleid = _this.role_select;
-			// console.log(roleid);return false;
-			
-			if (roleid == undefined || roleid == '') {
-				_this.targetkeystransfer = [];
-				_this.datatransfer = [];
-				_this.boo_update = true;
-				return false;
-			}
-			_this.boo_update = false;
-			var url = "{{ route('admin.permission.rolehaspermission') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					roleid: roleid
-				}
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					var json = response.data.allpermissions;
-					_this.datatransfer = _this.json2transfer(json);
-					
-					var arr = response.data.rolehaspermission;
-					_this.targetkeystransfer = _this.arr2target(arr);
-
-				} else {
-					_this.targetkeystransfer = [];
-					_this.datatransfer = [];
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-			
-		},
-		
-		// roleupdatepermission
-		roleupdatepermission: function () {
-			var _this = this;
-			var roleid = _this.role_select;
-			var permissionid = _this.targetkeystransfer;
-
-			if (roleid == undefined || roleid == '') return false;
-			
-			var url = "{{ route('admin.permission.roleupdatepermission') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				roleid: roleid,
-				permissionid: permissionid
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, 'Success', 'Update OK!');
-				} else {
-					_this.warning(false, 'Warning', 'Update failed!');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-		},
-
-		// 远程查询角色
-		remoteMethod_role (query) {
-			var _this = this;
-
-			if (query !== '') {
-				_this.role_loading = true;
-				
-				var queryfilter_name = query;
-				
-				var url = "{{ route('admin.permission.rolelist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.role_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				
-				setTimeout(() => {
-					_this.role_loading = false;
-					// const list = this.list.map(item => {
-						// return {
-							// value: item,
-							// label: item
-						// };
-					// });
-					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
-				}, 200);
-			} else {
-				_this.slot_options = [];
-			}
-		},
-		
-		
-		// 选择permission查看role
-		onchange_permission2role: function () {
-			var _this = this;
-			var permissionid = _this.permission2role_select;
-			// console.log(permissionid);return false;
-			
-			if (permissionid == undefined || permissionid == '') {
-				_this.permission2role_input = '';
-				return false;
-			}
-
-			var url = "{{ route('admin.permission.permissiontoviewrole') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					permissionid: permissionid
-				}
-			})
-			.then(function (response) {
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					var json = response.data;
-					var str = '';
-					for (var key in json) {
-						str += json[key] + '\n';
-					}
-					// _this.permission2role_input = str.slice(0, -2);
-					_this.permission2role_input = str.replace(/\n$/, '');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-		},		
-
-		// 远程查询权限
-		remoteMethod_permission2role (query) {
-			var _this = this;
-
-			if (query !== '') {
-				_this.permission2role_loading = true;
-				
-				var queryfilter_name = query;
-				
-				var url = "{{ route('admin.permission.permissionlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-					if (response.data['jwt'] == 'logout') {
-						_this.alert_logout();
-						return false;
-					}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.permission2role_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				
-				setTimeout(() => {
-					_this.permission2role_loading = false;
-				}, 200);
-			} else {
-				_this.permission2role_options = [];
-			}
-		},
-
-		
-		// 远程查询权限（同步）
-		remoteMethod_sync_permission (query) {
-			var _this = this;
-			if (query !== '') {
-				_this.test_permission_loading = true;
-				var queryfilter_name = query;
-				var url = "{{ route('admin.permission.permissionlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-					if (response.data['jwt'] == 'logout') {
-						_this.alert_logout();
-						return false;
-					}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.test_permission_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				setTimeout(() => {
-					_this.test_permission_loading = false;
-				}, 200);
-			} else {
-				_this.test_permission_options = [];
-			}
-		},
-		
-		
-		// 远程查询用户（同步）
-		remoteMethod_sync_user (query) {
-			var _this = this;
-			if (query !== '') {
-				_this.test_user_loading = true;
-				var queryfilter_name = query;
-				var url = "{{ route('admin.permission.userlist') }}";
-				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-				axios.get(url,{
-					params: {
-						queryfilter_name: queryfilter_name
-					}
-				})
-				.then(function (response) {
-					if (response.data['jwt'] == 'logout') {
-						_this.alert_logout();
-						return false;
-					}
-					
-					if (response.data) {
-						var json = response.data;
-						_this.test_user_options = _this.json2selectvalue(json);
-					}
-				})
-				.catch(function (error) {
-				})				
-				setTimeout(() => {
-					_this.test_user_loading = false;
-				}, 200);
-			} else {
-				_this.test_user_options = [];
-			}
-		},		
 		
 
-		// 测试用户是否有权限
-		testuserspermission: function () {
-			var _this = this;
-			var permissionid = _this.test_permission_select;
-			var userid = _this.test_user_select;
+		
 
-			if (userid == undefined || userid == '' ||
-				permissionid == undefined || permissionid == '') {
-				_this.warning(false, 'Warning', '内容不能为空！');
-				return false;
-			}
-			
-			var url = "{{ route('admin.permission.testuserspermission') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				permissionid: permissionid,
-				userid: userid
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, 'Success', 'Permission(s) test successfully!');
-				} else {
-					_this.warning(false, 'Warning', 'Permission(s) test failed!');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', 'Permission(s) test failed!');
-			})
-		},
+
+
 
 	},
 	mounted: function(){

@@ -109,66 +109,20 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// 显示archived页面
 	Route::get('jiabanArchived', 'JiabanController@jiabanArchived')->name('renshi.jiaban.archived');
 
-	// jiaban gets列表
+	// archived gets列表
 	Route::get('jiabanGetsArchived', 'JiabanController@jiabanGetsArchived')->name('renshi.jiaban.jiabangetsarchived');
 
+	// applicant页面 软删除
+	Route::post('archivedTrash', 'JiabanController@archivedTrash')->name('renshi.jiaban.archived.archivedtrash');
 
-
-
-
-
-
-
-
-
-
-
-	// 显示permission页面
-	Route::get('permissionIndex', 'PermissionController@permissionIndex')->name('admin.permission.index');
-
-	// 角色列表
-	Route::get('permissionGets', 'PermissionController@permissionGets')->name('admin.permission.permissiongets');
-
-	// 创建permission
-	Route::post('permissionCreate', 'PermissionController@permissionCreate')->name('admin.permission.create');
-
-	// 编辑permission
-	Route::post('permissionUpdate', 'PermissionController@permissionUpdate')->name('admin.permission.update');
+	// applicant页面 软删除恢复
+	Route::post('archivedRestore', 'JiabanController@archivedRestore')->name('renshi.jiaban.archived.archivedrestore');
 	
-	// 删除permission
-	Route::post('permissionDelete', 'PermissionController@permissionDelete')->name('admin.permission.permissiondelete');
+	// archived 硬删除
+	Route::post('archivedDelete', 'JiabanController@archivedDelete')->name('renshi.jiaban.archived.archivedelete');
 
-	// 赋予permission
-	Route::post('permissionGive', 'PermissionController@permissionGive')->name('admin.permission.give');
-	// 移除permission
-	Route::post('permissionRemove', 'PermissionController@permissionRemove')->name('admin.permission.remove');
 
-	// 列出当前角色拥有的权限
-	Route::get('roleHasPermission', 'PermissionController@roleHasPermission')->name('admin.permission.rolehaspermission');
 
-	// 更新当前角色的权限
-	Route::post('roleUpdatePermission', 'PermissionController@roleUpdatePermission')->name('admin.permission.roleupdatepermission');
-	
-	// 列出所有待删除的权限
-	Route::get('permissionListDelete', 'PermissionController@permissionListDelete')->name('admin.permission.permissionlistdelete');
-
-	// 列出所有权限
-	Route::get('permissionList', 'PermissionController@permissionList')->name('admin.permission.permissionlist');
-
-	// 根据权限查看哪些角色
-	Route::get('permissionToViewRole', 'PermissionController@permissionToViewRole')->name('admin.permission.permissiontoviewrole');
-
-	// 角色同步到指定权限
-	Route::post('testUsersPermission', 'PermissionController@testUsersPermission')->name('admin.permission.testuserspermission');
-	
-	// 测试excelExport
-	Route::get('excelExport', 'PermissionController@excelExport')->name('admin.permission.excelexport');
-
-	// 列出所有角色
-	Route::get('roleList', 'PermissionController@roleList')->name('admin.permission.rolelist');
-
-	// 列出所有用户
-	Route::get('userList', 'PermissionController@userList')->name('admin.permission.userlist');
 	
 });
 
