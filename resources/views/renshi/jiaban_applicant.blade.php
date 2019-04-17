@@ -439,7 +439,7 @@ Renshi(Jiaban) -
 						* 人员组名称&nbsp;&nbsp;
 						<i-input v-model.lazy="applicantgroup_title" size="small" style="width: 160px"></i-input>
 						&nbsp;&nbsp;
-						<i-button @click="oncreate_applicantgroup()" icon="ios-people-outline" size="small" type="default">新增人员组</i-button>
+						<i-button @click="oncreate_applicantgroup()" icon="ios-add" size="small" type="default">新增人员组</i-button>
 					</i-col>
 					<i-col span="14">
 						<i-select v-model.lazy="applicantgroup_select" @on-change="onchange_applicantgroup" clearable size="small" placeholder="选择人员组名称查看成员" style="width: 260px;">
@@ -1188,7 +1188,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.onclear_applicant2();
+					_this.onclear_applicant1();
 					_this.jiabangetsapplicant(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '提交成功！');
 				} else {
@@ -1205,16 +1205,10 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.jiaban_add_reason = '';
 			_this.jiaban_add_remark = '';
-			_this.piliangluru_applicant.map(function (v,i) {
-				v.uid = '';
-				v.applicant = '';
-				v.department = '';
-				v.datetimerange = [];
-				v.category = '';
-				v.duration = '';
-			});
-			
-			// _this.$refs.xianti.focus();
+			_this.jiaban_add_applicantgroup = '';
+			_this.jiaban_add_datetimerange1 = '';
+			_this.jiaban_add_duration1 = '';
+			_this.jiaban_add_category1 = '';
 		},
 
 		// oncreate_applicant2
