@@ -294,11 +294,15 @@ Renshi(Jiaban) -
 									&nbsp;
 									<i-row :gutter="16">
 									<span v-if="index!=0"><br></span>
-										<i-col span="8">
+										<i-col span="7">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
 										</i-col>
-										<i-col span="16">
+										<i-col span="5">
+											状态&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.status==1?'同意':'否决'" readonly="true" style="width: 80px"></i-input>
+										</i-col>
+										<i-col span="13">
 											时间&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>

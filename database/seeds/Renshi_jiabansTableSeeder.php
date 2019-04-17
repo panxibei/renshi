@@ -137,6 +137,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     array(
                         "auditor" => "admin",
                         "department" => "admin",
+                        "status" => 1,
                         "opinion" => "balabala1....",
                         "created_at" => $nowtime
                     )
@@ -176,6 +177,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     array(
                         "auditor" => "admin",
                         "department" => "admin",
+                        "status" => 1,
                         "opinion" => "balabala1....",
                         "created_at" => $nowtime
                     )

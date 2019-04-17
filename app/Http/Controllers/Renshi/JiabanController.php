@@ -1044,6 +1044,7 @@ class JiabanController extends Controller
 			array(
 				"auditor" => $auditor,
 				"department" => $department_of_auditor,
+				"status" => 1,
 				"opinion" => $opinion,
 				"created_at" => $nowtime
 			)
@@ -1122,6 +1123,120 @@ class JiabanController extends Controller
 			// echo 'Message: ' .$e->getMessage();
 			DB::rollBack();
 			// return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;		
+    }
+
+		/**
+     * todoDeny
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function todoDeny(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+		
+		$created_at = date('Y-m-d H:i:s');
+		$jiaban_id = $request->input('jiaban_id');
+		$jiaban_id_of_agent = $request->input('jiaban_id_of_agent');
+		$opinion = $request->input('opinion');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		
+		// $id_of_auditor = $user['id'];
+		// $uid_of_auditor = $user['uid'];
+		$auditor = $user['displayname'];
+		$department_of_auditor = $user['department'];
+
+		$auditing_before = Renshi_jiaban::select('status', 'auditing')
+			->where('id', $jiaban_id)
+			->first();
+
+		$nowtime = date("Y-m-d H:i:s",time());
+		$auditing_after = [];
+		if ($auditing_before['auditing']) {
+			$auditing_after = json_decode($auditing_before['auditing'], true);
+		}
+		array_push($auditing_after,
+			array(
+				"auditor" => $auditor,
+				"department" => $department_of_auditor,
+				"status" => 0,
+				"opinion" => $opinion,
+				"created_at" => $nowtime
+			)
+		);
+
+		// dd($auditing_after);
+
+		$auditing =  json_encode(
+			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		// get agent
+		$agent = User::select('id', 'uid', 'displayname', 'department', 'auditing')
+		->where('id', $jiaban_id_of_agent)
+		->first();
+
+		// 代理人相应的审核人的数量
+		$agent_auditing = json_decode($agent['auditing'], true);
+		$agent_count = count($agent_auditing);
+
+		// 订单的状态数字
+		$jiaban_status = $auditing_before['status'];
+// dd($agent);
+		// 获取上一个auditor
+		if ($jiaban_status <= 1) {
+			// 如果是第一个审核人，则退回到申请人处
+			$id_of_auditor = $agent['id'];
+			$uid_of_auditor = $agent['uid'];
+			$auditor = $agent['displayname'];
+			$department_of_auditor = $agent['department'];
+
+		} else {
+			// 否则退回到上一个auditor
+			$jiaban_status--;
+			$id_of_auditor = $agent_auditing[$jiaban_status]['id'];
+			$uid_of_auditor = $agent_auditing[$jiaban_status]['uid'];
+			$auditor = $agent_auditing[$jiaban_status]['name'];
+			$department_of_auditor = $agent_auditing[$jiaban_status]['department'];
+		}
+
+
+		
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// foreach ($s as $value) {
+				// Bpjg_zhongricheng_main::create($value);
+			// }
+			// Bpjg_zhongricheng_relation::insert($s);
+
+			$result = Renshi_jiaban::where('id', $jiaban_id)
+				->update([
+					'id_of_auditor' => $id_of_auditor,
+					'uid_of_auditor' => $uid_of_auditor,
+					'auditor' => $auditor,
+					'department_of_auditor' => $department_of_auditor,
+					'auditing' => $auditing,
+					'status' => $jiaban_status,
+				]);
+
+			// $result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			dd('Message: ' .$e->getMessage());
 			return 0;
 		}
 

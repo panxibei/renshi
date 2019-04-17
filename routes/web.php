@@ -104,6 +104,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// todo页面 pass
 	Route::post('todoPass', 'JiabanController@todoPass')->name('renshi.jiaban.todo.pass');
 
+	// todo页面 deny
+	Route::post('todoDeny', 'JiabanController@todoDeny')->name('renshi.jiaban.todo.deny');
+
 	// todo页面 软删除
 	Route::post('todoTrash', 'JiabanController@todoTrash')->name('renshi.jiaban.todo.todotrash');
 

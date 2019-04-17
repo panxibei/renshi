@@ -304,11 +304,15 @@ Renshi(Jiaban) -
 									</i-row>
 
 									<i-row :gutter="16">
-										<i-col span="8">
+										<i-col span="7">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
 										</i-col>
-										<i-col span="16">
+										<i-col span="5">
+											状态&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.status==1?'同意':'否决'" readonly="true" style="width: 80px"></i-input>
+										</i-col>
+										<i-col span="13">
 											时间&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>
@@ -350,7 +354,7 @@ Renshi(Jiaban) -
 						<br><br>
 						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">通 过</i-button>
 						<br><br>
-						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny">拒 绝</i-button>
+						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">拒 绝</i-button>
 					</div>	
 					<div slot="footer" v-else>
 						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
@@ -1098,11 +1102,11 @@ var vm_app = new Vue({
 					// }, 2000);
 
 				} else {
-					_this.error(false, '失败', '提交失败！');
+					_this.error(false, '失败', '提交通过失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '提交失败！');
+				_this.error(false, '错误', '提交通过失败！');
 			})
 
 
@@ -1115,15 +1119,74 @@ var vm_app = new Vue({
 			// }, 2000);
 		},
 
-		// 拒绝
-		jiaban_edit_deny () {
+		// 否决
+		jiaban_edit_deny (jiaban_id) {
+			var _this = this;
+
+			var jiaban_id = jiaban_id;
+			var jiaban_id_of_agent = _this.jiaban_edit_id_of_agent;
+			var opinion = _this.jiaban_edit_opinion;
+			// console.log(jiaban_id_of_agent);
+			// return false;
+
 			this.modal_jiaban_deny_loading = true;
 
-			setTimeout(() => {
+			var url = "{{ route('renshi.jiaban.todo.deny') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				jiaban_id: jiaban_id,
+				jiaban_id_of_agent: jiaban_id_of_agent,
+				opinion: opinion,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+				
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.jiabangetstodo(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '成功否决！');
+					// setTimeout(() => {
+					// 	this.modal_jiaban_pass_loading = false;
+					// 	this.modal_jiaban_edit = false;
+					// 	this.$Message.success('成功通过！');
+					// }, 2000);
+
+				} else {
+					_this.error(false, '失败', '提交否决失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '提交否决失败！');
+			})
+
+
+
+
+			// setTimeout(() => {
 				this.modal_jiaban_deny_loading = false;
 				this.modal_jiaban_edit = false;
-				this.$Message.success('成功拒绝！');
-			}, 2000);
+				// this.$Message.success('成功否决！');
+			// }, 2000);
+
+
+
+
+
+
+
+
+			// this.modal_jiaban_deny_loading = true;
+
+			// setTimeout(() => {
+			// 	this.modal_jiaban_deny_loading = false;
+			// 	this.modal_jiaban_edit = false;
+			// 	this.$Message.success('成功否决！');
+			// }, 2000);
 		},
 
 

@@ -118,8 +118,11 @@ Renshi(Jiaban) -
 								<span v-if="jiaban_edit_status==99">
 									已结案 <Icon type="md-checkmark"></Icon>
 								</span>
+								<span v-else-if="jiaban_edit_status==0">
+									已否决 <Icon type="md-close"></Icon>
+								</span>
 								<span v-else>
-									未完成 <Icon type="md-close"></Icon>
+									未完成 <Icon type="md-help"></Icon>
 								</span>
 							</i-col>
 						</i-row>
@@ -309,11 +312,15 @@ Renshi(Jiaban) -
 									
 									<i-row :gutter="16">
 									<!-- <span v-if="index!=0"><br>&nbsp;<Divider dashed></Divider></span> -->
-										<i-col span="8">
+										<i-col span="7">
 											审核&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.auditor" readonly="true" style="width: 160px"></i-input>
 										</i-col>
-										<i-col span="16">
+										<i-col span="5">
+											状态&nbsp;&nbsp;
+											<i-input v-model.lazy="auditing.status==1?'同意':'否决'" readonly="true" style="width: 80px"></i-input>
+										</i-col>
+										<i-col span="12">
 											时间&nbsp;&nbsp;
 											<i-input v-model.lazy="auditing.created_at" readonly="true" style="width: 160px"></i-input>
 										</i-col>
@@ -407,7 +414,7 @@ Renshi(Jiaban) -
 				<i-row :gutter="16">
 					<i-col span="24">
 						* 人员组&nbsp;
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" style="width:160px" placeholder="选择加班类别">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" style="width:160px" placeholder="选择人员组">
 							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
@@ -669,16 +676,19 @@ var vm_app = new Vue({
 							h('span',' 已结案')
 						])
 					} else if (params.row.status == 0) {
-						// return h('div', {}, '已结案')
 						return h('div', {}, [
 							h('Icon',{
 								props: {
-									type: 'ios-help-circle-outline',
+									type: 'ios-close-circle-outline',
 									// size: 14,
 									}
 								}
 							),
-							h('span',' 待修改')
+							h('font',{
+								props: {
+									color: '#ed4014',
+								}
+							},' 已否决')
 						])
 					} else {
 						// return h('div', {}, '待处理')
