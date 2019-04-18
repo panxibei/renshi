@@ -1386,8 +1386,8 @@ class JiabanController extends Controller
 		$me = response()->json(auth()->user());
 		$user = json_decode($me->getContent(), true);
 
-		// 保存
-		$res = User::where('id', $user['id'])->find(1);
+		// 先读取配置，后修改配置，最后保存
+		$res = User::find($user['id']);
 		$configs = $res->configs;
 		$configs[$field] = $value;
 		$res->configs = $configs;
