@@ -1744,9 +1744,6 @@ var vm_app = new Vue({
 		
 		// 导出权限
 		onexport_applicant: function(){
-			// alert('功能待完成！');
-			// return false;
-
 			var url = "{{ route('renshi.jiaban.applicant.applicantexport') }}";
 			window.setTimeout(function(){
 				window.location.href = url;
