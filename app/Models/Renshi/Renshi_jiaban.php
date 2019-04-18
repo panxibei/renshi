@@ -15,4 +15,14 @@ class Renshi_jiaban extends Model
         'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived',
     ];
 
+        /**
+     * 这个属性应该被转换为原生类型.
+     * 用于json与array互相转换
+     * @var array
+     */
+    protected $casts = [
+        'application' => 'array',
+    ];
+
+
 }

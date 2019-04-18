@@ -96,6 +96,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// 配置变更
 	Route::post('changeConfigs', 'JiabanController@changeConfigs')->name('renshi.jiaban.applicant.changeconfigs');
 
+	// 导出列表
+	Route::get('applicantExport', 'JiabanController@applicantExport')->name('renshi.jiaban.applicant.applicantexport');
+
 
 	// 22222222222
 	// 显示todo页面

@@ -9,10 +9,10 @@ use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Renshi\Renshi_jiaban;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\Renshi\jiaban_applicantExport;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
-// use Maatwebsite\Excel\Facades\Excel;
-// use App\Exports\Admin\permissionExport;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
@@ -1418,77 +1418,79 @@ class JiabanController extends Controller
 	
 	
 	
-	// 角色列表Excel文件导出
-    public function excelExport()
+	// 列表Excel文件导出
+    public function applicantExport()
     {
-		// if (! $request->ajax()) { return null; }
-		
-		// 获取扩展名配置值
-		$config = Config::select('cfg_name', 'cfg_value')
-			->pluck('cfg_value', 'cfg_name')->toArray();
-
-		$EXPORTS_EXTENSION_TYPE = $config['EXPORTS_EXTENSION_TYPE'];
 
         // 获取用户信息
 		// Excel数据，最好转换成数组，以便传递过去
 		
-		$permission = Permission::select('id', 'name', 'guard_name', 'created_at', 'updated_at')
+		// $jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		$jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+			->where('id', 15)
+			->orWhere('id', 21)
+			// ->where('archived', false)
 			->limit(5000)
 			->orderBy('created_at', 'asc')
-			->get()->toArray();		
+			->get()->toArray();
+		// dd($jiaban_applicant);		
+		// dd($jiaban_applicant[0]['application']);
+		
+		$s = [];
+		$t = [];
+		$i = 1;
+		foreach ($jiaban_applicant as $key => $value) {
+			foreach ($value['application'] as $k => $v) {
+				$s[$key][$k]['id'] = $i++;
+				$s[$key][$k]['uuid'] = $value['uuid'];
+
+				$s[$key][$k]['uid'] = $v['uid'];
+				$s[$key][$k]['applicant'] = $v['applicant'];
+				$s[$key][$k]['department'] = $v['department'];
+				$s[$key][$k]['category'] = $v['category'];
+				$s[$key][$k]['datetimerange'] = $v['datetimerange'];
+				$s[$key][$k]['duration'] = $v['duration'];
+
+				$s[$key][$k]['id_of_agent'] = $value['id_of_agent'];
+				$s[$key][$k]['uid_of_agent'] = $value['uid_of_agent'];
+				$s[$key][$k]['agent'] = $value['agent'];
+				$s[$key][$k]['department_of_agent'] = $value['department_of_agent'];
+				$s[$key][$k]['id_of_auditor'] = $value['id_of_auditor'];
+				$s[$key][$k]['uid_of_auditor'] = $value['uid_of_auditor'];
+				$s[$key][$k]['auditor'] = $value['auditor'];
+				$s[$key][$k]['department_of_auditor'] = $value['department_of_auditor'];
+				if ($value['status']==99) {
+					$s[$key][$k]['status'] = '已结案';
+				} else if ($value['status']==0) {
+					$s[$key][$k]['status'] = '已否决';
+				} else {
+					$s[$key][$k]['status'] = '处理中';
+				}
+				$s[$key][$k]['reason'] = $value['reason'];
+				$s[$key][$k]['remark'] = $value['remark'];
+				$s[$key][$k]['archived'] = $value['archived'];
+				$s[$key][$k]['created_at'] = $value['created_at'];
+				$s[$key][$k]['updated_at'] = $value['updated_at'];
+
+				$t[] = $s[$key][$k];
+
+			}
+		}
+		// dd($t);
 
 		// Excel标题第一行，可修改为任意名字，包括中文
-		$title[] = ['id', 'name', 'guard_name', 'created_at', 'updated_at'];
-
+		$title[] = ['id', 'uuid', 'uid', 'applicant', 'department', 'category', 'datetimerange', 'duration',
+			'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent',
+			'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'status', 'reason',
+			'remark', 'archived', 'created_at', 'updated_at'];
+// dd($title);
 		// 合并Excel的标题和数据为一个整体
-		$data = array_merge($title, $permission);
-
-		return Excel::download(new permissionExport($data), 'permissions'.date('YmdHis',time()).'.'.$EXPORTS_EXTENSION_TYPE);
+		$data = array_merge($title, $t);
+// dd($data);
+		return Excel::download(new jiaban_applicantExport($data), 'jiaban_applicant'.date('YmdHis',time()).'.xlsx');
     }
 	
-    /**
-     * 列出所有角色，用于查看哪些用户正在使用
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function roleList(Request $request)
-    {
-		if (! $request->ajax()) return null;
 
-		// 重置角色和权限的缓存
-		app()['cache']->forget('spatie.permission.cache');
-		
-		$url = request()->url();
-		$queryParams = request()->query();
-		
-		$queryfilter_name = $request->input('queryfilter_name');
-
-		//对查询参数按照键名排序
-		ksort($queryParams);
-
-		//将查询数组转换为查询字符串
-		$queryString = http_build_query($queryParams);
-
-		$fullUrl = sha1("{$url}?{$queryString}");
-		
-		
-		//首先查寻cache如果找到
-		if (Cache::has($fullUrl)) {
-			$result = Cache::get($fullUrl);    //直接读取cache
-		} else {                                   //如果cache里面没有
-			$result = Role::when($queryfilter_name, function ($query) use ($queryfilter_name) {
-					return $query->where('name', 'like', '%'.$queryfilter_name.'%');
-				})
-				->limit(10)
-				->orderBy('created_at', 'desc')
-				->pluck('name', 'id')->toArray();
-
-			Cache::put($fullUrl, $result, now()->addSeconds(10));
-		}
-
-		return $result;
-    }
 	
 	
 
