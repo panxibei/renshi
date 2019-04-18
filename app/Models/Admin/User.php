@@ -27,7 +27,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'uid', 'name', 'department', 'auditing', 'ldapname', 'email', 'displayname', 'password', 'login_time', 'login_ttl', 'login_ip', 'login_counts',
+        'uid', 'name', 'department', 'applicant_group', 'auditing', 'configs', 'ldapname', 'email', 'displayname', 'password', 'login_time', 'login_ttl', 'login_ip', 'login_counts',
     ];
 
     /**
@@ -38,7 +38,15 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
-	
+    
+    /**
+     * 这个属性应该被转换为原生类型.
+     * 用于json与array互相转换
+     * @var array
+     */
+    protected $casts = [
+        'configs' => 'array',
+    ];
 
     // Rest omitted for brevity
 

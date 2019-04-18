@@ -93,6 +93,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// 删除人员组
 	Route::post('deleteApplicantGroup', 'JiabanController@deleteApplicantGroup')->name('renshi.jiaban.applicant.deleteapplicantgroup');
 
+	// 配置变更
+	Route::post('changeConfigs', 'JiabanController@changeConfigs')->name('renshi.jiaban.applicant.changeconfigs');
+
 
 	// 22222222222
 	// 显示todo页面

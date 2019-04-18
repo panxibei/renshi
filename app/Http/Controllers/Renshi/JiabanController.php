@@ -33,9 +33,9 @@ class JiabanController extends Controller
 		$user = json_decode($me->getContent(), true);
 		// 用户信息：$user['id']、$user['name'] 等
 
-        // 获取配置值
+    // 获取系统配置
 		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
-		
+
 		$share = compact('config', 'user');
         return view('renshi.jiaban_applicant', $share);
 		}
@@ -56,7 +56,7 @@ class JiabanController extends Controller
 		$user = json_decode($me->getContent(), true);
 		// 用户信息：$user['id']、$user['name'] 等
 
-        // 获取配置值
+    // 获取系统配置
 		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 		
 		$share = compact('config', 'user');
@@ -78,7 +78,7 @@ class JiabanController extends Controller
 		$user = json_decode($me->getContent(), true);
 		// 用户信息：$user['id']、$user['name'] 等
 
-        // 获取配置值
+    // 获取系统配置
 		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 		
 		$share = compact('config', 'user');
@@ -1358,8 +1358,7 @@ class JiabanController extends Controller
      */
     public function archivedRestore(Request $request)
     {
-
-		if (! $request->isMethod('post') || ! $request->ajax())  return false;
+		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
 		$id = $request->input('id');
 
@@ -1370,7 +1369,44 @@ class JiabanController extends Controller
 		}
 
 
+    /**
+     * 修改用户配置
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function changeConfigs(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
+		$field = $request->input('field');
+		$value = $request->input('value');
+
+		// 用户信息：$user['id']、$user['name'] 等
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+
+		// 保存
+		$res = User::where('id', $user['id'])->find(1);
+		$configs = $res->configs;
+		$configs[$field] = $value;
+		$res->configs = $configs;
+
+		try	{
+			DB::beginTransaction();
+			$res->save();
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;
+    }
 
 
 
@@ -1455,6 +1491,7 @@ class JiabanController extends Controller
     }
 	
 	
+
 
 
 

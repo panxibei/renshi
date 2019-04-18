@@ -570,6 +570,12 @@ var vm_app = new Vue({
 		
 		sideractivename: '1-1',
 		sideropennames: ['1'],
+		
+		//分页
+		page_current: 1,
+		page_total: 1, // 记录总数，非总页数
+		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_APPLICANT'] }},
+		page_last: 1,
 
 		// 创建
 		jiaban_add_reason: '',
@@ -618,7 +624,10 @@ var vm_app = new Vue({
 				title: '序号',
 				type: 'index',
 				align: 'center',
-				width: 80,
+				width: 70,
+				indexMethod: (row) => {
+					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
+				}
 			},
 			{
 				title: 'UUID',
@@ -652,7 +661,6 @@ var vm_app = new Vue({
 				width: 90,
 				render: (h, params) => {
 					if (params.row.archived == 1) {
-						// return h('div', {}, '已归档')
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -664,7 +672,6 @@ var vm_app = new Vue({
 							h('span',' 已归档')
 						])
 					} else if (params.row.status == 99) {
-						// return h('div', {}, '已结案')
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -695,7 +702,6 @@ var vm_app = new Vue({
 							},' 已否决')
 						])
 					} else {
-						// return h('div', {}, '待处理')
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -796,12 +802,6 @@ var vm_app = new Vue({
 		],
 		tabledata: [],
 		tableselect: [],
-
-		//分页
-		page_current: 1,
-		page_total: 1, // 记录总数，非总页数
-		page_size: {{ $config['PERPAGE_RECORDS_FOR_PERMISSION'] }},
-		page_last: 1,
 		
 		// 编辑
 		modal_jiaban_edit: false,
@@ -925,30 +925,6 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 
-		// 穿梭框显示文本转换
-		json2transfer: function (json) {
-			var arr = [];
-			for (var key in json) {
-				arr.push({
-					key: key,
-					label: json[key],
-					description: json[key],
-					disabled: false
-				});
-			}
-			// return arr.reverse();
-			return arr;
-		},
-		
-		// 穿梭框目标文本转换（数字转字符串）
-		arr2target: function (arr) {
-			var res = [];
-			arr.map(function( value, index) {
-				// console.log('map遍历:'+index+'--'+value);
-				res.push(value.toString());
-			});
-			return res;
-		},
 		
 		// 生成piliangluru_applicant
 		piliangluru_applicant_generate: function (counts) {
@@ -993,14 +969,17 @@ var vm_app = new Vue({
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
 			var _this = this;
-			var cfg_data = {};
-			cfg_data['PERPAGE_RECORDS_FOR_PERMISSION'] = pagesize;
-			var url = "{{ route('admin.config.change') }}";
+			var field = 'PERPAGE_RECORDS_FOR_APPLICANT';
+			var value = pagesize;
+			var url = "{{ route('renshi.jiaban.applicant.changeconfigs') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				cfg_data: cfg_data
+				field: field,
+				value: value
 			})
 			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();

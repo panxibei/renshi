@@ -40,6 +40,7 @@ class Kernel extends ConsoleKernel
                 
                 $result = Renshi_jiaban::where('archived', false)
                     ->where('status', 99)
+                    ->orWhere('status', 0)
                     // ->where('updated_at', '>', date('Y-m-d H:i:s', time() - 2 * 24 * 60 * 60))
                     ->whereRaw("created_at < NOW() - INTERVAL '30 DAY'")
                     ->update([

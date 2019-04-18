@@ -379,6 +379,12 @@ var vm_app = new Vue({
 		
 		sideractivename: '1-3',
 		sideropennames: ['1'],
+		
+		//分页
+		page_current: 1,
+		page_total: 1, // 记录总数，非总页数
+		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_ARCHIVED'] }},
+		page_last: 1,
 
 		// 创建
 		jiaban_add_reason: '',
@@ -422,7 +428,10 @@ var vm_app = new Vue({
 				title: '序号',
 				type: 'index',
 				align: 'center',
-				width: 80,
+				width: 70,
+				indexMethod: (row) => {
+					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
+				}
 			},
 			{
 				title: 'UUID',
@@ -471,7 +480,21 @@ var vm_app = new Vue({
 								}
 							},' 已结案')
 						])
-
+					} else if (params.row.status == 0) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-close-circle-outline',
+									// size: 14,
+									}
+								}
+							),
+							h('span',{
+								style:{
+									color: '#ed4014'
+								}
+							},' 已否决')
+						])
 					} else {
 						// return h('div', {}, '待处理')
 						return h('div', {}, [
@@ -589,12 +612,6 @@ var vm_app = new Vue({
 		],
 		tabledata: [],
 		tableselect: [],
-
-		//分页
-		page_current: 1,
-		page_total: 1, // 记录总数，非总页数
-		page_size: {{ $config['PERPAGE_RECORDS_FOR_PERMISSION'] }},
-		page_last: 1,
 		
 		// 编辑
 		modal_jiaban_edit: false,
@@ -755,14 +772,17 @@ var vm_app = new Vue({
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
 			var _this = this;
-			var cfg_data = {};
-			cfg_data['PERPAGE_RECORDS_FOR_PERMISSION'] = pagesize;
-			var url = "{{ route('admin.config.change') }}";
+			var field = 'PERPAGE_RECORDS_FOR_ARCHIVED';
+			var value = pagesize;
+			var url = "{{ route('renshi.jiaban.applicant.changeconfigs') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				cfg_data: cfg_data
+				field: field,
+				value: value
 			})
 			.then(function (response) {
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
