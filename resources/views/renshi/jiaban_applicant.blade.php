@@ -1767,31 +1767,37 @@ var vm_app = new Vue({
 		onexport_applicant () {
 			var _this = this;
 
+			var queryfilter_auditor = _this.queryfilter_auditor;
+			var queryfilter_trashed = _this.queryfilter_trashed;
 			var queryfilter_created_at = _this.queryfilter_created_at;
 			
 			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
-				queryfilter_created_at = '';
+				queryfilter_created_at = ['1970-01-01', '9999-12-31'];
 			} else {
 				const end = new Date();
 				const start = new Date();
 				// 加8小时
-				end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
-				start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				// end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+				// start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				end.setTime(queryfilter_created_at[1].getTime());
+				start.setTime(queryfilter_created_at[0].getTime());
 				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
 				queryfilter_created_at = [start, end];
 			}
-
+// console.log(queryfilter_created_at);return false;
 			// if (_this.qcdate_filter_relation[0] == '' || _this.qcdate_filter_relation[0] == undefined) {
 			// 	_this.warning(false, '警告', '请选择日期范围！');
 			// 	return false;
 			// }
 			
-			var queryfilter_datefrom = queryfilter_created_at[0];
-			var queryfilter_dateto = queryfilter_created_at[1];
+			var queryfilter_datefrom = queryfilter_created_at[0].Format("yyyy-MM-dd hh:mm:ss");
+			var queryfilter_dateto = queryfilter_created_at[1].Format("yyyy-MM-dd hh:mm:ss");
 			
 			var url = "{{ route('renshi.jiaban.applicant.applicantexport') }}"
 				+ "?queryfilter_datefrom=" + queryfilter_datefrom
-				+ "&queryfilter_dateto=" + queryfilter_dateto;
+				+ "&queryfilter_dateto=" + queryfilter_dateto
+				+ "&queryfilter_auditor=" + queryfilter_auditor
+				+ "&queryfilter_trashed=" + queryfilter_trashed;
 			window.setTimeout(function(){
 				window.location.href = url;
 			}, 1000);

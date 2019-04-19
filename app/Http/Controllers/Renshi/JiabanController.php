@@ -1436,12 +1436,13 @@ class JiabanController extends Controller
 	// 列表Excel文件导出
     public function applicantExport(Request $request)
     {
-		$$queryfilter_auditor = $request->input('$queryfilter_auditor');
-		$$queryfilter_trashed = $request->input('$queryfilter_trashed');
+		$queryfilter_auditor = $request->input('queryfilter_auditor');
+		$queryfilter_trashed = $request->input('queryfilter_trashed') == 'true' ? true : false;
 		$queryfilter_datefrom = $request->input('queryfilter_datefrom');
 		$queryfilter_dateto = $request->input('queryfilter_dateto');
+		// $queryfilter_created_at = [date('Y-m-d H:i:s', strtotime($queryfilter_datefrom)), date('Y-m-d H:i:s', strtotime($queryfilter_dateto))];
 		$queryfilter_created_at = [$queryfilter_datefrom, $queryfilter_dateto];
-
+// dd($queryfilter_created_at);
 		// $jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		$jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 			// ->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
@@ -1452,6 +1453,7 @@ class JiabanController extends Controller
 			})
 			->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
 				return $query->whereBetween('created_at', $queryfilter_created_at);
+				// return $query->whereBetween('created_at', ['2019-04-19 16:00:00', '2019-04-19 16:59:00']);
 			})
 			->when($queryfilter_trashed, function ($query) use ($queryfilter_trashed) {
 				return $query->onlyTrashed();
