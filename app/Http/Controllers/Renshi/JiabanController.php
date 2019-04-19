@@ -1062,10 +1062,10 @@ class JiabanController extends Controller
 
 		// dd($auditing_after);
 
-		// $auditing =  json_encode(
-		// 	$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		// );
-		$auditing = $auditing_after;
+		$auditing =  json_encode(
+			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+		// $auditing = $auditing_after;
 
 		// get agent
 		$agent = User::select('auditing')
@@ -1189,10 +1189,10 @@ class JiabanController extends Controller
 
 		// dd($auditing_after);
 
-		// $auditing =  json_encode(
-		// 	$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		// );
-		$auditing = $auditing_after;
+		$auditing =  json_encode(
+			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+		// $auditing = $auditing_after;
 
 		// get agent
 		$agent = User::select('id', 'uid', 'displayname', 'department', 'auditing')

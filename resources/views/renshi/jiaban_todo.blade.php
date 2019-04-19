@@ -978,11 +978,13 @@ var vm_app = new Vue({
 			_this.jiaban_edit_id_of_agent = row.id_of_agent;
 			_this.jiaban_edit_agent = row.agent;
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
-			_this.jiaban_edit_application = JSON.parse(row.application);
+			// _this.jiaban_edit_application = JSON.parse(row.application);
+			_this.jiaban_edit_application = row.application;
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
-			_this.jiaban_edit_auditing = JSON.parse(row.auditing);
+			// _this.jiaban_edit_auditing = JSON.parse(row.auditing);
+			_this.jiaban_edit_auditing = row.auditing;
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
