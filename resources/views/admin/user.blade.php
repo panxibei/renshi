@@ -1056,7 +1056,7 @@ var vm_app = new Vue({
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '清除用户登录TTL失败！');
+				_this.error(false, '错误', '删除处理用户失败！');
 			})
 			
 		},

@@ -422,7 +422,8 @@ class UserController extends Controller
 
 		$uid = $userhasauditing['uid'];
 		$username = $userhasauditing['displayname'];
-		$auditing = json_decode($userhasauditing['auditing'], true);
+		// $auditing = json_decode($userhasauditing['auditing'], true);
+		$auditing = $userhasauditing['auditing'];
 		
 		// $allusers = User::pluck('name', 'id')->toArray();
 
@@ -463,21 +464,28 @@ class UserController extends Controller
 			->first()->toArray();
 
 		if ($user_current['auditing'] != null) {
-			$auditing_after = json_decode($user_current['auditing'], true);
+			// $auditing_after = json_decode($user_current['auditing'], true);
+			$auditing_after = $user_current['auditing'];
 			array_push($auditing_after, $user_auditing);
 		} else {
 			$auditing_after[] = $user_auditing;
 		}
 
 		// dd($auditing_after);
+		$auditing_after = json_encode(
+			$auditing_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
 
 		try	{
 			$result = User::where('id', $id_current)
 				->update([
-					'auditing' => json_encode(
-						$auditing_after
-					, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-					)
+					// 'auditing' => json_encode(
+					// 	$auditing_after
+					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+					// )
+					'auditing' => $auditing_after
 				]);
 			// $result = 1;
 
@@ -486,7 +494,8 @@ class UserController extends Controller
 			->where('id', $id_current)
 			->first();
 
-			$result = json_decode($userhasauditing['auditing'], true);
+			// $result = json_decode($userhasauditing['auditing'], true);
+			$result = $userhasauditing['auditing'];
 
 		}
 		catch (Exception $e) {
@@ -520,8 +529,9 @@ class UserController extends Controller
 
 		// dd(json_decode($user['auditing']));
 
-		$auditing_before = json_decode($user['auditing'], true);
-
+		// $auditing_before = json_decode($user['auditing'], true);
+		$auditing_before = $user['auditing'];
+// dd($auditing_before);
 		$auditing_after = [];
 		foreach ($auditing_before as $key => $value) {
 			// if ($value['uid'] != $uid) {
@@ -533,23 +543,31 @@ class UserController extends Controller
 		}
 
 		// dd($auditing_after);
+		// if ($auditing_after == null) {
+			$auditing_after = json_encode(
+				$auditing_after
+				, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+			);
+		// }
 
 		try	{
 			$result = User::where('id', $id)
 				->update([
-					'auditing' => json_encode(
-						$auditing_after
-					, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-					)
+					// 'auditing' => json_encode(
+					// 	$auditing_after
+					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+					// )
+					'auditing' => $auditing_after
 				]);
 			// $result = 1;
-
+// dd($result);
 			// 获取当前用户所指向的auditing
 			$userhasauditing = User::select('auditing')
 			->where('id', $id)
 			->first();
 
-			$result = json_decode($userhasauditing['auditing'], true);
+			// $result = json_decode($userhasauditing['auditing'], true);
+			$result = $userhasauditing['auditing'];
 
 		}
 		catch (Exception $e) {

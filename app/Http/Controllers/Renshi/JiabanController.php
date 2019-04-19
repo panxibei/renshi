@@ -497,7 +497,8 @@ class JiabanController extends Controller
 		
 		if ($t['applicant_group']) {
 
-			$applicant_group = json_decode($t['applicant_group'], true);
+			// $applicant_group = json_decode($t['applicant_group'], true);
+			$applicant_group = $t['applicant_group'];
 			// dd($applicant_group);
 
 			// $after_applicant_group = $before_applicant_group;
@@ -527,7 +528,7 @@ class JiabanController extends Controller
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
 			DB::rollBack();
-			// return 'Message: ' .$e->getMessage();
+			dd('Message: ' .$e->getMessage());
 			return 0;
 		}
 
@@ -562,7 +563,8 @@ class JiabanController extends Controller
 		
 		if ($t['applicant_group']) {
 
-			$applicant_group = json_decode($t['applicant_group'], true);
+			// $applicant_group = json_decode($t['applicant_group'], true);
+			$applicant_group = $t['applicant_group'];
 
 			$applicant_group_result = [];
 			foreach ($applicant_group as $key => $value) {
@@ -662,8 +664,9 @@ class JiabanController extends Controller
 			->first();
 		// dd($res['applicant_group']);
 
-		$res2 = json_decode($res1['applicant_group'], true);
-
+		// $res2 = json_decode($res1['applicant_group'], true);
+		$res2 = $res1['applicant_group'];
+// dd($res2);
 		foreach ($res2 as $key => $value) {
 			if ($applicantgroup == $value['title']) {
 				$result = $value['applicants'];
@@ -835,7 +838,8 @@ class JiabanController extends Controller
 		->where('id', $user['id'])
 		->first();
 
-		$b = json_decode($a['auditing'], true);
+		// $b = json_decode($a['auditing'], true);
+		$b = $a['auditing'];
 
 		$id_of_auditor = $b[0]['id'];
 		$uid_of_auditor = $b[0]['uid'];
@@ -853,9 +857,10 @@ class JiabanController extends Controller
 			$s[$key]['duration'] = $value['duration'];
 		}
 
-		$application = json_encode(
-			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $application = json_encode(
+		// 	$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
+		$application = $s;
 
 // dd($application);
 // dd($s);
@@ -1042,7 +1047,8 @@ class JiabanController extends Controller
 		$nowtime = date("Y-m-d H:i:s",time());
 		$auditing_after = [];
 		if ($auditing_before['auditing']) {
-			$auditing_after = json_decode($auditing_before['auditing'], true);
+			// $auditing_after = json_decode($auditing_before['auditing'], true);
+			$auditing_after = $auditing_before['auditing'];
 		}
 		array_push($auditing_after,
 			array(
@@ -1056,9 +1062,10 @@ class JiabanController extends Controller
 
 		// dd($auditing_after);
 
-		$auditing =  json_encode(
-			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $auditing =  json_encode(
+		// 	$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
+		$auditing = $auditing_after;
 
 		// get agent
 		$agent = User::select('auditing')
@@ -1066,7 +1073,8 @@ class JiabanController extends Controller
 		->first();
 
 		// 代理人相应的审核人的数量
-		$agent_auditing = json_decode($agent['auditing'], true);
+		// $agent_auditing = json_decode($agent['auditing'], true);
+		$agent_auditing = $agent['auditing'];
 		$agent_count = count($agent_auditing);
 
 		// 订单的状态数字
@@ -1166,7 +1174,8 @@ class JiabanController extends Controller
 		$nowtime = date("Y-m-d H:i:s",time());
 		$auditing_after = [];
 		if ($auditing_before['auditing']) {
-			$auditing_after = json_decode($auditing_before['auditing'], true);
+			// $auditing_after = json_decode($auditing_before['auditing'], true);
+			$auditing_after = $auditing_before['auditing'];
 		}
 		array_push($auditing_after,
 			array(
@@ -1180,9 +1189,10 @@ class JiabanController extends Controller
 
 		// dd($auditing_after);
 
-		$auditing =  json_encode(
-			$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $auditing =  json_encode(
+		// 	$auditing_after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
+		$auditing = $auditing_after;
 
 		// get agent
 		$agent = User::select('id', 'uid', 'displayname', 'department', 'auditing')
@@ -1190,7 +1200,8 @@ class JiabanController extends Controller
 		->first();
 
 		// 代理人相应的审核人的数量
-		$agent_auditing = json_decode($agent['auditing'], true);
+		// $agent_auditing = json_decode($agent['auditing'], true);
+		$agent_auditing = $agent['auditing'];
 		$agent_count = count($agent_auditing);
 		// dd($agent_auditing);
 
