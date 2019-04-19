@@ -431,8 +431,8 @@ Renshi(Jiaban) -
 							<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 						&nbsp;&nbsp;
-						<i-button @click="oncreate_applicant1()" size="default" type="primary">提 交</i-button>
-						&nbsp;&nbsp;<i-button @click="onclear_applicant1()" size="default">清 除</i-button>
+						<i-button @click="oncreate_applicant1()" :disabled="jiaban_add_create_disabled1" size="default" type="primary">提 交</i-button>
+						&nbsp;&nbsp;<i-button @click="onclear_applicant1()" :disabled="jiaban_add_clear_disabled1" size="default">清 除</i-button>
 					
 						<br>
 						<font color="#2db7f5">* 请先在以下界面添加快捷人员组。</font>
@@ -585,6 +585,8 @@ var vm_app = new Vue({
 		jiaban_add_datetimerange1: [],
 		jiaban_add_category1: '',
 		jiaban_add_duration1: '',
+		jiaban_add_create_disabled1: false,
+		jiaban_add_clear_disabled1: false,
 		
 		// 批量录入applicant表
 		piliangluru_applicant: [
@@ -600,6 +602,8 @@ var vm_app = new Vue({
 
 		// 批量录入项
 		piliangluruxiang_applicant2: 1,
+		jiaban_add_create_disabled2: false,
+		jiaban_add_clear_disabled2: false,
 
 		//加班类别
 		option_category: [
@@ -1070,6 +1074,9 @@ var vm_app = new Vue({
 		oncreate_applicant1: function () {
 			var _this = this;
 
+			_this.jiaban_add_clear_disabled1 = true;
+			_this.jiaban_add_create_disabled1 = true;
+
 			var reason = _this.jiaban_add_reason;
 			var remark = _this.jiaban_add_remark;
 			var category = _this.jiaban_add_category1;
@@ -1080,6 +1087,8 @@ var vm_app = new Vue({
 			if (applicantgroup == '' || reason == '' || category == ''  || duration == '' || datetimerange[0] == ''
 				|| applicantgroup == undefined|| reason == undefined || category == undefined || duration == undefined || datetimerange[0] == undefined) {
 				_this.warning(false, '警告', '输入内容为空或不正确！');
+				_this.jiaban_add_create_disabled1 = false;
+				_this.jiaban_add_clear_disabled1 = false;
 				return false;
 			}
 			
@@ -1113,6 +1122,8 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '提交失败！');
 			})
+			_this.jiaban_add_create_disabled1 = false;
+			_this.jiaban_add_clear_disabled1 = false;
 		},
 
         // onclear_applicant1
@@ -1129,6 +1140,9 @@ var vm_app = new Vue({
 		// oncreate_applicant2
 		oncreate_applicant2: function () {
 			var _this = this;
+
+			_this.jiaban_add_clear_disabled2 = true;
+			_this.jiaban_add_create_disabled2 = true;
 
 			var booFlagOk = true;
 
@@ -1149,6 +1163,8 @@ var vm_app = new Vue({
 			
 			if (booFlagOk == false) {
 				_this.warning(false, '警告', '输入内容为空或不正确！');
+				_this.jiaban_add_create_disabled2 = false;
+				_this.jiaban_add_clear_disabled2 = false;
 				return false;
 			}
 			
@@ -1181,6 +1197,9 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '提交失败！');
 			})
+			_this.jiaban_add_create_disabled2 = false;
+			_this.jiaban_add_clear_disabled2 = false;
+
 		},
 
         // onclear_applicant2
