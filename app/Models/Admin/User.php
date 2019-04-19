@@ -46,6 +46,8 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'configs' => 'array',
+        'applicant_group' => 'array',
+        'auditing' => 'array',
     ];
 
     // Rest omitted for brevity

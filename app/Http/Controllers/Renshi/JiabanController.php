@@ -629,7 +629,8 @@ class JiabanController extends Controller
 			->first();
 		// dd($res['applicant_group']);
 
-		$result = json_decode($res['applicant_group'], true);
+		// $result = json_decode($res['applicant_group'], true);
+		$result = $res['applicant_group'];
 		// dd($result);
 
 		return $result;
@@ -712,7 +713,8 @@ class JiabanController extends Controller
 			->where('id', $user['id'])
 			->first();
 
-		$b = json_decode($a['auditing'], true);
+		// $b = json_decode($a['auditing'], true);
+		$b = $a['auditing'];
 
 		$id_of_auditor = $b[0]['id'];
 		$uid_of_auditor = $b[0]['uid'];
@@ -724,7 +726,8 @@ class JiabanController extends Controller
 			->where('id', $id_of_agent)
 			->first();
 
-		$res2 = json_decode($res1['applicant_group'], true);
+		// $res2 = json_decode($res1['applicant_group'], true);
+		$res2 = $res1['applicant_group'];
 
 		foreach ($res2 as $key => $value) {
 			if ($applicantgroup == $value['title']) {
@@ -753,9 +756,10 @@ class JiabanController extends Controller
 			$s[$key]['duration'] = $duration;
 		}
 
-		$application = json_encode(
-			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $application = json_encode(
+		// 	$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
+		$application = $s;
 
 		// 写入数据库
 		try	{

@@ -157,17 +157,27 @@ class Renshi_jiabansTableSeeder extends Seeder
             'uid_of_auditor' => '0001',
             'auditor' => 'admin',
             'department_of_auditor' => 'admin',
-            'application' => json_encode(
+            // 'application' => json_encode(
+            //     array(
+            //         array(
+            //             "uid" => "071111111",
+            //             "applicant" => "赵六",
+            //             'department' => 'caiwu',
+            //             'category' => 'pingshijiaban',
+            //             'datetimerange' => $nowtime . ' - ' . $nowtime,
+            //             'duration' => 8,
+            //         ),
+            //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            // ),
+            'application' => array(
                 array(
-                    array(
-                        "uid" => "071111111",
-                        "applicant" => "赵六",
-                        'department' => 'caiwu',
-                        'category' => 'pingshijiaban',
-                        'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 8,
-                    ),
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                    "uid" => "071111111",
+                    "applicant" => "赵六",
+                    'department' => 'caiwu',
+                    'category' => 'pingshijiaban',
+                    'datetimerange' => $nowtime . ' - ' . $nowtime,
+                    'duration' => 8,
+                ),
             ),
             'status' => 99,
             'reason' => 'reason3',

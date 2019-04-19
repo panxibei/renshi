@@ -22,6 +22,7 @@ class Renshi_jiaban extends Model
      */
     protected $casts = [
         'application' => 'array',
+        'auditing' => 'array',
     ];
 
 
