@@ -1764,8 +1764,34 @@ var vm_app = new Vue({
 
 		
 		// 导出权限
-		onexport_applicant: function(){
-			var url = "{{ route('renshi.jiaban.applicant.applicantexport') }}";
+		onexport_applicant () {
+			var _this = this;
+
+			var queryfilter_created_at = _this.queryfilter_created_at;
+			
+			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
+				queryfilter_created_at = '';
+			} else {
+				const end = new Date();
+				const start = new Date();
+				// 加8小时
+				end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+				start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
+				queryfilter_created_at = [start, end];
+			}
+
+			// if (_this.qcdate_filter_relation[0] == '' || _this.qcdate_filter_relation[0] == undefined) {
+			// 	_this.warning(false, '警告', '请选择日期范围！');
+			// 	return false;
+			// }
+			
+			var queryfilter_datefrom = queryfilter_created_at[0];
+			var queryfilter_dateto = queryfilter_created_at[1];
+			
+			var url = "{{ route('renshi.jiaban.applicant.applicantexport') }}"
+				+ "?queryfilter_datefrom=" + queryfilter_datefrom
+				+ "&queryfilter_dateto=" + queryfilter_dateto;
 			window.setTimeout(function(){
 				window.location.href = url;
 			}, 1000);
