@@ -1782,16 +1782,11 @@ var vm_app = new Vue({
 				end.setTime(queryfilter_created_at[1].getTime());
 				start.setTime(queryfilter_created_at[0].getTime());
 				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
-				queryfilter_created_at = [start, end];
+				queryfilter_created_at = [start.Format("yyyy-MM-dd hh:mm:ss"), end.Format("yyyy-MM-dd hh:mm:ss")];
 			}
-// console.log(queryfilter_created_at);return false;
-			// if (_this.qcdate_filter_relation[0] == '' || _this.qcdate_filter_relation[0] == undefined) {
-			// 	_this.warning(false, '警告', '请选择日期范围！');
-			// 	return false;
-			// }
 			
-			var queryfilter_datefrom = queryfilter_created_at[0].Format("yyyy-MM-dd hh:mm:ss");
-			var queryfilter_dateto = queryfilter_created_at[1].Format("yyyy-MM-dd hh:mm:ss");
+			var queryfilter_datefrom = queryfilter_created_at[0];
+			var queryfilter_dateto = queryfilter_created_at[1];
 			
 			var url = "{{ route('renshi.jiaban.applicant.applicantexport') }}"
 				+ "?queryfilter_datefrom=" + queryfilter_datefrom
