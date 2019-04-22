@@ -56,7 +56,7 @@ Renshi(Jiaban) -
 				<i-button @click="ontrash_archived()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
-				<i-button type="default" size="small" @click="onexport_applicant()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+				<i-button type="default" size="small" @click="onexport_archived()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
 			</i-col>
 			<i-col span="4">
 			&nbsp;
@@ -291,7 +291,6 @@ Renshi(Jiaban) -
 							
 								<span v-for="(auditing, index) in jiaban_edit_auditing">
 
-									&nbsp;
 									<i-row :gutter="16">
 									<span v-if="index!=0"><br></span>
 										<i-col span="7">
@@ -1037,8 +1036,41 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		
+		// 导出 archived
+		onexport_archived () {
+			var _this = this;
 
+			var queryfilter_auditor = _this.queryfilter_auditor;
+			var queryfilter_trashed = _this.queryfilter_trashed;
+			var queryfilter_created_at = _this.queryfilter_created_at;
+			
+			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
+				queryfilter_created_at = ['1970-01-01', '9999-12-31'];
+			} else {
+				const end = new Date();
+				const start = new Date();
+				// 加8小时
+				// end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+				// start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+				end.setTime(queryfilter_created_at[1].getTime());
+				start.setTime(queryfilter_created_at[0].getTime());
+				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
+				queryfilter_created_at = [start.Format("yyyy-MM-dd hh:mm:ss"), end.Format("yyyy-MM-dd hh:mm:ss")];
+			}
+			
+			var queryfilter_datefrom = queryfilter_created_at[0];
+			var queryfilter_dateto = queryfilter_created_at[1];
+			
+			var url = "{{ route('renshi.jiaban.archived.archivedexport') }}"
+				+ "?queryfilter_datefrom=" + queryfilter_datefrom
+				+ "&queryfilter_dateto=" + queryfilter_dateto
+				+ "&queryfilter_auditor=" + queryfilter_auditor
+				+ "&queryfilter_trashed=" + queryfilter_trashed;
+			window.setTimeout(function(){
+				window.location.href = url;
+			}, 1000);
+			return false;
+		},
 		
 
 

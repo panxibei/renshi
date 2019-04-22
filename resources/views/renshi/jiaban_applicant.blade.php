@@ -1763,7 +1763,7 @@ var vm_app = new Vue({
 		},
 
 		
-		// 导出权限
+		// 导出applicant
 		onexport_applicant () {
 			var _this = this;
 

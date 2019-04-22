@@ -139,6 +139,8 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// archived 硬删除
 	Route::post('archivedDelete', 'JiabanController@archivedDelete')->name('renshi.jiaban.archived.archiveddelete');
 
+	// 导出列表
+	Route::get('archivedExport', 'JiabanController@archivedExport')->name('renshi.jiaban.archived.archivedexport');
 
 
 	
