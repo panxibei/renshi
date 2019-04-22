@@ -15,15 +15,15 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">Jiaban applicant</Divider>
+<Divider orientation="left">加班申请信息</Divider>
 
 <Tabs type="card" v-model="currenttabs">
 
-	<Tab-pane label="Application List">
+	<Tab-pane Icon="ios-list-box-outline" label="申请列表">
 
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
-				Application Query Filter
+				查询过滤器
 				<p slot="content">
 				
 					<i-row :gutter="16">
@@ -57,7 +57,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ontrash_applicant()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_applicant()" :disabled="delete_disabled" icon="ios-trash-outline" type="warning" size="small">批量删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="oncreate_applicant_gototab()"><Icon type="ios-color-wand-outline"></Icon> 添加申请</i-button>
@@ -377,7 +377,7 @@ Renshi(Jiaban) -
 	</Tab-pane>
 
 
-	<Tab-pane Icon="ios-color-wand-outline" label="Start To Apply">
+	<Tab-pane Icon="ios-color-wand-outline" label="开始申请">
 
 	<i-row :gutter="16">
 		<i-col span="6">

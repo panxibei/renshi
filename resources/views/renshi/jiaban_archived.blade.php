@@ -15,15 +15,15 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">Jiaban archived</Divider>
+<Divider orientation="left">加班归档</Divider>
 
 <Tabs type="card" v-model="currenttabs">
 
-	<Tab-pane label="Archives List">
+	<Tab-pane Icon="ios-archive-outline" label="归档列表">
 
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
-				Archives Query Filter
+				查询过滤器
 				<p slot="content">
 				
 					<i-row :gutter="16">
@@ -53,7 +53,7 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ontrash_archived()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_archived()" :disabled="delete_disabled" icon="ios-trash-outline" type="warning" size="small">批量删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
 				<i-button type="default" size="small" @click="onexport_archived()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>

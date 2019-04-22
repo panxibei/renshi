@@ -15,14 +15,14 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">Jiaban todo</Divider>
+<Divider orientation="left">加班处理</Divider>
 
 <Tabs type="card" v-model="currenttabs">
-	<Tab-pane label="Todo List">
+	<Tab-pane Icon="ios-create-outline" label="处理列表">
 	
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
-				Todo Query Filter
+				查询过滤器
 				<p slot="content">
 				
 					<i-row :gutter="16">
@@ -56,10 +56,11 @@ Renshi(Jiaban) -
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
-				<i-button @click="ontrash_todo()" :disabled="delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+				<i-button @click="ontrash_todo()" :disabled="delete_disabled" icon="ios-trash-outline" type="warning" size="small">批量删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
-				<i-button type="default" size="small" @click="onexport_todo()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+				&nbsp;
+				<!-- <i-button type="default" size="small" @click="onexport_todo()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button> -->
 			</i-col>
 			<i-col span="4">
 			&nbsp;
