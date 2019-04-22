@@ -177,7 +177,7 @@ if (isMobile) {
                 <!--左侧导航菜单-->
 				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
 					<div style="height: 60px;">
-						<div class="layout-logo"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} 后台管理</a></div>
+						<div class="layout-logo"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} <br>后台管理</a></div>
 					</div>
 					<div id="menu">
 						<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
@@ -186,7 +186,7 @@ if (isMobile) {
 									<template slot="title">
 											<Icon type="ios-build"></Icon> 加班管理
 									</template>
-									<Menu-item name="1-1"><Icon type="ios-paper"></Icon> 申请</Menu-item>
+									<Menu-item name="1-1"><Icon type="ios-list-box"></Icon> 申请</Menu-item>
 									<Menu-item name="1-2"><Icon type="ios-create"></Icon> 处理</Menu-item>
 									<Menu-item name="1-3"><Icon type="ios-archive"></Icon> 归档</Menu-item>
 							</Submenu>
