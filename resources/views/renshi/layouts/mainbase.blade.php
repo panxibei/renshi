@@ -88,14 +88,14 @@ if (isMobile) {
 <body>
 <div id="app" v-cloak>
     <div class="layout">
-        <Layout>
+		<Layout>
 			<Layout>
             <!--头部导航-->
 			<div style="z-index: 999;">
-            <Header :style="{position: 'fixed', width: '100%', marginLeft: '200px'}">
-                <Layout>
+				<Header :style="{position: 'fixed', width: '100%', marginLeft: '200px'}">
+				<Layout>
 				<i-menu mode="horizontal" theme="light" active-name="3" @on-select="name=>topmenuselect(name)">
-                    <!--<div class="layout-logo">qqqqqqqqqqqq</div>-->
+					<!--<div class="layout-logo">qqqqqqqqqqqq</div>-->
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
 						<Breadcrumb>
@@ -168,15 +168,21 @@ if (isMobile) {
 						@show
 					</div>
 				</Layout>
-            </Header>
+				</Header>
 			</div>
 			</Layout>
 
-            <Layout>
-                <!--左侧导航菜单-->
+			<Layout>
+				<!--左侧导航菜单-->
 				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
 					<div style="height: 60px;">
-						<div class="layout-logo"><span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} <br><small>{{$config['SITE_VERSION']}}</samll></a></span></div>
+						<div class="layout-logo">
+							<a href="{{route('admin.config.index')}}">
+								<span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_TITLE']}}</span>
+								<br>
+								<span style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_VERSION']}}</span>
+							</a>
+						</div>
 					</div>
 					<div id="menu">
 						<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
@@ -192,7 +198,7 @@ if (isMobile) {
 		
 						</i-menu>
 					</div>
-                </Sider>
+				</Sider>
 			</Layout>
 			
 			<div><br><br><br><br></div>
@@ -219,7 +225,7 @@ if (isMobile) {
 			</Footer>
 			<!-- /底部 -->
 			
-        </Layout>
+		</Layout>
 		<!-- 返回顶部 -->
 		<Back-top></Back-top>
     </div>
