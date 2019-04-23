@@ -15,7 +15,7 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">加班处理</Divider>
+<Divider orientation="left">加班处理信息</Divider>
 
 <Tabs type="card" v-model="currenttabs">
 	<Tab-pane Icon="ios-create-outline" label="处理列表">
@@ -1295,8 +1295,8 @@ var vm_app = new Vue({
 				id: tableselect
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();

@@ -16,6 +16,8 @@ Main(Portal) -
 
 @section('my_js')
 <script type="text/javascript">
+	var url = "{{ route('renshi.jiaban.todo') }}";
+	window.location.href = url;
 </script>
 @endsection
 
@@ -207,7 +209,7 @@ var vm_app = new Vue({
 			
 			
 	},
-	mounted: function () {
+	mounted () {
 		// var _this = this;
 		// _this.qcdate_filter = new Date().Format("yyyy-MM-dd");
 		// _this.qcreportgets(1, 1); // page: 1, last_page: 1

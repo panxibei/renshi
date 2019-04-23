@@ -180,7 +180,8 @@ var vm_app = new Vue({
 							_this.formInline.loginmessage = '<font color="blue">登录成功！ 正在跳转...</font>';
 							window.setTimeout(function(){
 								_this.loginreset;
-								var url = "{{ route('portal') }}";
+								// var url = "{{ route('portal') }}";
+								var url = "{{ route('renshi.jiaban.todo') }}";
 								window.location.href = url;
 								_this.formInline.loginmessage = '';
 							}, 1000);

@@ -29,14 +29,14 @@
 	box-shadow: 0 1px 1px rgba(0,0,0,.1);
 }
 .layout-logo{
-    width: 100px;
-    height: 30px;
+    /* width: 100px; */
+    /* height: 30px; */
     <!--background: #5b6270;-->
     border-radius: 3px;
     float: left;
     position: relative;
     top: 15px;
-    left: 20px;
+    left: 40px;
 }
 .layout-breadcrumb{
 	<!-- padding: 10px 15px 0; -->
@@ -96,7 +96,6 @@ if (isMobile) {
                 <Layout>
 				<i-menu mode="horizontal" theme="light" active-name="3" @on-select="name=>topmenuselect(name)">
                     <!--<div class="layout-logo">qqqqqqqqqqqq</div>-->
-					
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
 						<Breadcrumb>
@@ -177,14 +176,14 @@ if (isMobile) {
                 <!--左侧导航菜单-->
 				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
 					<div style="height: 60px;">
-						<div class="layout-logo"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} <br>后台管理</a></div>
+						<div class="layout-logo"><span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} <br><small>{{$config['SITE_VERSION']}}</samll></a></span></div>
 					</div>
 					<div id="menu">
 						<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
 
 							<Submenu name="1">
 									<template slot="title">
-											<Icon type="ios-build"></Icon> 加班管理
+											<Icon type="ios-clock"></Icon> 加班管理
 									</template>
 									<Menu-item name="1-1"><Icon type="ios-list-box"></Icon> 申请</Menu-item>
 									<Menu-item name="1-2"><Icon type="ios-create"></Icon> 处理</Menu-item>
