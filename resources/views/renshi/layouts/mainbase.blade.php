@@ -110,7 +110,7 @@ if (isMobile) {
 						<!--Item 1-->
                         <Menu-item name="1">
 							<Badge dot :offset="[20, 0]">
-								<Icon type="ios-mail" size="20"/>
+								<Icon type="ios-list-box-outline" size="24"/>
 							</Badge>
                             
                         </Menu-item>
@@ -118,7 +118,7 @@ if (isMobile) {
                         <Menu-item name="2">
 							<Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())">
 								<Badge dot :offset="[20, 0]">
-									<Icon type="ios-document" size="20"/>
+									<Icon type="ios-create-outline" size="24"/>
 								</Badge>
 								<Dropdown-menu slot="list" style="width: 260px">
 									<Dropdown-item>
@@ -139,7 +139,7 @@ if (isMobile) {
 						<!--Item 3-->
 						<Submenu name="3">
 							<template slot="title">
-								<Icon type="ios-person"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
+								<Icon type="ios-contact" size="24"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
 							</template>
 							<!--
 							<Menu-Group title="使用">
@@ -191,7 +191,7 @@ if (isMobile) {
 									<template slot="title">
 											<Icon type="ios-clock"></Icon> 加班管理
 									</template>
-									<Menu-item name="1-1"><Icon type="ios-list-box"></Icon> 申请</Menu-item>
+									<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="20"></Icon> 申请</Menu-item>
 									<Menu-item name="1-2"><Icon type="ios-create"></Icon> 处理</Menu-item>
 									<Menu-item name="1-3"><Icon type="ios-archive"></Icon> 归档</Menu-item>
 							</Submenu>
