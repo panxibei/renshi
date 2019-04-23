@@ -35,22 +35,22 @@ Login -
 			<p>
 				<i-form ref="formInline" :model="formInline" :rules="ruleInline" @submit.native.prevent>
 					<Form-item prop="username">
-						<i-input ref="ref_username" type="text" v-model="formInline.username" @on-enter="handleSubmit('formInline')" placeholder="用户" size="large">
-							<Icon type="ios-person-outline" slot="prepend"></Icon>
+						<i-input ref="ref_username" prefix="ios-contact-outline" type="text" v-model="formInline.username" @on-enter="handleSubmit('formInline')" placeholder="用户名" size="large">
+							<!-- <Icon type="ios-person-outline" slot="prepend"></Icon> -->
 						</i-input>
 					</Form-item>
 				
 					<Form-item prop="password">
-						<i-input ref="ref_password" type="password" v-model="formInline.password" @on-enter="handleSubmit('formInline')" placeholder="密码" size="large">
-							<Icon type="ios-lock-outline" slot="prepend"></Icon>
+						<i-input ref="ref_password" prefix="ios-lock-outline" type="password" v-model="formInline.password" @on-enter="handleSubmit('formInline')" placeholder="密码" size="large">
+							<!-- <Icon type="ios-lock-outline" slot="prepend"></Icon> -->
 						</i-input>
 					</Form-item>
 
 					<i-row>
 						<i-col span="16">
 							<Form-item prop="captcha">
-								<i-input ref="ref_captcha" type="text" v-model="formInline.captcha" @on-enter="handleSubmit('formInline')" placeholder="验证码" size="large">
-									<Icon type="ios-key-outline" slot="prepend"></Icon>
+								<i-input ref="ref_captcha" prefix="ios-key-outline" type="text" v-model="formInline.captcha" @on-enter="handleSubmit('formInline')" placeholder="验证码" size="large">
+									<!-- <Icon type="ios-key-outline" slot="prepend"></Icon> -->
 								</i-input>
 							</Form-item>
 						</i-col>
@@ -63,7 +63,7 @@ Login -
 					
 					<i-row>
 						<i-col span="16">
-							记住密码&nbsp;
+							保持登录状态&nbsp;
 							<i-switch ref="ref_rememberme" v-model="formInline.rememberme" size="small">
 								<span slot="open"></span>
 								<span slot="close"></span>
@@ -122,15 +122,15 @@ var vm_app = new Vue({
 			},
 			ruleInline: {
 				username: [
-					{ required: true, message: '请填写用户名', trigger: 'blur' }
+					{ required: true, message: '* 请输入用户名', trigger: 'blur' }
 				],
 				password: [
-					{ required: true, message: '请填写密码', trigger: 'blur' },
-					{ type: 'string', min: 3, message: 'Password length is more than 3 bits', trigger: 'blur' }
+					{ required: true, message: '* 请输入密码', trigger: 'blur' },
+					{ type: 'string', min: 3, message: '* 密码长度至少3位以上', trigger: 'blur' }
 				],
 				captcha: [
-					{ required: true, message: '请填写验证码', trigger: 'blur' },
-					{ type: 'string', min: 3, message: 'The captcha length is 3 bits', trigger: 'blur' }
+					{ required: true, message: '* 请输入验证码', trigger: 'blur' },
+					{ type: 'string', min: 4, message: '* 请输入4位长度的验证码', trigger: 'blur' }
 				]
 			},
 
@@ -145,11 +145,11 @@ var vm_app = new Vue({
 					var _this = this;
 
 					_this.logindisabled(true);
-					_this.formInline.loginmessage = '<div class="text-info">正在验证... 稍等...</div>';
+					_this.formInline.loginmessage = '<div class="text-info">正在验证...</div>';
 
 					if (_this.formInline.username == undefined || _this.formInline.password == undefined || _this.formInline.captcha == undefined ||
 						_this.formInline.username == '' || _this.formInline.password == '' || _this.formInline.captcha == '') {
-						_this.formInline.loginmessage = '<div class="text-warning">Please full the item</div>';
+						_this.formInline.loginmessage = '<div class="text-warning">内容未填写完整！</div>';
 						_this.logindisabled(false);
 						return false;
 					}
@@ -169,7 +169,7 @@ var vm_app = new Vue({
 						if (response.data) {
 
 							if (response.data=='nosingleuser') {
-								_this.formInline.loginmessage = '<font color="red">用户已在其他地方登录！ 请注销再试！</font>';
+								_this.formInline.loginmessage = '<font color="red">用户已在其他地方登录！ 请注销后重试！</font>';
 								_this.logindisabled(false);
 								return false;
 							}
@@ -177,7 +177,7 @@ var vm_app = new Vue({
 
 
 							_this.formInline.password = '**********';
-							_this.formInline.loginmessage = '<font color="blue">登录成功！ 请稍等...</font>';
+							_this.formInline.loginmessage = '<font color="blue">登录成功！ 正在跳转...</font>';
 							window.setTimeout(function(){
 								_this.loginreset;
 								var url = "{{ route('portal') }}";
