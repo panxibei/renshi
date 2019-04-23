@@ -879,7 +879,6 @@ var vm_app = new Vue({
 				page = 1;
 			}
 			
-
 			var queryfilter_applicant = _this.queryfilter_applicant;
 			var queryfilter_created_at = _this.queryfilter_created_at;
 			var queryfilter_trashed = _this.queryfilter_trashed;

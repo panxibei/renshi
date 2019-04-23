@@ -110,30 +110,45 @@ if (isMobile) {
 						<!--Item 1-->
                         <Menu-item name="1">
 							<Badge dot :offset="[20, 0]">
-								<Icon type="ios-list-box-outline" size="24"/>
+								<Icon type="ios-list-box-outline" size="22"/>
 							</Badge>
                             
                         </Menu-item>
 						<!--Item 2-->
                         <Menu-item name="2">
 							<Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())">
-								<Badge dot :offset="[20, 0]">
+								@if (count($info) != 0)
+								<Badge :count="{{count($info)}}" :offset="[20, 0]">
 									<Icon type="ios-create-outline" size="24"/>
 								</Badge>
+								@else
+									<Icon type="ios-create-outline" size="24"/>
+								@endif
 								<Dropdown-menu slot="list" style="width: 260px">
 									<Dropdown-item>
-									<strong>Task: xxxxx1</strong>
-										<i-progress :percent="55" status="active"></i-progress>
+									<strong>最新 {{count($info)}} 条项目</strong>
 									</Dropdown-item>
-									<Dropdown-item divided>
+									<Dropdown-item divided></Dropdown-item>
+
+									@foreach ($info as $value)
+										<Dropdown-item>
+										代理申请人：<strong>{{ $value['agent'] }}</strong>
+										<i-progress :percent="20" status="active"></i-progress><br>
+										<font color="#808695">{{ $value['created_at'] }}</font>
+										</Dropdown-item>
+										<Dropdown-item divided></Dropdown-item>
+									@endforeach
+
+									<!-- <Dropdown-item>
 									<strong>Task: xxxxx2</strong>
 										<i-progress :percent="55" status="active"></i-progress>
 									</Dropdown-item>
 									<Dropdown-item divided>
 									<strong>Task: xxxxx3</strong>
 										<i-progress :percent="55" status="active"></i-progress>
-									</Dropdown-item>
+									</Dropdown-item></Dropdown-item> -->
 								</Dropdown-menu>
+
 							</Dropdown>
                         </Menu-item>
 						<!--Item 3-->
@@ -189,11 +204,11 @@ if (isMobile) {
 
 							<Submenu name="1">
 									<template slot="title">
-											<Icon type="ios-clock"></Icon> 加班管理
+											<Icon type="ios-clock-outline" size="20"></Icon> 加班管理
 									</template>
-									<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="20"></Icon> 申请</Menu-item>
-									<Menu-item name="1-2"><Icon type="ios-create"></Icon> 处理</Menu-item>
-									<Menu-item name="1-3"><Icon type="ios-archive"></Icon> 归档</Menu-item>
+									<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="18"></Icon> 申请</Menu-item>
+									<Menu-item name="1-2"><Icon type="ios-create-outline" size="20"></Icon> 处理</Menu-item>
+									<Menu-item name="1-3"><Icon type="ios-archive-outline" size="22"></Icon> 归档</Menu-item>
 							</Submenu>
 		
 						</i-menu>

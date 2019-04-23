@@ -58,9 +58,19 @@ class JiabanController extends Controller
 
 	// 获取系统配置
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+
+	// 获取todo信息
+	$info = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		->where('uid_of_auditor', $user['uid'])
+		->where('archived', false)
+		->limit(5)
+		->orderBy('created_at', 'desc')
+		->get()->toArray();
+// dd($info);
+
 	
-	$share = compact('config', 'user');
-			return view('renshi.jiaban_todo', $share);
+	$share = compact('config', 'user', 'info');
+	return view('renshi.jiaban_todo', $share);
 	}
 	
 	/**
