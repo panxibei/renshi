@@ -21,69 +21,78 @@ Login -
 <br><br><br>
 
 <i-row :gutter="16">
-	<i-col span="10">
+	<i-col span="9">
 		&nbsp;
 	</i-col>
-	<i-col span="4">
-	
-		<i-form ref="formInline" :model="formInline" :rules="ruleInline" @submit.native.prevent>
-			<Form-item prop="username">
-				<i-input ref="ref_username" type="text" v-model="formInline.username" @on-enter="handleSubmit('formInline')" placeholder="用户">
-					<Icon type="ios-person-outline" slot="prepend"></Icon>
-				</i-input>
-			</Form-item>
-		
-			<Form-item prop="password">
-				<i-input ref="ref_password" type="password" v-model="formInline.password" @on-enter="handleSubmit('formInline')" placeholder="密码">
-					<Icon type="ios-lock-outline" slot="prepend"></Icon>
-				</i-input>
-			</Form-item>
+	<i-col span="6">
 
-			<i-row>
-				<i-col span="16">
-					<Form-item prop="captcha">
-						<i-input ref="ref_captcha" type="text" v-model="formInline.captcha" @on-enter="handleSubmit('formInline')" placeholder="验证码" style="width:120px">
-							<Icon type="ios-key-outline" slot="prepend"></Icon>
+		<Card style="width:350px">
+			<p slot="title" style="text-align:center">
+				{{$SITE_TITLE}}
+				<small>{{$SITE_VERSION}}</small>
+			</p>
+
+			<p>
+				<i-form ref="formInline" :model="formInline" :rules="ruleInline" @submit.native.prevent>
+					<Form-item prop="username">
+						<i-input ref="ref_username" type="text" v-model="formInline.username" @on-enter="handleSubmit('formInline')" placeholder="用户" size="large">
+							<Icon type="ios-person-outline" slot="prepend"></Icon>
 						</i-input>
 					</Form-item>
-				</i-col>
-				<i-col span="8">
-					<img ref="captcha" src="{{captcha_src('flatxz')}}" @click="captchaclick" style="cursor:pointer;vertical-align:top;">
-				</i-col>
-			</i-row>
-			
-			
-			<br><br>
-			
-			<i-row>
-				<i-col span="16">
-					保持登录状态&nbsp;
-					<i-switch ref="ref_rememberme" v-model="formInline.rememberme" size="small">
-						<span slot="open"></span>
-						<span slot="close"></span>
-					</i-switch>
-				</i-col>
-				<i-col span="8">
-				&nbsp;
-				<!--待完成功能
-					<a href="#">Forget?</a>
-				-->
-				</i-col>
-			</i-row>
-			
-			
-			<br><br><br>
-			<Form-item>
-			<i-button :disabled="disabled_login_submit" type="primary" @click="handleSubmit('formInline')">登 录</i-button>&nbsp;&nbsp;
-			<i-button :disabled="disabled_login_reset" @click="handleReset('formInline')" style="margin-left: 8px">重 置</i-button>
-			</Form-item>
-			
-			<div v-html="formInline.loginmessage">@{{ formInline.loginmessage }}</div>
-		
-		
-		</i-form>
+				
+					<Form-item prop="password">
+						<i-input ref="ref_password" type="password" v-model="formInline.password" @on-enter="handleSubmit('formInline')" placeholder="密码" size="large">
+							<Icon type="ios-lock-outline" slot="prepend"></Icon>
+						</i-input>
+					</Form-item>
+
+					<i-row>
+						<i-col span="16">
+							<Form-item prop="captcha">
+								<i-input ref="ref_captcha" type="text" v-model="formInline.captcha" @on-enter="handleSubmit('formInline')" placeholder="验证码" size="large">
+									<Icon type="ios-key-outline" slot="prepend"></Icon>
+								</i-input>
+							</Form-item>
+						</i-col>
+						<i-col span="8">
+							&nbsp;<img ref="captcha" src="{{captcha_src('flatxz')}}" @click="captchaclick" style="cursor:pointer;vertical-align:top;">
+						</i-col>
+					</i-row>
+					
+					<br><br>
+					
+					<i-row>
+						<i-col span="16">
+							记住密码&nbsp;
+							<i-switch ref="ref_rememberme" v-model="formInline.rememberme" size="small">
+								<span slot="open"></span>
+								<span slot="close"></span>
+							</i-switch>
+						</i-col>
+						<i-col span="8">
+						&nbsp;
+						<!--待完成功能
+							<a href="#">Forget?</a>
+						-->
+						</i-col>
+					</i-row>
+					
+					<br><br><br>
+					<Form-item>
+					<i-button :disabled="disabled_login_submit" type="primary" @click="handleSubmit('formInline')" long size="large">登 录</i-button>
+					<!-- <br>
+					<i-button :disabled="disabled_login_reset" @click="handleReset('formInline')" long size="large">重 置</i-button> -->
+					</Form-item>
+					
+					<div v-html="formInline.loginmessage">@{{ formInline.loginmessage }}</div>
+				
+				</i-form>
+
+			</p>
+		</Card>
+
 	</i-col>
-	<i-col span="10">
+	<i-col span="9">
 		&nbsp;
 	</i-col>
 </i-row>

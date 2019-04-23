@@ -40,12 +40,12 @@ Main(Portal) -
 					</span>
 					@endcan
 				</p>
-					<p v-for="item in CardListSmt">
-						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<!-- <span style="float:right">
-							Percent: @{{ item.percent }}%
-						</span> -->
-					</p>
+				<p v-for="item in CardListSmt">
+					<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
+					<!-- <span style="float:right">
+						Percent: @{{ item.percent }}%
+					</span> -->
+				</p>
 			</Card>
 
 		</i-col>
@@ -60,12 +60,12 @@ Main(Portal) -
 				<p slot="title">
 					考勤管理系统（2019版）
 				</p>
-					<p v-for="item in CardListBupinjiagong">
-						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
-							Percent: @{{ item.percent }}%
-						</span>
-					</p>
+				<p v-for="item in CardListBupinjiagong">
+					<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
+					<span style="float:right">
+						Percent: @{{ item.percent }}%
+					</span>
+				</p>
 			</Card> -->
 			&nbsp;
 		

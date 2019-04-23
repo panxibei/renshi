@@ -62,6 +62,14 @@
 .layout-footer-center{
     text-align: center;
 }
+.screen_middle{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: auto;
+}
 </style>
 @yield('my_style')
 <script src="{{ asset('js/functions.js') }}"></script>
@@ -85,15 +93,15 @@ if (isMobile) {
 </head>
 <body>
 <div id="app" v-cloak>
-<br><br><br><br>
-	<div class="layout">
+<!-- <br><br><br><br> -->
+	<div class="layout screen_middle">
 		<Layout>
 			<Header class="layout-header-center">
 				<!-- 头部 -->
-				<br><br><br>
+				<br><br><br><br><br>
 				@section('my_logo_and_title')
-				<h1>{{$SITE_TITLE}}<br>
-				<small>{{$SITE_VERSION}}</small></h1>
+				<!-- <h1>{{$SITE_TITLE}}<br>
+				<small>{{$SITE_VERSION}}</small></h1> -->
 				@show
 				<!-- /头部 -->
 			</Header>
@@ -116,6 +124,7 @@ if (isMobile) {
 			</Footer>
 		</Layout>
 	</div>
+	
 </div>
 <script src="{{ asset('js/vue.min.js') }}"></script>
 <script src="{{ asset('js/axios.min.js') }}"></script>
