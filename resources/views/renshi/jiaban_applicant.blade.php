@@ -660,6 +660,35 @@ var vm_app = new Vue({
 				width: 160
 			},
 			{
+				title: '进度',
+				key: 'progress',
+				width: 140,
+				render: (h, params) => {
+					// return h('div', {}, params.row.progress + '%')
+					if (params.row.progress == 0) {
+						return h('div', {}, [
+							h('Progress',{
+								props: {
+									percent: 99,
+									status: 'wrong',
+									}
+								}
+							)
+						])
+					} else {
+						return h('div', {}, [
+							h('Progress',{
+								props: {
+									percent: params.row.progress,
+									status: 'active',
+									}
+								}
+							)
+						])
+					}
+				}
+			},
+			{
 				title: '状态',
 				key: 'status',
 				width: 90,
@@ -724,7 +753,7 @@ var vm_app = new Vue({
 				},
 			},
 			{
-				title: '创建时间',
+				title: '提交日期',
 				key: 'created_at',
 				width: 160
 			},

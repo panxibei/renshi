@@ -134,7 +134,7 @@ if (isMobile) {
 									@foreach ($info as $value)
 										<Dropdown-item>
 										代理申请人：<strong>{{ $value['agent'] }}</strong>
-										<i-progress :percent="20" status="active"></i-progress><br>
+										<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
 										<font color="#808695">{{ $value['created_at'] }}</font>
 										</Dropdown-item>
 										<Dropdown-item divided></Dropdown-item>
