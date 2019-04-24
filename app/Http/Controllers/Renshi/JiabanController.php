@@ -752,7 +752,7 @@ class JiabanController extends Controller
 	$department_of_auditor = $b[0]['department'];
 
 	// get progress
-	$progress = intval(1 / count($b) * 100);
+	$progress = intval(1 / (count($b) + 1) * 100);
 
 	// 查找批量applicant信息
 	$res1 = User::select('applicant_group')
@@ -878,7 +878,7 @@ class JiabanController extends Controller
 	$department_of_auditor = $b[0]['department'];
 
 	// get progress
-	$progress = intval(1 / count($b) * 100);
+	$progress = intval(1 / (count($b) + 1) * 100);
 
 	foreach ($piliangluru as $key => $value) {
 		$s[$key]['uid'] = $value['uid'];
@@ -1141,7 +1141,7 @@ class JiabanController extends Controller
 		$jiaban_status++;
 
 		// get progress
-		$progress = intval($jiaban_status / $agent_auditing_count * 100);
+		$progress = intval($jiaban_status / ($agent_auditing_count + 1) * 100);
 
 	}
 
@@ -1278,7 +1278,7 @@ class JiabanController extends Controller
 	$department_of_auditor = '无';
 
 	// get progress
-	$progress = 100;
+	$progress = 0;
 
 
 	// dd($agent_auditing[$jiaban_status]);
