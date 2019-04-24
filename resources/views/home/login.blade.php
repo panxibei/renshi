@@ -79,9 +79,9 @@ Login -
 					
 					<br><br><br>
 					<Form-item>
-					<i-button :disabled="disabled_login_submit" type="primary" @click="handleSubmit('formInline')" long size="large">登 录</i-button>
+					<i-button :disabled="disabled_login_submit" :loading="loading_submit" type="primary" @click="handleSubmit('formInline')" long size="large">登  录</i-button>
 					<!-- <br>
-					<i-button :disabled="disabled_login_reset" @click="handleReset('formInline')" long size="large">重 置</i-button> -->
+					<i-button :disabled="disabled_login_reset" @click="handleReset('formInline')" long size="large">重  置</i-button> -->
 					</Form-item>
 					
 					<div v-html="formInline.loginmessage">@{{ formInline.loginmessage }}</div>
@@ -113,29 +113,31 @@ var vm_app = new Vue({
     el: '#app',
     data: {
 		
-			formInline: {
-				username: '',
-				password: '',
-				captcha: '',
-				rememberme: false,
-				loginmessage: ''
-			},
-			ruleInline: {
-				username: [
-					{ required: true, message: '* 请输入用户名', trigger: 'blur' }
-				],
-				password: [
-					{ required: true, message: '* 请输入密码', trigger: 'blur' },
-					{ type: 'string', min: 3, message: '* 密码长度至少3位以上', trigger: 'blur' }
-				],
-				captcha: [
-					{ required: true, message: '* 请输入验证码', trigger: 'blur' },
-					{ type: 'string', min: 4, message: '* 请输入4位长度的验证码', trigger: 'blur' }
-				]
-			},
+		formInline: {
+			username: '',
+			password: '',
+			captcha: '',
+			rememberme: false,
+			loginmessage: ''
+		},
+		ruleInline: {
+			username: [
+				{ required: true, message: '* 请输入用户名', trigger: 'blur' }
+			],
+			password: [
+				{ required: true, message: '* 请输入密码', trigger: 'blur' },
+				{ type: 'string', min: 3, message: '* 密码长度至少3位以上', trigger: 'blur' }
+			],
+			captcha: [
+				{ required: true, message: '* 请输入验证码', trigger: 'blur' },
+				{ type: 'string', min: 4, message: '* 请输入4位长度的验证码', trigger: 'blur' }
+			]
+		},
 
-			disabled_login_submit: false,
-			disabled_login_reset: false,
+		disabled_login_submit: false,
+		disabled_login_reset: false,
+
+		loading_submit: false,
 		
     },
 	methods: {
@@ -145,14 +147,17 @@ var vm_app = new Vue({
 					var _this = this;
 
 					_this.logindisabled(true);
-					_this.formInline.loginmessage = '<div class="text-info">正在验证...</div>';
+					// _this.formInline.loginmessage = '<div class="text-info">正在验证...</div>';
+					_this.$Message.loading('正在验证...');
 
 					if (_this.formInline.username == undefined || _this.formInline.password == undefined || _this.formInline.captcha == undefined ||
 						_this.formInline.username == '' || _this.formInline.password == '' || _this.formInline.captcha == '') {
-						_this.formInline.loginmessage = '<div class="text-warning">内容未填写完整！</div>';
+						// _this.formInline.loginmessage = '<div class="text-warning">内容未填写完整！</div>';
+						_this.$Message.warning('内容未填写完整！');
 						_this.logindisabled(false);
 						return false;
 					}
+					
 
 					var url = "{{ route('login.checklogin') }}";
 					axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -169,7 +174,8 @@ var vm_app = new Vue({
 						if (response.data) {
 
 							if (response.data=='nosingleuser') {
-								_this.formInline.loginmessage = '<font color="red">用户已在其他地方登录！ 请注销后重试！</font>';
+								// _this.formInline.loginmessage = '<font color="red">用户已在其他地方登录！ 请注销后重试！</font>';
+								_this.$Message.warning('用户已在其他地方登录！ 请注销后重试！');
 								_this.logindisabled(false);
 								return false;
 							}
@@ -177,22 +183,25 @@ var vm_app = new Vue({
 
 
 							_this.formInline.password = '**********';
-							_this.formInline.loginmessage = '<font color="blue">登录成功！ 正在跳转...</font>';
+							// _this.formInline.loginmessage = '<font color="blue">登录成功！ 正在跳转...</font>';
+							_this.$Message.success('登录成功！ 正在跳转...');
 							window.setTimeout(function(){
 								_this.loginreset;
 								// var url = "{{ route('portal') }}";
 								var url = "{{ route('renshi.jiaban.applicant') }}";
 								window.location.href = url;
 								_this.formInline.loginmessage = '';
-							}, 1000);
+							}, 1500);
 						} else {
-							_this.formInline.loginmessage = '<font color="red">验证码错误或登录失败！</font>';
+							// _this.formInline.loginmessage = '<font color="red">验证码错误或登录失败！</font>';
+							_this.$Message.warning('验证码错误或登录失败！');
 							_this.logindisabled(false);
 						}
 					})
 					.catch(function (error) {
 						// console.log(error);
-						_this.formInline.loginmessage = '<font color="red">用户过期或未知错误！</font>';
+						// _this.formInline.loginmessage = '<font color="red">用户过期或未知错误！</font>';
+						_this.$Message.error('用户过期或未知错误！');
 						_this.logindisabled(false);
 					})
 					_this.captchaclick();
@@ -216,6 +225,7 @@ var vm_app = new Vue({
 				_this.$refs.ref_rememberme.disabled = true;
 				_this.disabled_login_submit = true;
 				_this.disabled_login_reset = true;
+				_this.loading_submit = true;
 			} else {
 				_this.$refs.ref_username.disabled = false;
 				_this.$refs.ref_password.disabled = false;
@@ -223,6 +233,7 @@ var vm_app = new Vue({
 				_this.$refs.ref_rememberme.disabled = false;
 				_this.disabled_login_submit = false;
 				_this.disabled_login_reset = false;
+				_this.loading_submit = false;
 			}
 		},
 	}

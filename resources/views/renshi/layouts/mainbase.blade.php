@@ -165,7 +165,10 @@ if (isMobile) {
 								<Menu-Item name="3-3">时段分析</Menu-Item>
 							</Menu-Group>
 							-->
-							<Menu-Item name="3-1"><Icon type="ios-create-outline"></Icon>修改密码</Menu-Item>
+							<Menu-Item name="3-1">
+								名称：{{ $user['name'] }}<br>
+								部门：{{ $user['department'] }}
+							</Menu-Item>
 							<Menu-Item name="3-2"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
 						</div>
@@ -345,7 +348,7 @@ function topmenuselect (name) {
 	  break;
 
 	case '3-1':
-	  window.location.href = "";
+	  // window.location.href = "";
 	  break;
 	case '3-2':
 	  window.location.href = "{{route('main.logout')}}";
