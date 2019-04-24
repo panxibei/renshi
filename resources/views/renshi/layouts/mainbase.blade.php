@@ -133,9 +133,9 @@ if (isMobile) {
 
 									@foreach ($info_todo as $value)
 										<Dropdown-item>
-										姓名：{{ $value['agent'] }}&nbsp;&nbsp;&nbsp;&nbsp;部门：{{ $value['department_of_agent'] }}
-										<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
-										<font color="#808695">{{ $value['created_at'] }}</font>
+											姓名：{{ $value['agent'] }}<br>部门：{{ $value['department_of_agent'] }}
+											<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
+											<font color="#808695">{{ $value['created_at'] }}</font>
 										</Dropdown-item>
 										<Dropdown-item divided></Dropdown-item>
 									@endforeach
