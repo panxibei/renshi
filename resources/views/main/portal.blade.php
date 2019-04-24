@@ -16,7 +16,7 @@ Main(Portal) -
 
 @section('my_js')
 <script type="text/javascript">
-	var url = "{{ route('renshi.jiaban.todo') }}";
+	var url = "{{ route('renshi.jiaban.applicant') }}";
 	window.location.href = url;
 </script>
 @endsection

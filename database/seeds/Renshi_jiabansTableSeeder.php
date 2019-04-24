@@ -161,16 +161,14 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 99,
             'reason' => 'reason2',
             'remark' => '',
-            'auditing' => json_encode(
+            'auditing' => array(
                 array(
-                    array(
-                        "auditor" => "admin",
-                        "department" => "admin",
-                        "status" => 1,
-                        "opinion" => "balabala1....",
-                        "created_at" => $nowtime
-                    )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                    "auditor" => "admin",
+                    "department" => "admin",
+                    "status" => 1,
+                    "opinion" => "balabala1....",
+                    "created_at" => $nowtime
+                )
             ),
         ]);
 
@@ -212,16 +210,14 @@ class Renshi_jiabansTableSeeder extends Seeder
             'status' => 99,
             'reason' => 'reason3',
             'remark' => '',
-            'auditing' => json_encode(
+            'auditing' => array(
                 array(
-                    array(
-                        "auditor" => "admin",
-                        "department" => "admin",
-                        "status" => 1,
-                        "opinion" => "balabala1....",
-                        "created_at" => $nowtime
-                    )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                    "auditor" => "admin",
+                    "department" => "admin",
+                    "status" => 1,
+                    "opinion" => "balabala1....",
+                    "created_at" => $nowtime
+                )
             ),
             'archived' => true,
         ]);

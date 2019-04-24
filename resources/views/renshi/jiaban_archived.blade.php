@@ -161,8 +161,8 @@ Renshi(Jiaban) -
 									<br>
 										<i-col span="1">
 											<span v-if="index==jiaban_edit_status-1">
-												<Tooltip content="流程当前位置" placement="top">
-													<Icon type="ios-cafe"></Icon>
+												<Tooltip content="流程当前位置" placement="right">
+													<Icon type="ios-cafe-outline"></Icon>
 												</Tooltip>
 											</span>
 											<span v-else>
@@ -184,7 +184,7 @@ Renshi(Jiaban) -
 										<i-col span="9">
 											<span v-if="index!=jiaban_edit_status-1">
 												<Tooltip content="转至此用户" placement="top">
-													<Icon type="ios-paper-plane"></Icon>
+													<Icon type="ios-paper-plane-outline"></Icon>
 												</Tooltip>
 											</span>
 											<span v-else>&nbsp;</span>
@@ -457,6 +457,35 @@ var vm_app = new Vue({
 				title: '当前审核人部门',
 				key: 'department_of_auditor',
 				width: 160
+			},
+			{
+				title: '进度',
+				key: 'progress',
+				width: 140,
+				render: (h, params) => {
+					// return h('div', {}, params.row.progress + '%')
+					if (params.row.progress == 0) {
+						return h('div', {}, [
+							h('Progress',{
+								props: {
+									percent: 99,
+									status: 'wrong',
+									}
+								}
+							)
+						])
+					} else {
+						return h('div', {}, [
+							h('Progress',{
+								props: {
+									percent: params.row.progress,
+									status: 'active',
+									}
+								}
+							)
+						])
+					}
+				}
 			},
 			{
 				title: '状态',

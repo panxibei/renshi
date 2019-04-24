@@ -164,8 +164,8 @@ Renshi(Jiaban) -
 									<br>
 										<i-col span="1">
 											<span v-if="index==jiaban_edit_status-1">
-												<Tooltip content="流程当前位置" placement="top">
-													<Icon type="ios-cafe"></Icon>
+												<Tooltip content="流程当前位置" placement="right">
+													<Icon type="ios-cafe-outline"></Icon>
 												</Tooltip>
 											</span>
 											<span v-else>
@@ -187,7 +187,7 @@ Renshi(Jiaban) -
 										<i-col span="9">
 											<span v-if="index!=jiaban_edit_status-1">
 												<Tooltip content="转至此用户" placement="top">
-													<Icon type="ios-paper-plane"></Icon>
+													<Icon type="ios-paper-plane-outline"></Icon>
 												</Tooltip>
 											</span>
 											<span v-else>&nbsp;</span>
@@ -353,9 +353,9 @@ Renshi(Jiaban) -
 							<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
 						</div>
 						<br><br>
-						<i-button type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">通 过</i-button>
+						<i-button icon="ios-thumbs-up" type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">同 意</i-button>
 						<br><br>
-						<i-button type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">否 决</i-button>
+						<i-button icon="ios-thumbs-down-outline" type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">否 决</i-button>
 					</div>	
 					<div slot="footer" v-else>
 						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
@@ -512,6 +512,35 @@ var vm_app = new Vue({
 			// 		return h('div');
 			// 	},
 			// },
+			{
+				title: '进度',
+				key: 'progress',
+				width: 140,
+				render: (h, params) => {
+					// return h('div', {}, params.row.progress + '%')
+					if (params.row.progress == 0) {
+						return h('div', {}, [
+							h('Progress',{
+								props: {
+									percent: 99,
+									status: 'wrong',
+									}
+								}
+							)
+						])
+					} else {
+						return h('div', {}, [
+							h('Progress',{
+								props: {
+									percent: params.row.progress,
+									status: 'active',
+									}
+								}
+							)
+						])
+					}
+				}
+			},
 			{
 				title: '状态',
 				key: 'status',

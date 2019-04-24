@@ -106,16 +106,16 @@ if (isMobile) {
 					</div>
 					
 					<!--头部导航菜单-->
-                    <div class="layout-nav">
+					<div class="layout-nav">
 						<!--Item 1-->
-                        <Menu-item name="1">
+						<!-- <Menu-item name="1">
 							<Badge dot :offset="[20, 0]">
 								<Icon type="ios-list-box-outline" size="22"/>
 							</Badge>
-                            
-                        </Menu-item>
+						</Menu-item> -->
+
 						<!--Item 2-->
-                        <Menu-item name="2">
+						<Menu-item name="2">
 							<!-- <Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())"> -->
 							<Dropdown>
 								@if (count($info_todo) != 0)
@@ -125,7 +125,7 @@ if (isMobile) {
 								@else
 									<Icon type="ios-create-outline" size="24"/>
 								@endif
-								<Dropdown-menu slot="list" style="width: 260px">
+								<Dropdown-menu slot="list" style="width: 240px">
 									<Dropdown-item>
 									<strong>最新处理项目 {{count($info_todo)}} 条</strong>
 									</Dropdown-item>
@@ -133,8 +133,7 @@ if (isMobile) {
 
 									@foreach ($info_todo as $value)
 										<Dropdown-item>
-										UUID：<strong>{{ $value['uuid'] }}</strong><br>
-										代理申请人：<strong>{{ $value['agent'] }}</strong>
+										姓名：{{ $value['agent'] }}&nbsp;&nbsp;&nbsp;&nbsp;部门：{{ $value['department_of_agent'] }}
 										<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
 										<font color="#808695">{{ $value['created_at'] }}</font>
 										</Dropdown-item>
@@ -152,7 +151,8 @@ if (isMobile) {
 								</Dropdown-menu>
 
 							</Dropdown>
-                        </Menu-item>
+            </Menu-item>
+
 						<!--Item 3-->
 						<Submenu name="3">
 							<template slot="title">
@@ -168,8 +168,8 @@ if (isMobile) {
 							<Menu-Item name="3-1"><Icon type="ios-create-outline"></Icon>修改密码</Menu-Item>
 							<Menu-Item name="3-2"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
-                    </div>
-                </i-menu>
+						</div>
+				</i-menu>
 				</Layout>
 
 				<!--上部标签组-->
