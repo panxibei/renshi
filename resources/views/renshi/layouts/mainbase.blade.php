@@ -116,7 +116,8 @@ if (isMobile) {
                         </Menu-item>
 						<!--Item 2-->
                         <Menu-item name="2">
-							<Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())">
+							<!-- <Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())"> -->
+							<Dropdown>
 								@if (count($info) != 0)
 								<Badge :count="{{count($info)}}" :offset="[20, 0]">
 									<Icon type="ios-create-outline" size="24"/>
@@ -126,7 +127,7 @@ if (isMobile) {
 								@endif
 								<Dropdown-menu slot="list" style="width: 260px">
 									<Dropdown-item>
-									<strong>最新 {{count($info)}} 条项目</strong>
+									<strong>最新处理项目 {{count($info)}} 条</strong>
 									</Dropdown-item>
 									<Dropdown-item divided></Dropdown-item>
 

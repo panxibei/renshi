@@ -84,6 +84,7 @@ class Renshi_jiabansTableSeeder extends Seeder
             // 'start_date' => $nowtime,
             // 'end_date' => $nowtime,
             // 'duration' => 60,
+            'progress' => 50,
             'status' => 1,
             'reason' => 'reason1',
             'remark' => '',
@@ -129,6 +130,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     ),
                 ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             ),
+            'progress' => 100,
             'status' => 99,
             'reason' => 'reason2',
             'remark' => '',
@@ -179,6 +181,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     'duration' => 8,
                 ),
             ),
+            'progress' => 100,
             'status' => 99,
             'reason' => 'reason3',
             'remark' => '',

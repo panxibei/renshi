@@ -60,7 +60,7 @@ class JiabanController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
 		->where('archived', false)
 		->limit(5)
@@ -136,7 +136,7 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})
@@ -204,7 +204,7 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
 				return $query->where('agent', 'like', '%'.$queryfilter_applicant.'%');
 			})
@@ -271,7 +271,7 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})
@@ -734,6 +734,9 @@ class JiabanController extends Controller
 	$auditor = $b[0]['name'];
 	$department_of_auditor = $b[0]['department'];
 
+	// get progress
+	$progress = intval(1 / count($b) * 100);
+
 	// 查找批量applicant信息
 	$res1 = User::select('applicant_group')
 		->where('id', $id_of_agent)
@@ -790,6 +793,7 @@ class JiabanController extends Controller
 				'department_of_auditor' => $department_of_auditor,
 				// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 				'application' => $application,
+				'progress' => $progress,
 				'status' => 1,
 				'reason' => $reason,
 				'remark' => $remark,
@@ -856,7 +860,8 @@ class JiabanController extends Controller
 	$auditor = $b[0]['name'];
 	$department_of_auditor = $b[0]['department'];
 
-	// dd($department_of_auditor);
+	// get progress
+	$progress = intval(1 / count($b) * 100);
 
 	foreach ($piliangluru as $key => $value) {
 		$s[$key]['uid'] = $value['uid'];
@@ -898,6 +903,7 @@ class JiabanController extends Controller
 				'department_of_auditor' => $department_of_auditor,
 				// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 				'application' => $application,
+				'progress' => $progress,
 				'status' => 1,
 				'reason' => $reason,
 				'remark' => $remark,
@@ -1085,12 +1091,14 @@ class JiabanController extends Controller
 	// 代理人相应的审核人的数量
 	// $agent_auditing = json_decode($agent['auditing'], true);
 	$agent_auditing = $agent['auditing'];
-	$agent_count = count($agent_auditing);
+	$agent_auditing_count = count($agent_auditing);
+
+
 
 	// 订单的状态数字
 	$jiaban_status = $auditing_before['status'];
 
-	if ($jiaban_status >= $agent_count) {
+	if ($jiaban_status >= $agent_auditing_count) {
 		// $id_of_auditor = $user['id'];
 		// $uid_of_auditor = $user['uid'];
 		// $auditor = $user['displayname'];
@@ -1102,6 +1110,10 @@ class JiabanController extends Controller
 
 		// 状态99为结案
 		$jiaban_status = 99;
+
+		// get progress
+		$progress = 100;
+
 	} else {
 		//获取下一个auditor
 		$id_of_auditor = $agent_auditing[$jiaban_status]['id'];
@@ -1110,6 +1122,10 @@ class JiabanController extends Controller
 		$department_of_auditor = $agent_auditing[$jiaban_status]['department'];
 
 		$jiaban_status++;
+
+		// get progress
+		$progress = intval($jiaban_status / $agent_auditing_count * 100);
+
 	}
 
 
@@ -1136,6 +1152,7 @@ class JiabanController extends Controller
 				'auditor' => $auditor,
 				'department_of_auditor' => $department_of_auditor,
 				'auditing' => $auditing,
+				'progress' => $progress,
 				'status' => $jiaban_status,
 			]);
 
@@ -1237,11 +1254,15 @@ class JiabanController extends Controller
 	// }
 
 	// 第二种，直接结束
-		$jiaban_status = 0;
-		$id_of_auditor = '无';
-		$uid_of_auditor = '无';
-		$auditor = '无';
-		$department_of_auditor = '无';
+	$jiaban_status = 0;
+	$id_of_auditor = '无';
+	$uid_of_auditor = '无';
+	$auditor = '无';
+	$department_of_auditor = '无';
+
+	// get progress
+	$progress = 100;
+
 
 	// dd($agent_auditing[$jiaban_status]);
 
@@ -1263,6 +1284,7 @@ class JiabanController extends Controller
 				'auditor' => $auditor,
 				'department_of_auditor' => $department_of_auditor,
 				'auditing' => $auditing,
+				'progress' => $progress,
 				'status' => $jiaban_status,
 			]);
 
