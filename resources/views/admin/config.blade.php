@@ -42,7 +42,7 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-1',
+		sideractivename: '1-2',
 		sideropennames: ['1'],
 
 		gets: {}

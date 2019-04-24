@@ -99,7 +99,7 @@ if (isMobile) {
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
 						<Breadcrumb>
-							<Breadcrumb-item to="{{route('renshi.jiaban.todo')}}">系统首页</Breadcrumb-item>
+							<Breadcrumb-item to="{{route('renshi.jiaban.applicant')}}">系统首页</Breadcrumb-item>
 							<Breadcrumb-item to="#">@{{ current_nav }}</Breadcrumb-item>
 							<Breadcrumb-item>@{{ current_subnav }}</Breadcrumb-item>
 						</Breadcrumb>
@@ -197,7 +197,7 @@ if (isMobile) {
 				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
 					<div style="height: 60px;">
 						<div class="layout-logo">
-							<a href="{{route('admin.config.index')}}">
+							<a href="{{route('renshi.jiaban.applicant')}}">
 								<span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_TITLE']}}</span>
 								<br>
 								<span style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_VERSION']}}</span>
@@ -298,13 +298,13 @@ function navmenuselect (name) {
 	  break;
 
 	case '3-1':
-	  window.location.href = "{{route('admin.user.index')}}";
+	  window.location.href = "";
 	  break;
 	case '3-2':
-	  window.location.href = "{{route('admin.role.index')}}";
+	  window.location.href = "";
 	  break;
 	case '3-3':
-	  window.location.href = "{{route('admin.permission.index')}}";
+	  window.location.href = "";
 	  break;
 
 	}

@@ -29,14 +29,14 @@
 	box-shadow: 0 1px 1px rgba(0,0,0,.1);
 }
 .layout-logo{
-    width: 100px;
-    height: 30px;
+    /* width: 100px;
+    height: 30px; */
     <!--background: #5b6270;-->
     border-radius: 3px;
     float: left;
     position: relative;
     top: 15px;
-    left: 20px;
+    left: 40px;
 }
 .layout-breadcrumb{
 	<!-- padding: 10px 15px 0; -->
@@ -76,8 +76,8 @@
 			<Layout>
             <!--头部导航-->
 			<div style="z-index: 999;">
-            <Header :style="{position: 'fixed', width: '100%', marginLeft: '200px'}">
-                <Layout>
+				<Header :style="{position: 'fixed', width: '100%', marginLeft: '200px'}">
+				<Layout>
 				<i-menu mode="horizontal" theme="light" active-name="3" @on-select="name=>topmenuselect(name)">
                     <!--<div class="layout-logo">qqqqqqqqqqqq</div>-->
 					
@@ -91,40 +91,39 @@
 					</div>
 					
 					<!--头部导航菜单-->
-                    <div class="layout-nav">
+					<div class="layout-nav">
 						<!--Item 1-->
-                        <Menu-item name="1">
+						<Menu-item name="1">
 							<Badge dot :offset="[20, 0]">
-								<Icon type="ios-mail" size="20"/>
+								<Icon type="ios-mail-outline" size="24"/>
 							</Badge>
-                            
-                        </Menu-item>
+						</Menu-item>
 						<!--Item 2-->
-                        <Menu-item name="2">
+						<Menu-item name="2">
 							<Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())">
 								<Badge dot :offset="[20, 0]">
-									<Icon type="ios-document" size="20"/>
+									<Icon type="ios-document-outline" size="24"/>
 								</Badge>
 								<Dropdown-menu slot="list" style="width: 260px">
 									<Dropdown-item>
 									<strong>Task: xxxxx1</strong>
-										<i-progress :percent="55" status="active"></i-progress>
+										<i-progress :percent="15" status="active"></i-progress>
 									</Dropdown-item>
 									<Dropdown-item divided>
 									<strong>Task: xxxxx2</strong>
-										<i-progress :percent="55" status="active"></i-progress>
+										<i-progress :percent="35" status="active"></i-progress>
 									</Dropdown-item>
 									<Dropdown-item divided>
 									<strong>Task: xxxxx3</strong>
-										<i-progress :percent="55" status="active"></i-progress>
+										<i-progress :percent="75" status="active"></i-progress>
 									</Dropdown-item>
 								</Dropdown-menu>
 							</Dropdown>
-                        </Menu-item>
+						</Menu-item>
 						<!--Item 3-->
 						<Submenu name="3">
 							<template slot="title">
-								<Icon type="ios-person"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
+							<Icon type="ios-contact" size="24"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
 							</template>
 							<!--
 							<Menu-Group title="使用">
@@ -133,11 +132,14 @@
 								<Menu-Item name="3-3">时段分析</Menu-Item>
 							</Menu-Group>
 							-->
-							<Menu-Item name="3-1"><Icon type="ios-create-outline"></Icon>修改密码</Menu-Item>
+							<Menu-Item name="3-1">
+								名称：{{ $user['name'] }}<br>
+								部门：{{ $user['department'] }}
+							</Menu-Item>
 							<Menu-Item name="3-2"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
-                    </div>
-                </i-menu>
+						</div>
+				</i-menu>
 				</Layout>
 
 				<!--上部标签组-->
@@ -157,25 +159,33 @@
 			</div>
 			</Layout>
 
-            <Layout>
-                <!--左侧导航菜单-->
+			<Layout>
+				<!--左侧导航菜单-->
 				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
 					<div style="height: 60px;">
-						<div class="layout-logo"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} 后台管理</a></div>
+						<div class="layout-logo">
+								<a href="{{route('admin.config.index')}}">
+									<span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_TITLE']}}（后台）</span>
+									<br>
+									<span style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_VERSION']}}</span>
+								</a>
+							</div>
+						<!-- <div class="layout-logo"><a href="{{route('admin.config.index')}}">{{$config['SITE_TITLE']}} 后台管理</a></div> -->
 					</div>
 					<div id="menu">
 					<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
-                        <Submenu name="1">
-                            <template slot="title">
-								<Icon type="ios-home"></Icon> 后台首页
-                            </template>
-							<Menu-item name="1-1"><Icon type="ios-construct"></Icon> 配置管理</Menu-item>
-                        </Submenu>
+						<Submenu name="1">
+							<template slot="title">
+								<Icon type="ios-home-outline" size="20"></Icon> 后台首页
+							</template>
+							<Menu-item name="1-1"><Icon type="ios-analytics-outline" size="20"></Icon> 系统面板</Menu-item>
+							<Menu-item name="1-2"><Icon type="ios-construct-outline" size="20"></Icon> 配置管理</Menu-item>
+						</Submenu>
 
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="logo-dropbox"></Icon> 元素管理
-                            </template>
+						<!-- <Submenu name="2">
+							<template slot="title">
+									<Icon type="logo-dropbox"></Icon> 元素管理
+							</template>
 							<Submenu name="2-1">
 								<template slot="title">
 									<Icon type="ios-color-wand"></Icon> 基本元素
@@ -202,29 +212,29 @@
 								<Menu-item name="2-3-3"><Icon type="ios-person"></Icon> Usr4Wkflw</Menu-item>
 							</Submenu>
 							
-                        </Submenu>
-						
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-key"></Icon> 权限管理
-                            </template>
-                            <Menu-item name="3-1"><Icon type="ios-person"></Icon> 用户</Menu-item>
-                            <Menu-item name="3-2"><Icon type="ios-people"></Icon> 角色</Menu-item>
-                            <Menu-item name="3-3"><Icon type="ios-key"></Icon> 权限</Menu-item>
-                        </Submenu>
-						
-                        <Submenu name="4">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                其他管理
-                            </template>
-                            <Menu-item name="4-1">其他管理1</Menu-item>
-                            <Menu-item name="4-2">其他管理2</Menu-item>
-                            <Menu-item name="4-3">其他管理3</Menu-item>
-                        </Submenu>
-                    </i-menu>
+						</Submenu> -->
+	
+						<Submenu name="3">
+							<template slot="title">
+									<Icon type="ios-key-outline" size="20"></Icon> 权限管理
+							</template>
+							<Menu-item name="3-1"><Icon type="ios-person-outline" size="20"></Icon> 用户</Menu-item>
+							<Menu-item name="3-2"><Icon type="ios-people-outline" size="20"></Icon> 角色</Menu-item>
+							<Menu-item name="3-3"><Icon type="ios-key-outline" size="20"></Icon> 权限</Menu-item>
+						</Submenu>
+	
+						<!-- <Submenu name="4">
+							<template slot="title">
+									<Icon type="ios-analytics-outline" size="20"></Icon>
+									其他管理
+							</template>
+							<Menu-item name="4-1">其他管理1</Menu-item>
+							<Menu-item name="4-2">其他管理2</Menu-item>
+							<Menu-item name="4-3">其他管理3</Menu-item>
+						</Submenu> -->
+					</i-menu>
 					</div>
-                </Sider>
+				</Sider>
 			</Layout>
 			
 			<div><br><br><br><br></div>
@@ -267,6 +277,10 @@ function navmenuselect (name) {
 	switch(name)
 	{
 	case '1-1':
+	  window.location.href = "";
+	  break;
+
+	case '1-2':
 	  window.location.href = "{{route('admin.config.index')}}";
 	  break;
 
