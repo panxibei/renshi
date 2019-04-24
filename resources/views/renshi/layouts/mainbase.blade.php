@@ -118,8 +118,8 @@ if (isMobile) {
                         <Menu-item name="2">
 							<!-- <Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())"> -->
 							<Dropdown>
-								@if (count($info) != 0)
-								<Badge :count="{{count($info)}}" :offset="[20, 0]">
+								@if (count($info_todo) != 0)
+								<Badge :count="{{count($info_todo)}}" :offset="[20, 0]">
 									<Icon type="ios-create-outline" size="24"/>
 								</Badge>
 								@else
@@ -127,12 +127,13 @@ if (isMobile) {
 								@endif
 								<Dropdown-menu slot="list" style="width: 260px">
 									<Dropdown-item>
-									<strong>最新处理项目 {{count($info)}} 条</strong>
+									<strong>最新处理项目 {{count($info_todo)}} 条</strong>
 									</Dropdown-item>
 									<Dropdown-item divided></Dropdown-item>
 
-									@foreach ($info as $value)
+									@foreach ($info_todo as $value)
 										<Dropdown-item>
+										UUID：<strong>{{ $value['uuid'] }}</strong><br>
 										代理申请人：<strong>{{ $value['agent'] }}</strong>
 										<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
 										<font color="#808695">{{ $value['created_at'] }}</font>

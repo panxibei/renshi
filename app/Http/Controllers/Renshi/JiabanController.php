@@ -37,14 +37,15 @@ class JiabanController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
+		->whereBetween('status', [1, 98])
 		->where('archived', false)
 		->limit(5)
 		->orderBy('created_at', 'desc')
 		->get()->toArray();
 
-	$share = compact('config', 'user', 'info');
+	$share = compact('config', 'user', 'info_todo');
 	return view('renshi.jiaban_applicant', $share);
 	}
 
@@ -68,14 +69,15 @@ class JiabanController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
+		->whereBetween('status', [1, 98])
 		->where('archived', false)
 		->limit(5)
 		->orderBy('created_at', 'desc')
 		->get()->toArray();
 	
-	$share = compact('config', 'user', 'info');
+	$share = compact('config', 'user', 'info_todo');
 	return view('renshi.jiaban_todo', $share);
 	}
 	
@@ -98,14 +100,15 @@ class JiabanController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
+		->whereBetween('status', [1, 98])
 		->where('archived', false)
 		->limit(5)
 		->orderBy('created_at', 'desc')
 		->get()->toArray();
 	
-	$share = compact('config', 'user', 'info');
+	$share = compact('config', 'user', 'info_todo');
 	return view('renshi.jiaban_archived', $share);
 	}
 

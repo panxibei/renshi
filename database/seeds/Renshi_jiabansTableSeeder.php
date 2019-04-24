@@ -58,25 +58,42 @@ class Renshi_jiabansTableSeeder extends Seeder
             'uid_of_auditor' => '0001',
             'auditor' => 'admin',
             'department_of_auditor' => 'admin',
-            'application' => json_encode(
+            // 'application' => json_encode(
+            //     array(
+            //         array(
+            //             "uid" => "0003",
+            //             "applicant" => "user1",
+            //             'department' => 'caiwu',
+            //             'category' => 'pingshijiaban',
+            //             'datetimerange' => $nowtime . ' - ' . $nowtime,
+            //             'duration' => 1.5,
+            //         ),
+            //         array(
+            //             "uid" => "0004",
+            //             "applicant" => "user2",
+            //             'department' => '生产计划管理部',
+            //             'category' => '节假日加班补',
+            //             'datetimerange' => $nowtime . ' - ' . $nowtime,
+            //             'duration' => 2.5,
+            //         )
+            //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            'application' => array(
                 array(
-                    array(
-                        "uid" => "0003",
-                        "applicant" => "user1",
-                        'department' => 'caiwu',
-                        'category' => 'pingshijiaban',
-                        'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 1.5,
-                    ),
-                    array(
-                        "uid" => "0004",
-                        "applicant" => "user2",
-                        'department' => '生产计划管理部',
-                        'category' => '节假日加班补',
-                        'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 2.5,
-                    )
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                    "uid" => "0003",
+                    "applicant" => "user1",
+                    'department' => 'caiwu',
+                    'category' => 'pingshijiaban',
+                    'datetimerange' => $nowtime . ' - ' . $nowtime,
+                    'duration' => 1.5,
+                ),
+                array(
+                    "uid" => "0004",
+                    "applicant" => "user2",
+                    'department' => '生产计划管理部',
+                    'category' => '节假日加班补',
+                    'datetimerange' => $nowtime . ' - ' . $nowtime,
+                    'duration' => 2.5,
+                )
             ),
             // 'applicant' => 'lisi',
             // 'department_of_applicant' => 'caiwu',
@@ -118,17 +135,27 @@ class Renshi_jiabansTableSeeder extends Seeder
             'uid_of_auditor' => '0001',
             'auditor' => 'admin',
             'department_of_auditor' => 'admin',
-            'application' => json_encode(
+            // 'application' => json_encode(
+            //     array(
+            //         array(
+            //             "uid" => "071015516",
+            //             "applicant" => "王五",
+            //             'department' => 'caiwu',
+            //             'category' => 'pingshijiaban',
+            //             'datetimerange' => $nowtime . ' - ' . $nowtime,
+            //             'duration' => 4,
+            //         ),
+            //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            // ),
+            'application' => array(
                 array(
-                    array(
-                        "uid" => "071015516",
-                        "applicant" => "王五",
-                        'department' => 'caiwu',
-                        'category' => 'pingshijiaban',
-                        'datetimerange' => $nowtime . ' - ' . $nowtime,
-                        'duration' => 4,
-                    ),
-                ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                    "uid" => "071015516",
+                    "applicant" => "王五",
+                    'department' => 'caiwu',
+                    'category' => 'pingshijiaban',
+                    'datetimerange' => $nowtime . ' - ' . $nowtime,
+                    'duration' => 4,
+                ),
             ),
             'progress' => 100,
             'status' => 99,
