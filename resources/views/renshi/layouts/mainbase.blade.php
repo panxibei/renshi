@@ -109,48 +109,48 @@ if (isMobile) {
 					<div class="layout-nav">
 						<!--Item 1-->
 						<!-- <Menu-item name="1">
+						<Dropdown>
 							<Badge dot :offset="[20, 0]">
-								<Icon type="ios-list-box-outline" size="22"/>
+								<Icon type="ios-list-box-outline" size="22"></Icon>
 							</Badge>
 						</Menu-item> -->
 
 						<!--Item 2-->
 						<Menu-item name="2">
 							<!-- <Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())"> -->
-							<Dropdown>
-								@if (count($info_todo) != 0)
-								<Badge :count="{{count($info_todo)}}" :offset="[20, 0]">
-									<Icon type="ios-create-outline" size="24"/>
-								</Badge>
-								@else
-									<Icon type="ios-create-outline" size="24"/>
-								@endif
-								<Dropdown-menu slot="list" style="width: 240px">
-									<Dropdown-item>
-									<strong>最新处理项目 {{count($info_todo)}} 条</strong>
-									</Dropdown-item>
-									<Dropdown-item divided></Dropdown-item>
+							
+								@if (count($info_todo) > 0)
+								<Dropdown>
+									<Badge :count="{{count($info_todo)}}" :offset="[20, 0]">
+										<Icon type="ios-create-outline" size="24"></Icon>
+									</Badge>
 
-									@foreach ($info_todo as $value)
+									<Dropdown-menu slot="list" style="width: 240px">
 										<Dropdown-item>
-											姓名：{{ $value['agent'] }}<br>部门：{{ $value['department_of_agent'] }}
-											<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
-											<font color="#808695">{{ $value['created_at'] }}</font>
+											<strong>收到最新 {{count($info_todo)}} 条处理信息，赶快处理吧！</strong>
 										</Dropdown-item>
 										<Dropdown-item divided></Dropdown-item>
-									@endforeach
 
-									<!-- <Dropdown-item>
-									<strong>Task: xxxxx2</strong>
-										<i-progress :percent="55" status="active"></i-progress>
-									</Dropdown-item>
-									<Dropdown-item divided>
-									<strong>Task: xxxxx3</strong>
-										<i-progress :percent="55" status="active"></i-progress>
-									</Dropdown-item></Dropdown-item> -->
-								</Dropdown-menu>
+										@foreach ($info_todo as $value)
+											<Dropdown-item>
+												姓名：{{ $value['agent'] }}<br>部门：{{ $value['department_of_agent'] }}<br>
+												<i-progress :percent="{{ $value['progress'] }}" status="active"></i-progress><br>
+												<font color="#808695">{{ $value['created_at'] }}</font>
+											</Dropdown-item>
+											<Dropdown-item divided></Dropdown-item>
+										@endforeach
+									</Dropdown-menu>
+								</Dropdown>
+								@else
+								<Dropdown>
+									<Icon type="ios-create-outline" size="24"></Icon>
+									<Dropdown-menu slot="list" style="width: 220px">
+										<Dropdown-item>
+											<strong>嗯... 暂时还没有新的处理信息！</strong>
+										</Dropdown-item>
+								</Dropdown>
+								@endif
 
-							</Dropdown>
             </Menu-item>
 
 						<!--Item 3-->
