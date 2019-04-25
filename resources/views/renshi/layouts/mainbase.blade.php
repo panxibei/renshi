@@ -122,7 +122,7 @@ if (isMobile) {
 							@if (count($info_todo) > 0)
 							<Dropdown>
 								<Badge :count="{{count($info_todo)}}" :offset="[20, 0]">
-									<Icon type="ios-create-outline" size="24"></Icon>
+									<Icon type="ios-notifications-outline" size="24"></Icon>
 								</Badge>
 
 								<Dropdown-menu slot="list" style="width: 240px">

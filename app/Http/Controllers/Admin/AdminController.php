@@ -50,6 +50,29 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function systemIndex()
+    {
+		// 获取JSON格式的jwt-auth用户响应
+		$me = response()->json(auth()->user());
+		
+		// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+		$user = json_decode($me->getContent(), true);
+		// 用户信息：$user['id']、$user['name'] 等
+
+        // 获取配置值
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+        // return view('admin.config', $config);
+		
+		$share = compact('config', 'user');
+		return view('admin.system', $share);
+    }
+	
+    /**
+     * 列出配置页面
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function configIndex()
     {
 		// 获取JSON格式的jwt-auth用户响应
@@ -64,11 +87,43 @@ class AdminController extends Controller
         // return view('admin.config', $config);
 		
 		$share = compact('config', 'user');
-        return view('admin.config', $share);
+		return view('admin.config', $share);
     }
 
+
     /**
-     * 列出配置页面 ajax
+     * 获取系统信息
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function systemList(Request $request)
+    {
+		if (! $request->ajax()) return null;
+		
+		// 获取系统信息
+		$systeminfo = array(
+			'os'=>PHP_OS,
+			'operating_environment'=>$_SERVER["SERVER_SOFTWARE"],
+			'php_sapi_name'=>php_sapi_name(),
+			// 'thinkphp_version'=>THINK_VERSION.' [ <a href="http://thinkphp.cn" target="_blank">查看最新版本</a> ]',
+			'upload_max_filesize'=>ini_get('upload_max_filesize'),
+			'max_execution_time'=>ini_get('max_execution_time').'秒',
+			'server_date'=>date("Y年n月j日 H:i:s"),
+			'beijing_time'=>gmdate("Y年n月j日 H:i:s",time()+8*3600),
+			'server_name'=>$_SERVER['SERVER_NAME'].' [ '.gethostbyname($_SERVER['SERVER_NAME']).' ]',
+			'disk_free_space'=>round((disk_free_space(".")/(1024*1024)),2).'M',
+			'register_globals'=>get_cfg_var("register_globals")=='1' ? 'ON' : 'OFF',
+			'magic_quotes_gpc'=>(1===get_magic_quotes_gpc()) ? 'YES' : 'NO',
+			'magic_quotes_runtime'=>(1===get_magic_quotes_runtime()) ? 'YES' : 'NO',
+		);
+	
+		return $systeminfo;
+		}
+		
+
+    /**
+     * 获取配置信息
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -178,8 +178,9 @@
 							<template slot="title">
 								<Icon type="ios-home-outline" size="20"></Icon> 后台首页
 							</template>
-							<Menu-item name="1-1"><Icon type="ios-analytics-outline" size="20"></Icon> 系统面板</Menu-item>
+							<Menu-item name="1-1"><Icon type="ios-cog-outline" size="20"></Icon> 系统信息</Menu-item>
 							<Menu-item name="1-2"><Icon type="ios-construct-outline" size="20"></Icon> 配置管理</Menu-item>
+							<Menu-item name="1-3"><Icon type="ios-analytics-outline" size="20"></Icon> 业务面板</Menu-item>
 						</Submenu>
 
 						<!-- <Submenu name="2">
@@ -277,7 +278,7 @@ function navmenuselect (name) {
 	switch(name)
 	{
 	case '1-1':
-	  window.location.href = "";
+	  window.location.href = "{{route('admin.system.index')}}";
 	  break;
 
 	case '1-2':
