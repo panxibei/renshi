@@ -63,9 +63,15 @@ Renshi(Jiaban List) -
                 <span style="{line-height:10px;font-size:10px;color:#93999f;}">时间：@{{item.datetimerange}}</span>
             </div>
             <div style="{font-weight: 700;line-height: 24px;}">
-                <span style="{margin-right: 8px;font-size: 12px;color: #f01414;}">状态：@{{item.status == 99 ? '已结案' : '处理中'}}</span>
+                <span style="{margin-right: 8px;font-size: 12px;}">状态：
+                <span v-if="item.status==99" style="{margin-right: 8px;font-size: 12px;color: #19be6b;}">已结案</span>
+                <span v-else-if="item.status==0" style="{margin-right: 8px;font-size: 12px;color: #ed4014;}">已否决</span>
+                <span v-else style="{margin-right: 8px;font-size: 12px;color: #2d8cf0;}">处理中</span>
+                </span>
                 &nbsp;&nbsp;
-                <span style="{margin-right: 8px;font-size: 12px;color: #f01414;}">当前审核：@{{item.auditor}}</span>
+                <span style="{margin-right: 8px;font-size: 12px;}">当前审核：@{{item.auditor}}</span>
+                &nbsp;&nbsp;
+                <span style="{margin-right: 8px;font-size: 12px;}">进度：@{{item.progress}}%</span>
             </div>
         </div>
         </li>
@@ -275,13 +281,15 @@ var vm_app = new Vue({
 
                     orignal_data.map(function (v,i) {
 
-                        let application = JSON.parse(v.application);
+                        // let application = JSON.parse(v.application);
+                        let application = v.application;
 
                         result_data.push({
                             'created_at': v.created_at,
                             'category': application[0].category,
                             'duration': application[0].duration,
                             'datetimerange': application[0].datetimerange,
+                            'progress': v.progress,
                             'status': v.status,
                             'auditor': v.auditor
                         });
@@ -361,13 +369,15 @@ var vm_app = new Vue({
 
                     orignal_data.map(function (v,i) {
 
-                        let application = JSON.parse(v.application);
+                        // let application = JSON.parse(v.application);
+                        let application = v.application;
 
                         result_data.push({
                             'created_at': v.created_at,
                             'category': application[0].category,
                             'duration': application[0].duration,
                             'datetimerange': application[0].datetimerange,
+                            'progress': v.progress,
                             'status': v.status,
                             'auditor': v.auditor
                         });
@@ -454,13 +464,15 @@ var vm_app = new Vue({
                         // console.log(v.application);
                         // return false;
 
-                        let application = JSON.parse(v.application);
+                        // let application = JSON.parse(v.application);
+                        let application = v.application;
 
                         result_data.push({
                             'created_at': v.created_at,
                             'category': application[0].category,
                             'duration': application[0].duration,
                             'datetimerange': application[0].datetimerange,
+                            'progress': v.progress,
                             'status': v.status,
                             'auditor': v.auditor
                         });
