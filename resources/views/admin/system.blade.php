@@ -1,7 +1,7 @@
 @extends('admin.layouts.adminbase')
 
 @section('my_title')
-Admin(system) - 
+Admin(System) - 
 @parent
 @endsection
 

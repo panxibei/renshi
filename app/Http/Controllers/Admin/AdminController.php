@@ -116,8 +116,9 @@ class AdminController extends Controller
 			'register_globals'=>get_cfg_var("register_globals")=='1' ? 'ON' : 'OFF',
 			'magic_quotes_gpc'=>(1===get_magic_quotes_gpc()) ? 'YES' : 'NO',
 			'magic_quotes_runtime'=>(1===get_magic_quotes_runtime()) ? 'YES' : 'NO',
+			'boottime'=> exec('uptime'),
 		);
-	
+	dd(exec('uptime'));
 		return $systeminfo;
 		}
 		
