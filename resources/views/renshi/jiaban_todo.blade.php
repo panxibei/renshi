@@ -113,10 +113,13 @@ Renshi(Jiaban) -
 							<i-col span="7">
 							状态：
 								<span v-if="jiaban_edit_status==99">
-									已结案 <Icon type="md-checkmark"></Icon>
+									已结案 <Icon type="md-thumbs-up"></Icon>
+								</span>
+								<span v-else-if="jiaban_edit_status==0">
+									已否决 <Icon type="md-thumbs-down"></Icon>
 								</span>
 								<span v-else>
-									未完成 <Icon type="md-close"></Icon>
+									处理中 <Icon type="md-cafe"></Icon>
 								</span>
 							</i-col>
 						</i-row>

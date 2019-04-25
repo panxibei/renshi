@@ -106,14 +106,16 @@ class JiabancubeController extends Controller
 		->where('id', $user['id'])
 		->first();
 
-		$b = json_decode($a['auditing'], true);
+		// $b = json_decode($a['auditing'], true);
+		$b = $a['auditing'];
 
 		$id_of_auditor = $b[0]['id'];
 		$uid_of_auditor = $b[0]['uid'];
 		$auditor = $b[0]['name'];
 		$department_of_auditor = $b[0]['department'];
 
-		// dd($department_of_auditor);
+		// get progress
+		$progress = intval(1 / (count($b) + 1) * 100);
 
 		// foreach ($piliangluru as $key => $value) {
 			$s[0]['uid'] = $uid;
@@ -124,9 +126,10 @@ class JiabancubeController extends Controller
 			$s[0]['duration'] = $duration;
 		// }
 
-		$application = json_encode(
-			$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $application = json_encode(
+		// 	$s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
+		$application = $s;
 
 // dd($application);
 // dd($s);
@@ -154,6 +157,7 @@ class JiabancubeController extends Controller
 					'department_of_auditor' => $department_of_auditor,
 					// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 					'application' => $application,
+					'progress' => $progress,
 					'status' => 1,
 					'reason' => $reason,
 					'remark' => $remark,
@@ -239,7 +243,7 @@ class JiabancubeController extends Controller
 				->paginate($perPage, ['*'], 'page', $page);
 				// ->simplePaginate(10);
 
-			Cache::put($fullUrl, $result, now()->addSeconds(1));
+			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
 		// dd($result);
 		return $result;
