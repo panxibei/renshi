@@ -31,7 +31,7 @@ Renshi(Jiaban) -
 							<i-input v-model.lazy="queryfilter_applicant" @on-change="jiabangetstodo(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
 						<i-col span="8">
-							创建时间&nbsp;
+							提交时间&nbsp;
 							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetstodo(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
 						</i-col>
 						<i-col span="2">
@@ -87,13 +87,13 @@ Renshi(Jiaban) -
 							</i-col>
 
 							<i-col span="7">
-							创建时间&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 140px" size="small"></i-input>
+								提交时间&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_created_at" readonly="true" style="width: 140px" size="small"></i-input>
 							</i-col>
 
 							<i-col span="7">
-							更新时间&nbsp;&nbsp;
-							<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 140px" size="small"></i-input>
+								更新时间&nbsp;&nbsp;
+								<i-input v-model.lazy="jiaban_edit_updated_at" readonly="true" style="width: 140px" size="small"></i-input>
 							</i-col>
 						</i-row>
 
@@ -460,12 +460,44 @@ var vm_app = new Vue({
 			{
 				title: '代理申请人',
 				key: 'agent',
-				width: 160
+				width: 160,
+				render: (h, params) => {
+					return h('div', {}, [
+						h('Icon',{
+							props: {
+								type: 'ios-person',
+								// size: 14,
+								}
+							}
+						),
+						h('span',{
+							// style:{
+							// 	color: '#ff9900'
+							// }
+						}, ' '+params.row.auditor)
+					])
+				}
 			},
 			{
 				title: '代理申请人部门',
 				key: 'department_of_agent',
-				width: 160
+				width: 160,
+				render: (h, params) => {
+					return h('div', {}, [
+						h('Icon',{
+							props: {
+								type: 'ios-people',
+								// size: 14,
+								}
+							}
+						),
+						h('span',{
+							// style:{
+							// 	color: '#ff9900'
+							// }
+						}, ' '+params.row.department_of_auditor)
+					])
+				}
 			},
 			// {
 			// 	title: '',
@@ -633,8 +665,9 @@ var vm_app = new Vue({
 			// 	},
 			// },
 			{
-				title: '创建时间',
+				title: '提交时间',
 				key: 'created_at',
+				sortable: true,
 				width: 160
 			},
 			// {
