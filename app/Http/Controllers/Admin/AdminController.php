@@ -112,13 +112,17 @@ class AdminController extends Controller
 			'server_date'=>date("Y年n月j日 H:i:s"),
 			'beijing_time'=>gmdate("Y年n月j日 H:i:s",time()+8*3600),
 			'server_name'=>$_SERVER['SERVER_NAME'].' [ '.gethostbyname($_SERVER['SERVER_NAME']).' ]',
+			'server_addr'=>$_SERVER["SERVER_ADDR"],
+			'http_host'=>$_SERVER['HTTP_HOST'],
+			'document_root'=>$_SERVER['DOCUMENT_ROOT'],
 			'disk_free_space'=>round((disk_free_space(".")/(1024*1024)),2).'M',
 			'register_globals'=>get_cfg_var("register_globals")=='1' ? 'ON' : 'OFF',
 			'magic_quotes_gpc'=>(1===get_magic_quotes_gpc()) ? 'YES' : 'NO',
 			'magic_quotes_runtime'=>(1===get_magic_quotes_runtime()) ? 'YES' : 'NO',
-			'boottime'=> exec('uptime'),
+			'http_user_agent'=>$_SERVER["HTTP_USER_AGENT"],
+			// 'boottime'=> exec('uptime'),
 		);
-	dd(exec('uptime'));
+	// dd(exec('uptime'));
 		return $systeminfo;
 		}
 		

@@ -18,7 +18,7 @@ Admin(System) -
 	<Divider orientation="left">System Infomation</Divider>
 
 	<i-row>
-		<i-col span="24">
+		<i-col span="12">
             <Card style="width:420px">
                 <p slot="title">
                     <Icon type="ios-cog-outline"></Icon>
@@ -78,6 +78,24 @@ Admin(System) -
 					</span>
 				</p>
 				<p>
+                服务器IP
+					<span style="float:right">
+                    @{{ systeminfo.server_addr }}
+					</span>
+				</p>
+				<p>
+                主机地址
+					<span style="float:right">
+                    @{{ systeminfo.http_host }}
+					</span>
+				</p>
+				<p>
+                主机根目录
+					<span style="float:right">
+                    @{{ systeminfo.document_root }}
+					</span>
+				</p>
+				<p>
                 磁盘剩余空间
 					<span style="float:right">
                     @{{ systeminfo.disk_free_space }}
@@ -103,6 +121,22 @@ Admin(System) -
 				</p>
             </Card>
         </i-col>
+
+		<i-col span="12">
+			<Card style="width:420px">
+                <p slot="title">
+					<Icon type="ios-laptop"></Icon>
+                    当前客户端
+                </p>
+				<p>
+					<span style="float:right">
+                    @{{ systeminfo.http_user_agent }}
+					</span>
+					&nbsp;
+				</p>
+			</Card>
+        </i-col>
+
 	</i-row>
 
 <br>
