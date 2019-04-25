@@ -75,7 +75,7 @@ class AdminController extends Controller
      */
     public function configList(Request $request)
     {
-		if (! $request->ajax()) { return null; }
+		if (! $request->ajax()) return null;
 		
         // 获取用户信息
 		// $perPage = $request->input('perPage');
@@ -83,6 +83,7 @@ class AdminController extends Controller
 		// if (null == $page) $page = 1;
 
 		$config = Config::select('cfg_id', 'cfg_name', 'cfg_value', 'cfg_description')
+			->orderBy('cfg_id', 'asc')
 			->get();
 			
 		return $config;
@@ -96,7 +97,7 @@ class AdminController extends Controller
      */
     public function configChange(Request $request)
     {
-		if (! $request->isMethod('post') || ! $request->ajax()) { return false; }
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
 		// $up2data = $request->all();
 		$up2data = $request->only('cfg_data');
