@@ -1040,9 +1040,29 @@ var vm_app = new Vue({
 				return false;
 			}
 
+			var applicant = '';
+			let tmp = json_applicant[0]['title'].split(' (ID:');
+			if (tmp[1]) {
+				applicant = tmp[1].substr(0, tmp[1].length-1);
+			} else {
+				_this.warning(false, '警告', '代理申请人选择错误！');
+				return false;
+			}
 
-console.log(json_applicant);
-console.log(json_auditing);
+			var auditings = [];
+			var str = '';
+			for (var key in json_applicant) {
+				// 截取字符
+				let tmp = json_applicant[key]['title'].split(' (ID:');
+				if (tmp[1]) {
+					str = tmp[1].substr(0, tmp[1].length-1);
+					auditings.push(str);
+				}
+			}
+
+
+console.log(applicant);
+console.log(auditings);
 return false;
 
 			var id_current = _this.user_select_current;
