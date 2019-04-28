@@ -146,10 +146,55 @@ Admin(User) -
 			</i-col>
 		</i-row>
 
-	
 	</Tab-pane>
 
-	<Tab-pane label="Advance">
+	<Tab-pane label="批量指定审核用户">
+		<i-row :gutter="16">
+			<i-col span="24">
+				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+				&nbsp;
+			</i-col>
+		</i-row>
+		
+		<br><br>
+		<i-row :gutter="16">
+			<i-col span="6">
+				<font color="#ff9900">当前代理申请用户：&nbsp;@{{ username_current1 }}</font>
+				
+			</i-col>
+			<i-col span="18">
+			&nbsp;&nbsp;<i-button type="default" @click="auditing_update1" size="small" icon="ios-add"> Update</i-button>
+			</i-col>
+		</i-row>
+		
+		<br><br>
+
+
+
+		<i-row :gutter="16">
+			<i-col span="6">
+				<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData"></Tree>
+			</i-col>
+			<i-col span="6">
+				<Tree ref="tree_auditing" :data="treedata_auditing" :load-data="loadTreeData" show-checkbox></Tree>
+			</i-col>
+			<i-col span="12">
+			&nbsp;
+			</i-col>
+
+		</i-row>
+
+		&nbsp;
+
+
+
+		<br><br>
+
+		
+
+	</Tab-pane>
+
+	<Tab-pane label="单独指定审核用户">
 		<i-row :gutter="16">
 			<i-col span="24">
 				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
@@ -165,7 +210,7 @@ Admin(User) -
 				<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
 					<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
-				&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current }}&nbsp;
+				&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2 }}&nbsp;
 			</i-col>
 			<i-col span="9">
 				&nbsp;
@@ -180,7 +225,7 @@ Admin(User) -
 				<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
 					<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
-				&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing }}&nbsp;
+				&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2 }}&nbsp;
 			</i-col>
 			<i-col span="9">
 				&nbsp;
@@ -191,7 +236,7 @@ Admin(User) -
 
 		<i-row :gutter="16">
 			<i-col span="24">
-				<i-button type="default" :disabled="boo_update" @click="auditing_add" size="small" icon="ios-add"> Add</i-button>
+				<i-button type="default" :disabled="boo_update2" @click="auditing_add2" size="small" icon="ios-add"> Add</i-button>
 			</i-col>
 		</i-row>
 
@@ -508,13 +553,32 @@ var vm_app = new Vue({
 		user_select_auditing_uid: '',
 		user_options_auditing: [],
 		user_loading_auditing: false,
-		boo_update: true,
-		username_current: '',
-		username_auditing: '',
+		boo_update2: true,
+		username_current2: '',
+		username_auditing2: '',
 		// user2auditing_id: [],
 		// user2auditing_input: '',
 
+		// boo_update1: true,
+		username_current1: '',
+		username_auditing1: '',
+		// 代理用户
+		treedata_applicant: [
+			{
+				title: '请选择代理申请用户',
+				loading: false,
+				children: []
+			}
+		],
 
+		// 审核用户
+		treedata_auditing: [
+			{
+				title: '请选择审核用户',
+				loading: false,
+				children: []
+			}
+		],
 
 
 		
@@ -964,8 +1028,70 @@ var vm_app = new Vue({
 			
 		},
 
-		// auditing_add
-		auditing_add () {
+		// auditing_update1
+		auditing_update1 () {
+			var _this = this;
+			var json_applicant = _this.$refs.tree_applicant.getSelectedNodes();
+			var json_auditing = _this.$refs.tree_auditing.getCheckedNodes();
+
+			if (json_applicant == '' || json_auditing == ''
+				|| json_applicant == undefined || json_auditing == undefined) {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+
+console.log(json_applicant);
+console.log(json_auditing);
+return false;
+
+			var id_current = _this.user_select_current;
+			var id_auditing = _this.user_select_auditing;
+
+			if (id_current == '' || id_auditing == ''
+				|| id_current == undefined || id_auditing == undefined) {
+					_this.error(false, '失败', '用户ID为空或不正确！');
+					return false;
+			}
+
+			// if (id_current == id_auditing) {
+			// 		_this.error(false, '失败', '自己不能处理自己的申请！');
+			// 		return false;
+			// }
+
+			// console.log(_this.user_select_current);
+			// return false;
+
+			var url = "{{ route('admin.user.auditingadd') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id_current: id_current,
+				id_auditing: id_auditing,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.success(false, '成功', '添加处理用户成功！');
+					_this.tabledata_auditing = response.data;
+				} else {
+					_this.error(false, '失败', '添加处理用户失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '添加处理用户失败！');
+			})
+			
+		},
+
+		// auditing_add2
+		auditing_add2 () {
 			var _this = this;
 
 			var id_current = _this.user_select_current;
@@ -1070,10 +1196,10 @@ var vm_app = new Vue({
 			
 			if (userid == undefined || userid == '') {
 				_this.tabledata_auditing = [];
-				_this.username_current = '';
+				_this.username_current2 = '';
 				return false;
 			}
-			// _this.boo_update = false;
+			// _this.boo_update2 = false;
 			var url = "{{ route('admin.user.userhasauditing') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
@@ -1092,10 +1218,10 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.tabledata_auditing = response.data.auditing;
-					_this.username_current = response.data.username;
+					_this.username_current2 = response.data.username;
 				} else {
 					_this.tabledata_auditing = [];
-					_this.username_current = '';
+					_this.username_current2 = '';
 				}
 			})
 			.catch(function (error) {
@@ -1112,13 +1238,13 @@ var vm_app = new Vue({
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
-				_this.username_auditing = '';
+				_this.username_auditing2 = '';
 				// _this.targetkeystransfer = [];
 				// _this.datatransfer = [];
-				_this.boo_update = true;
+				_this.boo_update2 = true;
 				return false;
 			}
-			_this.boo_update = false;
+			_this.boo_update2 = false;
 			var url = "{{ route('admin.user.userhasauditing') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
@@ -1136,10 +1262,10 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.username_auditing = response.data.username;
+					_this.username_auditing2 = response.data.username;
 					_this.user_select_auditing_uid = response.data.uid;
 				} else {
-					_this.username_auditing = '';
+					_this.username_auditing2 = '';
 					_this.user_select_auditing_uid = '';
 				}
 			})
@@ -1277,6 +1403,61 @@ var vm_app = new Vue({
 			}
 		},
 
+
+		// 加载各部门人员
+		loadTreeData (item, callback) {
+			var _this = this;
+
+			var node = item.node;
+			var title = item.title;
+
+			var url = "{{ route('renshi.jiaban.applicant.loadapplicant') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					node: node,
+					title: title
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data;
+
+					var arr = [];
+					setTimeout(() => {
+						if (node!='department') {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+									loading: false,
+									node: 'department',
+									children: []
+								});
+							}
+						} else {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+								});
+							}
+						}
+						callback(arr);
+					}, 500);
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+		},
 		
 		
 		
