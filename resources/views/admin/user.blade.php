@@ -1286,7 +1286,8 @@ var vm_app = new Vue({
 			var json_applicant = _this.$refs.tree_applicant.getSelectedNodes();
 
 			if (json_applicant == undefined || json_applicant == '') {
-				_this.warning(false, '警告', '代理申请人选择错误！');
+				// _this.warning(false, '警告', '代理申请人选择错误！');
+				_this.boo_update1 = true;
 				return false;
 			}
 
@@ -1296,6 +1297,7 @@ var vm_app = new Vue({
 				applicant = tmp[1].substr(0, tmp[1].length-1);
 			} else {
 				_this.warning(false, '警告', '代理申请人选择错误！');
+				_this.boo_update1 = true;
 				return false;
 			}
 
