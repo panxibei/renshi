@@ -560,7 +560,7 @@ var vm_app = new Vue({
 		// user2auditing_id: [],
 		// user2auditing_input: '',
 
-		// boo_update1: true,
+		boo_update1: true,
 		username_current1: '',
 		username_auditing1: '',
 		// 代理用户
