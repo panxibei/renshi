@@ -163,7 +163,7 @@ Admin(User) -
 				
 			</i-col>
 			<i-col span="18">
-			&nbsp;&nbsp;<i-button type="default" @click="auditing_update1" size="small" icon="ios-add"> Update</i-button>
+			&nbsp;&nbsp;<i-button type="default" :disabled="boo_update1" @click="auditing_update1" size="small" icon="ios-update"> Update</i-button>
 			</i-col>
 		</i-row>
 		
@@ -173,13 +173,13 @@ Admin(User) -
 
 		<i-row :gutter="16">
 			<i-col span="6">
-				<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData"></Tree>
+				<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData" @on-select-change="onselectchange_user_current"></Tree>
 			</i-col>
 			<i-col span="6">
 				<Tree ref="tree_auditing" :data="treedata_auditing" :load-data="loadTreeData" show-checkbox></Tree>
 			</i-col>
 			<i-col span="12">
-			&nbsp;
+			<i-table height="300" size="small" border :columns="tablecolumns_auditing" :data="tabledata_auditing1"></i-table>
 			</i-col>
 
 		</i-row>
@@ -243,7 +243,7 @@ Admin(User) -
 
 		<br><br>
 
-		<i-table height="300" size="small" border :columns="tablecolumns_auditing" :data="tabledata_auditing"></i-table>
+		<i-table height="300" size="small" border :columns="tablecolumns_auditing" :data="tabledata_auditing2"></i-table>
 
 		<br><br>
 
@@ -503,7 +503,8 @@ var vm_app = new Vue({
 				// fixed: 'right'
 			}
 		],
-		tabledata_auditing: [],
+		tabledata_auditing1: [],
+		tabledata_auditing2: [],
 		tableselect_auditing: [],
 		
 		//分页
@@ -1051,9 +1052,9 @@ var vm_app = new Vue({
 
 			var auditings = [];
 			var str = '';
-			for (var key in json_applicant) {
+			for (var key in json_auditing) {
 				// 截取字符
-				let tmp = json_applicant[key]['title'].split(' (ID:');
+				let tmp = json_auditing[key]['title'].split(' (ID:');
 				if (tmp[1]) {
 					str = tmp[1].substr(0, tmp[1].length-1);
 					auditings.push(str);
@@ -1061,36 +1062,19 @@ var vm_app = new Vue({
 			}
 
 
-console.log(applicant);
-console.log(auditings);
-return false;
+// console.log(applicant);
+// console.log(auditings);
+// return false;
 
-			var id_current = _this.user_select_current;
-			var id_auditing = _this.user_select_auditing;
-
-			if (id_current == '' || id_auditing == ''
-				|| id_current == undefined || id_auditing == undefined) {
-					_this.error(false, '失败', '用户ID为空或不正确！');
-					return false;
-			}
-
-			// if (id_current == id_auditing) {
-			// 		_this.error(false, '失败', '自己不能处理自己的申请！');
-			// 		return false;
-			// }
-
-			// console.log(_this.user_select_current);
-			// return false;
-
-			var url = "{{ route('admin.user.auditingadd') }}";
+			var url = "{{ route('admin.user.auditingupdate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id_current: id_current,
-				id_auditing: id_auditing,
+				applicant: applicant,
+				auditings: auditings,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				console.log(response.data);
+				return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1099,7 +1083,7 @@ return false;
 				
  				if (response.data) {
 					_this.success(false, '成功', '添加处理用户成功！');
-					_this.tabledata_auditing = response.data;
+					_this.tabledata_auditing2 = response.data;
 				} else {
 					_this.error(false, '失败', '添加处理用户失败！');
 				}
@@ -1148,7 +1132,7 @@ return false;
 				
  				if (response.data) {
 					_this.success(false, '成功', '添加处理用户成功！');
-					_this.tabledata_auditing = response.data;
+					_this.tabledata_auditing2 = response.data;
 				} else {
 					_this.error(false, '失败', '添加处理用户失败！');
 				}
@@ -1196,7 +1180,7 @@ return false;
 				
  				if (response.data) {
 					_this.success(false, '成功', '删除处理用户成功！');
-					_this.tabledata_auditing = response.data;
+					_this.tabledata_auditing2 = response.data;
 				} else {
 					_this.error(false, '失败', '删除处理用户失败！');
 				}
@@ -1215,12 +1199,12 @@ return false;
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
-				_this.tabledata_auditing = [];
+				_this.tabledata_auditing2 = [];
 				_this.username_current2 = '';
 				return false;
 			}
 			// _this.boo_update2 = false;
-			var url = "{{ route('admin.user.userhasauditing') }}";
+			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -1237,10 +1221,10 @@ return false;
 				}
 				
 				if (response.data) {
-					_this.tabledata_auditing = response.data.auditing;
+					_this.tabledata_auditing2 = response.data.auditing;
 					_this.username_current2 = response.data.username;
 				} else {
-					_this.tabledata_auditing = [];
+					_this.tabledata_auditing2 = [];
 					_this.username_current2 = '';
 				}
 			})
@@ -1251,7 +1235,7 @@ return false;
 		},
 
 		// 选择user auditing
-		onchange_user_auditing: function () {
+		onchange_user_auditing () {
 			var _this = this;
 			var userid = _this.user_select_auditing;
 			
@@ -1265,7 +1249,7 @@ return false;
 				return false;
 			}
 			_this.boo_update2 = false;
-			var url = "{{ route('admin.user.userhasauditing') }}";
+			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -1295,37 +1279,60 @@ return false;
 			
 		},
 
-		
-		// auditingupdate
-		auditingupdate: function () {
-			var _this = this;
-			var userid = _this.user_select_current;
-			var roleid = _this.targetkeystransfer;
 
-			if (userid == undefined || userid == '') return false;
+		// 选择 tree user current
+		onselectchange_user_current () {
+			var _this = this;
+			var json_applicant = _this.$refs.tree_applicant.getSelectedNodes();
+
+			if (json_applicant == undefined || json_applicant == '') {
+				_this.warning(false, '警告', '代理申请人选择错误！');
+				return false;
+			}
+
+			var applicant = '';
+			let tmp = json_applicant[0]['title'].split(' (ID:');
+			if (tmp[1]) {
+				applicant = tmp[1].substr(0, tmp[1].length-1);
+			} else {
+				_this.warning(false, '警告', '代理申请人选择错误！');
+				return false;
+			}
+
+			// console.log(json_applicant);return false;
 			
-			var url = "{{ route('admin.role.userupdaterole') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				userid: userid,
-				roleid: roleid
+			_this.boo_update1 = false;
+			var url = "{{ route('admin.user.userhasauditing1') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					applicant: applicant
+				}
 			})
 			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				
 				if (response.data) {
-					_this.success(false, 'Success', 'Update OK!');
+					_this.tabledata_auditing1 = response.data.auditing;
+					// _this.username_current2 = response.data.username;
 				} else {
-					_this.warning(false, 'Warning', 'Update failed!');
+					_this.tabledata_auditing1 = [];
+					// _this.username_current2 = '';
 				}
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
 			})
+			
 		},
+		
+
 
 		// 远程查询当前用户
 		remoteMethod_user_current (query) {

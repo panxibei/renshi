@@ -406,7 +406,39 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function userHasAuditing(Request $request)
+    public function userHasAuditing1(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		$applicant = $request->input('applicant');
+		
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		// 获取当前用户所指向的auditing
+		$userhasauditing = User::select('uid', 'displayname', 'auditing')
+			->where('id', $applicant)
+			->first();
+
+		$uid = $userhasauditing['uid'];
+		$username = $userhasauditing['displayname'];
+		// $auditing = json_decode($userhasauditing['auditing'], true);
+		$auditing = $userhasauditing['auditing'];
+		
+		// $allusers = User::pluck('name', 'id')->toArray();
+
+		$result = compact('uid', 'username', 'auditing');
+
+		return $result;
+    }
+
+    /**
+     * 列出用户所指向的auditing信息
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function userHasAuditing2(Request $request)
     {
 		if (! $request->ajax()) return null;
 
@@ -433,6 +465,59 @@ class UserController extends Controller
     }
 
     /**
+     * auditingUpdate
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function auditingUpdate(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		$id_current = $request->input('applicant');
+		$id_auditings = $request->input('auditings');
+
+		$user_auditing = User::select('id', 'uid', 'displayname as name', 'department')
+			->whereIn('id', $id_auditings)
+			->get()->toArray();
+		
+		$auditing_after = json_encode(
+			$user_auditing
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		try	{
+			$result = User::where('id', $id_current)
+				->update([
+					// 'auditing' => json_encode(
+					// 	$auditing_after
+					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+					// )
+					'auditing' => $auditing_after
+				]);
+			// $result = 1;
+
+			// 获取当前用户所指向的auditing
+			// $userhasauditing = User::select('auditing')
+			// ->where('id', $id_current)
+			// ->first();
+
+			// // $result = json_decode($userhasauditing['auditing'], true);
+			// $result = $userhasauditing['auditing'];
+
+		}
+		catch (Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+
+		return $result;
+		}
+
+    /**
      * auditingAdd
      *
      * @param  int  $id
@@ -450,14 +535,9 @@ class UserController extends Controller
 
 		// if ($id_current == $id_auditing) return 0;
 
-		$user_auditing_tmp = User::select('id', 'uid', 'displayname', 'department')
+		$user_auditing = User::select('id', 'uid', 'displayname as name', 'department')
 			->where('id', $id_auditing)
 			->first()->toArray();
-		
-		$user_auditing['id'] = $user_auditing_tmp['id'];
-		$user_auditing['uid'] = $user_auditing_tmp['uid'];
-		$user_auditing['name'] = $user_auditing_tmp['displayname'];
-		$user_auditing['department'] = $user_auditing_tmp['department'];
 		
 		$user_current = User::select('auditing')
 			->where('id', $id_current)

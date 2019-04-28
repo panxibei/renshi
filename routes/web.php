@@ -303,10 +303,16 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	Route::post('userclsttl', 'UserController@userClsttl')->name('admin.user.clsttl');
 
 	// 列出当前用户拥有的角色
-	Route::get('userHasAuditing', 'UserController@userHasAuditing')->name('admin.user.userhasauditing');
+	Route::get('userHasAuditing1', 'UserController@userHasAuditing1')->name('admin.user.userhasauditing1');
+
+	// 列出当前用户拥有的角色
+	Route::get('userHasAuditing2', 'UserController@userHasAuditing2')->name('admin.user.userhasauditing2');
 
 	// 添加处理用户
 	Route::post('auditingAdd', 'UserController@auditingAdd')->name('admin.user.auditingadd');
+
+	// 更新处理用户
+	Route::post('auditingUpdate', 'UserController@auditingUpdate')->name('admin.user.auditingupdate');
 
 	// 删除处理用户
 	Route::post('auditingRemove', 'UserController@auditingRemove')->name('admin.user.auditingremove');
