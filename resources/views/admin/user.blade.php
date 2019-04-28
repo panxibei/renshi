@@ -148,7 +148,7 @@ Admin(User) -
 
 	</Tab-pane>
 
-	<Tab-pane label="批量指定审核用户">
+	<Tab-pane label="批量指定处理用户">
 		<i-row :gutter="16">
 			<i-col span="24">
 				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
@@ -158,12 +158,12 @@ Admin(User) -
 		
 		<br><br>
 		<i-row :gutter="16">
-			<i-col span="6">
-				<font color="#ff9900">当前代理申请用户：&nbsp;@{{ username_current1 }}</font>
+			<i-col span="5">
+				当前代理申请用户：&nbsp;<strong>@{{ username_current1 }}</strong>
 				
 			</i-col>
-			<i-col span="18">
-			&nbsp;&nbsp;<i-button type="default" :disabled="boo_update1" @click="auditing_update1" size="small" icon="ios-update"> Update</i-button>
+			<i-col span="19">
+			&nbsp;&nbsp;<i-button type="default" :disabled="boo_update1" @click="auditing_update1" size="small" icon="ios-brush-outline"> Update</i-button>
 			</i-col>
 		</i-row>
 		
@@ -172,14 +172,14 @@ Admin(User) -
 
 
 		<i-row :gutter="16">
-			<i-col span="6">
+			<i-col span="5">
 				<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData" @on-select-change="onselectchange_user_current"></Tree>
 			</i-col>
 			<i-col span="6">
 				<Tree ref="tree_auditing" :data="treedata_auditing" :load-data="loadTreeData" show-checkbox></Tree>
 			</i-col>
-			<i-col span="12">
-			<i-table height="300" size="small" border :columns="tablecolumns_auditing" :data="tabledata_auditing1"></i-table>
+			<i-col span="13">
+			<i-table height="300" size="small" border :columns="tablecolumns_auditing1" :data="tabledata_auditing1"></i-table>
 			</i-col>
 
 		</i-row>
@@ -194,7 +194,7 @@ Admin(User) -
 
 	</Tab-pane>
 
-	<Tab-pane label="单独指定审核用户">
+	<Tab-pane label="单独指定处理用户">
 		<i-row :gutter="16">
 			<i-col span="24">
 				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
@@ -243,7 +243,7 @@ Admin(User) -
 
 		<br><br>
 
-		<i-table height="300" size="small" border :columns="tablecolumns_auditing" :data="tabledata_auditing2"></i-table>
+		<i-table height="300" size="small" border :columns="tablecolumns_auditing2" :data="tabledata_auditing2"></i-table>
 
 		<br><br>
 
@@ -426,7 +426,7 @@ var vm_app = new Vue({
 		tabledata: [],
 		tableselect: [],
 
-		tablecolumns_auditing: [
+		tablecolumns_auditing1: [
 			{
 				type: 'index',
 				align: 'center',
@@ -494,7 +494,7 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.auditing_remove(params.row)
+									vm_app.auditing_remove1(params.row)
 								}
 							}
 						}, 'Remove'),
@@ -504,8 +504,88 @@ var vm_app = new Vue({
 			}
 		],
 		tabledata_auditing1: [],
+		tableselect_auditing1: [],
+
+
+		tablecolumns_auditing2: [
+			{
+				type: 'index',
+				align: 'center',
+				width: 60,
+			},
+			{
+				title: 'uid',
+				key: 'uid',
+				width: 100
+			},
+			{
+				title: 'name',
+				key: 'name',
+				width: 100
+			},
+			{
+				title: 'department',
+				key: 'department',
+				width: 130
+			},
+			{
+				title: 'status',
+				key: 'deleted_at',
+				align: 'center',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: ! params.row.deleted_at
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
+				}
+			},
+			{
+				title: 'Action',
+				key: 'action',
+				align: 'center',
+				width: 100,
+				render: (h, params) => {
+					return h('div', [
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.auditing_remove2(params.row)
+								}
+							}
+						}, 'Remove'),
+					]);
+				},
+				// fixed: 'right'
+			}
+		],
 		tabledata_auditing2: [],
-		tableselect_auditing: [],
+		tableselect_auditing2: [],
 		
 		//分页
 		page_current: 1,
@@ -572,10 +652,10 @@ var vm_app = new Vue({
 			}
 		],
 
-		// 审核用户
+		// 处理用户
 		treedata_auditing: [
 			{
-				title: '请选择审核用户',
+				title: '请选择处理用户',
 				loading: false,
 				children: []
 			}
@@ -1061,11 +1141,6 @@ var vm_app = new Vue({
 				}
 			}
 
-
-// console.log(applicant);
-// console.log(auditings);
-// return false;
-
 			var url = "{{ route('admin.user.auditingupdate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
@@ -1073,8 +1148,8 @@ var vm_app = new Vue({
 				auditings: auditings,
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1082,14 +1157,14 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.success(false, '成功', '添加处理用户成功！');
-					_this.tabledata_auditing2 = response.data;
+					_this.success(false, '成功', '更新处理用户成功！');
+					_this.tabledata_auditing1 = response.data;
 				} else {
-					_this.error(false, '失败', '添加处理用户失败！');
+					_this.error(false, '失败', '更新处理用户失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '添加处理用户失败！');
+				_this.error(false, '错误', '更新处理用户失败！');
 			})
 			
 		},
@@ -1143,8 +1218,71 @@ var vm_app = new Vue({
 			
 		},
 
-		// auditing_remove
-		auditing_remove: function (row) {
+		// auditing_remove1
+		auditing_remove1 (row) {
+			var _this = this;
+			// console.log(row._index);
+			// return false;
+
+			var index = row._index;
+			var uid = row.uid;
+
+			var json_applicant = _this.$refs.tree_applicant.getSelectedNodes();
+
+			if (json_applicant == ''
+				|| json_applicant == undefined) {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+			let tmp = json_applicant[0]['title'].split(' (ID:');
+			if (tmp[1]) {
+				var id = tmp[1].substr(0, tmp[1].length-1);
+			} else {
+				_this.warning(false, '警告', '代理申请人选择错误！');
+				return false;
+			}
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined
+				|| id == uid) {
+				return false;
+			}
+
+			// console.log(_this.user_select_current);
+			// return false;
+
+			var url = "{{ route('admin.user.auditingremove') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				index: index,
+				id: id,
+				uid: uid,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.success(false, '成功', '删除处理用户成功！');
+					_this.tabledata_auditing1 = response.data;
+				} else {
+					_this.error(false, '失败', '删除处理用户失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除处理用户失败！');
+			})
+			
+		},
+
+		// auditing_remove2
+		auditing_remove2 (row) {
 			var _this = this;
 			// console.log(row._index);
 			// return false;
@@ -1294,6 +1432,7 @@ var vm_app = new Vue({
 			var applicant = '';
 			let tmp = json_applicant[0]['title'].split(' (ID:');
 			if (tmp[1]) {
+				_this.username_current1 = tmp[0];
 				applicant = tmp[1].substr(0, tmp[1].length-1);
 			} else {
 				_this.warning(false, '警告', '代理申请人选择错误！');
@@ -1320,7 +1459,7 @@ var vm_app = new Vue({
 					return false;
 				}
 				
-				if (response.data) {
+				if (response.data.auditing) {
 					_this.tabledata_auditing1 = response.data.auditing;
 					// _this.username_current2 = response.data.username;
 				} else {

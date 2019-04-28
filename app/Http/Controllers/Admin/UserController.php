@@ -501,12 +501,12 @@ class UserController extends Controller
 			// $result = 1;
 
 			// 获取当前用户所指向的auditing
-			// $userhasauditing = User::select('auditing')
-			// ->where('id', $id_current)
-			// ->first();
+			$userhasauditing = User::select('auditing')
+			->where('id', $id_current)
+			->first();
 
-			// // $result = json_decode($userhasauditing['auditing'], true);
-			// $result = $userhasauditing['auditing'];
+			// $result = json_decode($userhasauditing['auditing'], true);
+			$result = $userhasauditing['auditing'];
 
 		}
 		catch (Exception $e) {
