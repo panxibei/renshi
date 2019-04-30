@@ -251,6 +251,33 @@ Admin(User) -
 
 	</Tab-pane>
 
+	<Tab-pane label="导入用户">
+		<i-row :gutter="16">
+			<i-col span="24">
+				<font color="#ff9900">* 在此导入外部数据源用户。</font>
+			</i-col>
+		</i-row>
+
+		<br><br>
+
+		<i-row :gutter="16">
+			<i-col span="24">
+				<i-button type="default" @click="getExternalUsers" size="small" icon="ios-refresh"> Refresh</i-button>
+			</i-col>
+		</i-row>
+
+		<br><br>
+
+		<i-row :gutter="16">
+			<i-col span="24">
+				@{{ users_external }}
+				&nbsp;
+			</i-col>
+		</i-row>
+
+	</Tab-pane>
+
+
 </Tabs>
 
 
@@ -661,7 +688,8 @@ var vm_app = new Vue({
 			}
 		],
 
-
+		// 外部数据源用户
+		users_external: '',
 		
 		
 		
@@ -1590,6 +1618,57 @@ var vm_app = new Vue({
 			.then(function (response) {
 				// console.log(response.data);
 				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					var json = response.data;
+
+					var arr = [];
+					setTimeout(() => {
+						if (node!='department') {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+									loading: false,
+									node: 'department',
+									children: []
+								});
+							}
+						} else {
+							for (var key in json) {
+								arr.push({
+									title: json[key],
+								});
+							}
+						}
+						callback(arr);
+					}, 500);
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+		},
+
+
+		// 外部数据源用户信息
+		getExternalUsers () {
+			var _this = this;
+
+
+			var url = "{{ route('admin.user.getexternalusers') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {}
+			})
+			.then(function (response) {
+				console.log(response.data);
+				return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
