@@ -29,6 +29,5 @@ mssql:<br>
     {{ $value }}
 @endforeach
 
-
 </body>
 </html>

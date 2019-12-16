@@ -103,11 +103,70 @@ dd($email);
 	public function pgsql()
     {
 
+		$res['data1'] = null;
+		$res['data2'] = null;
+		$res['data3'] = null;
+
 		$res['data1'] = DB::connection('mysql')->table('users')->find(1);
-		$res['data2'] = DB::connection('pgsql')->table('table1')->find(1);
-		$res['data3'] = DB::connection('sqlsrv')->table('um4l_user')->first();
+		$res['data2'] = DB::connection('pgsql')->table('users')->find(1);
+		$res['data3'] = DB::connection('sqlsrv')->table('PerEmployee')->first();
 
 		return view('test.pgsql', $res);
     }	
+
+    // 测试camera
+	public function camera()
+    {
+
+		$res['data1'] = null;
+
+		$res['data1'] = DB::connection('pgsql')->table('renshi_jiabans')
+		->select('camera')
+		->where('id', 2)
+		->first();
+
+		return view('test.camera', $res);
+    }	
+
+
+
+	/**
+	 * testCamera
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function testCamera(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$data = $request->only(
+			'id',
+			'imgsrc'
+		);
+		dd($data);
+
+		// 写入数据库
+		// try	{
+		// 	$result = DB::table('mpoints')
+		// 	$result = Smt_mpoint::where('id', $mpoint['id'])
+		// 		->update([
+		// 			'jizhongming'	=> $mpoint['jizhongming'],
+		// 			'pinming'		=> $mpoint['pinming'],
+		// 			'gongxu'			=> $mpoint['gongxu'],
+		// 			'diantai'		=> $mpoint['diantai'],
+		// 			'pinban'		=> $mpoint['pinban'],
+		// 		]);
+		// 	$result = 1;
+		// }
+		// catch (\Exception $e) {
+		// 	// echo 'Message: ' .$e->getMessage();
+		// 	$result = 0;
+		// }
+
+		return $result;
+	}
+
+
 
 }

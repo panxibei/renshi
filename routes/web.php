@@ -445,5 +445,8 @@ Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>[]], function
 	Route::get('vant', 'testController@vant');
 	Route::get('cube', 'testController@cube');
 	Route::get('pgsql', 'testController@pgsql');
-	// Route::get('config', 'testController@mainConfig');
+
+	// 测试camera
+	Route::get('camera', 'testController@camera');
+	Route::post('testCamera', 'testController@testCamera')->name('test.camera.testcamera');
 });
