@@ -8,7 +8,7 @@
 <meta name="author" content="">
 	<title>test camera</title>
     <link rel="stylesheet" href="{{ asset('css/camera.css') }}">
-    <script src="{{ asset('js/camera.js') }}"></script>
+    
 </head>
 <body>
 
@@ -47,6 +47,7 @@ pgsql:<br>
 </body>
 <script src="{{ asset('js/vue.min.js') }}"></script>
 <script src="{{ asset('js/axios.min.js') }}"></script>
+<script src="{{ asset('js/camera.js') }}"></script>
 
 <script type="text/javascript">
 var vm_app = new Vue({

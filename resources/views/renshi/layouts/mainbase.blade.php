@@ -169,7 +169,8 @@ if (isMobile) {
 								名称：{{ $user['name'] }}<br>
 								部门：{{ $user['department'] }}
 							</Menu-Item>
-							<Menu-Item name="3-2"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
+							<Menu-Item name="3-2"><Icon type="ios-create-outline"></Icon>修改密码</Menu-Item>
+							<Menu-Item name="3-3"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
 						</div>
 				</i-menu>
@@ -255,6 +256,7 @@ if (isMobile) {
 <script src="{{ asset('js/axios.min.js') }}"></script>
 <script src="{{ asset('js/bluebird.min.js') }}"></script>
 <script src="{{ asset('statics/iview/iview.min.js') }}"></script>
+<script src="{{ asset('js/httpVueLoader.js') }}"></script>
 @section('my_js_others')
 <script>
 function navmenuselect (name) {
@@ -351,10 +353,10 @@ function topmenuselect (name) {
 	  // window.location.href = "";
 	  break;
 	case '3-2':
-	  window.location.href = "{{route('main.logout')}}";
+	  vm_app.modal_password_edit = true;
 	  break;
 	case '3-3':
-	  window.location.href = "";
+	  window.location.href = "{{route('main.logout')}}";
 	  break;
 
 	}
