@@ -15,25 +15,9 @@
 
 <div id="app" class="contentarea">
 
-    <button id="startcapture">Start Up (permit camera)</button>
+    <button id="startcapture" @click="vm_app.modal_camera_show=true">Start Up (permit camera)</button>
     <br>
 
-    <div class="camera">
-        <video id="video">Video stream not available.</video>
-        <button id="startbutton">Take photo</button> 
-    </div>
-
-    <canvas id="canvas"></canvas>
-
-    <div class="output">
-        <!--<img id="photo" alt="The screen capture will appear in this box.">-->
-        <!-- <img id="photo" :src="'data:image/png;base64,'+imgsrc"> -->
-        <img id="photo" :src="imgsrc" />
-        <br>
-    </div>
-
-    <br>
-    <button @click="submitpic">Submit Pic</button>
 
 
     <br><br>
@@ -46,6 +30,7 @@ pgsql:<br>
 <br><br>
 
 
+    <my-passwordchange></my-passwordchange>
 
     <my-camera></my-camera>
 
@@ -72,11 +57,15 @@ fafdasf
 var vm_app = new Vue({
     el: '#app',
 	components: {
+		'my-passwordchange': httpVueLoader("{{ asset('components/my-passwordchange.vue') }}"),
 		'my-camera': httpVueLoader("{{ asset('components/my-camera.vue') }}")
 	},
 	data: {
 
-		modal_camera_show: false,
+        modal_password_edit: false,
+        
+        modal_camera_show: false,
+        camera_imgurl: '',
 
 
         // imgsrc: 'data:image/png;base64,R0lGODlhWAAfAJEAAAAAAP////8AAGZmZiH5BAAHAP8ALAAAAABYAB8AAALfhI+py+0PX5i02ouz3rxn44XiSHJgiaYqdq7uK7bwTFtyjcN3zqd7D4wBgkTSr4i87AQCCrPCfFoG1IGIWqtabUOLNPCVfgNY8rZTzp4py+Yk7B6nL9pp3T6f3O3KLrQJ6OYlqLdGUTaHuKZYwcjHdfEUOEh4aGiW4Vi4acnZeNkGBlb5Ror5mbmVqLrISgfq9zcqO4uxmup5enuKChk56RRHqKnbmktMnDvxI1kZRbpnmZccXTittXaUtB2gzY3k/U0ULg5EXs5zjo6jvk7T7q4TGz8+T28eka+/zx9RAAA7',

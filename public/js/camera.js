@@ -89,8 +89,11 @@
       context.drawImage(video, 0, 0, width, height);
     
       var data = canvas.toDataURL('image/png');
-      console.log(data);
-      this.imgsrc = data;
+
+      // 获取img的src值
+      vm_app.camera_imgurl = data;
+      // console.log(vm_app.camera_imgurl);
+
       photo.setAttribute('src', data);
     } else {
       clearphoto();
@@ -103,8 +106,10 @@
   
 // 追加代码，用于点击按钮才开始  
   function startwebrtc() {
+    
 	  startcapture = document.getElementById('startcapture');
-	  startcapture.addEventListener('click', startup, false);
+    startcapture.addEventListener('click', startup, false);
+    
   }
   
   window.addEventListener('load', startwebrtc, false);
