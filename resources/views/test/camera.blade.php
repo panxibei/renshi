@@ -15,6 +15,9 @@
 
 <div id="app" class="contentarea">
 
+<br>
+必须允许
+<br>
     <button id="startcapture" @click="vm_app.modal_camera_show=true">Start Up (permit camera)</button>
     <br>
 

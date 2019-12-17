@@ -1,30 +1,24 @@
 <template>
 	<div>
 	
-		<Modal ref="ref1" v-model="vm_app.modal_camera_show" @on-ok="password_edit_ok()" title="Camera" width="200">
+		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="Camera" width="240">
 			<div style="text-align:left">
 			<p>
 
 				<div class="camera">
 					<video id="video">Video stream not available.</video>
-					<button id="startbutton">Take photo</button> 
+					<button id="startbutton">Take photo</button>
 				</div>
 
 				<canvas id="canvas"></canvas>
 
 				<div class="output">
-					<!--<img id="photo" alt="The screen capture will appear in this box.">-->
-					<!-- <img id="photo" :src="'data:image/png;base64,'+imgsrc"> -->
-					<img id="photo" :src="imgUrl">
+					<img id="photo" :src="imgUrl" alt="The screen capture will appear in this box.">
 					<br>
+					* 注意事项。
 				</div>
 
-				<br>
-
-				* 注意事项。
-
 			</p>
-			&nbsp;
 			</div>	
 		</Modal>
 

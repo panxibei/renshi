@@ -106,10 +106,8 @@
   
 // 追加代码，用于点击按钮才开始  
   function startwebrtc() {
-    
 	  startcapture = document.getElementById('startcapture');
     startcapture.addEventListener('click', startup, false);
-    
   }
   
   window.addEventListener('load', startwebrtc, false);
