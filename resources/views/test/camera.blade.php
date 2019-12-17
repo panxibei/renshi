@@ -7,6 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 	<title>test camera</title>
+    <link rel="stylesheet" href="{{ asset('statics/iview/styles/iview.css') }}">
     <link rel="stylesheet" href="{{ asset('css/camera.css') }}">
     
 </head>
@@ -34,25 +35,49 @@
     <br>
     <button @click="submitpic">Submit Pic</button>
 
-</div>
+
+    <br><br>
+
+pgsql:<br>
+<!-- @foreach($data1 as $value)
+    <img src="{{ $value }}">
+@endforeach -->
 
 <br><br>
 
-pgsql:<br>
-@foreach($data1 as $value)
-    <!-- <img src="{{ $value }}"> -->
-@endforeach
+
+
+    <my-camera></my-camera>
+
+
+<br><br>
+
+fafdasf
+<br><br>
+
+</div>
+
+
 
 
 </body>
 <script src="{{ asset('js/vue.min.js') }}"></script>
 <script src="{{ asset('js/axios.min.js') }}"></script>
+<script src="{{ asset('js/bluebird.min.js') }}"></script>
+<script src="{{ asset('statics/iview/iview.min.js') }}"></script>
 <script src="{{ asset('js/camera.js') }}"></script>
+<script src="{{ asset('js/httpVueLoader.js') }}"></script>
 
 <script type="text/javascript">
 var vm_app = new Vue({
-	el: '#app',
+    el: '#app',
+	components: {
+		'my-camera': httpVueLoader("{{ asset('components/my-camera.vue') }}")
+	},
 	data: {
+
+		modal_camera_show: false,
+
 
         // imgsrc: 'data:image/png;base64,R0lGODlhWAAfAJEAAAAAAP////8AAGZmZiH5BAAHAP8ALAAAAABYAB8AAALfhI+py+0PX5i02ouz3rxn44XiSHJgiaYqdq7uK7bwTFtyjcN3zqd7D4wBgkTSr4i87AQCCrPCfFoG1IGIWqtabUOLNPCVfgNY8rZTzp4py+Yk7B6nL9pp3T6f3O3KLrQJ6OYlqLdGUTaHuKZYwcjHdfEUOEh4aGiW4Vi4acnZeNkGBlb5Ror5mbmVqLrISgfq9zcqO4uxmup5enuKChk56RRHqKnbmktMnDvxI1kZRbpnmZccXTittXaUtB2gzY3k/U0ULg5EXs5zjo6jvk7T7q4TGz8+T28eka+/zx9RAAA7',
         imgsrc: '',

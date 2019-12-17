@@ -122,7 +122,7 @@ dd($email);
 
 		$res['data1'] = DB::connection('pgsql')->table('renshi_jiabans')
 		->select('camera')
-		->where('id', 2)
+		->where('id', 3)
 		->first();
 
 		return view('test.camera', $res);
