@@ -13,7 +13,7 @@
 				<canvas id="canvas"></canvas>
 
 				<div class="output">
-					<img id="photo" :src="imgUrl" alt="The screen capture will appear in this box.">
+					<img id="photo" :src="imgUrl" alt="">
 					<br>
 					* 注意事项。
 				</div>

@@ -121,8 +121,8 @@ dd($email);
 		$res['data1'] = null;
 
 		$res['data1'] = DB::connection('pgsql')->table('renshi_jiabans')
-		->select('camera')
-		->where('id', 3)
+		->select('camera_imgurl')
+		->where('id', 2)
 		->first();
 
 		return view('test.camera', $res);
@@ -142,27 +142,23 @@ dd($email);
 
 		$data = $request->only(
 			'id',
-			'imgsrc'
+			'imgurl'
 		);
-		dd($data);
+		// dd($data);
 
 		// 写入数据库
-		// try	{
-		// 	$result = DB::table('mpoints')
-		// 	$result = Smt_mpoint::where('id', $mpoint['id'])
-		// 		->update([
-		// 			'jizhongming'	=> $mpoint['jizhongming'],
-		// 			'pinming'		=> $mpoint['pinming'],
-		// 			'gongxu'			=> $mpoint['gongxu'],
-		// 			'diantai'		=> $mpoint['diantai'],
-		// 			'pinban'		=> $mpoint['pinban'],
-		// 		]);
-		// 	$result = 1;
-		// }
-		// catch (\Exception $e) {
-		// 	// echo 'Message: ' .$e->getMessage();
-		// 	$result = 0;
-		// }
+		try	{
+			$result = DB::table('renshi_jiabans')
+			->where('id', $data['id'])
+				->update([
+					'camera_imgurl'	=> $data['imgurl'],
+				]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
 
 		return $result;
 	}

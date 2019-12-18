@@ -15,22 +15,27 @@
 
 <div id="app" class="contentarea">
 
-<br>
-必须允许
-<br>
-    <button id="startcapture" @click="vm_app.modal_camera_show=true">Start Up (permit camera)</button>
+    <br>
+    必须允许
     <br>
 
+    <button id="startcapture" @click="vm_app.modal_camera_show=true">Start Up (permit camera)</button>
+    <br><br>
+
+    imgUrl:<br>
+    @{{ camera_imgurl.substr(0, 40) }}
+    <br>
+    <button @click="submitpic">Submit Pic</button>
 
 
     <br><br>
 
-pgsql:<br>
-<!-- @foreach($data1 as $value)
-    <img src="{{ $value }}">
-@endforeach -->
+    pgsql:<br>
+    @foreach($data1 as $value)
+        <img src="{{ $value }}">
+    @endforeach
 
-<br><br>
+    <br><br>
 
 
     <my-passwordchange></my-passwordchange>
@@ -78,17 +83,14 @@ var vm_app = new Vue({
 
         submitpic() {
 			var _this = this;
-			var imgsrc = _this.imgsrc;
-            console.log(imgsrc);
-            return false;
-			
-			// if (tableselect[0] == undefined) return false;
+			var imgurl = _this.camera_imgurl;
+            // console.log(imgurl);return false;
 			
 			var url = "{{ route('test.camera.testcamera') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
 				id: 2,
-				imgsrc: imgsrc
+				imgurl: imgurl
 			})
 			.then(function (response) {
                 console.log(response.data);return false;
