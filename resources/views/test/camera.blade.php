@@ -93,16 +93,19 @@ var vm_app = new Vue({
 				imgurl: imgurl
 			})
 			.then(function (response) {
-                console.log(response.data);return false;
+                // console.log(response.data);return false;
 
 				if (response.data) {
-					console.log('成功');
+                    console.log('成功');
+                    alert('成功');
 				} else {
-					console.log('失败');
+                    console.log('失败');
+                    alert('失败');
 				}
 			})
 			.catch(function (error) {
-				console.log('错误');
+                console.log(error);
+                alert('error');
 			})
         },
 	},
