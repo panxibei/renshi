@@ -38,6 +38,10 @@
     <br><br>
 
 
+
+    <br><br>
+
+
     <my-passwordchange></my-passwordchange>
 
     <my-camera></my-camera>
@@ -84,6 +88,7 @@ var vm_app = new Vue({
         submitpic() {
 			var _this = this;
 			var imgurl = _this.camera_imgurl;
+			// var imgurl = 'data:image/png;base64,R0lGODlhWAAfAJEAAAAAAP////8AAGZmZiH5BAAHAP8ALAAAAABYAB8AAALfhI+py+0PX5i02ouz3rxn44XiSHJgiaYqdq7uK7bwTFtyjcN3zqd7D4wBgkTSr4i87AQCCrPCfFoG1IGIWqtabUOLNPCVfgNY8rZTzp4py+Yk7B6nL9pp3T6f3O3KLrQJ6OYlqLdGUTaHuKZYwcjHdfEUOEh4aGiW4Vi4acnZeNkGBlb5Ror5mbmVqLrISgfq9zcqO4uxmup5enuKChk56RRHqKnbmktMnDvxI1kZRbpnmZccXTittXaUtB2gzY3k/U0ULg5EXs5zjo6jvk7T7q4TGz8+T28eka+/zx9RAAA7';
             // console.log(imgurl);return false;
 			
 			var url = "{{ route('test.camera.testcamera') }}";

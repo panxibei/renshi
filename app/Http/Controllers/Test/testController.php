@@ -9,6 +9,7 @@ use Adldap\AdldapInterface;
 use Adldap\Laravel\Facades\Adldap;
 
 use DB;
+use Image;
 
 class testController extends Controller
 {
@@ -144,7 +145,25 @@ dd($email);
 			'id',
 			'imgurl'
 		);
+
+		$mydate = date('y-m-d h:i:s',time());
+		$img = Image::make($data['imgurl'])
+			->resize(160, 120)
+			->text($mydate, 80, 110, function($font) {
+				$font->file(5);
+				$font->size(64);
+				$font->color('#fdf6e3');
+				$font->align('center');
+				$font->valign('middle');
+				// $font->angle(45);
+			})
+			->encode('png')
+			->encode('data-url');
+		
+		// dd($img);
+		// dd($img->encoded);
 		// dd($data);
+		$data['imgurl'] = $img->encoded;
 
 		// 写入数据库
 		try	{
