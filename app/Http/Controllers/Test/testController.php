@@ -152,7 +152,7 @@ dd($email);
 		$img = Image::make($data['imgurl'])
 			->resize(160, 120)
 			->text($myuser, 20, 20, function($font) {
-				$font->file(public_path() . '/fonts/msyh.ttc');
+				$font->file(public_path() . '/fonts/msyhbd.ttc');
 				$font->size(9);
 				$font->color('#fdf6e3');
 				$font->align('center');
@@ -160,7 +160,7 @@ dd($email);
 				$font->angle(45);
 			})
 			->text($mydate, 80, 110, function($font) {
-				$font->file(public_path() . '/fonts/msyh.ttc');
+				$font->file(public_path() . '/fonts/msyhbd.ttc');
 				$font->size(9);
 				$font->color('#fdf6e3');
 				$font->align('center');
