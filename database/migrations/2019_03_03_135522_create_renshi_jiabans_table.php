@@ -34,6 +34,7 @@ class CreateRenshiJiabansTable extends Migration
             $table->integer('progress')->comment('进度');
             $table->integer('status')->comment('状态');
             $table->text('reason')->comment('事由');
+            $table->text('camera_imgurl')->nullable()->comment('验证摄像');
             $table->text('remark')->nullable()->comment('备注');
             $table->jsonb('auditing')->nullable()->comment('审核信息');
             $table->boolean('archived')->default(false)->comment('是否归档');

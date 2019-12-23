@@ -146,12 +146,22 @@ dd($email);
 			'imgurl'
 		);
 
-		$mydate = date('y-m-d h:i:s',time());
+		$mydate = date('y-m-d H:i:s',time());
+		$myuser = '年年庆余年';
+
 		$img = Image::make($data['imgurl'])
 			->resize(160, 120)
+			->text($myuser, 20, 20, function($font) {
+				$font->file(public_path() . '/fonts/msyh.ttc');
+				$font->size(9);
+				$font->color('#fdf6e3');
+				$font->align('center');
+				$font->valign('middle');
+				$font->angle(45);
+			})
 			->text($mydate, 80, 110, function($font) {
-				$font->file(5);
-				$font->size(64);
+				$font->file(public_path() . '/fonts/msyh.ttc');
+				$font->size(9);
 				$font->color('#fdf6e3');
 				$font->align('center');
 				$font->valign('middle');
