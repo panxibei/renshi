@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\Admin\Config;
+use Cookie;
 
 class JwtAuth
 {
@@ -19,6 +21,11 @@ class JwtAuth
 	// 请求前处理内容
 	// return $next($request);
 	
+	// 验证sitekey和appkey
+	$config = Config::where('cfg_name', 'SITE_KEY')->pluck('cfg_value', 'cfg_name')->toArray();
+	$site_key = $config['SITE_KEY'];
+	$app_key = substr(config('app.key'), 19, 12);
+	if ($app_key != $site_key) die();
 	
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -50,6 +57,17 @@ class JwtAuth
 			}
 
 		}
+	} else {
+		$token_local = Cookie::get('singletoken');
+		// $singletoken = md5($user['login_ip'] . $user['name'] . $user[login_time]);
+		$token_remote = $user['remember_token'];
+
+		if (empty($token_remote) || $token_local != $token_remote) {
+			Cookie::queue(Cookie::forget('token'));
+			Cookie::queue(Cookie::forget('singletoken'));
+			return $request->ajax() ? response()->json(['jwt' => 'logout']) : redirect()->route('login');
+		}
+
 	}
 
 
