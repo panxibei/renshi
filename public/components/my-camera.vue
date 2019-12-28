@@ -2,7 +2,7 @@
 	<div>
 	
 		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="Camera" width="360">
-			<div style="text-align:left">
+			<div style="text-align:center">
 			<p>
 
 				<div class="camera">
