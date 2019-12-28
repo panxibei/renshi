@@ -1,7 +1,7 @@
 <template>
 	<div>
 	
-		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="Camera" width="240">
+		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="Camera" width="360">
 			<div style="text-align:left">
 			<p>
 
@@ -10,7 +10,11 @@
 					<button id="startbutton">Take photo</button>
 				</div>
 
+				<br>
+
 				<canvas id="canvas"></canvas>
+
+				<br>
 
 				<div class="output">
 					<img id="photo" :src="imgUrl" alt="">

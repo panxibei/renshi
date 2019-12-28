@@ -32,7 +32,7 @@
 
     pgsql:<br>
     @foreach($data1 as $value)
-        <img src="{{ $value }}">
+        <img src="{{ $value }}" width="320px" height="240px">
     @endforeach
 
     <br><br>
