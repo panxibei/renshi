@@ -1,13 +1,13 @@
 <template>
 	<div>
 	
-		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="Camera" width="360">
+		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="拍照 - 请允许开启访问摄像头的权限" width="360">
 			<div style="text-align:center">
 			<p>
 
 				<div class="camera">
 					<video id="video">Video stream not available.</video>
-					<button id="startbutton">Take photo</button>
+					<button id="startbutton">点击拍照</button>
 				</div>
 
 				<br>
@@ -19,7 +19,7 @@
 				<div class="output">
 					<img id="photo" :src="imgUrl" alt="">
 					<br>
-					* 注意事项。
+					* 注意事项：请允许开启访问摄像头的权限。<br>如果无法显示图像，请刷新页面重试。
 				</div>
 
 			</p>

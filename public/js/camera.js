@@ -33,6 +33,10 @@
       video.play();
     })
     .catch(function(err) {
+      vm_app.$Modal.error({
+        title: '发生错误',
+        content: '未正确开启摄像头权限！请刷新后重试！'
+      });
       console.log("An error occurred: " + err);
     });
 

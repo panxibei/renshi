@@ -400,9 +400,15 @@ Renshi(Jiaban) -
 
 		<i-col span="6">
 		<br>
-			状态：&nbsp;未拍照
+			状态：&nbsp;
+			<span v-if="camera_imgurl==''">
+				未完成 <Icon type="md-close"></Icon>
+			</span>
+			<span v-else>
+				已完成 <Icon type="md-checkmark"></Icon>
+			</span>
 			<br>
-			<i-button @click="onclear_applicant1()" icon="ios-camera-outline" size="default">拍 照</i-button>
+			<i-button id="startcapture" @click="vm_app.modal_camera_show=true" icon="ios-camera-outline" size="default">拍 照</i-button>
 		</i-col>
 
 		<i-col span="4">
@@ -564,6 +570,8 @@ Renshi(Jiaban) -
 
 <my-passwordchange></my-passwordchange>
 
+<my-camera></my-camera>
+
 @endsection
 
 @section('my_footer')
@@ -577,7 +585,8 @@ Renshi(Jiaban) -
 var vm_app = new Vue({
 	el: '#app',
 	components: {
-		'my-passwordchange': httpVueLoader("{{ asset('components/my-passwordchange.vue') }}")
+		'my-passwordchange': httpVueLoader("{{ asset('components/my-passwordchange.vue') }}"),
+		'my-camera': httpVueLoader("{{ asset('components/my-camera.vue') }}")
 	},
     data: {
 		// 是否全屏
@@ -585,6 +594,10 @@ var vm_app = new Vue({
 
 		// 修改密码界面
 		modal_password_edit: false,
+
+		// 拍照界面
+		modal_camera_show: false,
+        camera_imgurl: '',
 
 		current_nav: '',
 		current_subnav: '',
