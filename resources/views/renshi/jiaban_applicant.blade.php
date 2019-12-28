@@ -394,7 +394,18 @@ Renshi(Jiaban) -
 			<i-input v-model.lazy="jiaban_add_remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
 		</i-col>
 
-		<i-col span="11">
+		<i-col span="1">
+		&nbsp;
+		</i-col>
+
+		<i-col span="6">
+		<br>
+			状态：&nbsp;未拍照
+			<br>
+			<i-button @click="onclear_applicant1()" icon="ios-camera-outline" size="default">拍 照</i-button>
+		</i-col>
+
+		<i-col span="4">
 			&nbsp;&nbsp;
 		</i-col>
 	</i-row>
