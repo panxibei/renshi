@@ -647,7 +647,16 @@ var vm_app = new Vue({
 				title: 'UUID',
 				key: 'uuid',
 				sortable: true,
-				width: 280
+				width: 110,
+				render: (h, params) => {
+					return h('div', {}, [
+						h('span',{
+							// style:{
+							// 	color: '#ff9900'
+							// }
+						}, params.row.uuid.substr(0, 8) + ' ...')
+					])
+				}
 			},
 			// {
 			// 	title: 'agent',
