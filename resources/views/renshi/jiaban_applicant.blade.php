@@ -6,9 +6,11 @@ Renshi(Jiaban) -
 @endsection
 
 @section('my_style')
+<link rel="stylesheet" href="{{ asset('css/camera.css') }}">
 @endsection
 
 @section('my_js')
+<script src="{{ asset('js/camera.js') }}"></script>
 <script type="text/javascript">
 </script>
 @endsection
