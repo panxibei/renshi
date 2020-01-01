@@ -449,4 +449,7 @@ Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>[]], function
 	// 测试camera
 	Route::get('camera', 'testController@camera');
 	Route::post('testCamera', 'testController@testCamera')->name('test.camera.testcamera');
+
+	// 测试邮件
+	Route::get('mail', 'testController@mail');
 });

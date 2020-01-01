@@ -10,6 +10,7 @@ use Adldap\Laravel\Facades\Adldap;
 
 use DB;
 use Image;
+use Mail;
 
 class testController extends Controller
 {
@@ -190,6 +191,32 @@ dd($email);
 		}
 
 		return $result;
+	}
+
+
+	/**
+	 * mail
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function mail()
+	{
+			$name = '王宝花';
+			$subject = $name . '有新消息';
+			$to = 'kydd2008@163.com';
+
+			// Mail::send()的返回值为空，所以可以其他方法进行判断
+			Mail::send('test.mailtemplate',['name'=>$name],function($message) use($to, $subject){
+				
+				$message ->to($to)->subject($subject);
+			});
+			// 返回的一个错误数组，利用此可以判断是否发送成功
+			if (empty(Mail::failures())) {
+				dd('Sent OK!');
+			} else {
+				dd(Mail::failures());
+			}
 	}
 
 
