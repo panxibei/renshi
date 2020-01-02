@@ -19,6 +19,7 @@
         "predis/predis": "^1.1",
         "ramsey/uuid": "^3.8",
         "spatie/laravel-permission": "^2.30",
+        "tightenco/ziggy": "^0.8.1",
         "tymon/jwt-auth": "1.0.0-rc.3"
     },
     "require-dev": {
@@ -74,7 +75,7 @@
     "repositories": {
         "packagist": {
             "type": "composer",
-            "url": "https://packagist.laravel-china.org"
+            "url": "https://packagist.phpcomposer.com"
         }
     }
 }

@@ -170,7 +170,51 @@ class AdminController extends Controller
 		return $result;
     }
 
+	
+    /**
+     * 修改用户密码（自助）
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function passwordChange(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		$password_old = $request->input('password_old');
+		$password_new = $request->input('password_new');
+		$password_confirm = $request->input('password_confirm');
+
+		if ($password_new != $password_confirm) return 0;
+		if (! isset($password_new)) return 0;
+		if (strlen($password_new) < 8) return 0;
+		if ($password_old == $password_new) return 0;
+
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+
+		if ($user['id'] <= 10) return 0;
+
+		// jwt-auth，判断用户认证
+		$credentials = ['name' => $user['name'], 'password' => $password_old];
+		$token = auth()->attempt($credentials);
+		if (! $token) return 0;
+		
+		try	{
+			$result = User::where('id', $user['id'])
+				->update([
+					// 'name'			=>	$name,
+					// 'ldapname'		=>	$ldapname,
+					'password' 		=> bcrypt($password_new),
+				]);
+			}
+		catch (Exception $e) {//捕获异常
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+
+		return $result;
+    }
 	
 
 }
