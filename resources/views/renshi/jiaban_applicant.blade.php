@@ -402,7 +402,7 @@ Renshi(Jiaban) -
 
 		<i-col span="6">
 		<br>
-			状态：&nbsp;
+			* 状态：&nbsp;
 			<span v-if="camera_imgurl==''">
 				未完成 <Icon type="md-close"></Icon>
 			</span>

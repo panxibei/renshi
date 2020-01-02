@@ -362,6 +362,7 @@ Renshi(Jiaban) -
 
 </Tabs>
 
+<my-passwordchange></my-passwordchange>
 
 @endsection
 
@@ -374,8 +375,17 @@ Renshi(Jiaban) -
 @parent
 <script>
 var vm_app = new Vue({
-    el: '#app',
+	el: '#app',
+	components: {
+		'my-passwordchange': httpVueLoader("{{ asset('components/my-passwordchange.vue') }}")
+	},
     data: {
+		// 是否全屏
+		isfullscreen: false,
+
+		// 修改密码界面
+		modal_password_edit: false,
+
 		current_nav: '',
 		current_subnav: '',
 		
@@ -439,7 +449,16 @@ var vm_app = new Vue({
 				title: 'UUID',
 				key: 'uuid',
 				sortable: true,
-				width: 280
+				width: 110,
+				render: (h, params) => {
+					return h('div', {}, [
+						h('span',{
+							// style:{
+							// 	color: '#ff9900'
+							// }
+						}, params.row.uuid.substr(0, 8) + ' ...')
+					])
+				}
 			},
 			{
 				title: '代理申请人',
