@@ -520,6 +520,7 @@ var vm_app = new Vue({
         showCamera() {
             this.$createDialog({
                 type: 'prompt',
+                showClose: true,
                 confirmBtn: {
                     text: '确 定',
                     active: true
@@ -538,7 +539,7 @@ var vm_app = new Vue({
                         //     'my-title-img': true
                         // }
                         }),
-                        createElement('p', '拍照 - 请允许开启访问摄像头的权限')
+                        createElement('p', '* 请允许开启访问摄像头的权限')
                     ]),
 
                     // 2
