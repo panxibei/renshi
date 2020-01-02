@@ -6,6 +6,7 @@ Renshi(Jiaban Application) -
 @endsection
 
 @section('my_style')
+<link rel="stylesheet" href="{{ asset('css/camera_cube.css') }}">
 <style>
 .title-jiaban-applicant {
 	position: relative;
@@ -22,6 +23,7 @@ Renshi(Jiaban Application) -
 @endsection
 
 @section('my_js')
+<script src="{{ asset('js/camera.js') }}"></script>
 <script type="text/javascript">
 </script>
 @endsection
@@ -70,6 +72,8 @@ Renshi(Jiaban Application) -
   </cube-form-group>
   <cube-form-group>
   <br>
+    <cube-button  id="startcapture" :light="true" @click="showCamera">* 拍 照  </cube-button>
+    <br>
     <cube-button type="submit">提 交</cube-button>
     <br>
     <cube-button type="reset">清 除</cube-button>
@@ -78,6 +82,7 @@ Renshi(Jiaban Application) -
 
 
 <br>
+
 
 @endsection
 
@@ -89,8 +94,11 @@ Renshi(Jiaban Application) -
 @parent
 <script>
 var vm_app = new Vue({
-	el: '#app',
+    el: '#app',
 	data: {
+		// 拍照界面
+		// modal_camera_show: false,
+        camera_imgurl: '',
 
         jiaban_add_uid: '',
         jiaban_add_applicant: '',
@@ -507,7 +515,97 @@ var vm_app = new Vue({
 				_this.error(false, 'Error', error);
 			})
 			
-		},
+        },
+        
+        showCamera() {
+            this.$createDialog({
+                type: 'prompt',
+                confirmBtn: {
+                    text: '确 定',
+                    active: true
+                }
+            }, (createElement) => {
+                return [
+                    // 1
+                    createElement('div', {
+                        'class': {
+                            'my-title': true
+                        },
+                        slot: 'title'
+                    }, [
+                        createElement('br', {
+                        // 'class': {
+                        //     'my-title-img': true
+                        // }
+                        }),
+                        createElement('p', '拍照 - 请允许开启访问摄像头的权限')
+                    ]),
+
+                    // 2
+                    createElement('div', {
+                        'class': {
+                            'camera': true
+                        },
+                        slot: 'content'
+                    }, [
+                        // createElement('p', {
+                        //     'class': {
+                        //         'my-content': true
+                        //     },
+                        //     slot: 'content'
+                        // }, '请允许开启访问摄像头的权限'),
+                        createElement('video', {
+                            attrs: {
+                                'id': 'video'
+                            },
+                            'class': {
+                                // 'my-content': true
+                            },
+                            slot: 'content'
+                        }, ''),
+                        createElement('button', {
+                            attrs: {
+                                'id': 'startbutton'
+                            },
+                            'class': {
+                                // 'my-content': true
+                            },
+                            slot: 'content'
+                        }, '点击拍照'),
+                        createElement('canvas', {
+                            attrs: {
+                                'id': 'canvas'
+                            },
+                            'class': {
+                                // 'my-content': true
+                            },
+                            slot: 'content'
+                        }, ''),
+                        createElement('div', {
+                            attrs: {
+                                'id': 'output'
+                            },
+                            'class': {
+                                // 'my-content': true
+                                'output': true
+                            },
+                            slot: 'content'
+                        }, [
+                            createElement('img', {
+                            attrs: {
+                                'id': 'photo',
+                                'src': this.camera_imgurl
+                            },
+                            'class': {
+                                // 'my-content': true
+                            },
+                            slot: 'content'
+                        }, ''),
+                        ])
+                    ]),
+                ]
+            }).show()
+        }
 
 
         
