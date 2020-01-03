@@ -23,7 +23,7 @@ Renshi(Jiaban Application) -
 @endsection
 
 @section('my_js')
-<script src="{{ asset('js/camera.js') }}"></script>
+<script src="{{ asset('js/camera_cube.js') }}"></script>
 <script type="text/javascript">
 </script>
 @endsection
@@ -72,7 +72,7 @@ Renshi(Jiaban Application) -
   </cube-form-group>
   <cube-form-group>
   <br>
-    <cube-button  id="startcapture" :light="true" @click="showCamera">* 拍 照  </cube-button>
+    <cube-button  id="startcapture" :light="true" @click="showCamera">* 拍 照 （@{{ camera_imgurl == '' ? 'X' : 'OK' }}） </cube-button>
     <br>
     <cube-button type="submit">提 交</cube-button>
     <br>
@@ -522,8 +522,34 @@ var vm_app = new Vue({
                 type: 'prompt',
                 showClose: true,
                 confirmBtn: {
-                    text: '确 定',
+                    // text: '确定',
                     active: true
+                },
+                cancelBtn: {
+                    // text: '取消',
+                    active: true
+                },
+                onConfirm: () => {
+                    // this.$createToast({
+                    //     type: 'warn',
+                    //     time: 1000,
+                    //     txt: '点击确认按钮'
+                    // }).show()
+                },
+                onCancel: () => {
+                    // this.$createToast({
+                    //     type: 'warn',
+                    //     time: 1000,
+                    //     txt: '点击取消按钮'
+                    // }).show()
+                    this.camera_imgurl = '';
+                },
+                onClose: () => {
+                    this.$createToast({
+                        type: 'warn',
+                        time: 1000,
+                        txt: '点击关闭按钮'
+                    }).show()
                 }
             }, (createElement) => {
                 return [

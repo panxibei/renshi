@@ -33,10 +33,12 @@
       video.play();
     })
     .catch(function(err) {
-      vm_app.$Modal.error({
+      vm_app.$createDialog({
+        type: 'alert',
         title: '发生错误',
-        content: '未开启摄像头权限！请刷新页面后重试！'
-      });
+        content: "未开启摄像头权限！<br>请刷新页面后重试！",
+        icon: 'cubeic-alert'
+      }).show()
       console.log("An error occurred: " + err);
     });
 
