@@ -240,7 +240,7 @@ if (isMobile) {
 			@section('my_footer')
 			<a href="{{route('portal')}}">{{$config['SITE_TITLE']}}</a>&nbsp;&nbsp;{{$config['SITE_COPYRIGHT']}}
 			@can('permission_super_admin')
-				<a href="{{route('admin.config.index')}}"><Icon type="ios-cog-outline"></Icon></a>
+				<a href="{{route('admin.config.index')}}" target="_blank"><Icon type="ios-cog-outline"></Icon></a>
 			@endcan
 			
 			@show
