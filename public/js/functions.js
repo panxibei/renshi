@@ -17,7 +17,7 @@ function mobile() {
 isMobile = mobile();
 // console.log(isMobile);
 if (isMobile) {
-	// alert('系统暂不支持移动端！');
+	// alert('仅有付费系统组件支持移动端！');
 	// document.execCommand("Stop");
     // window.stop();
 }
@@ -146,4 +146,39 @@ function DateAdd(interval, number, date) {
         break;
     }
     }
+}
+
+
+// 201911091107
+// 切换全屏
+function handleFullScreen () {
+    let element = document.documentElement;
+    // 判断是否已经是全屏
+    // 如果是全屏，退出
+    if (document.isFullScreen || document.mozFullScreen || document.webkitIsFullScreen) {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        vm_app.isfullscreen = false;
+    } else {    // 否则，进入全屏
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.webkitRequestFullScreen) {
+            element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+            // IE11
+            element.msRequestFullscreen();
+        }
+        vm_app.isfullscreen = true;
+    }
+    // 改变当前全屏状态
+    // vm_app.isfullscreen = !vm_app.isfullscreen;
 }

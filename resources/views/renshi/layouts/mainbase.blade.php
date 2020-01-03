@@ -95,7 +95,7 @@ if (isMobile) {
 			<div style="z-index: 999;">
 				<Header :style="{position: 'fixed', width: '100%', marginLeft: '200px'}">
 				<Layout>
-				<i-menu mode="horizontal" theme="light" active-name="3" @on-select="name=>topmenuselect(name)">
+				<i-menu mode="horizontal" theme="light" :active-name="isfullscreen == true ? '1' : '3'" @on-select="name=>topmenuselect(name)">
 					<!--<div class="layout-logo">qqqqqqqqqqqq</div>-->
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
@@ -116,6 +116,17 @@ if (isMobile) {
 							</Badge>
 						</Menu-item> -->
 
+						<Menu-item name="1">
+						<div>
+							<Tooltip v-if="isfullscreen" placement="bottom" content="关闭全屏" transfer="true">
+								<Icon type="ios-contract" size="20" @click.native="handleFullScreen()" style="cursor:pointer;"></Icon>
+							</Tooltip>
+							<Tooltip v-else placement="bottom" content="全屏" transfer="true">
+								<Icon type="ios-expand" size="20" @click.native="handleFullScreen()" style="cursor:pointer;"></Icon>
+							</Tooltip>
+						</div>
+						</Menu-item>
+						
 						<!--Item 2-->
 						<Menu-item name="2">
 							<!-- <Dropdown @click.native="event => dropdownuser(event.target.innerText.trim())"> -->
@@ -152,7 +163,7 @@ if (isMobile) {
 							</Dropdown>
 							@endif
 
-            </Menu-item>
+						</Menu-item>
 
 						<!--Item 3-->
 						<Submenu name="3">
@@ -174,6 +185,7 @@ if (isMobile) {
 							<Menu-Item name="3-3"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
 						</div>
+
 				</i-menu>
 				</Layout>
 
