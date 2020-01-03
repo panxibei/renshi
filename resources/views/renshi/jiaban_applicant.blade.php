@@ -107,7 +107,17 @@ Renshi(Jiaban) -
 						<br>
 							<i-col span="8">
 								代理申请人&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
+								<!-- <i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input> -->
+							
+								<Poptip trigger="hover" placement="bottom-start" width="320">
+									<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
+									<div class="api" slot="content">
+										<div class="">
+											<img src="" alt="">
+										</div>
+									</div>
+								</Poptip>
+							
 							</i-col>
 
 							<i-col span="9">
@@ -1190,9 +1200,10 @@ var vm_app = new Vue({
 			var duration = _this.jiaban_add_duration1;
 			var datetimerange = _this.jiaban_add_datetimerange1;
 			var applicantgroup = _this.jiaban_add_applicantgroup;
+			var camera_imgurl = _this.camera_imgurl;
 
-			if (applicantgroup == '' || reason == '' || category == ''  || duration == '' || datetimerange[0] == ''
-				|| applicantgroup == undefined|| reason == undefined || category == undefined || duration == undefined || datetimerange[0] == undefined) {
+			if (applicantgroup == '' || reason == '' || category == ''  || duration == '' || datetimerange[0] == '' || camera_imgurl == ''
+				|| applicantgroup == undefined|| reason == undefined || category == undefined || duration == undefined || datetimerange[0] == undefined || camera_imgurl == undefined) {
 				_this.warning(false, '警告', '输入内容为空或不正确！');
 				_this.jiaban_add_create_disabled1 = false;
 				_this.jiaban_add_clear_disabled1 = false;
@@ -1208,6 +1219,7 @@ var vm_app = new Vue({
 				duration: duration,
 				datetimerange: datetimerange,
 				applicantgroup: applicantgroup,
+				camera_imgurl: camera_imgurl,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -1242,6 +1254,7 @@ var vm_app = new Vue({
 			_this.jiaban_add_datetimerange1 = '';
 			_this.jiaban_add_duration1 = '';
 			_this.jiaban_add_category1 = '';
+			_this.camera_imgurl = '';
 		},
 
 		// oncreate_applicant2
@@ -1255,9 +1268,10 @@ var vm_app = new Vue({
 
 			var jiaban_add_reason = _this.jiaban_add_reason;
 			var jiaban_add_remark = _this.jiaban_add_remark;
+			var camera_imgurl = _this.camera_imgurl;
 
-			if (jiaban_add_reason == ''
-				|| jiaban_add_reason == undefined) {
+			if (jiaban_add_reason == '' || camera_imgurl == ''
+				|| jiaban_add_reason == undefined || camera_imgurl == undefined) {
 				booFlagOk = false;
 			} else {
 				_this.piliangluru_applicant.map(function (v,i) {
@@ -1282,7 +1296,8 @@ var vm_app = new Vue({
 			axios.post(url, {
 				reason: jiaban_add_reason,
 				remark: jiaban_add_remark,
-				piliangluru: piliangluru_applicant
+				piliangluru: piliangluru_applicant,
+				camera_imgurl: camera_imgurl,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -1314,6 +1329,7 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.jiaban_add_reason = '';
 			_this.jiaban_add_remark = '';
+			_this.camera_imgurl = '';
 			_this.piliangluru_applicant.map(function (v,i) {
 				v.uid = '';
 				v.applicant = '';

@@ -725,6 +725,7 @@ class JiabanController extends Controller
 	$duration = $request->input('duration');
 	$datetimerange = $request->input('datetimerange');
 	$applicantgroup = $request->input('applicantgroup');
+	$camera_imgurl = $request->input('camera_imgurl');
 
 	$uuid4 = Uuid::uuid4();
 	$uuid = $uuid4->toString();
@@ -799,21 +800,22 @@ class JiabanController extends Controller
 		DB::beginTransaction();
 		
 		Renshi_jiaban::create([
-				'uuid' => $uuid,
-				'id_of_agent' => $id_of_agent,
-				'uid_of_agent' => $uid_of_agent,
-				'agent' => $agent,
-				'department_of_agent' => $department_of_agent,
-				'id_of_auditor' => $id_of_auditor,
-				'uid_of_auditor' => $uid_of_auditor,
-				'auditor' => $auditor,
-				'department_of_auditor' => $department_of_auditor,
-				// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-				'application' => $application,
-				'progress' => $progress,
-				'status' => 1,
-				'reason' => $reason,
-				'remark' => $remark,
+			'uuid' => $uuid,
+			'id_of_agent' => $id_of_agent,
+			'uid_of_agent' => $uid_of_agent,
+			'agent' => $agent,
+			'department_of_agent' => $department_of_agent,
+			'id_of_auditor' => $id_of_auditor,
+			'uid_of_auditor' => $uid_of_auditor,
+			'auditor' => $auditor,
+			'department_of_auditor' => $department_of_auditor,
+			// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+			'application' => $application,
+			'progress' => $progress,
+			'status' => 1,
+			'reason' => $reason,
+			'remark' => $remark,
+			'camera_imgurl' => $camera_imgurl,
 		]);
 
 		$result = 1;
@@ -846,6 +848,7 @@ class JiabanController extends Controller
 	$reason = $request->input('reason');
 	$remark = $request->input('remark');
 	$piliangluru = $request->input('piliangluru');
+	$camera_imgurl = $request->input('camera_imgurl');
 
 
 	$uuid4 = Uuid::uuid4();
@@ -909,21 +912,22 @@ class JiabanController extends Controller
 		// Bpjg_zhongricheng_relation::insert($s);
 
 		Renshi_jiaban::create([
-				'uuid' => $uuid,
-				'id_of_agent' => $id_of_agent,
-				'uid_of_agent' => $uid_of_agent,
-				'agent' => $agent,
-				'department_of_agent' => $department_of_agent,
-				'id_of_auditor' => $id_of_auditor,
-				'uid_of_auditor' => $uid_of_auditor,
-				'auditor' => $auditor,
-				'department_of_auditor' => $department_of_auditor,
-				// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-				'application' => $application,
-				'progress' => $progress,
-				'status' => 1,
-				'reason' => $reason,
-				'remark' => $remark,
+			'uuid' => $uuid,
+			'id_of_agent' => $id_of_agent,
+			'uid_of_agent' => $uid_of_agent,
+			'agent' => $agent,
+			'department_of_agent' => $department_of_agent,
+			'id_of_auditor' => $id_of_auditor,
+			'uid_of_auditor' => $uid_of_auditor,
+			'auditor' => $auditor,
+			'department_of_auditor' => $department_of_auditor,
+			// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+			'application' => $application,
+			'progress' => $progress,
+			'status' => 1,
+			'reason' => $reason,
+			'remark' => $remark,
+			'camera_imgurl' => $camera_imgurl,
 		]);
 
 		$result = 1;
