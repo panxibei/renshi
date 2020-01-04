@@ -74,9 +74,9 @@ Renshi(Jiaban Application) -
   <br>
     <cube-button  id="startcapture" :light="true" @click="showCamera">* 拍 照 （@{{ camera_imgurl == '' ? 'X' : 'OK' }}） </cube-button>
     <br>
-    <cube-button type="submit">提 交</cube-button>
+    <cube-button type="submit" :disabled="jiaban_add_submit_disabled">提 交</cube-button>
     <br>
-    <cube-button type="reset">清 除</cube-button>
+    <cube-button type="reset" :disabled="jiaban_add_reset_disabled">清 除</cube-button>
   </cube-form-group>
 </cube-form>
 
@@ -99,6 +99,9 @@ var vm_app = new Vue({
 		// 拍照界面
 		// modal_camera_show: false,
         camera_imgurl: '',
+
+        jiaban_add_submit_disabled: false,
+        jiaban_add_reset_disabled: false,
 
         jiaban_add_uid: '',
         jiaban_add_applicant: '',
@@ -337,6 +340,9 @@ var vm_app = new Vue({
             // alert('submit');
             var _this = this;
 
+            _this.jiaban_add_submit_disabled = true;
+            _this.jiaban_add_reset_disabled = true;
+
             var uid = _this.jiaban_add_uid;
             var applicant = _this.jiaban_add_applicant;
             var department = _this.jiaban_add_department;
@@ -346,9 +352,10 @@ var vm_app = new Vue({
             var category = _this.jiaban_add_category;
             var reason = _this.jiaban_add_reason;
             var remark = _this.jiaban_add_remark;
+            var camera_imgurl = _this.camera_imgurl;
 
-            if (uid == '' || applicant == '' || department == '' || startdate == '' || enddate == '' || category == ''  || duration == '' || reason == ''
-            || uid == undefined || applicant == undefined || department == undefined || startdate == undefined || enddate == undefined || category == undefined  || duration == undefined || reason == undefined) {
+            if (uid == '' || applicant == '' || department == '' || startdate == '' || enddate == '' || category == ''  || duration == '' || reason == '' || camera_imgurl == ''
+            || uid == undefined || applicant == undefined || department == undefined || startdate == undefined || enddate == undefined || category == undefined  || duration == undefined || reason == undefined || camera_imgurl == undefined) {
                 // _this.warning(false, '警告', '输入内容为空或不正确！');
                 const toast = _this.$createToast({
                     txt: '输入内容为空或不正确！',
@@ -370,6 +377,7 @@ var vm_app = new Vue({
                 category: category,
                 reason: reason,
                 remark: remark,
+                camera_imgurl: camera_imgurl,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -401,15 +409,27 @@ var vm_app = new Vue({
                         type: 'warn'
                     })
                     toast.show()
-				}
+                }
+
+                window.setTimeout(function(){
+                    _this.jiaban_add_submit_disabled = false;
+                    _this.jiaban_add_reset_disabled = false;
+                }, 1000);
+                
 			})
 			.catch(function (error) {
                 const toast = _this.$createToast({
-                    txt: '提交失败！',
+                    txt: '发生错误，提交失败！',
                     type: 'error'
                 })
                 toast.show()
-			})
+
+                window.setTimeout(function(){
+                    _this.jiaban_add_submit_disabled = false;
+                    _this.jiaban_add_reset_disabled = false;
+                }, 1000);
+            })
+            
 
         },
         validateHandler(result) {
@@ -428,6 +448,7 @@ var vm_app = new Vue({
             this.jiaban_add_category = '';
             this.jiaban_add_reason = '';
             this.jiaban_add_remark = '';
+            this.camera_imgurl = '';
         },
 
         // toolbar - start
@@ -545,11 +566,11 @@ var vm_app = new Vue({
                     this.camera_imgurl = '';
                 },
                 onClose: () => {
-                    this.$createToast({
-                        type: 'warn',
-                        time: 1000,
-                        txt: '点击关闭按钮'
-                    }).show()
+                    // this.$createToast({
+                    //     type: 'warn',
+                    //     time: 1000,
+                    //     txt: '点击关闭按钮'
+                    // }).show()
                 }
             }, (createElement) => {
                 return [

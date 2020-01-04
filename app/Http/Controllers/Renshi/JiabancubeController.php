@@ -82,7 +82,7 @@ class JiabancubeController extends Controller
 		$category = $request->input('category');
 		$reason = $request->input('reason');
 		$remark = $request->input('remark');
-		// $piliangluru = $request->input('piliangluru');
+		$camera_imgurl = $request->input('camera_imgurl');
 
 
 		$uuid4 = Uuid::uuid4();
@@ -161,6 +161,7 @@ class JiabancubeController extends Controller
 					'status' => 1,
 					'reason' => $reason,
 					'remark' => $remark,
+					'camera_imgurl' => $camera_imgurl,
 			]);
 
 			$result = 1;
