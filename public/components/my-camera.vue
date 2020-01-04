@@ -1,7 +1,7 @@
 <template>
 	<div>
 	
-		<Modal ref="ref1" v-model="vm_app.modal_camera_show" title="拍照 - 请允许开启访问摄像头的权限" width="360">
+		<Modal ref="ref1" v-model="vm_app.modal_camera_show" @on-cancel="camera_cancel()" title="拍照 - 请允许开启访问摄像头的权限" width="360">
 			<div style="text-align:center">
 			<p>
 
@@ -73,6 +73,9 @@
 				return false;
 			},
 
+			camera_cancel () {
+				vm_app.camera_imgurl = '';
+			},
 
 
 		}
