@@ -13,6 +13,7 @@
 @show
 </title>
 <link rel="stylesheet" href="{{ asset('statics/iview/styles/iview.css') }}">
+<link rel="stylesheet" href="{{ asset('statics/print/print.min.css') }}">
 <style type="text/css">
 	/* 解决闪烁问题的CSS */
 	[v-cloak] {	display: none; }
@@ -270,6 +271,7 @@ if (isMobile) {
 <script src="{{ asset('js/bluebird.min.js') }}"></script>
 <script src="{{ asset('statics/iview/iview.min.js') }}"></script>
 <script src="{{ asset('js/httpVueLoader.js') }}"></script>
+<script src="{{ asset('statics/print/print.min.js') }}"></script>
 @section('my_js_others')
 <script>
 function navmenuselect (name) {

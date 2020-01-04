@@ -9,12 +9,20 @@
 	<title>test camera</title>
     <link rel="stylesheet" href="{{ asset('statics/iview/styles/iview.css') }}">
     <link rel="stylesheet" href="{{ asset('css/camera.css') }}">
+    <link rel="stylesheet" href="{{ asset('statics/print/print.min.css') }}">
     
 </head>
 <body>
 
 <div id="app" class="contentarea">
 
+<form method="post" action="#" id="printJS-form">
+    aaaaaaaaaaaaaaaaa
+ </form>
+
+    <br>
+    <button @click="printJS('app', 'html')">Print</button>
+    <br>
     <br>
     必须允许
     <br>
@@ -64,6 +72,7 @@ fafdasf
 <script src="{{ asset('statics/iview/iview.min.js') }}"></script>
 <script src="{{ asset('js/camera.js') }}"></script>
 <script src="{{ asset('js/httpVueLoader.js') }}"></script>
+<script src="{{ asset('statics/print/print.min.js') }}"></script>
 
 <script type="text/javascript">
 var vm_app = new Vue({
@@ -113,6 +122,17 @@ var vm_app = new Vue({
                 alert('error');
 			})
         },
+
+
+        printContent() {
+            // document.getElementById('printBtn').style.display="none";
+            // let subOputputRankPrint = document.getElementById("invoiceBox");
+            let newContent = document.getElementById("app");
+
+            document.body.innerHTML = newContent;
+            window.print();
+        }
+
 	},
 	mounted: function () {
 
