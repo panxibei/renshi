@@ -81,8 +81,8 @@ Renshi(Jiaban) -
 				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
-				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800">
-				<div  id="id_modal_jiaban" style="page-break-after:always">
+				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800" footer-hide="true">
+				<span id="id_modal_jiaban" style="page-break-after:always">
 					
 					<div style="text-align:left">
 						
@@ -112,7 +112,7 @@ Renshi(Jiaban) -
 							
 								<Poptip trigger="hover" placement="bottom-start" width="360">
 									<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
-									<div class="api" slot="content">
+									<div id="id_print_img" class="api" slot="content">
 										<div class="">
 											<img :src="jiaban_edit_camera_imgurl" alt="暂无内容">
 										</div>
@@ -141,7 +141,7 @@ Renshi(Jiaban) -
 
 							<i-col span="2">
 								<!-- <i-button @click="printJS('id_modal_jiaban', 'html')">Print</i-button> -->
-								<i-button id="id_print_button" icon="ios-print-outline" size="small" @click="printJS({ printable: 'id_modal_jiaban', type: 'html', documentTitle: '加班单 - 申请', scanStyles: true, css: '{{ asset('statics/iview/styles/iview.css') }}', ignoreElements: ['id_print_button'] })">Print</i-button>
+								<i-button id="id_print_button" icon="ios-print-outline" size="small" @click="printJS({ printable: 'id_modal_jiaban', type: 'html', documentTitle: '加班单 - 申请', scanStyles: true, css: '{{ asset('statics/iview/styles/iview.css') }}', ignoreElements: ['id_print_button', 'id_print_img'] })">Print</i-button>
 							</i-col>
 						</i-row>
 
@@ -374,7 +374,7 @@ Renshi(Jiaban) -
 
 					
 					<div slot="footer">
-						<div slot="footer" v-if="jiaban_edit_status==99">
+						<div v-if="jiaban_edit_status==99">
 							<i-button type="primary" size="large" long :loading="modal_jiaban_archived_loading" @click="onarchived_applicant">归 档</i-button>
 							<br><br>
 							<i-button type="text" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
@@ -385,7 +385,7 @@ Renshi(Jiaban) -
 					</div>
 					
 
-				</div>	
+				</span>	
 				</Modal>
 
 		
