@@ -4,9 +4,10 @@ namespace App\Exports\Renshi;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Illuminate\Support\Collection;
 
-class jiaban_applicantExport implements FromCollection, WithStrictNullComparison
+class jiaban_applicantExport implements FromCollection, WithStrictNullComparison, ShouldAutoSize
 {
 	
 	public function __construct($data){
