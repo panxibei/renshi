@@ -83,7 +83,8 @@ Renshi(Jiaban) -
 			
 				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800" footer-hide="true">
 				<span id="id_modal_jiaban" style="page-break-after:always">
-					
+					<Divider orientation="center" class="print_display" media="print">加 班 单</Divider>
+
 					<div style="text-align:left">
 						
 						<i-row :gutter="16">
@@ -141,7 +142,7 @@ Renshi(Jiaban) -
 
 							<i-col span="2">
 								<!-- <i-button @click="printJS('id_modal_jiaban', 'html')">Print</i-button> -->
-								<i-button id="id_print_button" icon="ios-print-outline" size="small" @click="printJS({ printable: 'id_modal_jiaban', type: 'html', documentTitle: '加班单 - 申请', scanStyles: true, css: '{{ asset('statics/iview/styles/iview.css') }}', ignoreElements: ['id_print_button', 'id_print_img'] })">Print</i-button>
+								<i-button id="id_print_button" icon="ios-print-outline" size="small" @click="printJS({ printable: 'id_modal_jiaban', type: 'html', documentTitle: '加班单 - 申请', scanStyles: true, css: '{{ asset('statics/iview/styles/iview.css') }}', ignoreElements: ['id_print_button', 'id_print_img'] })">打印</i-button>
 							</i-col>
 						</i-row>
 
@@ -384,7 +385,9 @@ Renshi(Jiaban) -
 						</div>
 					</div>
 					
-
+					<br>
+					
+					<span class="print_display" media="print">打印时间：<span id="getcurrentdatetime"></span></span>
 				</span>	
 				</Modal>
 
@@ -1952,6 +1955,10 @@ var vm_app = new Vue({
 		// 显示所有
 		_this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
 		_this.loadapplicantgroup();
+
+
+		GetCurrentDatetime('getcurrentdatetime');
+
 	}
 });
 </script>

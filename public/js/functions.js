@@ -182,3 +182,22 @@ function handleFullScreen () {
     // 改变当前全屏状态
     // vm_app.isfullscreen = !vm_app.isfullscreen;
 }
+
+// 202001051717
+/*
+ *   功能:实时获取当前日期时间.
+ *   参数:元素ID.
+ */
+function GetCurrentDatetime(id) {
+    var element_id = document.getElementById(id);
+
+    setInterval(function(){
+        var time = new Date();
+        var m = time.getMonth()+1; //程序计时的月从0开始取值后+1
+        var t = time.getFullYear() + '-' + m + '-'
+        + time.getDate() + ' ' + time.getHours() + ':'
+        + time.getMinutes() + ':' + time.getSeconds();
+        element_id.innerHTML = t;
+    }, 1000);
+
+}

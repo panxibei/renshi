@@ -66,6 +66,20 @@
 	height: 320px;
 	width: 260px;
 }
+/* 打印前显示 */
+.print_display{
+	display: none !important;
+}
+</style>
+<style media="print">
+/* 打印后显示 */
+.print_display{
+	display: block !important;
+
+	/* font-size: 32px !important;
+	font-weight: bold !important;
+	color: rgb(70, 76, 91) !important; */
+}
 </style>
 @yield('my_style')
 <script src="{{ asset('js/functions.js') }}"></script>
