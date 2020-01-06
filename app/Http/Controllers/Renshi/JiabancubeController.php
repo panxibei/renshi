@@ -122,7 +122,8 @@ class JiabancubeController extends Controller
 			$s[0]['applicant'] = $applicant;
 			$s[0]['department'] = $department;
 			$s[0]['category'] = $category;
-			$s[0]['datetimerange'] = $startdate . ' - ' . $enddate;
+			// $s[0]['datetimerange'] = $startdate . ' - ' . $enddate;
+			$s[0]['datetimerange'] = date('Y-m-d H:i', strtotime($startdate)) . ' - ' . date('Y-m-d H:i', strtotime($enddate));
 			$s[0]['duration'] = $duration;
 		// }
 
