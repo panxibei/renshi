@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
+use App\Models\Renshi\Renshi_jiaban;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -647,6 +648,9 @@ class UserController extends Controller
 		// }
 
 		try	{
+			DB::beginTransaction();
+
+			//1.写入调整后的顺序
 			$result = User::where('id', $id)
 				->update([
 					// 'auditing' => json_encode(
@@ -656,8 +660,18 @@ class UserController extends Controller
 					'auditing' => $auditing_after
 				]);
 			// $result = 1;
-// dd($result);
-			// 获取当前用户所指向的auditing
+
+			//2.修正流程
+			Renshi_jiaban::where('id_of_agent', $id)
+				->where('index_of_auditor', $index)
+				->update([
+					'id_of_auditor' => $auditing_after[$index-1]['id'],
+					'uid_of_auditor' => $auditing_after[$index-1]['uid'],
+					'auditor' => $auditing_after[$index-1]['name'],
+					'department_of_auditor' => $auditing_after[$index-1]['department'],
+				]);
+
+			//3.获取当前用户所指向的auditing，用于刷新
 			$userhasauditing = User::select('auditing')
 			->where('id', $id)
 			->first();
@@ -668,8 +682,12 @@ class UserController extends Controller
 		}
 		catch (Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
 			$result = 0;
 		}
+
+		DB::commit();
+		Cache::flush();
 		// dd($result);
 		return $result;
     }
