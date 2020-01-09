@@ -584,7 +584,74 @@ class UserController extends Controller
 		}
 		// dd($result);
 		return $result;
+	}
+
+    /**
+     * auditingSort
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function auditingSort(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$sortinfo = $request->only('substituteuserid', 'index', 'userid', 'sort');
+
+		// 1.查询所有substituteuserid
+		$substituteuserid = User4workflow::select('substitute_user_id')
+			->where('user_id', $sortinfo['userid'])
+			->first();
+		
+		// 2.所有查询所有userid变成一维数组
+		$arr_substituteuserid = explode(',', $substituteuserid['substitute_user_id']);
+
+		// 3.判断是向前还是向后排序
+		$arr_temp = [];
+		if ('up' == $sortinfo['sort']) {
+
+			foreach ($arr_substituteuserid as $index => $value) {
+				if ($index == $sortinfo['index']-1) {
+					$arr_temp[] = $arr_substituteuserid[$index+1];
+				} elseif ($index == $sortinfo['index']) {
+					$arr_temp[] = $arr_substituteuserid[$index-1];
+				} else {
+					$arr_temp[] = $value;
+				}
+			}
+
+		} elseif ('down' == $sortinfo['sort']) {
+
+			foreach ($arr_substituteuserid as $index => $value) {
+				if ($index == $sortinfo['index']) {
+					$arr_temp[] = $arr_substituteuserid[$index+1];
+				} elseif ($index == $sortinfo['index']+1) {
+					$arr_temp[] = $arr_substituteuserid[$index-1];
+				} else {
+					$arr_temp[] = $value;
+				}
+			}
+
+		} else {
+			return 0;
 		}
+		
+		$substituteuserid = implode(',', $arr_temp);
+		
+		// 根据slotid查询相应的user
+		try {
+			$result = User4workflow::where('user_id', $sortinfo['userid'])
+				->update([
+					'substitute_user_id' => $substituteuserid
+				]);
+		}
+		catch (Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+
+		return $result;
+    }
 
     /**
      * auditingRemove

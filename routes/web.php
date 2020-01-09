@@ -321,6 +321,9 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 更新处理用户
 	Route::post('auditingUpdate', 'UserController@auditingUpdate')->name('admin.user.auditingupdate');
 
+	// 排序移动处理用户
+	Route::post('auditingSort', 'UserController@auditingSort')->name('admin.user.auditingsort');
+
 	// 删除处理用户
 	Route::post('auditingRemove', 'UserController@auditingRemove')->name('admin.user.auditingremove');
 
