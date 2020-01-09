@@ -641,7 +641,7 @@ class UserController extends Controller
 
 		// dd($auditing_after);
 		// if ($auditing_after == null) {
-			$auditing_after = json_encode(
+			$auditing_after_json = json_encode(
 				$auditing_after
 				, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 			);
@@ -657,7 +657,7 @@ class UserController extends Controller
 					// 	$auditing_after
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
-					'auditing' => $auditing_after
+					'auditing' => $auditing_after_json
 				]);
 			// $result = 1;
 
