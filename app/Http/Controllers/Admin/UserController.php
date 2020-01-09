@@ -596,60 +596,70 @@ class UserController extends Controller
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
-		$sortinfo = $request->only('substituteuserid', 'index', 'userid', 'sort');
+		$index = $request->input('index');
+		$id = $request->input('id');
+		$uid = $request->input('uid');
+		$sort = $request->input('sort');
+		// dd($index);
 
-		// 1.查询所有substituteuserid
-		$substituteuserid = User4workflow::select('substitute_user_id')
-			->where('user_id', $sortinfo['userid'])
+		$user = User::select('auditing')
+			->where('id', $id)
 			->first();
-		
-		// 2.所有查询所有userid变成一维数组
-		$arr_substituteuserid = explode(',', $substituteuserid['substitute_user_id']);
+		// dd(json_decode($user['auditing']));
 
-		// 3.判断是向前还是向后排序
-		$arr_temp = [];
-		if ('up' == $sortinfo['sort']) {
+		// $auditing_before = json_decode($user['auditing'], true);
+		$auditing_before = $user['auditing'];
+// dd($auditing_before);
+		$auditing_after = [];
+		foreach ($auditing_before as $key => $value) {
+			// if ($value['uid'] != $uid) {
+			// 	array_push($auditing_after, $value);
+			// }
 
-			foreach ($arr_substituteuserid as $index => $value) {
-				if ($index == $sortinfo['index']-1) {
-					$arr_temp[] = $arr_substituteuserid[$index+1];
-				} elseif ($index == $sortinfo['index']) {
-					$arr_temp[] = $arr_substituteuserid[$index-1];
-				} else {
-					$arr_temp[] = $value;
-				}
+			if ($key != $index && $key != $index+1) {
+				array_push($auditing_after, $value);
 			}
-
-		} elseif ('down' == $sortinfo['sort']) {
-
-			foreach ($arr_substituteuserid as $index => $value) {
-				if ($index == $sortinfo['index']) {
-					$arr_temp[] = $arr_substituteuserid[$index+1];
-				} elseif ($index == $sortinfo['index']+1) {
-					$arr_temp[] = $arr_substituteuserid[$index-1];
-				} else {
-					$arr_temp[] = $value;
-				}
+			elseif ($key == $index) {
+				$auditing_after[$key] = $auditing_before[$index+1];
 			}
-
-		} else {
-			return 0;
+			elseif ($key == $index+1) {
+				$auditing_after[$key] = $auditing_before[$index];
+			}
 		}
-		
-		$substituteuserid = implode(',', $arr_temp);
-		
-		// 根据slotid查询相应的user
-		try {
-			$result = User4workflow::where('user_id', $sortinfo['userid'])
+
+		// dd($auditing_after);
+		// if ($auditing_after == null) {
+			$auditing_after = json_encode(
+				$auditing_after
+				, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+			);
+		// }
+
+		try	{
+			$result = User::where('id', $id)
 				->update([
-					'substitute_user_id' => $substituteuserid
+					// 'auditing' => json_encode(
+					// 	$auditing_after
+					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+					// )
+					'auditing' => $auditing_after
 				]);
+			// $result = 1;
+// dd($result);
+			// 获取当前用户所指向的auditing
+			$userhasauditing = User::select('auditing')
+			->where('id', $id)
+			->first();
+
+			// $result = json_decode($userhasauditing['auditing'], true);
+			$result = $userhasauditing['auditing'];
+
 		}
 		catch (Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
 			$result = 0;
 		}
-
+		// dd($result);
 		return $result;
     }
 

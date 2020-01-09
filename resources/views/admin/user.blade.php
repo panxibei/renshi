@@ -1329,7 +1329,7 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			if (id == '' || uid == '' || index = ''
+			if (id == '' || uid == ''
 				|| id == undefined || uid == undefined || index == undefined
 				|| id == uid || index == _this.tabledata_auditing1.length-1) {
 				return false;
@@ -1355,11 +1355,14 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.change_user();
+					_this.success(false, '成功', '排序成功！');
+					_this.tabledata_auditing1 = response.data;
+				} else {
+					_this.error(false, '失败', '排序失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', error);
+				_this.error(false, '错误', '排序失败！');
 			})
 		},
 
@@ -1388,7 +1391,7 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			if (id == '' || uid == '' || index = ''
+			if (id == '' || uid == ''
 				|| id == undefined || uid == undefined || index == undefined
 				|| id == uid) {
 				return false;
