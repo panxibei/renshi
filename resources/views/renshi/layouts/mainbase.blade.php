@@ -70,6 +70,18 @@
 .print_display{
 	display: none !important;
 }
+.print_auditing{
+	position:relative !important;
+	width:100% !important;
+	height:120px !important;
+	overflow-y:scroll !important;
+}
+.print_application{
+	position:relative !important;
+	width:100% !important;
+	height:120px !important;
+	overflow-y:scroll !important;
+}
 </style>
 <style media="print">
 /* 打印后显示 */
@@ -79,6 +91,18 @@
 	/* font-size: 32px !important;
 	font-weight: bold !important;
 	color: rgb(70, 76, 91) !important; */
+}
+.print_auditing{
+	position:relative !important;
+	width:100% !important;
+	height:120px !important;
+	overflow-y:auto !important;
+}
+.print_application{
+	position:relative !important;
+	width:100% !important;
+	height:120px !important;
+	overflow-y:auto !important;
 }
 </style>
 @yield('my_style')
