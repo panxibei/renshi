@@ -1281,26 +1281,57 @@ var vm_app = new Vue({
 		// sort向前
 		auditing_up1 (params) {
 			var _this = this;
-			var substituteuserid = params.row.id;
-			var index = params.index;
-			
-			if (substituteuserid==undefined || index==0) return false;
-			var userid = _this.user_select;
+			var index = params.row._index;
+			var uid = params.row.uid;
+
+			// current user id -> id
+			var json_applicant = _this.$refs.tree_applicant.getSelectedNodes();
+
+			if (json_applicant == ''
+				|| json_applicant == undefined) {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+			let tmp = json_applicant[0]['title'].split(' (ID:');
+			if (tmp[1]) {
+				var id = tmp[1].substr(0, tmp[1].length-1);
+			} else {
+				_this.warning(false, '警告', '代理申请人选择错误！');
+				return false;
+			}
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined || index == undefined
+				|| id == uid || index == 0) {
+				return false;
+			}
+
 			var url = "{{ route('admin.user.auditingsort') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
-				substituteuserid: substituteuserid,
 				index: index,
-				userid: userid,
+				uid: uid,
+				id: id,
 				sort: 'up'
 			})
 			.then(function (response) {
-				if (response.data == 1) {
-					_this.change_user();
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.success(false, '成功', '排序成功！');
+					_this.tabledata_auditing1 = response.data;
+				} else {
+					_this.error(false, '失败', '排序失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', error);
+				_this.error(false, '错误', '排序失败！');
 			})
 		},
 		
@@ -1308,7 +1339,6 @@ var vm_app = new Vue({
 		// sort向后
 		auditing_down1 (params) {
 			var _this = this;
-			// var substituteuserid = params.row.id;
 			var index = params.row._index;
 			var uid = params.row.uid;
 
@@ -1335,8 +1365,6 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			// console.log(index);return false;
-			
 			var url = "{{ route('admin.user.auditingsort') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
@@ -1346,8 +1374,7 @@ var vm_app = new Vue({
 				sort: 'down'
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1365,6 +1392,7 @@ var vm_app = new Vue({
 				_this.error(false, '错误', '排序失败！');
 			})
 		},
+
 
 		// auditing_remove1
 		auditing_remove1 (row) {

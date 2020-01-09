@@ -611,19 +611,30 @@ class UserController extends Controller
 		$auditing_before = $user['auditing'];
 // dd($auditing_before);
 		$auditing_after = [];
-		foreach ($auditing_before as $key => $value) {
-			// if ($value['uid'] != $uid) {
-			// 	array_push($auditing_after, $value);
-			// }
 
-			if ($key != $index && $key != $index+1) {
-				array_push($auditing_after, $value);
+		if ('down' == $sort) {
+			foreach ($auditing_before as $key => $value) {
+				if ($key != $index && $key != $index+1) {
+					array_push($auditing_after, $value);
+				}
+				elseif ($key == $index) {
+					$auditing_after[$key] = $auditing_before[$index+1];
+				}
+				elseif ($key == $index+1) {
+					$auditing_after[$key] = $auditing_before[$index];
+				}
 			}
-			elseif ($key == $index) {
-				$auditing_after[$key] = $auditing_before[$index+1];
-			}
-			elseif ($key == $index+1) {
-				$auditing_after[$key] = $auditing_before[$index];
+		} elseif ('up' == $sort) {
+			foreach ($auditing_before as $key => $value) {
+				if ($key != $index && $key != $index-1) {
+					array_push($auditing_after, $value);
+				}
+				elseif ($key == $index) {
+					$auditing_after[$key] = $auditing_before[$index-1];
+				}
+				elseif ($key == $index-1) {
+					$auditing_after[$key] = $auditing_before[$index];
+				}
 			}
 		}
 
