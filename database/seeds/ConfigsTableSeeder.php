@@ -25,7 +25,7 @@ class ConfigsTableSeeder extends Seeder
             array (
                 'cfg_id' => 1,
                 'cfg_name' => 'SITE_TITLE',
-                'cfg_value' => 'Aota Managerment System',
+                'cfg_value' => 'Xyz Managerment System',
                 'cfg_description' => '站点名称',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
@@ -207,6 +207,16 @@ class ConfigsTableSeeder extends Seeder
                 'cfg_name' => 'SITE_MAINTENANCE_MESSAGE',
                 'cfg_value' => '',
 				'cfg_description' => '站点系统维护消息',
+                'created_at' => $nowtime,
+                'updated_at' => $nowtime,
+                'deleted_at' => NULL,
+            ),
+            19 => 
+            array (
+                'cfg_id' => 19,
+                'cfg_name' => 'EMAIL_ENABLED',
+                'cfg_value' => '0',
+				'cfg_description' => '是否开启邮件通知，1为开启，0为关闭',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
