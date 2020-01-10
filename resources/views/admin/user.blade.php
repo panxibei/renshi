@@ -620,13 +620,44 @@ var vm_app = new Vue({
 				title: 'Action',
 				key: 'action',
 				align: 'center',
-				width: 100,
+				width: 140,
 				render: (h, params) => {
 					return h('div', [
 						h('Button', {
 							props: {
-								type: 'primary',
-								size: 'small'
+								type: 'default',
+								size: 'small',
+								icon: 'md-arrow-round-down'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.auditing_down2(params)
+								}
+							}
+						}),
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-arrow-round-up'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.auditing_up2(params)
+								}
+							}
+						}),
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-close'
 							},
 							style: {
 								marginRight: '5px'
@@ -636,7 +667,7 @@ var vm_app = new Vue({
 									vm_app.auditing_remove2(params.row)
 								}
 							}
-						}, 'Remove'),
+						}),
 					]);
 				},
 				// fixed: 'right'
@@ -1456,6 +1487,95 @@ var vm_app = new Vue({
 			})
 			
 		},
+
+
+		// sort向前
+		auditing_up2 (params) {
+			var _this = this;
+			var index = params.row._index;
+			var uid = params.row.uid;
+
+			// current user id -> id
+			var id = _this.user_select_current;
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined || index == undefined
+				|| id == uid || index == 0) {
+				return false;
+			}
+
+			var url = "{{ route('admin.user.auditingsort') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				index: index,
+				uid: uid,
+				id: id,
+				sort: 'up'
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.success(false, '成功', '排序成功！');
+					_this.tabledata_auditing2 = response.data;
+				} else {
+					_this.error(false, '失败', '排序失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '排序失败！');
+			})
+		},
+		
+		
+		// sort向后
+		auditing_down2 (params) {
+			var _this = this;
+			var index = params.row._index;
+			var uid = params.row.uid;
+
+			// current user id -> id
+			var id = _this.user_select_current;
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined || index == undefined
+				|| id == uid || index == _this.tabledata_auditing2.length-1) {
+				return false;
+			}
+
+			var url = "{{ route('admin.user.auditingsort') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				index: index,
+				uid: uid,
+				id: id,
+				sort: 'down'
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.success(false, '成功', '排序成功！');
+					_this.tabledata_auditing2 = response.data;
+				} else {
+					_this.error(false, '失败', '排序失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '排序失败！');
+			})
+		},
+
 
 		// auditing_remove2
 		auditing_remove2 (row) {
