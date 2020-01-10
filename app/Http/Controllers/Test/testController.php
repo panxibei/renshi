@@ -203,8 +203,9 @@ dd($email);
 	public function mail()
 	{
 			$name = '王宝花';
-			$subject = $name . '有新消息';
-			$to = 'kydd2008@163.com';
+			$subject = '【Xyz管理系统】 您有一条来自 [' . $name . '] 的新消息等待处理';
+			// $to = 'kydd2008@163.com';
+			$to = 'fenghua-gao@alpine-china.com';
 
 			// Mail::send()的返回值为空，所以可以其他方法进行判断
 			Mail::send('test.mailtemplate',['name'=>$name],function($message) use($to, $subject){
