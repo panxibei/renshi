@@ -651,7 +651,7 @@ class UserController extends Controller
 			DB::beginTransaction();
 
 			//1.写入调整后的顺序
-			$result = User::where('id', $id)
+			User::where('id', $id)
 				->update([
 					// 'auditing' => json_encode(
 					// 	$auditing_after
@@ -659,17 +659,27 @@ class UserController extends Controller
 					// )
 					'auditing' => $auditing_after_json
 				]);
-			// $result = 1;
 
 			//2.修正流程
-			Renshi_jiaban::where('id_of_agent', $id)
-				->where('index_of_auditor', $index)
-				->update([
-					'id_of_auditor' => $auditing_after[$index-1]['id'],
-					'uid_of_auditor' => $auditing_after[$index-1]['uid'],
-					'auditor' => $auditing_after[$index-1]['name'],
-					'department_of_auditor' => $auditing_after[$index-1]['department'],
-				]);
+			$index_of_auditor = Renshi_jiaban::select('index_of_auditor')
+				->where('id_of_agent', $id)
+				->get()->toArray();
+			// dd($index_of_auditor);
+
+			foreach ($index_of_auditor as $key=>$value) {
+				if ($value['index_of_auditor'] != null) {
+					$index_tmp = $value['index_of_auditor'];
+
+					Renshi_jiaban::where('id_of_agent', $id)
+						->where('index_of_auditor', $index_tmp)
+						->update([
+							'id_of_auditor' => $auditing_after[$index_tmp-1]['id'],
+							'uid_of_auditor' => $auditing_after[$index_tmp-1]['uid'],
+							'auditor' => $auditing_after[$index_tmp-1]['name'],
+							'department_of_auditor' => $auditing_after[$index_tmp-1]['department'],
+						]);
+				}
+			}
 
 			//3.获取当前用户所指向的auditing，用于刷新
 			$userhasauditing = User::select('auditing')
