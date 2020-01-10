@@ -113,6 +113,7 @@ class UserController extends Controller
 		$name = $request->input('name');
 		$department = $request->input('department');
 		$uid = $request->input('uid');
+		$email = $request->input('email');
 		$displayname = $request->input('displayname');
 		$password = $request->input('password');
 		
@@ -120,8 +121,9 @@ class UserController extends Controller
 		
 		$result = User::create([
 			'name'     		=> $name,
-			'department'  => $department,
-			'uid'					=> $uid,
+			'department'  	=> $department,
+			'uid'			=> $uid,
+			'email'			=> $email,
 			'displayname'	=> $displayname,
 			'password' 		=> bcrypt($password),
 			'login_time' 	=> $logintime,
@@ -222,6 +224,7 @@ class UserController extends Controller
 
 		$id = $request->input('id');
 		$name = $request->input('name');
+		$email = $request->input('email');
 		$displayname = $request->input('displayname');
 		$department = $request->input('department');
 		$uid = $request->input('uid');
@@ -234,19 +237,21 @@ class UserController extends Controller
 			if (isset($password)) {
 				$result = User::where('id', $id)
 					->update([
-						'name'				=>	$name,
-						'department'	=>	$department,
-						'uid'					=>	$uid,
-						'displayname' => $displayname,
-						'password'		=>	bcrypt($password)
+						'name'			=> $name,
+						'department'	=> $department,
+						'uid'			=> $uid,
+						'email' 		=> $email,
+						'displayname' 	=> $displayname,
+						'password'		=> bcrypt($password)
 					]);
 			} else {
 				$result = User::where('id', $id)
 					->update([
-						'name'				=>	$name,
-						'department'	=>	$department,
-						'uid'					=>	$uid,
-						'displayname' => $displayname
+						'name'			=> $name,
+						'department'	=> $department,
+						'uid'			=> $uid,
+						'email' 		=> $email,
+						'displayname' 	=> $displayname
 					]);
 			}
 		}

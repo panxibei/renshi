@@ -99,7 +99,7 @@ Admin(User) -
 							<br><br>
 
 							email&nbsp;&nbsp;
-							<i-input v-model.lazy="user_add_email" placeholder="电子邮箱" size="small" clearable style="width: 120px"></i-input>
+							<i-input v-model.lazy="user_add_email" placeholder="邮箱地址" size="small" clearable style="width: 120px"></i-input>
 
 							<br><br>
 
@@ -135,6 +135,11 @@ Admin(User) -
 
 							displayname&nbsp;&nbsp;
 							<i-input v-model.lazy="user_edit_displayname" placeholder="显示名称" size="small" clearable style="width: 120px"></i-input>
+							
+							<br><br>
+
+							email&nbsp;&nbsp;
+							<i-input v-model.lazy="user_edit_email" placeholder="邮箱地址" size="small" clearable style="width: 120px"></i-input>
 							
 							<br><br>
 
@@ -701,6 +706,7 @@ var vm_app = new Vue({
 		modal_user_edit: false,
 		user_edit_id: '',
 		user_edit_name: '',
+		user_edit_email: '',
 		user_edit_displayname: '',
 		user_edit_department: '',
 		user_edit_uid: '',
@@ -957,6 +963,7 @@ var vm_app = new Vue({
 			
 			_this.user_edit_id = row.id;
 			_this.user_edit_name = row.name;
+			_this.user_edit_email = row.email;
 			_this.user_edit_displayname = row.displayname;
 			_this.user_edit_department = row.department;
 			_this.user_edit_uid = row.uid;
@@ -976,6 +983,7 @@ var vm_app = new Vue({
 			
 			var id = _this.user_edit_id;
 			var name = _this.user_edit_name;
+			var email = _this.user_edit_email;
 			var displayname = _this.user_edit_displayname;
 			var department = _this.user_edit_department;
 			var uid = _this.user_edit_uid;
@@ -985,23 +993,26 @@ var vm_app = new Vue({
 			
 			if (name == '' || name == null || name == undefined
 				// || ldapname == '' || ldapname == null || ldapname == undefined
+				|| email == '' || email == null || email == undefined
+				|| displayname == '' || displayname == null || displayname == undefined
 				|| department == '' || department == null || department == undefined
 				|| uid == '' || uid == null || uid == undefined) {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
 			
-			// var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-			// if (! regexp.test(email)) {
-			// 	_this.warning(false, 'Warning', 'Email is incorrect!');
-			// 	return false;
-			// }
+			var regexp = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+			if (! regexp.test(email)) {
+				_this.warning(false, '错误', '邮箱地址不正确！');
+				return false;
+			}
 			
 			var url = "{{ route('admin.user.update') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
 				name: name,
+				email: email,
 				displayname: displayname,
 				department: department,
 				uid: uid,
