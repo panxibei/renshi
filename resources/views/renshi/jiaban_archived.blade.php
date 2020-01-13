@@ -73,13 +73,15 @@ Renshi(Jiaban) -
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
 				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800">
-					
+				<span id="id_modal_jiaban" style="page-break-after:always">
+					<Divider orientation="center" class="print_display" media="print">加 班 单</Divider>
+
 					<div style="text-align:left">
 						
 						<i-row :gutter="16">
 							<i-col span="10">
 								UUID&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 260px" size="small"></i-input>
+								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 250px" size="small"></i-input>
 							</i-col>
 
 							<i-col span="7">
@@ -98,7 +100,17 @@ Renshi(Jiaban) -
 						<br>
 							<i-col span="8">
 								代理申请人&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
+								<!-- <i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input> -->
+
+								<Poptip trigger="hover" placement="bottom-start" width="360">
+									<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
+									<div id="id_print_img" class="api" slot="content">
+										<div class="">
+											<img :src="jiaban_edit_camera_imgurl" alt="暂无内容">
+										</div>
+									</div>
+								</Poptip>
+
 							</i-col>
 
 							<i-col span="9">
@@ -106,7 +118,7 @@ Renshi(Jiaban) -
 								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px" size="small"></i-input>
 							</i-col>
 
-							<i-col span="7">
+							<i-col span="5">
 							状态：
 								<span v-if="jiaban_edit_status==99">
 									已结案 <Icon type="md-thumbs-up"></Icon>
@@ -117,6 +129,11 @@ Renshi(Jiaban) -
 								<span v-else>
 									处理中 <Icon type="md-cafe"></Icon>
 								</span>
+							</i-col>
+
+							<i-col span="2">
+								<!-- <i-button @click="printJS('id_modal_jiaban', 'html')">Print</i-button> -->
+								<i-button id="id_print_button" icon="ios-print-outline" size="small" @click="printJS({ printable: 'id_modal_jiaban', type: 'html', documentTitle: '加班单 - 申请', scanStyles: true, css: '{{ asset('statics/iview/styles/iview.css') }}', ignoreElements: ['id_print_button', 'id_print_img'] })">打印</i-button>
 							</i-col>
 
 						</i-row>
@@ -349,6 +366,11 @@ Renshi(Jiaban) -
 					-->
 						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
 					</div>	
+				
+					<br>
+					
+					<span class="print_display" media="print">打印时间：<span id="getcurrentdatetime"></span></span>
+				</span>	
 				</Modal>
 
 		
@@ -740,6 +762,7 @@ var vm_app = new Vue({
 		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
+		jiaban_edit_camera_imgurl: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_auditing_circulation: '',
 		jiaban_edit_auditing_id: '',
@@ -1014,6 +1037,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
+			_this.jiaban_edit_camera_imgurl = row.camera_imgurl;
 			// _this.jiaban_edit_auditing = JSON.parse(row.auditing);
 			_this.jiaban_edit_auditing = row.auditing;
 			_this.jiaban_edit_created_at = row.created_at;

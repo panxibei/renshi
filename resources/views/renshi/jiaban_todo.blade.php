@@ -77,13 +77,15 @@ Renshi(Jiaban) -
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
 				<Modal v-model="modal_jiaban_edit" title="处理 - 加班单" width="800">
-					
+				<span id="id_modal_jiaban" style="page-break-after:always">
+					<Divider orientation="center" class="print_display" media="print">加 班 单</Divider>
+
 					<div style="text-align:left">
 						
 						<i-row :gutter="16">
 							<i-col span="10">
 								UUID&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 260px" size="small"></i-input>
+								<i-input v-model.lazy="jiaban_edit_uuid" readonly="true" style="width: 250px" size="small"></i-input>
 							</i-col>
 
 							<i-col span="7">
@@ -120,7 +122,7 @@ Renshi(Jiaban) -
 								<i-input v-model.lazy="jiaban_edit_department_of_agent" readonly="true" style="width: 160px" size="small"></i-input>
 							</i-col>
 
-							<i-col span="7">
+							<i-col span="5">
 							状态：
 								<span v-if="jiaban_edit_status==99">
 									已结案 <Icon type="md-thumbs-up"></Icon>
@@ -132,6 +134,12 @@ Renshi(Jiaban) -
 									处理中 <Icon type="md-cafe"></Icon>
 								</span>
 							</i-col>
+
+							<i-col span="2">
+								<!-- <i-button @click="printJS('id_modal_jiaban', 'html')">Print</i-button> -->
+								<i-button id="id_print_button" icon="ios-print-outline" size="small" @click="printJS({ printable: 'id_modal_jiaban', type: 'html', documentTitle: '加班单 - 申请', scanStyles: true, css: '{{ asset('statics/iview/styles/iview.css') }}', ignoreElements: ['id_print_button', 'id_print_img'] })">打印</i-button>
+							</i-col>
+
 						</i-row>
 						
 
@@ -372,7 +380,12 @@ Renshi(Jiaban) -
 					</div>	
 					<div slot="footer" v-else>
 						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
-					</div>	
+					</div>
+					
+					<br>
+					
+					<span class="print_display" media="print">打印时间：<span id="getcurrentdatetime"></span></span>
+				</span>	
 				</Modal>
 		
 			</i-col>
