@@ -1213,7 +1213,11 @@ var vm_app = new Vue({
 
 			_this.modal_jiaban_pass_loading = true;
 
-			_this.$Message.loading('正在提交...');
+			// _this.$Message.loading('正在提交...');
+			const msg = _this.$Message.loading({
+                content: '正在提交...',
+                duration: 0
+            });
 
 			var url = "{{ route('renshi.jiaban.todo.pass') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1256,6 +1260,8 @@ var vm_app = new Vue({
 				this.modal_jiaban_edit = false;
 				// this.$Message.success('成功通过！');
 			// }, 2000);
+
+			setTimeout(msg, 1000);
 		},
 
 		// 否决
