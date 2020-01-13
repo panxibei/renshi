@@ -1191,28 +1191,35 @@ class JiabanController extends Controller
 	Cache::flush();
 
 	// 发送邮件消息
-	$email_enabled = Config::select('cfg_value')->where('cfg_name', 'EMAIL_ENABLED')->first();
+	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+	$email_enabled = $config['EMAIL_ENABLED'];
+	$site_title = $config['SITE_TITLE'];
 	
-	if ($email_enable['cfg_value'] == '1') {
+	if ($email_enabled == '1' && !empty($id_of_auditor)) {
 
 		$email_of_auditor = User::select('email')->where('id', $id_of_auditor)->first();
 		
-		// $name = '王宝花';
-		$name = $agent['displayname'];
-		$subject = '【Xyz管理系统】 您有一条来自 [' . $name . '] 的新消息等待处理';
+		// addressee
+		$agent_name = $agent['displayname']; //$name = '王宝花';
+		
+		// auditor
+		$auditor = $auditor; //$name = '王宝花';
+
+		// subject
+		$subject = '【' . $site_title . '】 您有一条来自 [' . $agent_name . '] 的新消息等待处理';
+
 		// $to = 'kydd2008@163.com';
 		$to = $email_of_auditor['email'];
 
 		// Mail::send()的返回值为空，所以可以其他方法进行判断
-		Mail::send('test.mailtemplate',['name'=>$name],function($message) use($to, $subject){
-			
+		Mail::send('renshi.jiaban_mailtemplate_pass', ['agent_name'=>$agent_name, 'auditor'=>$auditor, 'site_title'=>$site_title], function($message) use($to, $subject){
 			$message ->to($to)->subject($subject);
 		});
 		// 返回的一个错误数组，利用此可以判断是否发送成功
 		if (empty(Mail::failures())) {
-			dd('Sent OK!');
+			// dd('Sent OK!');
 		} else {
-			dd(Mail::failures());
+			// dd(Mail::failures());
 		}
 
 

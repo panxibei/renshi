@@ -204,21 +204,25 @@ dd($email);
 	 */
 	public function mail()
 	{
-			$email_enabled = Config::select('cfg_value')->where('cfg_name', 'EMAIL_ENABLED')->first();
+			
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+		// dd($config['EMAIL_ENABLED']);
+		
+		$email_enabled = $config['EMAIL_ENABLED'];
 			// dd($email_enabled['cfg_value']);
 
 			$useremail = User::select('email')->where('id', 1)->first();
-			dd($useremail['email']);
+			// dd($useremail['email']);
 
-
+			$site_title = $config['SITE_TITLE'];
 			
 			$name = '王宝花';
-			$subject = '【Xyz管理系统】 您有一条来自 [' . $name . '] 的新消息等待处理';
+			$subject = '【' . $site_title . '】 您有一条来自 [' . $name . '] 的新消息等待处理';
 			// $to = 'kydd2008@163.com';
 			$to = 'fenghua-gao@alpine-china.com';
 
 			// Mail::send()的返回值为空，所以可以其他方法进行判断
-			Mail::send('test.mailtemplate',['name'=>$name],function($message) use($to, $subject){
+			Mail::send('test.mailtemplate',['name'=>$name, 'site_title'=>$site_title],function($message) use($to, $subject){
 				
 				$message ->to($to)->subject($subject);
 			});

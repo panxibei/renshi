@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-	<title>【Xyz管理系统】 您有一条来自 <strong>{{$name}}</strong> 的新消息等待处理</title>
+	<title>【{{$site_title}}】 您有一条来自 <strong>{{$name}}</strong> 的新消息等待处理</title>
     <link rel="stylesheet" href="{{ asset('statics/iview/styles/iview.css') }}">
 </head>
 <body>
@@ -18,7 +18,7 @@
 	<strong>{{$name}}</strong> 您好！
 
 	<br><br>
-	您有一条来自 <strong>{{$name}}</strong> 的新消息等待处理，请点击 <a href="{{ route('portal') }}">Xyz管理系统</a> 登录查看。
+	您有一条来自 <strong>{{$name}}</strong> 的新消息等待处理，请点击 <a href="{{ route('portal') }}">{{$site_title}}</a> 登录查看。
 
     <br><br>
 
