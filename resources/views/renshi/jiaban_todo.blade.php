@@ -1234,6 +1234,8 @@ var vm_app = new Vue({
 					_this.alert_logout();
 					return false;
 				}
+
+				setTimeout(msg, 1000);
 				
 				if (response.data) {
 					_this.jiabangetstodo(_this.page_current, _this.page_last);
@@ -1247,12 +1249,13 @@ var vm_app = new Vue({
 				} else {
 					_this.error(false, '失败', '提交通过失败！');
 				}
+
+				
 			})
 			.catch(function (error) {
+				setTimeout(msg, 1000);
 				_this.error(false, '错误', '提交通过失败！');
 			})
-
-
 
 
 			// setTimeout(() => {
@@ -1261,7 +1264,7 @@ var vm_app = new Vue({
 				// this.$Message.success('成功通过！');
 			// }, 2000);
 
-			setTimeout(msg, 1000);
+			
 		},
 
 		// 否决
@@ -1276,7 +1279,11 @@ var vm_app = new Vue({
 
 			_this.modal_jiaban_deny_loading = true;
 
-			_this.$Message.loading('正在提交...');
+			// _this.$Message.loading('正在提交...');
+			const msg = _this.$Message.loading({
+                content: '正在提交...',
+                duration: 0
+            });
 
 			var url = "{{ route('renshi.jiaban.todo.deny') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1294,6 +1301,8 @@ var vm_app = new Vue({
 					return false;
 				}
 				
+				setTimeout(msg, 1000);
+
 				if (response.data) {
 					_this.jiabangetstodo(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '成功否决！');
@@ -1308,10 +1317,9 @@ var vm_app = new Vue({
 				}
 			})
 			.catch(function (error) {
+				setTimeout(msg, 1000);
 				_this.error(false, '错误', '提交否决失败！');
 			})
-
-
 
 
 			// setTimeout(() => {
@@ -1320,20 +1328,6 @@ var vm_app = new Vue({
 				// this.$Message.success('成功否决！');
 			// }, 2000);
 
-
-
-
-
-
-
-
-			// this.modal_jiaban_deny_loading = true;
-
-			// setTimeout(() => {
-			// 	this.modal_jiaban_deny_loading = false;
-			// 	this.modal_jiaban_edit = false;
-			// 	this.$Message.success('成功否决！');
-			// }, 2000);
 		},
 
 
