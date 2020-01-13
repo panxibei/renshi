@@ -1200,10 +1200,10 @@ class JiabanController extends Controller
 		$email_of_auditor = User::select('email')->where('id', $id_of_auditor)->first();
 		
 		// addressee
-		$agent_name = $agent['displayname']; //$name = '王宝花';
+		$agent_name = $agent['displayname'];
 		
 		// auditor
-		$auditor = $auditor; //$name = '王宝花';
+		$auditor = $auditor;
 
 		// subject
 		$subject = '【' . $site_title . '】 您有一条来自 [' . $agent_name . '] 的新消息等待处理';

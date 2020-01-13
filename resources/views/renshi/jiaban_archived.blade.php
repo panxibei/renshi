@@ -499,7 +499,7 @@ var vm_app = new Vue({
 							// style:{
 							// 	color: '#ff9900'
 							// }
-						}, ' '+params.row.auditor)
+						}, ' '+params.row.agent)
 					])
 				}
 			},
@@ -520,7 +520,7 @@ var vm_app = new Vue({
 							// style:{
 							// 	color: '#ff9900'
 							// }
-						}, ' '+params.row.department_of_auditor)
+						}, ' '+params.row.department_of_agent)
 					])
 				}
 			},
