@@ -1222,8 +1222,6 @@ class JiabanController extends Controller
 			// dd(Mail::failures());
 		}
 
-
-
 	}
 
 
@@ -1254,9 +1252,11 @@ class JiabanController extends Controller
 	$auditor = $user['displayname'];
 	$department_of_auditor = $user['department'];
 
-	$auditing_before = Renshi_jiaban::select('status', 'auditing')
+	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing')
 		->where('id', $jiaban_id)
 		->first();
+
+	$uuid = $auditing_before['uuid'];
 
 	$nowtime = date("Y-m-d H:i:s",time());
 	$auditing_after = [];
@@ -1282,7 +1282,7 @@ class JiabanController extends Controller
 	// $auditing = $auditing_after;
 
 	// get agent
-	$agent = User::select('id', 'uid', 'displayname', 'department', 'auditing')
+	$agent = User::select('id', 'uid', 'displayname', 'email', 'department', 'auditing')
 	->where('id', $jiaban_id_of_agent)
 	->first();
 
@@ -1359,6 +1359,40 @@ class JiabanController extends Controller
 
 	DB::commit();
 	Cache::flush();
+
+
+	// 发送邮件消息
+	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+	$email_enabled = $config['EMAIL_ENABLED'];
+	$site_title = $config['SITE_TITLE'];
+	
+	if ($email_enabled == '1') {
+
+		// addressee
+		$agent_name = $agent['displayname'];
+		
+		// auditor
+		$auditor = $user['displayname'];
+
+		// subject
+		$subject = '【' . $site_title . '】 您有一条来自 [' . $agent_name . '] 的新消息等待处理';
+
+		// $to = 'kydd2008@163.com';
+		$to = $agent['email'];
+
+		// Mail::send()的返回值为空，所以可以其他方法进行判断
+		Mail::send('renshi.jiaban_mailtemplate_deny', ['agent_name'=>$agent_name, 'auditor'=>$auditor, 'site_title'=>$site_title, 'uuid'=>$uuid], function($message) use($to, $subject){
+			$message ->to($to)->subject($subject);
+		});
+		// 返回的一个错误数组，利用此可以判断是否发送成功
+		if (empty(Mail::failures())) {
+			// dd('Sent OK!');
+		} else {
+			// dd(Mail::failures());
+		}
+
+	}
+
 	return $result;		
 	}
 

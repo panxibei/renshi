@@ -369,7 +369,7 @@ Renshi(Jiaban) -
 
 					
 					<div slot="footer">
-						<div v-if="jiaban_edit_status!=99">
+						<div v-if="jiaban_edit_status!=99 && jiaban_edit_status!=0">
 							<div style="text-align:center;font-size:14px;">
 								意&nbsp;&nbsp;&nbsp;&nbsp;见
 								<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
