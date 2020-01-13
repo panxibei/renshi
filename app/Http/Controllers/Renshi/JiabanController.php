@@ -1188,6 +1188,15 @@ class JiabanController extends Controller
 
 	DB::commit();
 	Cache::flush();
+
+	// 发送邮件消息
+	$email_enabled = Config::select('cfg_value')->where('cfg_name', 'EMAIL_ENABLED')->first();
+	
+	if ($email_enable['cfg_value'] == '1') {
+		
+	}
+
+
 	return $result;		
 	}
 

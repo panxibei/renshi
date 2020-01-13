@@ -1956,9 +1956,7 @@ var vm_app = new Vue({
 		_this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
 		_this.loadapplicantgroup();
 
-
 		GetCurrentDatetime('getcurrentdatetime');
-
 	}
 });
 </script>

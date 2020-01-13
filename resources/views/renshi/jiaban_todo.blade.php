@@ -177,7 +177,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
-								<div style="position:relative; width:100%; height:120px; overflow-y:scroll">
+								<div class="print_auditing" media="print">
 								<span v-for="(auditing, index) in jiaban_edit_auditing_circulation">
 
 									&nbsp;
@@ -254,7 +254,7 @@ Renshi(Jiaban) -
 									</i-col>
 								</i-row>
 
-								<div style="position:relative; width:100%; height:120px; overflow-y:scroll">
+								<div class="print_application" media="print">
 								<span v-for="(application, index) in jiaban_edit_application">
 
 									&nbsp;
@@ -1466,6 +1466,8 @@ var vm_app = new Vue({
 		_this.current_subnav = '处理';
 		// 显示所有
 		_this.jiabangetstodo(1, 1); // page: 1, last_page: 1
+
+		GetCurrentDatetime('getcurrentdatetime');
 	}
 });
 </script>
