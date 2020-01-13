@@ -9,6 +9,7 @@ use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Renshi\Renshi_jiaban;
 use DB;
+use Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\Renshi\jiaban_applicantExport;
 // use Spatie\Permission\Models\Role;
@@ -1105,7 +1106,7 @@ class JiabanController extends Controller
 	// $auditing = $auditing_after;
 
 	// get agent
-	$agent = User::select('auditing')
+	$agent = User::select('displayname', 'auditing')
 	->where('id', $jiaban_id_of_agent)
 	->first();
 
@@ -1193,7 +1194,29 @@ class JiabanController extends Controller
 	$email_enabled = Config::select('cfg_value')->where('cfg_name', 'EMAIL_ENABLED')->first();
 	
 	if ($email_enable['cfg_value'] == '1') {
+
+		$email_of_auditor = User::select('email')->where('id', $id_of_auditor)->first();
 		
+		// $name = '王宝花';
+		$name = $agent['displayname'];
+		$subject = '【Xyz管理系统】 您有一条来自 [' . $name . '] 的新消息等待处理';
+		// $to = 'kydd2008@163.com';
+		$to = $email_of_auditor['email'];
+
+		// Mail::send()的返回值为空，所以可以其他方法进行判断
+		Mail::send('test.mailtemplate',['name'=>$name],function($message) use($to, $subject){
+			
+			$message ->to($to)->subject($subject);
+		});
+		// 返回的一个错误数组，利用此可以判断是否发送成功
+		if (empty(Mail::failures())) {
+			dd('Sent OK!');
+		} else {
+			dd(Mail::failures());
+		}
+
+
+
 	}
 
 

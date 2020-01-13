@@ -11,6 +11,8 @@ use Adldap\Laravel\Facades\Adldap;
 use DB;
 use Image;
 use Mail;
+use App\Models\Admin\Config;
+use App\Models\Admin\User;
 
 class testController extends Controller
 {
@@ -202,6 +204,14 @@ dd($email);
 	 */
 	public function mail()
 	{
+			$email_enabled = Config::select('cfg_value')->where('cfg_name', 'EMAIL_ENABLED')->first();
+			// dd($email_enabled['cfg_value']);
+
+			$useremail = User::select('email')->where('id', 1)->first();
+			dd($useremail['email']);
+
+
+			
 			$name = '王宝花';
 			$subject = '【Xyz管理系统】 您有一条来自 [' . $name . '] 的新消息等待处理';
 			// $to = 'kydd2008@163.com';
