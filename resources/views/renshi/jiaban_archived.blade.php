@@ -72,7 +72,7 @@ Renshi(Jiaban) -
 				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
-				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800">
+				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800" footer-hide="true">
 				<span id="id_modal_jiaban" style="page-break-after:always">
 					<Divider orientation="center" class="print_display" media="print">加 班 单</Divider>
 

@@ -76,7 +76,7 @@ Renshi(Jiaban) -
 				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
-				<Modal v-model="modal_jiaban_edit" title="处理 - 加班单" width="800">
+				<Modal v-model="modal_jiaban_edit" title="处理 - 加班单" width="800" footer-hide="true">
 				<span id="id_modal_jiaban" style="page-break-after:always">
 					<Divider orientation="center" class="print_display" media="print">加 班 单</Divider>
 
@@ -368,18 +368,20 @@ Renshi(Jiaban) -
 					</div>
 
 					
-					<div slot="footer" v-if="jiaban_edit_status!=99">
-						<div style="text-align:center;font-size:14px;">
-							意&nbsp;&nbsp;&nbsp;&nbsp;见
-							<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+					<div slot="footer">
+						<div v-if="jiaban_edit_status!=99">
+							<div style="text-align:center;font-size:14px;">
+								意&nbsp;&nbsp;&nbsp;&nbsp;见
+								<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+							</div>
+							<br><br>
+							<i-button icon="ios-thumbs-up" type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">同 意</i-button>
+							<br><br>
+							<i-button icon="ios-thumbs-down-outline" type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">否 决</i-button>
+						</div>	
+						<div v-else>
+							<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
 						</div>
-						<br><br>
-						<i-button icon="ios-thumbs-up" type="primary" size="large" long :loading="modal_jiaban_pass_loading" @click="jiaban_edit_pass(jiaban_edit_id)">同 意</i-button>
-						<br><br>
-						<i-button icon="ios-thumbs-down-outline" type="text" size="large" long :loading="modal_jiaban_deny_loading" @click="jiaban_edit_deny(jiaban_edit_id)">否 决</i-button>
-					</div>	
-					<div slot="footer" v-else>
-						<i-button type="primary" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
 					</div>
 					
 					<br>
@@ -1209,7 +1211,9 @@ var vm_app = new Vue({
 			// console.log(jiaban_id_of_agent);
 			// return false;
 
-			this.modal_jiaban_pass_loading = true;
+			_this.modal_jiaban_pass_loading = true;
+
+			_this.$Message.loading('正在提交...');
 
 			var url = "{{ route('renshi.jiaban.todo.pass') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1264,7 +1268,9 @@ var vm_app = new Vue({
 			// console.log(jiaban_id_of_agent);
 			// return false;
 
-			this.modal_jiaban_deny_loading = true;
+			_this.modal_jiaban_deny_loading = true;
+
+			_this.$Message.loading('正在提交...');
 
 			var url = "{{ route('renshi.jiaban.todo.deny') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
