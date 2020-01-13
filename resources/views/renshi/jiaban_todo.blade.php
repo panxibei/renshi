@@ -102,7 +102,17 @@ Renshi(Jiaban) -
 						<br>
 							<i-col span="8">
 								代理申请人&nbsp;&nbsp;
-								<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
+								<!-- <i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input> -->
+
+								<Poptip trigger="hover" placement="bottom-start" width="360">
+									<i-input v-model.lazy="jiaban_edit_agent" readonly="true" style="width: 160px" size="small"></i-input>
+									<div id="id_print_img" class="api" slot="content">
+										<div class="">
+											<img :src="jiaban_edit_camera_imgurl" alt="暂无内容">
+										</div>
+									</div>
+								</Poptip>
+
 							</i-col>
 
 							<i-col span="9">
@@ -414,7 +424,7 @@ var vm_app = new Vue({
 		tablecolumns: [
 			{
 				type: 'selection',
-				width: 50,
+				width: 60,
 				align: 'center',
 				fixed: 'left'
 			},
@@ -788,6 +798,7 @@ var vm_app = new Vue({
 		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
+		jiaban_edit_camera_imgurl: '',
 		jiaban_edit_opinion: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_auditing_circulation: '',
@@ -1069,6 +1080,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
+			_this.jiaban_edit_camera_imgurl = row.camera_imgurl;
 			// _this.jiaban_edit_auditing = JSON.parse(row.auditing);
 			_this.jiaban_edit_auditing = row.auditing;
 			_this.jiaban_edit_created_at = row.created_at;

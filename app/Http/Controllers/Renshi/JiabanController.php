@@ -221,7 +221,7 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
 				return $query->where('agent', 'like', '%'.$queryfilter_applicant.'%');
 			})
@@ -288,7 +288,7 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})
