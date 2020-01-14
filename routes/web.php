@@ -144,9 +144,11 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 
 
 	// 4444444444
-	// 显示chart页面
+	// 显示Analytics页面
 	Route::get('jiabanAnalytics', 'JiabanController@jiabanAnalytics')->name('renshi.jiaban.analytics');
 
+	// Analytics gets列表
+	Route::get('jiabanGetsAnalytics', 'JiabanController@jiabanGetsAnalytics')->name('renshi.jiaban.jiabangetsanalytics');
 
 
 	

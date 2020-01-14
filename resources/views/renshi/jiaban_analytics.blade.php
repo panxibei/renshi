@@ -17,39 +17,47 @@ Renshi(Jiaban) -
 @parent
 <Divider orientation="left">加班统计</Divider>
 
+<Collapse v-model="collapse_query">
+	<Panel name="1">
+		查询条件
+		<p slot="content">
+		
+			<i-row :gutter="16">
+				<i-col span="5">
+					申请人&nbsp;&nbsp;
+					<i-input v-model.lazy="queryfilter_applicant" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+				</i-col>
+				<i-col span="5">
+					审核人&nbsp;&nbsp;
+					<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+				</i-col>
+				<i-col span="8">
+					提交时间&nbsp;
+					<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsanalytics(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
+				</i-col>
+				<i-col span="2">
+					@hasanyrole('role_super_admin')
+						<Checkbox v-model="queryfilter_trashed" @on-change="jiabangetsanalytics(page_current, page_last)">已删除</Checkbox>
+					@else
+						&nbsp;
+					@endhasanyrole
+				</i-col>
+				<i-col span="4">
+					&nbsp;
+				</i-col>
+			</i-row>
+		
+		
+		&nbsp;
+		</p>
+	</Panel>
+</Collapse>
+&nbsp;
+
 <Tabs type="card" v-model="currenttabs">
 
 	<Tab-pane Icon="ios-archive-outline" label="按人员统计">
 
-		<Collapse v-model="collapse_query">
-			<Panel name="1">
-				查询过滤器
-				<p slot="content">
-				
-					<i-row :gutter="16">
-						<i-col span="5">
-							当前审核人&nbsp;&nbsp;
-							<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsarchived(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
-						</i-col>
-						<i-col span="8">
-							提交时间&nbsp;
-							<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsarchived(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
-						</i-col>
-						<i-col span="2">
-							<Checkbox v-model="queryfilter_trashed" @on-change="jiabangetsarchived(page_current, page_last)">已删除</Checkbox>
-						</i-col>
-						<i-col span="9">
-							&nbsp;
-						</i-col>
-					</i-row>
-				
-				
-				&nbsp;
-				</p>
-			</Panel>
-		</Collapse>
-		&nbsp;
-		
 		<i-row :gutter="16">
 			<br>
 			<i-col span="3">
@@ -455,12 +463,6 @@ var vm_app = new Vue({
 
 		tablecolumns: [
 			{
-				type: 'selection',
-				width: 60,
-				align: 'center',
-				fixed: 'left'
-			},
-			{
 				title: '序号',
 				type: 'index',
 				align: 'center',
@@ -527,8 +529,8 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '当前审核人',
-				key: 'auditor',
+				title: '申请人',
+				key: 'applicant',
 				width: 160,
 				render: (h, params) => {
 					return h('div', {}, [
@@ -543,13 +545,13 @@ var vm_app = new Vue({
 							// style:{
 							// 	color: '#ff9900'
 							// }
-						}, ' '+params.row.auditor)
+						}, ' '+params.row.applicant)
 					])
 				}
 			},
 			{
-				title: '当前审核人部门',
-				key: 'department_of_auditor',
+				title: '申请人部门',
+				key: 'department_of_applicant',
 				width: 160,
 				render: (h, params) => {
 					return h('div', {}, [
@@ -564,190 +566,31 @@ var vm_app = new Vue({
 							// style:{
 							// 	color: '#ff9900'
 							// }
-						}, ' '+params.row.department_of_auditor)
+						}, ' '+params.row.department_of_applicant)
 					])
 				}
 			},
 			{
-				title: '进度',
-				key: 'progress',
-				width: 140,
-				render: (h, params) => {
-					// return h('div', {}, params.row.progress + '%')
-					if (params.row.progress == 0) {
-						return h('div', {}, [
-							h('Progress',{
-								props: {
-									percent: 99,
-									status: 'wrong',
-									}
-								}
-							)
-						])
-					} else {
-						return h('div', {}, [
-							h('Progress',{
-								props: {
-									percent: params.row.progress,
-									status: 'active',
-									}
-								}
-							)
-						])
-					}
-				}
+				title: '类别',
+				key: 'category',
+				width: 110,
 			},
 			{
-				title: '状态',
-				key: 'status',
+				title: '时间',
+				key: 'datetimerange',
+				width: 120,
+			},
+			{
+				title: '时长',
+				key: 'duration',
 				width: 90,
-				render: (h, params) => {
-					if (params.row.status == 99) {
-						// return h('div', {}, '已结案')
-							return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-checkmark-circle-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',{
-								style:{
-									color: '#19be6b'
-								}
-							},' 已结案')
-						])
-					} else if (params.row.status == 0) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-close-circle-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',{
-								style:{
-									color: '#ed4014'
-								}
-							},' 已否决')
-						])
-					} else {
-						// return h('div', {}, '待处理')
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-help-circle-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',{
-								style:{
-									color: '#ff9900'
-								}
-							},' 待处理')
-						])
-					}	
-				},
 			},
 			{
 				title: '提交时间',
 				key: 'created_at',
-				sortable: true,
+				// sortable: true,
 				width: 160
 			},
-			{
-				@hasanyrole('role_super_admin')
-				title: '已归档',
-				key: 'archived',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: params.row.archived
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.onarchived_applicant(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-				@endhasanyrole
-			},
-			{
-				title: '操作',
-				key: 'action',
-				align: 'center',
-				@hasanyrole('role_super_admin')
-					width: 200,
-				@else
-					width: 80,
-				@endhasanyrole
-				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.jiaban_edit(params.row)
-								}
-							}
-						}, '查看'),
-						@hasanyrole('role_super_admin')
-						h('Button', {
-							props: {
-								type: 'warning',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.onrestore_archived(params.row)
-								}
-							}
-						}, '恢复'),
-						h('Button', {
-							props: {
-								type: 'error',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.ondelete_archived(params.row)
-								}
-							}
-						}, '彻底删除'),
-						@endhasanyrole
-					]);
-				},
-				fixed: 'right'
-			}
 		],
 		tabledata: [],
 		tableselect: [],
@@ -782,12 +625,13 @@ var vm_app = new Vue({
 		currenttabs: 0,
 		
 		// 查询过滤器
+		queryfilter_applicant: '',
 		queryfilter_auditor: '',
 		queryfilter_created_at: '',
 		queryfilter_trashed: false,
 		
 		// 查询过滤器下拉
-		collapse_query: '',		
+		collapse_query: '1',		
 		
 		// 选择角色查看编辑相应权限
 		role_select: '',
@@ -888,7 +732,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.modal_jiaban_edit = false;
-					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.jiabangetsanalytics(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '归档状态改变成功！');
 				} else {
 					_this.error(false, '失败', '归档状态改变失败！');
@@ -903,7 +747,7 @@ var vm_app = new Vue({
 		
 		// 切换当前页
 		oncurrentpagechange: function (currentpage) {
-			this.jiabangetsarchived(currentpage, this.page_last);
+			this.jiabangetsanalytics(currentpage, this.page_last);
 		},
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
@@ -927,7 +771,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.page_size = pagesize;
-					_this.jiabangetsarchived(1, _this.page_last);
+					_this.jiabangetsanalytics(1, _this.page_last);
 				} else {
 					_this.warning(false, 'Warning', 'failed!');
 				}
@@ -937,7 +781,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabangetsarchived (page, last_page) {
+		jiabangetsanalytics (page, last_page) {
 			var _this = this;
 			
 			if (page > last_page) {
@@ -947,6 +791,7 @@ var vm_app = new Vue({
 			}
 			
 
+			var queryfilter_applicant = _this.queryfilter_applicant;
 			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_created_at = _this.queryfilter_created_at;
 			var queryfilter_trashed = _this.queryfilter_trashed;
@@ -966,20 +811,21 @@ var vm_app = new Vue({
 			queryfilter_trashed = queryfilter_trashed || '';
 
 			_this.loadingbarstart();
-			var url = "{{ route('renshi.jiaban.jiabangetsarchived') }}";
+			var url = "{{ route('renshi.jiaban.jiabangetsanalytics') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
 					perPage: _this.page_size,
 					page: page,
+					queryfilter_applicant: queryfilter_applicant,
 					queryfilter_auditor: queryfilter_auditor,
 					queryfilter_created_at: queryfilter_created_at,
 					queryfilter_trashed: queryfilter_trashed,
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				console.log(response.data);
+				return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1097,7 +943,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.jiabangetsanalytics(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '恢复成功！');
 				} else {
 					_this.error(false, '失败', '恢复失败！');
@@ -1131,7 +977,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.jiabangetsanalytics(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -1164,7 +1010,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.jiabangetsarchived(_this.page_current, _this.page_last);
+					_this.jiabangetsanalytics(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -1222,7 +1068,7 @@ var vm_app = new Vue({
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '统计';
 		// 显示所有
-		// _this.jiabangetsarchived(1, 1); // page: 1, last_page: 1
+		_this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
 
 		// GetCurrentDatetime('getcurrentdatetime');
 	}
