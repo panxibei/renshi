@@ -15,7 +15,7 @@
 	<strong>{{$auditor}}</strong> 您好！
 
 	<br><br>
-	您有一条来自 <strong>{{$agent_name}}</strong> 的新消息等待处理，请点击 <a href="{{ route('portal') }}">{{$site_title}}</a> 登录查看。
+	您有一条来自 <strong>{{$agent_name}}</strong> 的新消息等待处理，请点击 <a href="{{ route('portal') }}">{{$site_title}}</a> 登录查看详情。
 
     <br><br>
 

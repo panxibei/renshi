@@ -145,7 +145,7 @@ Renshi(Jiaban) -
 
 						&nbsp;<Divider orientation="left">审核流程</Divider>
 
-						<Steps :current="jiaban_edit_status" size="small">
+						<Steps :current="jiaban_edit_auditing_index" :status="jiaban_edit_status==0?'error':'process'" size="small">
 							<Step :title="jiaban_edit_agent" content="申请人"></Step>
 							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
 						</Steps>
@@ -817,6 +817,7 @@ var vm_app = new Vue({
 		jiaban_edit_opinion: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_auditing_circulation: '',
+		jiaban_edit_auditing_index: 0,
 		jiaban_edit_auditing_uid: '',
 		jiaban_edit_created_at: '',
 		jiaban_edit_updated_at: '',
@@ -1101,7 +1102,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
-
+			_this.jiaban_edit_auditing_index = row.index_of_auditor;
 			_this.jiaban_edit_auditing_id = row.id_of_auditor;
 			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
 

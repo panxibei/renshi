@@ -523,8 +523,8 @@ Renshi(Jiaban) -
 							&nbsp;项
 						</i-col>
 						<i-col span="20">
-							&nbsp;&nbsp;<i-button @click="oncreate_applicant2()" size="default" type="primary">提 交</i-button>
-							&nbsp;&nbsp;<i-button @click="onclear_applicant2()" size="default">清 除</i-button>
+							&nbsp;&nbsp;<i-button @click="oncreate_applicant2()" :disabled="jiaban_add_create_disabled2" size="default" type="primary">提 交</i-button>
+							&nbsp;&nbsp;<i-button @click="onclear_applicant2()" :disabled="jiaban_add_clear_disabled2" size="default">清 除</i-button>
 						</i-col>
 					</i-row>
 						
@@ -1255,13 +1255,17 @@ var vm_app = new Vue({
 				} else {
 					_this.error(false, '失败', '提交失败！');
 				}
+
+				_this.jiaban_add_create_disabled1 = false;
+				_this.jiaban_add_clear_disabled1 = false;
+
 			})
 			.catch(function (error) {
 				setTimeout(msg, 1000);
 				_this.error(false, '错误', '提交失败！');
+				_this.jiaban_add_create_disabled1 = false;
+				_this.jiaban_add_clear_disabled1 = false;
 			})
-			_this.jiaban_add_create_disabled1 = false;
-			_this.jiaban_add_clear_disabled1 = false;
 		},
 
         // onclear_applicant1
@@ -1341,13 +1345,17 @@ var vm_app = new Vue({
 				} else {
 					_this.error(false, '失败', '提交失败！');
 				}
+
+				_this.jiaban_add_create_disabled2 = false;
+				_this.jiaban_add_clear_disabled2 = false;
+
 			})
 			.catch(function (error) {
 				setTimeout(msg, 1000);
 				_this.error(false, '错误', '提交失败！');
+				_this.jiaban_add_create_disabled2 = false;
+				_this.jiaban_add_clear_disabled2 = false;
 			})
-			_this.jiaban_add_create_disabled2 = false;
-			_this.jiaban_add_clear_disabled2 = false;
 
 		},
 
