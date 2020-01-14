@@ -149,7 +149,7 @@ Renshi(Jiaban) -
 
 						&nbsp;<Divider orientation="left">审核流程</Divider>
 
-						<Steps :current="jiaban_edit_status" size="small">
+						<Steps :current="jiaban_edit_auditing_index" :status="jiaban_edit_status==0?'error':'process'" size="small">
 							<Step :title="jiaban_edit_agent" content="申请人"></Step>
 							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
 						</Steps>
@@ -950,6 +950,7 @@ var vm_app = new Vue({
 		jiaban_edit_camera_imgurl: '',
 		jiaban_edit_auditing: '',
 		jiaban_edit_auditing_circulation: '',
+		jiaban_edit_auditing_index: 0,
 		jiaban_edit_auditing_id: '',
 		jiaban_edit_auditing_uid: '',
 		jiaban_edit_created_at: '',
@@ -1219,6 +1220,11 @@ var vm_app = new Vue({
 				_this.jiaban_add_clear_disabled1 = false;
 				return false;
 			}
+
+			const msg = _this.$Message.loading({
+                content: '正在提交...',
+                duration: 0
+            });
 			
 			var url = "{{ route('renshi.jiaban.applicant.applicantcreate1') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1239,6 +1245,8 @@ var vm_app = new Vue({
 					_this.alert_logout();
 					return false;
 				}
+
+				setTimeout(msg, 1000);
 				
 				if (response.data) {
 					_this.onclear_applicant1();
@@ -1249,6 +1257,7 @@ var vm_app = new Vue({
 				}
 			})
 			.catch(function (error) {
+				setTimeout(msg, 1000);
 				_this.error(false, '错误', '提交失败！');
 			})
 			_this.jiaban_add_create_disabled1 = false;
@@ -1301,6 +1310,11 @@ var vm_app = new Vue({
 			
 			var piliangluru_applicant = _this.piliangluru_applicant;
 			
+			const msg = _this.$Message.loading({
+                content: '正在提交...',
+                duration: 0
+            });
+
 			var url = "{{ route('renshi.jiaban.applicant.applicantcreate2') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
@@ -1317,6 +1331,8 @@ var vm_app = new Vue({
 					_this.alert_logout();
 					return false;
 				}
+
+				setTimeout(msg, 1000);
 				
 				if (response.data) {
 					_this.onclear_applicant2();
@@ -1327,6 +1343,7 @@ var vm_app = new Vue({
 				}
 			})
 			.catch(function (error) {
+				setTimeout(msg, 1000);
 				_this.error(false, '错误', '提交失败！');
 			})
 			_this.jiaban_add_create_disabled2 = false;
@@ -1627,6 +1644,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
+			_this.jiaban_edit_auditing_index = row.index_of_auditor;
 			_this.jiaban_edit_auditing_id = row.id_of_auditor;
 			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
 // console.log(row.id_of_auditor);
@@ -1664,11 +1682,13 @@ var vm_app = new Vue({
 			
 		},
 
+
 		// 显示归档窗口
 		jiaban_archived (row) {
 			this.jiaban_edit_id = row.id;
 			this.modal_archived = true;
 		},
+
 
 		// 归档确定
 		archived_ok () {
@@ -1676,6 +1696,7 @@ var vm_app = new Vue({
 			// return false;
 			this.onarchived_applicant();
 		},
+
 
 		// 分析取消
 		archived_cancel () {

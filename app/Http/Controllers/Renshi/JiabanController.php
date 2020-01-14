@@ -154,7 +154,7 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})
@@ -361,6 +361,7 @@ class JiabanController extends Controller
 	return $result;
 	}
 
+
 	/**
 	 * 列出auditingList
 	 *
@@ -400,6 +401,7 @@ class JiabanController extends Controller
 // dd($result['auditing']);
 	return $result['auditing'];
 	}
+
 
 	/**
 	 * 列出人员信息
@@ -806,6 +808,7 @@ class JiabanController extends Controller
 			'uid_of_agent' => $uid_of_agent,
 			'agent' => $agent,
 			'department_of_agent' => $department_of_agent,
+			'index_of_auditor' => 1,
 			'id_of_auditor' => $id_of_auditor,
 			'uid_of_auditor' => $uid_of_auditor,
 			'auditor' => $auditor,
@@ -979,6 +982,7 @@ class JiabanController extends Controller
 			'uid_of_agent' => $uid_of_agent,
 			'agent' => $agent,
 			'department_of_agent' => $department_of_agent,
+			'index_of_auditor' => 1,
 			'id_of_auditor' => $id_of_auditor,
 			'uid_of_auditor' => $uid_of_auditor,
 			'auditor' => $auditor,
@@ -1200,11 +1204,13 @@ class JiabanController extends Controller
 	$auditor = $user['displayname'];
 	$department_of_auditor = $user['department'];
 
-	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing')
+	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing', 'index_of_auditor')
 		->where('id', $jiaban_id)
 		->first();
 
 	$uuid = $auditing_before['uuid'];
+
+	$index_of_auditor = $auditing_before['index_of_auditor'];
 
 	$nowtime = date("Y-m-d H:i:s",time());
 	$auditing_after = [];
@@ -1293,6 +1299,7 @@ class JiabanController extends Controller
 
 		$result = Renshi_jiaban::where('id', $jiaban_id)
 			->update([
+				'index_of_auditor' => $index_of_auditor + 1,
 				'id_of_auditor' => $id_of_auditor,
 				'uid_of_auditor' => $uid_of_auditor,
 				'auditor' => $auditor,
@@ -1402,11 +1409,13 @@ class JiabanController extends Controller
 	$auditor = $user['displayname'];
 	$department_of_auditor = $user['department'];
 
-	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing')
+	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing', 'index_of_auditor')
 		->where('id', $jiaban_id)
 		->first();
 
 	$uuid = $auditing_before['uuid'];
+
+	// $index_of_auditor = $auditing_before['index_of_auditor'];
 
 	$nowtime = date("Y-m-d H:i:s",time());
 	$auditing_after = [];
