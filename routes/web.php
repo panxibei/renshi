@@ -143,6 +143,12 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	Route::get('archivedExport', 'JiabanController@archivedExport')->name('renshi.jiaban.archived.archivedexport');
 
 
+	// 4444444444
+	// 显示chart页面
+	Route::get('jiabanAnalytics', 'JiabanController@jiabanAnalytics')->name('renshi.jiaban.analytics');
+
+
+
 	
 });
 
