@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-	<title>【{{$site_title}}】 您有一条已经通过申请的新消息</title>
+	<title>【{{$site_title}}】 您的申请已经通过</title>
 </head>
 <body>
 
