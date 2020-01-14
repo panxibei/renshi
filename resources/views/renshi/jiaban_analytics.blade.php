@@ -15,11 +15,11 @@ Renshi(Jiaban) -
 
 @section('my_body')
 @parent
-<Divider orientation="left">加班归档</Divider>
+<Divider orientation="left">加班统计</Divider>
 
 <Tabs type="card" v-model="currenttabs">
 
-	<Tab-pane Icon="ios-archive-outline" label="归档列表">
+	<Tab-pane Icon="ios-archive-outline" label="按人员统计">
 
 		<Collapse v-model="collapse_query">
 			<Panel name="1">
@@ -413,7 +413,7 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-3',
+		sideractivename: '1-4',
 		sideropennames: ['1'],
 		
 		//分页
@@ -1220,11 +1220,11 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.current_nav = '加班管理';
-		_this.current_subnav = '归档';
+		_this.current_subnav = '统计';
 		// 显示所有
-		_this.jiabangetsarchived(1, 1); // page: 1, last_page: 1
+		// _this.jiabangetsarchived(1, 1); // page: 1, last_page: 1
 
-		GetCurrentDatetime('getcurrentdatetime');
+		// GetCurrentDatetime('getcurrentdatetime');
 	}
 });
 </script>

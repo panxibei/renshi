@@ -266,7 +266,7 @@ if (isMobile) {
 									</template>
 									<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="18"></Icon> 申请</Menu-item>
 									<Menu-item name="1-2"><Icon type="ios-create-outline" size="20"></Icon> 处理</Menu-item>
-									<Menu-item name="1-3"><Icon type="ios-archive-outline" size="22"></Icon> 归档</Menu-item>
+									<Menu-item name="1-3"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
 									<Menu-item name="1-4"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
 							</Submenu>
 		
