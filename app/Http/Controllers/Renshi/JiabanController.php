@@ -876,7 +876,7 @@ class JiabanController extends Controller
 			// $auditor = $auditor;
 
 			// subject
-			$subject = '【' . $site_title . '】 您有一条已经通过申请的新消息';
+			$subject = '【' . $site_title . '】 您的申请已经通过 ○';
 
 			// $to = 'kydd2008@163.com';
 			$to = $user['email'];
@@ -1050,7 +1050,7 @@ class JiabanController extends Controller
 			// $auditor = $auditor;
 
 			// subject
-			$subject = '【' . $site_title . '】 您有一条已经通过申请的新消息';
+			$subject = '【' . $site_title . '】 您的申请已经通过 ○';
 
 			// $to = 'kydd2008@163.com';
 			$to = $user['email'];
@@ -1363,7 +1363,7 @@ class JiabanController extends Controller
 			// $auditor = $auditor;
 
 			// subject
-			$subject = '【' . $site_title . '】 您的申请已经通过';
+			$subject = '【' . $site_title . '】 您的申请已经通过 ○';
 
 			// $to = 'kydd2008@163.com';
 			$to = $agent['email'];
@@ -1533,7 +1533,7 @@ class JiabanController extends Controller
 		$auditor = $user['displayname'];
 
 		// subject
-		$subject = '【' . $site_title . '】 您的申请已被否决';
+		$subject = '【' . $site_title . '】 您的申请已被否决 ×';
 
 		// $to = 'kydd2008@163.com';
 		$to = $agent['email'];

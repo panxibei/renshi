@@ -15,7 +15,7 @@
 	<strong>{{$agent_name}}</strong> 您好！
 
 	<br><br>
-	编号为 [{{$uuid}}] 的申请已经通过，请点击 <a href="{{ route('portal') }}">{{$site_title}}</a> 登录查看。
+	编号为 [{{$uuid}}] 的申请已经通过，请点击 <a href="{{ route('portal') }}">{{$site_title}}</a> 登录查看详情。
 
     <br><br>
 
