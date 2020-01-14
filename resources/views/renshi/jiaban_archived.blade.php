@@ -56,7 +56,9 @@ Renshi(Jiaban) -
 				<i-button @click="ontrash_archived()" :disabled="delete_disabled" icon="ios-trash-outline" type="warning" size="small">批量删除</i-button>&nbsp;<br>&nbsp;
 			</i-col>
 			<i-col span="2">
-				<i-button type="default" size="small" @click="onexport_archived()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+				<Poptip confirm title="确定要导出当前数据吗？" placement="right-start" @on-ok="onexport_archived()" @on-cancel="" transfer="true">
+					<i-button type="default" size="small" @click=""><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+				</Poptip>
 			</i-col>
 			<i-col span="4">
 			&nbsp;

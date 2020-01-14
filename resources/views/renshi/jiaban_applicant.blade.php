@@ -65,7 +65,9 @@ Renshi(Jiaban) -
 				<i-button type="default" size="small" @click="oncreate_applicant_gototab()"><Icon type="ios-color-wand-outline"></Icon> 添加申请</i-button>
 			</i-col>
 			<i-col span="2">
-				<i-button type="default" size="small" @click="onexport_applicant()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+				<Poptip confirm title="确定要导出当前数据吗？" placement="right-start" @on-ok="onexport_applicant()" @on-cancel="" transfer="true">
+					<i-button type="default" size="small" @click=""><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+				</Poptip>
 			</i-col>
 			<i-col span="2">
 			&nbsp;
