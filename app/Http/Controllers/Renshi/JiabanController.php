@@ -397,16 +397,12 @@ class JiabanController extends Controller
 		// sql语句示例
 		// $sql = "SELECT uuid, created_at, t.* FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)	WHERE application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND t.uid = '071215958'";
 		
-		$select = 'uuid, created_at, A.*';
+		$select = 'uuid, agent, department_of_agent, A.*, created_at';
 		$from = 'renshi_jiabans, jsonb_to_recordset(application) as A(uid text, category text, duration float, applicant text, department text, datetimerange text)';
 		
 		// 查询条件
 		// $where_applicant = "application @> '[{\"applicant\":\"zhang san\"}]'::jsonb	AND A.applicant = 'zhang san'";
 		// $where = "application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND A.uid = '071215958'";
-
-		// $queryfilter_applicant = 'zhang san';
-		// $queryfilter_uid = '071015516';
-		// dd($queryfilter_uid);
 
 		$result = DB::table(DB::raw($from))
 			->select(DB::raw($select))
@@ -432,7 +428,7 @@ class JiabanController extends Controller
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 	}
-	dd($result);
+	// dd($result);
 	return $result;
 	}
 

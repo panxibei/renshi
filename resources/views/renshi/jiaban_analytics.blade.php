@@ -501,48 +501,48 @@ var vm_app = new Vue({
 					])
 				}
 			},
-			{
-				title: '代理申请人',
-				key: 'agent',
-				width: 160,
-				render: (h, params) => {
-					return h('div', {}, [
-						h('Icon',{
-							props: {
-								type: 'ios-person',
-								// size: 14,
-								}
-							}
-						),
-						h('span',{
-							// style:{
-							// 	color: '#ff9900'
-							// }
-						}, ' '+params.row.agent)
-					])
-				}
-			},
-			{
-				title: '代理申请人部门',
-				key: 'department_of_agent',
-				width: 160,
-				render: (h, params) => {
-					return h('div', {}, [
-						h('Icon',{
-							props: {
-								type: 'ios-people',
-								// size: 14,
-								}
-							}
-						),
-						h('span',{
-							// style:{
-							// 	color: '#ff9900'
-							// }
-						}, ' '+params.row.department_of_agent)
-					])
-				}
-			},
+			// {
+			// 	title: '代理申请人',
+			// 	key: 'agent',
+			// 	width: 160,
+			// 	render: (h, params) => {
+			// 		return h('div', {}, [
+			// 			h('Icon',{
+			// 				props: {
+			// 					type: 'ios-person',
+			// 					// size: 14,
+			// 					}
+			// 				}
+			// 			),
+			// 			h('span',{
+			// 				// style:{
+			// 				// 	color: '#ff9900'
+			// 				// }
+			// 			}, ' '+params.row.agent)
+			// 		])
+			// 	}
+			// },
+			// {
+			// 	title: '代理申请人部门',
+			// 	key: 'department_of_agent',
+			// 	width: 160,
+			// 	render: (h, params) => {
+			// 		return h('div', {}, [
+			// 			h('Icon',{
+			// 				props: {
+			// 					type: 'ios-people',
+			// 					// size: 14,
+			// 					}
+			// 				}
+			// 			),
+			// 			h('span',{
+			// 				// style:{
+			// 				// 	color: '#ff9900'
+			// 				// }
+			// 			}, ' '+params.row.department_of_agent)
+			// 		])
+			// 	}
+			// },
 			{
 				title: '申请人',
 				key: 'applicant',
@@ -566,7 +566,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: '申请人部门',
-				key: 'department_of_applicant',
+				key: 'department',
 				width: 160,
 				render: (h, params) => {
 					return h('div', {}, [
@@ -581,7 +581,7 @@ var vm_app = new Vue({
 							// style:{
 							// 	color: '#ff9900'
 							// }
-						}, ' '+params.row.department_of_applicant)
+						}, ' '+params.row.department)
 					])
 				}
 			},
@@ -593,7 +593,7 @@ var vm_app = new Vue({
 			{
 				title: '时间',
 				key: 'datetimerange',
-				width: 120,
+				width: 250,
 			},
 			{
 				title: '时长',
