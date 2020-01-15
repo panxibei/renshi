@@ -1116,7 +1116,7 @@ var vm_app = new Vue({
 				
 				var queryfilter_name = query;
 				
-				var url = "{{ route('renshi.jiaban.uidlist') }}";
+				var url = "{{ route('renshi.jiaban.applicant.uidlist') }}";
 				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 				axios.get(url,{
 					params: {
