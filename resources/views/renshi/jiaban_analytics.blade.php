@@ -25,8 +25,10 @@ Renshi(Jiaban) -
 			<i-row :gutter="16">
 			<br>
 				<i-col span="5">
-					申请人ID&nbsp;&nbsp;
-					<i-input v-model.lazy="queryfilter_uid" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+					申请人ID&nbsp;
+					<i-select v-model.lazy="queryfilter_uid" filterable remote :remote-method="remoteMethod_queryfilter_uid" :loading="loading_queryfilter_uid" @on-change="jiabangetsanalytics(page_current, page_last)" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in options_queryfilter_uid" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
 				</i-col>
 				<i-col span="5">
 					申请人&nbsp;&nbsp;
@@ -441,7 +443,7 @@ var vm_app = new Vue({
 		
 		//分页
 		page_current: 1,
-		page_total: 1, // 记录总数，非总页数
+		page_total: 0, // 记录总数，非总页数
 		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_ARCHIVED'] ?? 5 }},
 		page_last: 1,
 
@@ -501,48 +503,6 @@ var vm_app = new Vue({
 					])
 				}
 			},
-			// {
-			// 	title: '代理申请人',
-			// 	key: 'agent',
-			// 	width: 160,
-			// 	render: (h, params) => {
-			// 		return h('div', {}, [
-			// 			h('Icon',{
-			// 				props: {
-			// 					type: 'ios-person',
-			// 					// size: 14,
-			// 					}
-			// 				}
-			// 			),
-			// 			h('span',{
-			// 				// style:{
-			// 				// 	color: '#ff9900'
-			// 				// }
-			// 			}, ' '+params.row.agent)
-			// 		])
-			// 	}
-			// },
-			// {
-			// 	title: '代理申请人部门',
-			// 	key: 'department_of_agent',
-			// 	width: 160,
-			// 	render: (h, params) => {
-			// 		return h('div', {}, [
-			// 			h('Icon',{
-			// 				props: {
-			// 					type: 'ios-people',
-			// 					// size: 14,
-			// 					}
-			// 				}
-			// 			),
-			// 			h('span',{
-			// 				// style:{
-			// 				// 	color: '#ff9900'
-			// 				// }
-			// 			}, ' '+params.row.department_of_agent)
-			// 		])
-			// 	}
-			// },
 			{
 				title: '申请人',
 				key: 'applicant',
@@ -582,6 +542,48 @@ var vm_app = new Vue({
 							// 	color: '#ff9900'
 							// }
 						}, ' '+params.row.department)
+					])
+				}
+			},
+			{
+				title: '代理申请人',
+				key: 'agent',
+				width: 160,
+				render: (h, params) => {
+					return h('div', {}, [
+						h('Icon',{
+							props: {
+								type: 'ios-person',
+								// size: 14,
+								}
+							}
+						),
+						h('span',{
+							// style:{
+							// 	color: '#ff9900'
+							// }
+						}, ' '+params.row.agent)
+					])
+				}
+			},
+			{
+				title: '代理申请人部门',
+				key: 'department_of_agent',
+				width: 160,
+				render: (h, params) => {
+					return h('div', {}, [
+						h('Icon',{
+							props: {
+								type: 'ios-people',
+								// size: 14,
+								}
+							}
+						),
+						h('span',{
+							// style:{
+							// 	color: '#ff9900'
+							// }
+						}, ' '+params.row.department_of_agent)
 					])
 				}
 			},
@@ -647,7 +649,13 @@ var vm_app = new Vue({
 		queryfilter_trashed: false,
 		
 		// 查询过滤器下拉
-		collapse_query: '1',		
+		collapse_query: '1',
+		
+		// 选择下拉过滤器
+		// user_select_current: '',
+		options_queryfilter_uid: [],
+		loading_queryfilter_uid: false,
+
 		
 		// 选择角色查看编辑相应权限
 		role_select: '',
@@ -721,6 +729,20 @@ var vm_app = new Vue({
 			}, 2000);
 			return false;
 		},
+
+		// 把laravel返回的结果转换成select能接受的格式
+		json2selectvalue: function (json) {
+			var arr = [];
+			for (var key in json) {
+				// alert(key);
+				// alert(json[key]);
+				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
+				arr.push({ value: key, label: json[key] });
+			}
+			return arr;
+			// return arr.reverse();
+		},
+
 		
 
 		// 归档
@@ -806,12 +828,23 @@ var vm_app = new Vue({
 				page = 1;
 			}
 			
-
 			var queryfilter_uid = _this.queryfilter_uid;
 			var queryfilter_applicant = _this.queryfilter_applicant;
 			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_created_at = _this.queryfilter_created_at;
-			var queryfilter_trashed = _this.queryfilter_trashed;
+
+			if (queryfilter_uid == '' || queryfilter_uid == undefined
+				&& queryfilter_applicant == '' || queryfilter_applicant == undefined
+				&& queryfilter_auditor == '' || queryfilter_auditor == undefined
+				&& queryfilter_created_at[0] == '' || queryfilter_created_at[0] == undefined
+				&& queryfilter_created_at[1] == ''|| queryfilter_created_at[1] == undefined) {
+				// _this.delete_disabled = true;
+				_this.tabledata = [];
+				_this.page_current = 1;
+				_this.page_total = 0;
+				_this.page_last = 1;
+				return false;
+			}
 
 			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
 				queryfilter_created_at = '';
@@ -825,7 +858,6 @@ var vm_app = new Vue({
 				queryfilter_created_at = [start, end];
 			}
 
-			queryfilter_trashed = queryfilter_trashed || '';
 
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsanalytics') }}";
@@ -838,7 +870,6 @@ var vm_app = new Vue({
 					queryfilter_applicant: queryfilter_applicant,
 					queryfilter_auditor: queryfilter_auditor,
 					queryfilter_created_at: queryfilter_created_at,
-					queryfilter_trashed: queryfilter_trashed,
 				}
 			})
 			.then(function (response) {
@@ -851,8 +882,8 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.delete_disabled = true;
-					_this.tableselect = [];
+					// _this.delete_disabled = true;
+					// _this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
 					_this.page_total = response.data.total;
@@ -1076,6 +1107,50 @@ var vm_app = new Vue({
 		},
 		
 
+		// 远程查询当前用户
+		remoteMethod_queryfilter_uid (query) {
+			var _this = this;
+
+			if (query !== '') {
+				_this.loading_queryfilter_uid = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('renshi.jiaban.uidlist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					// return false;
+
+					if (response.data['jwt'] == 'logout') {
+						_this.alert_logout();
+						return false;
+					}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.options_queryfilter_uid = _this.json2selectvalue(json);
+					}
+
+					setTimeout(() => {
+						_this.loading_queryfilter_uid = false;
+					}, 200);
+				})
+				.catch(function (error) {
+					setTimeout(() => {
+						_this.loading_queryfilter_uid = false;
+					}, 200);
+				})				
+				
+			} else {
+				_this.options_queryfilter_uid = [];
+			}
+		},
 
 
 
@@ -1086,7 +1161,7 @@ var vm_app = new Vue({
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '统计';
 		// 显示所有
-		// _this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
+		_this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
 
 		// GetCurrentDatetime('getcurrentdatetime');
 	}

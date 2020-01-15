@@ -432,7 +432,7 @@ var vm_app = new Vue({
 				
 		//分页
 		page_current: 1,
-		page_total: 1, // 记录总数，非总页数
+		page_total: 0, // 记录总数，非总页数
 		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_TODO'] ?? 5 }},
 		page_last: 1,
 
