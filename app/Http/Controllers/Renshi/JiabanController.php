@@ -393,15 +393,24 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', DB::raw("JSON_EXTRACT(application, '$**.applicant') AS applicant'"), 'created_at')
-			->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
-				return $query->whereBetween('created_at', $queryfilter_created_at);
-			})
-			->where('archived', true)
-			->limit(1000)
-			->orderBy('created_at', 'desc')
-			->get()->toArray();
-			// ->paginate($perPage, ['*'], 'page', $page);
+		$result = DB::select(
+			// "SELECT uuid, created_at, t.*
+			// FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)
+			// WHERE application @> '[{"uid":"071215958"}]'::jsonb
+			// AND t.uid = '071215958'"
+			"SELECT uuid, created_at, t.* FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)	WHERE application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND t.uid = '071215958'"
+		);
+		$result = $DB::table(DB::raw($sql))->where([["id"=>1]])->paginate($perPage, ['*'], 'page', $page);
+
+		// $result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', DB::raw("JSON_EXTRACT(application, '$**.applicant') AS applicant'"), 'created_at')
+		// 	->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+		// 		return $query->whereBetween('created_at', $queryfilter_created_at);
+		// 	})
+		// 	->where('archived', true)
+		// 	->limit(1000)
+		// 	->orderBy('created_at', 'desc')
+		// 	->get()->toArray();
+		// 	// ->paginate($perPage, ['*'], 'page', $page);
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 	}
