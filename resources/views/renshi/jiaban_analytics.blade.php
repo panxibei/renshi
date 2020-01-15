@@ -23,6 +23,11 @@ Renshi(Jiaban) -
 		<p slot="content">
 		
 			<i-row :gutter="16">
+			<br>
+				<i-col span="5">
+					申请人ID&nbsp;&nbsp;
+					<i-input v-model.lazy="queryfilter_uid" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+				</i-col>
 				<i-col span="5">
 					申请人&nbsp;&nbsp;
 					<i-input v-model.lazy="queryfilter_applicant" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
@@ -31,6 +36,15 @@ Renshi(Jiaban) -
 					审核人&nbsp;&nbsp;
 					<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 				</i-col>
+				<i-col span="9">
+					&nbsp;
+				</i-col>
+			</i-row>
+
+			&nbsp;
+
+			<i-row :gutter="16">
+			<br>
 				<i-col span="8">
 					提交时间&nbsp;
 					<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsanalytics(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
@@ -42,10 +56,11 @@ Renshi(Jiaban) -
 						&nbsp;
 					@endhasanyrole
 				</i-col>
-				<i-col span="4">
+				<i-col span="14">
 					&nbsp;
 				</i-col>
 			</i-row>
+
 		
 		
 		&nbsp;
@@ -625,6 +640,7 @@ var vm_app = new Vue({
 		currenttabs: 0,
 		
 		// 查询过滤器
+		queryfilter_uid: '',
 		queryfilter_applicant: '',
 		queryfilter_auditor: '',
 		queryfilter_created_at: '',
@@ -791,6 +807,7 @@ var vm_app = new Vue({
 			}
 			
 
+			var queryfilter_uid = _this.queryfilter_uid;
 			var queryfilter_applicant = _this.queryfilter_applicant;
 			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_created_at = _this.queryfilter_created_at;
@@ -817,6 +834,7 @@ var vm_app = new Vue({
 				params: {
 					perPage: _this.page_size,
 					page: page,
+					queryfilter_uid: queryfilter_uid,
 					queryfilter_applicant: queryfilter_applicant,
 					queryfilter_auditor: queryfilter_auditor,
 					queryfilter_created_at: queryfilter_created_at,
@@ -824,8 +842,8 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -1068,7 +1086,7 @@ var vm_app = new Vue({
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '统计';
 		// 显示所有
-		_this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
+		// _this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
 
 		// GetCurrentDatetime('getcurrentdatetime');
 	}

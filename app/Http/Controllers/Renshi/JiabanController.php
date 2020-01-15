@@ -375,6 +375,7 @@ class JiabanController extends Controller
 	$perPage = $queryParams['perPage'] ?? 10000;
 	$page = $queryParams['page'] ?? 1;
 	
+	$queryfilter_uid = $request->input('queryfilter_uid');
 	$queryfilter_applicant = $request->input('queryfilter_applicant');
 	$queryfilter_auditor = $request->input('queryfilter_auditor');
 	$queryfilter_created_at = $request->input('queryfilter_created_at');
@@ -393,14 +394,31 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = DB::select(
-			// "SELECT uuid, created_at, t.*
-			// FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)
-			// WHERE application @> '[{"uid":"071215958"}]'::jsonb
-			// AND t.uid = '071215958'"
-			"SELECT uuid, created_at, t.* FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)	WHERE application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND t.uid = '071215958'"
-		);
-		$result = $DB::table(DB::raw($sql))->where([["id"=>1]])->paginate($perPage, ['*'], 'page', $page);
+		// sql语句示例
+		// $sql = "SELECT uuid, created_at, t.* FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)	WHERE application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND t.uid = '071215958'";
+		
+		$select = 'uuid, created_at, A.*';
+		$from = 'renshi_jiabans, jsonb_to_recordset(application) as A(uid text, category text, duration float, applicant text, department text, datetimerange text)';
+		
+		// 查询条件
+		// $where_applicant = "application @> '[{\"applicant\":\"zhang san\"}]'::jsonb	AND A.applicant = 'zhang san'";
+		// $where = "application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND A.uid = '071215958'";
+
+		// $queryfilter_applicant = 'zhang san';
+		// $queryfilter_uid = '071015516';
+		// dd($queryfilter_uid);
+
+		$result = DB::table(DB::raw($from))
+			->select(DB::raw($select))
+			->when($queryfilter_uid, function ($query) use ($queryfilter_uid) {
+				$where_uid = "application @> '[{\"uid\":\"" . $queryfilter_uid . "\"}]'::jsonb AND A.uid = '". $queryfilter_uid . "'";
+				return $query->whereRaw($where_uid);
+			})
+			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
+				$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
+				return $query->whereRaw($where_applicant);
+			})
+			->paginate($perPage, ['*'], 'page', $page);
 
 		// $result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', DB::raw("JSON_EXTRACT(application, '$**.applicant') AS applicant'"), 'created_at')
 		// 	->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
