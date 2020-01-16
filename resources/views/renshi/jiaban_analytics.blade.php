@@ -59,7 +59,7 @@ Renshi(Jiaban) -
 
 <Tabs type="card" v-model="currenttabs">
 
-	<Tab-pane Icon="ios-archive-outline" label="按人员统计">
+	<Tab-pane Icon="ios-list-box-outline" label="表格统计">
 
 		<i-row :gutter="16">
 			<br>
@@ -389,6 +389,13 @@ Renshi(Jiaban) -
 		
 			</i-col>
 		</i-row>
+
+	</Tab-pane>
+
+
+	<Tab-pane Icon="ios-stats-outline" label="图表统计">
+
+
 
 	</Tab-pane>
 

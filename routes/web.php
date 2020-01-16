@@ -472,4 +472,7 @@ Route::group(['prefix'=>'test', 'namespace'=>'Test', 'middleware'=>[]], function
 
 	// 测试邮件
 	Route::get('mail', 'testController@mail');
+
+	// 测试echarts
+	Route::get('echarts', 'testController@echarts');
 });

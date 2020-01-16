@@ -235,5 +235,12 @@ dd($email);
 	}
 
 
+    // echarts界面
+	public function echarts() {
+
+		return view('test.echarts');
+		
+	}
+
 
 }
