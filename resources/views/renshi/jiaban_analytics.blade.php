@@ -1203,7 +1203,7 @@ console.log(queryfilter_applicant);return false;
 		_this.current_nav = '加班管理';
 		_this.current_subnav = '统计';
 		// 显示所有
-		_this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
+		// _this.jiabangetsanalytics(1, 1); // page: 1, last_page: 1
 
 		// GetCurrentDatetime('getcurrentdatetime');
 	}
