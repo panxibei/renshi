@@ -377,7 +377,7 @@ class JiabanController extends Controller
 	
 	$queryfilter_uid = $request->input('queryfilter_uid');
 	$queryfilter_applicant = $request->input('queryfilter_applicant');
-	$queryfilter_auditor = $request->input('queryfilter_auditor');
+	$queryfilter_category = $request->input('queryfilter_category');
 	$queryfilter_created_at = $request->input('queryfilter_created_at');
 // dd($queryfilter_created_at);
 	// dd($queryfilter_applicant);
@@ -413,6 +413,10 @@ class JiabanController extends Controller
 			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
 				$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
 				return $query->whereRaw($where_applicant);
+			})
+			->when($queryfilter_category, function ($query) use ($queryfilter_category) {
+				$where_category = "application @> '[{\"category\":\"" . $queryfilter_category . "\"}]'::jsonb AND A.category = '" . $queryfilter_category . "'";
+				return $query->whereRaw($where_category);
 			})
 			->when($queryfilter_created_at[0], function ($query) use ($queryfilter_created_at) {
 				return $query->whereBetween('created_at', $queryfilter_created_at);

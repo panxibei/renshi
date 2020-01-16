@@ -42,27 +42,12 @@ Renshi(Jiaban) -
 				</i-col>
 				<i-col span="6">
 					类别&nbsp;
+					<i-select v-model.lazy="queryfilter_category" @on-change="jiabangetsanalytics(page_current, page_last)" clearable placeholder="" style="width: 120px;" size="small">
+						<i-option v-for="item in options_queryfilter_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
 				</i-col>
 			</i-row>
 
-			&nbsp;
-
-			<i-row :gutter="16">
-			<br>
-				<i-col span="8">
-					&nbsp;
-				</i-col>
-				<i-col span="2">
-					@hasanyrole('role_super_admin')
-						<Checkbox v-model="queryfilter_trashed" @on-change="jiabangetsanalytics(page_current, page_last)">已删除</Checkbox>
-					@else
-						&nbsp;
-					@endhasanyrole
-				</i-col>
-				<i-col span="14">
-					&nbsp;
-				</i-col>
-			</i-row>
 
 		
 		
@@ -645,7 +630,7 @@ var vm_app = new Vue({
 		// 查询过滤器
 		queryfilter_uid: '',
 		queryfilter_applicant: '',
-		// queryfilter_auditor: '',
+		queryfilter_category: '',
 		queryfilter_created_at: '',
 		queryfilter_trashed: false,
 		
@@ -657,6 +642,11 @@ var vm_app = new Vue({
 		loading_queryfilter_uid: false,
 		options_queryfilter_applicant: [],
 		loading_queryfilter_applicant: false,
+		options_queryfilter_category: [
+			{label: '平时加班', value: '平时加班'},
+			{label: '双休加班', value: '双休加班'},
+			{label: '节假日加班', value: '节假日加班'},
+		],
 
 		
 		// 选择角色查看编辑相应权限
@@ -832,10 +822,12 @@ var vm_app = new Vue({
 			
 			var queryfilter_uid = _this.queryfilter_uid || '';
 			var queryfilter_applicant = _this.queryfilter_applicant || '';
+			var queryfilter_category = _this.queryfilter_category || '';
 			var queryfilter_created_at = _this.queryfilter_created_at;
 			
 			if (queryfilter_uid == ''
 				&& queryfilter_applicant == ''
+				&& queryfilter_category == ''
 				&& queryfilter_created_at[0] == '' && queryfilter_created_at[1] == '') {
 				// _this.delete_disabled = true;
 				_this.tabledata = [];
@@ -873,6 +865,7 @@ var vm_app = new Vue({
 					page: page,
 					queryfilter_uid: queryfilter_uid,
 					queryfilter_applicant: queryfilter_applicant,
+					queryfilter_category: queryfilter_category,
 					queryfilter_created_at: queryfilter_created_at,
 				}
 			})
