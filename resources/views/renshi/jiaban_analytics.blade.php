@@ -32,14 +32,16 @@ Renshi(Jiaban) -
 				</i-col>
 				<i-col span="5">
 					申请人&nbsp;&nbsp;
-					<i-input v-model.lazy="queryfilter_applicant" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+					<i-select v-model.lazy="queryfilter_applicant" filterable remote :remote-method="remoteMethod_queryfilter_applicant" :loading="loading_queryfilter_applicant" @on-change="jiabangetsanalytics(page_current, page_last)" clearable placeholder="输入姓名后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in options_queryfilter_applicant" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
 				</i-col>
-				<i-col span="5">
-					审核人&nbsp;&nbsp;
-					<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsanalytics(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
+				<i-col span="8">
+					提交时间&nbsp;
+					<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsanalytics(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
 				</i-col>
-				<i-col span="9">
-					&nbsp;
+				<i-col span="6">
+					类别&nbsp;
 				</i-col>
 			</i-row>
 
@@ -48,8 +50,7 @@ Renshi(Jiaban) -
 			<i-row :gutter="16">
 			<br>
 				<i-col span="8">
-					提交时间&nbsp;
-					<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsanalytics(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
+					&nbsp;
 				</i-col>
 				<i-col span="2">
 					@hasanyrole('role_super_admin')
@@ -644,7 +645,7 @@ var vm_app = new Vue({
 		// 查询过滤器
 		queryfilter_uid: '',
 		queryfilter_applicant: '',
-		queryfilter_auditor: '',
+		// queryfilter_auditor: '',
 		queryfilter_created_at: '',
 		queryfilter_trashed: false,
 		
@@ -652,9 +653,10 @@ var vm_app = new Vue({
 		collapse_query: '1',
 		
 		// 选择下拉过滤器
-		// user_select_current: '',
 		options_queryfilter_uid: [],
 		loading_queryfilter_uid: false,
+		options_queryfilter_applicant: [],
+		loading_queryfilter_applicant: false,
 
 		
 		// 选择角色查看编辑相应权限
@@ -830,12 +832,10 @@ var vm_app = new Vue({
 			
 			var queryfilter_uid = _this.queryfilter_uid;
 			var queryfilter_applicant = _this.queryfilter_applicant;
-			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_created_at = _this.queryfilter_created_at;
 
 			if (queryfilter_uid == '' || queryfilter_uid == undefined
 				&& queryfilter_applicant == '' || queryfilter_applicant == undefined
-				&& queryfilter_auditor == '' || queryfilter_auditor == undefined
 				&& queryfilter_created_at[0] == '' || queryfilter_created_at[0] == undefined
 				&& queryfilter_created_at[1] == ''|| queryfilter_created_at[1] == undefined) {
 				// _this.delete_disabled = true;
@@ -858,7 +858,7 @@ var vm_app = new Vue({
 				queryfilter_created_at = [start, end];
 			}
 
-
+console.log(queryfilter_applicant);return false;
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsanalytics') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -868,7 +868,6 @@ var vm_app = new Vue({
 					page: page,
 					queryfilter_uid: queryfilter_uid,
 					queryfilter_applicant: queryfilter_applicant,
-					queryfilter_auditor: queryfilter_auditor,
 					queryfilter_created_at: queryfilter_created_at,
 				}
 			})
@@ -1074,7 +1073,6 @@ var vm_app = new Vue({
 		onexport_archived () {
 			var _this = this;
 
-			var queryfilter_auditor = _this.queryfilter_auditor;
 			var queryfilter_trashed = _this.queryfilter_trashed;
 			var queryfilter_created_at = _this.queryfilter_created_at;
 			
@@ -1098,7 +1096,6 @@ var vm_app = new Vue({
 			var url = "{{ route('renshi.jiaban.archived.archivedexport') }}"
 				+ "?queryfilter_datefrom=" + queryfilter_datefrom
 				+ "&queryfilter_dateto=" + queryfilter_dateto
-				+ "&queryfilter_auditor=" + queryfilter_auditor
 				+ "&queryfilter_trashed=" + queryfilter_trashed;
 			window.setTimeout(function(){
 				window.location.href = url;
@@ -1107,7 +1104,7 @@ var vm_app = new Vue({
 		},
 		
 
-		// 远程查询当前用户
+		// 远程查询申请人ID
 		remoteMethod_queryfilter_uid (query) {
 			var _this = this;
 
@@ -1149,6 +1146,51 @@ var vm_app = new Vue({
 				
 			} else {
 				_this.options_queryfilter_uid = [];
+			}
+		},
+
+		// 远程查询申请人
+		remoteMethod_queryfilter_applicant (query) {
+			var _this = this;
+
+			if (query !== '') {
+				_this.loading_queryfilter_applicant = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('renshi.jiaban.applicant.applicantlist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					// return false;
+
+					if (response.data['jwt'] == 'logout') {
+						_this.alert_logout();
+						return false;
+					}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.options_queryfilter_applicant = _this.json2selectvalue(json);
+					}
+
+					setTimeout(() => {
+						_this.loading_queryfilter_applicant = false;
+					}, 200);
+				})
+				.catch(function (error) {
+					setTimeout(() => {
+						_this.loading_queryfilter_applicant = false;
+					}, 200);
+				})				
+				
+			} else {
+				_this.options_queryfilter_applicant = [];
 			}
 		},
 

@@ -150,6 +150,8 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// Analytics gets列表
 	Route::get('jiabanGetsAnalytics', 'JiabanController@jiabanGetsAnalytics')->name('renshi.jiaban.jiabangetsanalytics');
 
+	// Analytics 查询applicant
+	Route::get('applicantList', 'JiabanController@applicantList')->name('renshi.jiaban.applicant.applicantlist');
 
 	
 });

@@ -380,7 +380,7 @@ class JiabanController extends Controller
 	$queryfilter_auditor = $request->input('queryfilter_auditor');
 	$queryfilter_created_at = $request->input('queryfilter_created_at');
 	$queryfilter_trashed = $request->input('queryfilter_trashed');
-// dd($queryfilter_created_at);
+dd($queryfilter_applicant);
 	//对查询参数按照键名排序
 	ksort($queryParams);
 
@@ -471,6 +471,52 @@ class JiabanController extends Controller
 			->limit(10)
 			->orderBy('created_at', 'desc')
 			->pluck('uid', 'uid')->toArray();
+
+		Cache::put($fullUrl, $result, now()->addSeconds(10));
+	}
+
+	return $result;
+	}
+
+
+	/**
+	 * 列出人员
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function applicantList(Request $request)
+	{
+	if (! $request->ajax()) return null;
+
+	// 重置角色和权限的缓存
+	app()['cache']->forget('spatie.permission.cache');
+	
+	$url = request()->url();
+	$queryParams = request()->query();
+	
+	$queryfilter_name = $request->input('queryfilter_name');
+
+	//对查询参数按照键名排序
+	ksort($queryParams);
+
+	//将查询数组转换为查询字符串
+	$queryString = http_build_query($queryParams);
+
+	$fullUrl = sha1("{$url}?{$queryString}");
+	
+	
+	//首先查寻cache如果找到
+	if (Cache::has($fullUrl)) {
+		$result = Cache::get($fullUrl);    //直接读取cache
+	} else {                                   //如果cache里面没有
+		$result = User::when($queryfilter_name, function ($query) use ($queryfilter_name) {
+				return $query->where('displayname', 'like', '%'.$queryfilter_name.'%');
+			})
+			->where('id', '>', 10)
+			->limit(10)
+			->orderBy('created_at', 'desc')
+			->pluck('displayname', 'displayname')->toArray();
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 	}
