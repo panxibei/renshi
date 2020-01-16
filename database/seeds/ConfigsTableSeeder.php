@@ -166,7 +166,7 @@ class ConfigsTableSeeder extends Seeder
                 'cfg_id' => 15,
                 'cfg_name' => 'PERPAGE_RECORDS_FOR_APPLICANT',
                 'cfg_value' => '5',
-				'cfg_description' => 'APPLICANT页每页记录数',
+				'cfg_description' => 'APPLICANT每页记录数（配置跟随用户）',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -176,7 +176,7 @@ class ConfigsTableSeeder extends Seeder
                 'cfg_id' => 16,
                 'cfg_name' => 'PERPAGE_RECORDS_FOR_TODO',
                 'cfg_value' => '5',
-				'cfg_description' => 'TODO页每页记录数',
+				'cfg_description' => 'TODO每页记录数（配置跟随用户）',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -184,9 +184,9 @@ class ConfigsTableSeeder extends Seeder
             16 => 
             array (
                 'cfg_id' => 17,
-                'cfg_name' => 'PERPAGE_RECORDS_FOR_ARCHIVE',
+                'cfg_name' => 'PERPAGE_RECORDS_FOR_ARCHIVED',
                 'cfg_value' => '5',
-				'cfg_description' => 'ARCHIVE页每页记录数',
+				'cfg_description' => 'ARCHIVE每页记录数（配置跟随用户）',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -194,9 +194,9 @@ class ConfigsTableSeeder extends Seeder
             17 => 
             array (
                 'cfg_id' => 18,
-                'cfg_name' => 'SITE_MAINTENANCE_ALLOWED',
-                'cfg_value' => '127.0.0.1',
-				'cfg_description' => '站点系统维护允许IP，逗号分隔',
+                'cfg_name' => 'PERPAGE_RECORDS_FOR_ANALYTICS',
+                'cfg_value' => '5',
+				'cfg_description' => 'ANALYTICS每页记录数（配置跟随用户）',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -204,6 +204,16 @@ class ConfigsTableSeeder extends Seeder
             18 => 
             array (
                 'cfg_id' => 19,
+                'cfg_name' => 'SITE_MAINTENANCE_ALLOWED',
+                'cfg_value' => '127.0.0.1',
+				'cfg_description' => '站点系统维护允许IP，逗号分隔',
+                'created_at' => $nowtime,
+                'updated_at' => $nowtime,
+                'deleted_at' => NULL,
+            ),
+            19 => 
+            array (
+                'cfg_id' => 20,
                 'cfg_name' => 'SITE_MAINTENANCE_MESSAGE',
                 'cfg_value' => '',
 				'cfg_description' => '站点系统维护消息',
@@ -211,9 +221,9 @@ class ConfigsTableSeeder extends Seeder
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
             ),
-            19 => 
+            20 => 
             array (
-                'cfg_id' => 19,
+                'cfg_id' => 21,
                 'cfg_name' => 'EMAIL_ENABLED',
                 'cfg_value' => '0',
 				'cfg_description' => '是否开启邮件通知，1为开启，0为关闭',

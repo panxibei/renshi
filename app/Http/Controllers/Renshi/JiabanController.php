@@ -379,7 +379,7 @@ class JiabanController extends Controller
 	$queryfilter_applicant = $request->input('queryfilter_applicant');
 	$queryfilter_auditor = $request->input('queryfilter_auditor');
 	$queryfilter_created_at = $request->input('queryfilter_created_at');
-
+// dd($queryfilter_created_at);
 	// dd($queryfilter_applicant);
 	//对查询参数按照键名排序
 	ksort($queryParams);
@@ -414,7 +414,7 @@ class JiabanController extends Controller
 				$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
 				return $query->whereRaw($where_applicant);
 			})
-			->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+			->when($queryfilter_created_at[0], function ($query) use ($queryfilter_created_at) {
 				return $query->whereBetween('created_at', $queryfilter_created_at);
 			}, function ($query) {
 				$timefrom = date("Y-m-d H:i:s",time()-604800);

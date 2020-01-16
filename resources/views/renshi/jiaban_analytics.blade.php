@@ -38,7 +38,7 @@ Renshi(Jiaban) -
 				</i-col>
 				<i-col span="8">
 					提交时间&nbsp;
-					<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsanalytics(page_current, page_last)" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
+					<Date-picker v-model.lazy="queryfilter_created_at" @on-change="jiabangetsanalytics(page_current, page_last)" type="daterange" format="yyyy-MM-dd HH:mm" size="small" placeholder="" style="width:250px"></Date-picker>
 				</i-col>
 				<i-col span="6">
 					类别&nbsp;
@@ -445,7 +445,7 @@ var vm_app = new Vue({
 		//分页
 		page_current: 1,
 		page_total: 0, // 记录总数，非总页数
-		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_ARCHIVED'] ?? 5 }},
+		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_ANALYTICS'] ?? 5 }},
 		page_last: 1,
 
 		// 创建
@@ -792,7 +792,7 @@ var vm_app = new Vue({
 		// 切换页记录数
 		onpagesizechange: function (pagesize) {
 			var _this = this;
-			var field = 'PERPAGE_RECORDS_FOR_ARCHIVED';
+			var field = 'PERPAGE_RECORDS_FOR_ANALYTICS';
 			var value = pagesize;
 			var url = "{{ route('renshi.jiaban.applicant.changeconfigs') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -830,14 +830,13 @@ var vm_app = new Vue({
 				page = 1;
 			}
 			
-			var queryfilter_uid = _this.queryfilter_uid;
-			var queryfilter_applicant = _this.queryfilter_applicant;
+			var queryfilter_uid = _this.queryfilter_uid || '';
+			var queryfilter_applicant = _this.queryfilter_applicant || '';
 			var queryfilter_created_at = _this.queryfilter_created_at;
-
-			if (queryfilter_uid == '' || queryfilter_uid == undefined
-				&& queryfilter_applicant == '' || queryfilter_applicant == undefined
-				&& queryfilter_created_at[0] == '' || queryfilter_created_at[0] == undefined
-				&& queryfilter_created_at[1] == ''|| queryfilter_created_at[1] == undefined) {
+			
+			if (queryfilter_uid == ''
+				&& queryfilter_applicant == ''
+				&& queryfilter_created_at[0] == '' && queryfilter_created_at[1] == '') {
 				// _this.delete_disabled = true;
 				_this.tabledata = [];
 				_this.page_current = 1;
@@ -845,20 +844,26 @@ var vm_app = new Vue({
 				_this.page_last = 1;
 				return false;
 			}
-
-			if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
-				queryfilter_created_at = '';
-			} else {
-				const end = new Date();
-				const start = new Date();
-				// 加8小时
-				end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
-				start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
-				// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
-				queryfilter_created_at = [start, end];
+			
+			if (queryfilter_created_at[0] != '' && queryfilter_created_at[1] != '') {
+				queryfilter_created_at = [queryfilter_created_at[0].Format("yyyy-MM-dd 00:00:00"), queryfilter_created_at[1].Format("yyyy-MM-dd 23:59:59")];
 			}
 
-// console.log(queryfilter_applicant);return false;
+			// if (queryfilter_created_at[0]=='' || queryfilter_created_at[0]==undefined) {
+			// 	queryfilter_created_at = '';
+			// } else {
+			// 	const end = new Date();
+			// 	const start = new Date();
+			// 	// 加8小时
+			// 	end.setTime(queryfilter_created_at[1].getTime() + 3600 * 1000 * 8);
+			// 	start.setTime(queryfilter_created_at[0].getTime() + 3600 * 1000 * 8);
+			// 	// start.setTime(queryfilter_created_at[0].getTime() - 3600 * 1000 * 24 * 365);
+			// 	queryfilter_created_at = [start, end];
+			// }
+
+
+
+// console.log(queryfilter_created_at);return false;
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsanalytics') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
