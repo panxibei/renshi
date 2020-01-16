@@ -858,7 +858,7 @@ var vm_app = new Vue({
 				queryfilter_created_at = [start, end];
 			}
 
-console.log(queryfilter_applicant);return false;
+// console.log(queryfilter_applicant);return false;
 			_this.loadingbarstart();
 			var url = "{{ route('renshi.jiaban.jiabangetsanalytics') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';

@@ -379,8 +379,8 @@ class JiabanController extends Controller
 	$queryfilter_applicant = $request->input('queryfilter_applicant');
 	$queryfilter_auditor = $request->input('queryfilter_auditor');
 	$queryfilter_created_at = $request->input('queryfilter_created_at');
-	$queryfilter_trashed = $request->input('queryfilter_trashed');
-dd($queryfilter_applicant);
+
+	// dd($queryfilter_applicant);
 	//对查询参数按照键名排序
 	ksort($queryParams);
 
@@ -413,6 +413,13 @@ dd($queryfilter_applicant);
 			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
 				$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
 				return $query->whereRaw($where_applicant);
+			})
+			->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+				return $query->whereBetween('created_at', $queryfilter_created_at);
+			}, function ($query) {
+				$timefrom = date("Y-m-d H:i:s",time()-604800);
+				$timeto = date("Y-m-d H:i:s",time());
+				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
 			->paginate($perPage, ['*'], 'page', $page);
 
