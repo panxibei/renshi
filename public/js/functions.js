@@ -3,6 +3,33 @@
  * 
  */
 
+
+// 计算日期天数差
+function DiffInNumOfDate(date1, date2) { //date1:小日期   date2:大日期
+　　var ddate1 = Date.parse(date1); 
+　　var ddate2 = Date.parse(date2); 
+　　var days = Math.floor((ddate2 - ddate1) / (1000 * 60 * 60 * 24)); 
+　　return days; 
+} 
+
+
+// 开始提醒日期
+var dateofcurrent = new Date();
+var dateofhint = new Date('2020-08-10 23:59:59');
+var dateofsetup = new Date('2020-10-10 23:59:59');
+
+// alert(DiffInNumOfDate(dateofcurrent, dateofhint));
+
+if (dateofcurrent >= dateofhint) {
+    var d = DiffInNumOfDate(dateofcurrent, dateofsetup);
+    if (d > 0) {
+        alert(
+            '警告！系统框架和组件将于' + d + '天后过期，请尽快升级以免影响使用！\n\nWarning! The system framework and components will exceed the time limit after ' + d + ' days!'
+        );
+    }
+}
+
+
 // 判断PC端还是移动端
 var isMobile = false;//默认PC端
 function mobile() {
