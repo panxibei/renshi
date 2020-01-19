@@ -395,7 +395,11 @@ Renshi(Jiaban) -
 
 	<Tab-pane Icon="ios-stats-outline" label="图表统计">
 
-
+		<i-row :gutter="16">
+			<i-col span="24">
+				<div id="chart1" style="width:auto;height:400px;"></div>
+			</i-col>
+		</i-row>
 
 	</Tab-pane>
 
@@ -679,6 +683,18 @@ var vm_app = new Vue({
 		test_user_options: [],
 		test_user_loading: false,
 		
+		// chart1数据
+		chart1_data: [{
+			name: 'Apples',
+			value: 70
+		}, {
+			name: 'Strawberries',
+			value: 68
+		}, {
+			name: 'Bananas',
+			value: 48
+		}],
+
 		
     },
 	methods: {
@@ -877,7 +893,7 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
+				// console.log(response.data.res_paginate);
 				// return false;
 
 				if (response.data['jwt'] == 'logout') {
@@ -889,13 +905,49 @@ var vm_app = new Vue({
 					// _this.delete_disabled = true;
 					// _this.tableselect = [];
 					
-					_this.page_current = response.data.current_page;
-					_this.page_total = response.data.total;
-					_this.page_last = response.data.last_page;
-					_this.tabledata = response.data.data;
+					_this.page_current = response.data.res_paginate.current_page;
+					_this.page_total = response.data.res_paginate.total;
+					_this.page_last = response.data.res_paginate.last_page;
+					_this.tabledata = response.data.res_paginate.data;
+
+					var fulltotal = response.data.res_fulltotal;
+					// console.log(fulltotal);
 					
 				}
-				
+
+				// 图表显示
+				if (_this.currenttabs > 0) {
+
+					var pie_applicant = [];
+					var pie_category = [];
+					var pie_department = [];
+
+					var t = [];
+					for (let i=0, l=fulltotal.length; i<l; i++) {
+console.log(fulltotal[i].applicant);
+						for (let j=0, k=pie_applicant.length; j<k; j++) {
+							if (pie_applicant[j].applicant == fulltotal[i].applicant) {
+							
+							} else {
+								pie_applicant.push({
+									'applicant': fulltotal[i].applicant,
+									'duration': fulltotal[i].duration
+								});
+							}
+
+
+						}
+
+
+
+					}
+
+					console.log(pie_applicant);
+
+
+					_this.chart1();
+				}
+
 				_this.loadingbarfinish();
 			})
 			.catch(function (error) {
@@ -1199,6 +1251,82 @@ var vm_app = new Vue({
 			}
 		},
 
+		// chart1 pie
+		chart1() {
+			var myChart = echarts.init(document.getElementById('chart1'));
+
+			var data = this.chart1_data;
+
+			option = {
+				title: [{
+					text: ''
+				}, {
+					subtext: '▲ 按人员',
+					left: '16.67%',
+					top: '50%',
+					textAlign: 'center'
+				}, {
+					subtext: '▲ 按类别',
+					left: '50%',
+					top: '50%',
+					textAlign: 'center'
+				}, {
+					subtext: '▲ 按部门',
+					left: '83.33%',
+					top: '50%',
+					textAlign: 'center'
+				}],
+				series: [{
+					type: 'pie',
+					radius: '40%',
+					center: ['50%', '50%'],
+					data: data,
+					animation: false,
+					label: {
+						position: 'outer',
+						alignTo: 'none',
+						bleedMargin: 5
+					},
+					left: 0,
+					right: '66.6667%',
+					top: 0,
+					bottom: 200
+				}, {
+					type: 'pie',
+					radius: '40%',
+					center: ['50%', '50%'],
+					data: data,
+					animation: false,
+					label: {
+						position: 'outer',
+						alignTo: 'labelLine',
+						bleedMargin: 5
+					},
+					left: '33.3333%',
+					right: '33.3333%',
+					top: 0,
+					bottom: 200
+				}, {
+					type: 'pie',
+					radius: '40%',
+					center: ['50%', '50%'],
+					data: data,
+					animation: false,
+					label: {
+						position: 'outer',
+						alignTo: 'edge',
+						margin: 20
+					},
+					left: '66.6667%',
+					right: 0,
+					top: 0,
+					bottom: 200
+				}]
+			};
+
+			myChart.setOption(option);
+
+		},
 
 
 

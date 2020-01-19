@@ -404,7 +404,7 @@ class JiabanController extends Controller
 		// $where_applicant = "application @> '[{\"applicant\":\"zhang san\"}]'::jsonb	AND A.applicant = 'zhang san'";
 		// $where = "application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND A.uid = '071215958'";
 
-		$result = DB::table(DB::raw($from))
+		$res_paginate = DB::table(DB::raw($from))
 			->select(DB::raw($select))
 			->when($queryfilter_uid, function ($query) use ($queryfilter_uid) {
 				$where_uid = "application @> '[{\"uid\":\"" . $queryfilter_uid . "\"}]'::jsonb AND A.uid = '". $queryfilter_uid . "'";
@@ -427,18 +427,37 @@ class JiabanController extends Controller
 			})
 			->paginate($perPage, ['*'], 'page', $page);
 
-		// $result = Renshi_jiaban::select('id', 'uuid', 'agent', 'department_of_agent', DB::raw("JSON_EXTRACT(application, '$**.applicant') AS applicant'"), 'created_at')
-		// 	->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
-		// 		return $query->whereBetween('created_at', $queryfilter_created_at);
-		// 	})
-		// 	->where('archived', true)
-		// 	->limit(1000)
-		// 	->orderBy('created_at', 'desc')
-		// 	->get()->toArray();
-		// 	// ->paginate($perPage, ['*'], 'page', $page);
+		$res_fulltotal = DB::table(DB::raw($from))
+			->select(DB::raw($select))
+			->when($queryfilter_uid, function ($query) use ($queryfilter_uid) {
+				$where_uid = "application @> '[{\"uid\":\"" . $queryfilter_uid . "\"}]'::jsonb AND A.uid = '". $queryfilter_uid . "'";
+				return $query->whereRaw($where_uid);
+			})
+			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
+				$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
+				return $query->whereRaw($where_applicant);
+			})
+			->when($queryfilter_category, function ($query) use ($queryfilter_category) {
+				$where_category = "application @> '[{\"category\":\"" . $queryfilter_category . "\"}]'::jsonb AND A.category = '" . $queryfilter_category . "'";
+				return $query->whereRaw($where_category);
+			})
+			->when($queryfilter_created_at[0], function ($query) use ($queryfilter_created_at) {
+				return $query->whereBetween('created_at', $queryfilter_created_at);
+			}, function ($query) {
+				$timefrom = date("Y-m-d H:i:s",time()-604800);
+				$timeto = date("Y-m-d H:i:s",time());
+				return $query->whereBetween('created_at', [$timefrom, $timeto]);
+			})
+			->get();
+
+
+		// $result = ['paginate'=>$res_paginate, 'fulltotal'=>$res_fulltotal];
+		$result = compact('res_paginate', 'res_fulltotal');
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 	}
+
+
 	// dd($result);
 	return $result;
 	}

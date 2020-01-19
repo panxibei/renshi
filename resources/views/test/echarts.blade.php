@@ -91,7 +91,7 @@ var vm_app = new Vue({
 			})
 		},
 		
-		echarts_columne () {
+		echarts_column () {
 				// 基于准备好的dom，初始化echarts实例
 				var myChart = echarts.init(document.getElementById('main'));
 
@@ -220,7 +220,7 @@ var vm_app = new Vue({
 
 	},
 	mounted: function () {
-		// this.echarts_columne();
+		// this.echarts_column();
 		this.echarts_pie();
 	}
 })

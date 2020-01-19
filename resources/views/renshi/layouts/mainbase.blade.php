@@ -309,6 +309,7 @@ if (isMobile) {
 <script src="{{ asset('js/axios.min.js') }}"></script>
 <script src="{{ asset('js/bluebird.min.js') }}"></script>
 <script src="{{ asset('statics/iview/iview.min.js') }}"></script>
+<script src="{{ asset('statics/echarts/echarts.min.js') }}"></script>
 <script src="{{ asset('js/httpVueLoader.js') }}"></script>
 <script src="{{ asset('statics/print/print.min.js') }}"></script>
 @section('my_js_others')
