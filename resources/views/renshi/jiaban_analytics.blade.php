@@ -1270,6 +1270,10 @@ var vm_app = new Vue({
 					top: '50%',
 					textAlign: 'center'
 				}],
+				tooltip: {
+					trigger: 'item',
+					formatter: '{c}小时 ({d})%'
+				},
 				series: [{
 					type: 'pie',
 					radius: '40%',
