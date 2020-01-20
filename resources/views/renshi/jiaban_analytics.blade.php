@@ -57,7 +57,7 @@ Renshi(Jiaban) -
 </Collapse>
 &nbsp;
 
-<Tabs type="card" v-model="currenttabs">
+<Tabs type="card" v-model="currenttabs" @on-click="tabsclick()">
 
 	<Tab-pane Icon="ios-list-box-outline" label="表格统计">
 
@@ -393,11 +393,21 @@ Renshi(Jiaban) -
 	</Tab-pane>
 
 
-	<Tab-pane Icon="ios-stats-outline" label="图表统计">
+	<Tab-pane Icon="ios-stats-outline" label="图表1 - 分类饼图汇总">
 
 		<i-row :gutter="16">
 			<i-col span="24">
 				<div id="chart1" style="width:auto;height:400px;"></div>
+			</i-col>
+		</i-row>
+
+	</Tab-pane>
+
+	<Tab-pane Icon="ios-stats-outline" label="图表2 - 按日期统计">
+
+		<i-row :gutter="16">
+			<i-col span="24">
+				<div id="chart2" style="width:auto;height:400px;"></div>
 			</i-col>
 		</i-row>
 
@@ -697,6 +707,9 @@ var vm_app = new Vue({
 		chart1_data2: [],
 		chart1_data3: [],
 
+		// chart2数据
+		chart2_data_category: [], //['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		chart2_data_value: [], //[820, 932, 901, 934, 1290, 1330, 1320],
 		
     },
 	methods: {
@@ -920,24 +933,26 @@ var vm_app = new Vue({
 				// 图表显示
 				if (_this.currenttabs > 0) {
 
-					// var pie_applicant = response.data.res_fulltotal;;
-					// var pie_category = [];
-					// var pie_department = [];
-
-
-
-
-					
-
-
-
-
+					// chart1
 					_this.chart1_data1 = response.data.res_chart1_data1;
 					_this.chart1_data2 = response.data.res_chart1_data2;
 					_this.chart1_data3 = response.data.res_chart1_data3;
-
-
+					
 					_this.chart1();
+
+					// chart2
+					console.log(response.data.res_chart2_data);
+					var chart2_data = response.data.res_chart2_data;
+
+					for (let i=0,l=chart2_data.length;i<l;i++) {
+						_this.chart2_data_category.push(chart2_data[i].category);
+						_this.chart2_data_value.push(chart2_data[i].value);
+					}
+
+					_this.chart2();
+
+					// chart3
+
 				}
 
 				_this.loadingbarfinish();
@@ -1243,6 +1258,13 @@ var vm_app = new Vue({
 			}
 		},
 
+		// 点击TABS
+		tabsclick() {
+			if (this.currenttabs != 0) {
+				this.jiabangetsanalytics(this.page_current, this.page_last);
+			}
+		},
+
 		// chart1 pie
 		chart1() {
 			var myChart = echarts.init(document.getElementById('chart1'));
@@ -1324,6 +1346,44 @@ var vm_app = new Vue({
 
 			myChart.setOption(option);
 
+		},
+
+		chart2() {
+			var myChart = echarts.init(document.getElementById('chart2'));
+
+			option = {
+				xAxis: {
+					type: 'category',
+					data: this.chart2_data_category
+				},
+				yAxis: {
+					type: 'value'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross',
+						animation: true,
+						label: {
+							backgroundColor: '#ccc',
+							borderColor: '#aaa',
+							borderWidth: 1,
+							shadowBlur: 0,
+							shadowOffsetX: 0,
+							shadowOffsetY: 0,
+
+							color: '#222'
+						}
+					},
+					formatter: '{b0}: {c0}小时'
+				},
+				series: [{
+					data: this.chart2_data_value,
+					type: 'line'
+				}]
+			};
+
+			myChart.setOption(option);
 		},
 
 
