@@ -684,7 +684,7 @@ var vm_app = new Vue({
 		test_user_loading: false,
 		
 		// chart1数据
-		chart1_data: [{
+		chart1_data1: [{
 			name: 'Apples',
 			value: 70
 		}, {
@@ -694,6 +694,8 @@ var vm_app = new Vue({
 			name: 'Bananas',
 			value: 48
 		}],
+		chart1_data2: [],
+		chart1_data3: [],
 
 		
     },
@@ -910,46 +912,29 @@ var vm_app = new Vue({
 					_this.page_last = response.data.res_paginate.last_page;
 					_this.tabledata = response.data.res_paginate.data;
 
-					var fulltotal = response.data.res_fulltotal;
-					console.log(fulltotal);
+					// var fulltotal = response.data.res_fulltotal;
+					// console.log(fulltotal);
 					
 				}
 
 				// 图表显示
 				if (_this.currenttabs > 0) {
 
-					var pie_applicant = [];
-					var pie_category = [];
-					var pie_department = [];
+					// var pie_applicant = response.data.res_fulltotal;;
+					// var pie_category = [];
+					// var pie_department = [];
 
-					
-					pie_applicant.push({
-						'applicant': fulltotal[0].applicant,
-						'duration': parseFloat(fulltotal[0].duration)
-					});
-
-					for (let i=1, l=fulltotal.length; i<l; i++) {
-// console.log(fulltotal[i].applicant);
-						for (let j=0, k=pie_applicant.length; j<k; j++) {
-							
-							if (pie_applicant[j].applicant == fulltotal[i].applicant) {
-								pie_applicant[j].duration += parseFloat(fulltotal[i].duration);
-							
-							} else {
-								pie_applicant.push({
-									'applicant': fulltotal[i].applicant,
-									'duration': parseFloat(fulltotal[i].duration)
-								});
-							}
-
-
-						}
 
 
 
-					}
+					
 
-					// console.log(pie_applicant);
+
+
+
+					_this.chart1_data1 = response.data.res_chart1_data1;
+					_this.chart1_data2 = response.data.res_chart1_data2;
+					_this.chart1_data3 = response.data.res_chart1_data3;
 
 
 					_this.chart1();
@@ -1262,7 +1247,9 @@ var vm_app = new Vue({
 		chart1() {
 			var myChart = echarts.init(document.getElementById('chart1'));
 
-			var data = this.chart1_data;
+			var data1 = this.chart1_data1;
+			var data2 = this.chart1_data2;
+			var data3 = this.chart1_data3;
 
 			option = {
 				title: [{
@@ -1287,7 +1274,7 @@ var vm_app = new Vue({
 					type: 'pie',
 					radius: '40%',
 					center: ['50%', '50%'],
-					data: data,
+					data: data1,
 					animation: false,
 					label: {
 						position: 'outer',
@@ -1302,7 +1289,7 @@ var vm_app = new Vue({
 					type: 'pie',
 					radius: '40%',
 					center: ['50%', '50%'],
-					data: data,
+					data: data2,
 					animation: false,
 					label: {
 						position: 'outer',
@@ -1317,7 +1304,7 @@ var vm_app = new Vue({
 					type: 'pie',
 					radius: '40%',
 					center: ['50%', '50%'],
-					data: data,
+					data: data3,
 					animation: false,
 					label: {
 						position: 'outer',
