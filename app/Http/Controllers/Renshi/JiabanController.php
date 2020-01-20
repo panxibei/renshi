@@ -379,6 +379,7 @@ class JiabanController extends Controller
 	$queryfilter_applicant = $request->input('queryfilter_applicant');
 	$queryfilter_category = $request->input('queryfilter_category');
 	$queryfilter_created_at = $request->input('queryfilter_created_at');
+	
 // dd($queryfilter_created_at);
 	// dd($queryfilter_applicant);
 	//对查询参数按照键名排序
@@ -427,6 +428,10 @@ class JiabanController extends Controller
 			})
 			->paginate($perPage, ['*'], 'page', $page);
 
+
+		$select = 'A.applicant, sum(A.duration) as duration';
+		$from = 'renshi_jiabans, jsonb_to_recordset(application) as A(uid text, category text, duration float, applicant text, department text, datetimerange text)';
+		
 		$res_fulltotal = DB::table(DB::raw($from))
 			->select(DB::raw($select))
 			->when($queryfilter_uid, function ($query) use ($queryfilter_uid) {
@@ -448,6 +453,7 @@ class JiabanController extends Controller
 				$timeto = date("Y-m-d H:i:s",time());
 				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
+			->groupby(DB::raw('A.applicant'))
 			->get();
 
 

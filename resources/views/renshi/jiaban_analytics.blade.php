@@ -911,7 +911,7 @@ var vm_app = new Vue({
 					_this.tabledata = response.data.res_paginate.data;
 
 					var fulltotal = response.data.res_fulltotal;
-					// console.log(fulltotal);
+					console.log(fulltotal);
 					
 				}
 
@@ -922,16 +922,23 @@ var vm_app = new Vue({
 					var pie_category = [];
 					var pie_department = [];
 
-					var t = [];
-					for (let i=0, l=fulltotal.length; i<l; i++) {
-console.log(fulltotal[i].applicant);
+					
+					pie_applicant.push({
+						'applicant': fulltotal[0].applicant,
+						'duration': parseFloat(fulltotal[0].duration)
+					});
+
+					for (let i=1, l=fulltotal.length; i<l; i++) {
+// console.log(fulltotal[i].applicant);
 						for (let j=0, k=pie_applicant.length; j<k; j++) {
+							
 							if (pie_applicant[j].applicant == fulltotal[i].applicant) {
+								pie_applicant[j].duration += parseFloat(fulltotal[i].duration);
 							
 							} else {
 								pie_applicant.push({
 									'applicant': fulltotal[i].applicant,
-									'duration': fulltotal[i].duration
+									'duration': parseFloat(fulltotal[i].duration)
 								});
 							}
 
@@ -942,7 +949,7 @@ console.log(fulltotal[i].applicant);
 
 					}
 
-					console.log(pie_applicant);
+					// console.log(pie_applicant);
 
 
 					_this.chart1();
