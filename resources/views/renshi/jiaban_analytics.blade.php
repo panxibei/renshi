@@ -944,6 +944,9 @@ var vm_app = new Vue({
 					console.log(response.data.res_chart2_data);
 					var chart2_data = response.data.res_chart2_data;
 
+					_this.chart2_data_category = [];
+					_this.chart2_data_value = [];
+					
 					for (let i=0,l=chart2_data.length;i<l;i++) {
 						_this.chart2_data_category.push(chart2_data[i].category);
 						_this.chart2_data_value.push(chart2_data[i].value);
