@@ -316,10 +316,10 @@ var vm_app = new Vue({
 				},
 				series: [{
 					type: 'pie',
-					radius: '40%',
+					radius: '60%',
 					center: ['50%', '50%'],
 					data: data,
-					animation: false,
+					animation: true,
 					label: {
 						position: 'outer',
 						alignTo: 'labelLine',
