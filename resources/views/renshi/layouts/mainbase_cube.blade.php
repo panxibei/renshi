@@ -58,6 +58,7 @@
 <script src="{{ asset('js/axios.min.js') }}"></script>
 <script src="{{ asset('js/bluebird.min.js') }}"></script>
 <script src="{{ asset('statics/cube/cube.min.js') }}"></script>
+<script src="{{ asset('statics/echarts/echarts.min.js') }}"></script>
 @section('my_js_others')
 <script>
 

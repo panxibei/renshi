@@ -31,6 +31,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// jiabancubeGetsApplicant
 	Route::get('jiabancubeGetsApplicant', 'JiabancubeController@jiabancubeGetsApplicant')->name('renshi.jiaban.applicantcube.applicantcubegets');
 
+	// jiabangetsanalytics
+	Route::get('jiabancubeGetsAnalytics', 'JiabancubeController@jiabancubeGetsAnalytics')->name('renshi.jiaban.applicantcube.jiabangetsanalytics');
+
 });
 
 

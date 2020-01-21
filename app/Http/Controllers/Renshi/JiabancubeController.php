@@ -252,6 +252,103 @@ class JiabancubeController extends Controller
     }
 
 
+	
+	/**
+	 * jiabancube GetsAnalytics列表
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function jiabancubeGetsAnalytics(Request $request)
+	{
+	if (! $request->ajax()) return null;
+
+	// 重置角色和权限的缓存
+	// app()['cache']->forget('spatie.permission.cache');
+
+	// 用户信息：$user['id']、$user['name'] 等
+	// $me = response()->json(auth()->user());
+	// $user = json_decode($me->getContent(), true);
+	// $uid = $user['uid'];
+
+	$url = request()->url();
+	$queryParams = request()->query();
+	
+	$perPage = $queryParams['perPage'] ?? 10000;
+	$page = $queryParams['page'] ?? 1;
+	
+	$queryfilter_uid = $request->input('queryfilter_uid');
+	$queryfilter_applicant = $request->input('queryfilter_applicant');
+	$queryfilter_category = $request->input('queryfilter_category');
+	$queryfilter_created_at = $request->input('queryfilter_created_at');
+	
+// dd($queryfilter_created_at);
+	// dd($queryfilter_applicant);
+	//对查询参数按照键名排序
+	ksort($queryParams);
+
+	//将查询数组转换为查询字符串
+	$queryString = http_build_query($queryParams);
+
+	$fullUrl = sha1("{$url}?{$queryString}");
+	
+	
+	//首先查寻cache如果找到
+	if (Cache::has($fullUrl)) {
+		$result = Cache::get($fullUrl);    //直接读取cache
+	} else {                                   //如果cache里面没有
+		// sql语句示例
+		// $sql = "SELECT uuid, created_at, t.* FROM renshi_jiabans, jsonb_to_recordset(application) as t(uid text, category text, duration int, applicant text, department text, datetimerange text)	WHERE application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND t.uid = '071215958'";
+		
+		// $select = 'uuid, agent, department_of_agent, A.*, created_at';
+		$from = 'renshi_jiabans, jsonb_to_recordset(application) as A(uid text, category text, duration float, applicant text, department text, datetimerange text)';
+		
+		// 查询条件
+		// $where_applicant = "application @> '[{\"applicant\":\"zhang san\"}]'::jsonb	AND A.applicant = 'zhang san'";
+		// $where = "application @> '[{\"uid\":\"071215958\"}]'::jsonb	AND A.uid = '071215958'";
+
+
+		// chart1 data2
+		$select = 'A.category as name, sum(A.duration) as value';
+		
+		$result = DB::table(DB::raw($from))
+			->select(DB::raw($select))
+			->when($queryfilter_uid, function ($query) use ($queryfilter_uid) {
+				$where_uid = "application @> '[{\"uid\":\"" . $queryfilter_uid . "\"}]'::jsonb AND A.uid = '". $queryfilter_uid . "'";
+				return $query->whereRaw($where_uid);
+			})
+			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
+				$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
+				return $query->whereRaw($where_applicant);
+			})
+			->when($queryfilter_category, function ($query) use ($queryfilter_category) {
+				$where_category = "application @> '[{\"category\":\"" . $queryfilter_category . "\"}]'::jsonb AND A.category = '" . $queryfilter_category . "'";
+				return $query->whereRaw($where_category);
+			})
+			->when($queryfilter_created_at[0], function ($query) use ($queryfilter_created_at) {
+				return $query->whereBetween('created_at', $queryfilter_created_at);
+			}, function ($query) {
+				$timefrom = date("Y-m-d H:i:s",time()-604800);
+				$timeto = date("Y-m-d H:i:s",time());
+				return $query->whereBetween('created_at', [$timefrom, $timeto]);
+			})
+			->where('archived', true)
+			->where('status', 99)
+			->groupby(DB::raw('A.category'))
+			->get();
+
+
+
+
+		// $result = compact('res_paginate', 'res_chart1_data1', 'res_chart1_data2', 'res_chart1_data3', 'res_chart2_data');
+
+		Cache::put($fullUrl, $result, now()->addSeconds(10));
+	}
+
+
+	// dd($result);
+	return $result;
+	}
 
 
 

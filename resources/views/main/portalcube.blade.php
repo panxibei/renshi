@@ -50,6 +50,19 @@ Renshi(Portal) -
   </cube-form-group>
 </cube-form>
 
+<br>
+<hr>
+<br>
+<cube-form>
+<cube-form-group>
+<cube-form-item :field="chart_fields[0]">
+<cube-select v-model="select_value" title="选择年份" :options="select_options" placeholder="查看图表" :autoPop="false" :disabled="false" @change="select_change"></cube-select>
+</cube-form-item>
+</cube-form-group>
+</cube-form>
+
+<br>
+<div id="chart1" style="width:auto;height:400px;"></div>
 
 <br>
 
@@ -121,10 +134,29 @@ var vm_app = new Vue({
             }
         ],
 
+        select_options: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        select_value: 2019,
 
 
+        chart_fields: [
+            { //0
+                label: '查看图表',
+                rules: {
+                    required: false
+                }
+            },
+        ],
 
-
+		chart1_data: [{
+			name: 'Apples',
+			value: 70
+		}, {
+			name: 'Strawberries',
+			value: 68
+		}, {
+			name: 'Bananas',
+			value: 48
+		}],
 
 
 
@@ -208,9 +240,101 @@ var vm_app = new Vue({
 
         },
 
+        select_change(value, index, text) {
+            var _this = this;
+            console.log('change', value, index, text)
+
+            var url = "{{ route('renshi.jiaban.applicantcube.jiabangetsanalytics') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					// perPage: _this.page_size,
+					// page: page,
+					// queryfilter_uid: queryfilter_uid,
+					// queryfilter_applicant: queryfilter_applicant,
+					// queryfilter_category: queryfilter_category,
+					// queryfilter_created_at: queryfilter_created_at,
+				}
+			})
+			.then(function (response) {
+				console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					
+					// _this.page_current = response.data.res_paginate.current_page;
+					// _this.page_total = response.data.res_paginate.total;
+					// _this.page_last = response.data.res_paginate.last_page;
+					// _this.tabledata = response.data.res_paginate.data;
+
+                    
+                    _this.chart1_data = response.data;
+            
+                    _this.chart1();
+					
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
 
 
 
+
+
+
+
+
+
+            
+
+        },
+
+		// chart1 pie
+		chart1() {
+			var myChart = echarts.init(document.getElementById('chart1'));
+
+			var data = this.chart1_data;
+
+			option = {
+				title: [{
+					text: ''
+				}, {
+					subtext: '▲ 按类别',
+					left: '50%',
+					top: '50%',
+					textAlign: 'center'
+				}],
+				tooltip: {
+					trigger: 'item',
+					formatter: '{c}小时 ({d})%'
+				},
+				series: [{
+					type: 'pie',
+					radius: '40%',
+					center: ['50%', '50%'],
+					data: data,
+					animation: false,
+					label: {
+						position: 'outer',
+						alignTo: 'labelLine',
+						bleedMargin: 5
+					},
+					left: '33.3333%',
+					right: '33.3333%',
+					top: 0,
+					bottom: 200
+				}]
+			};
+
+			myChart.setOption(option);
+
+		},
 
 
 
