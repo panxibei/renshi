@@ -426,6 +426,8 @@ class JiabanController extends Controller
 				$timeto = date("Y-m-d H:i:s",time());
 				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
+			->where('archived', true)
+			->where('status', 99)
 			->paginate($perPage, ['*'], 'page', $page);
 
 
@@ -453,6 +455,8 @@ class JiabanController extends Controller
 				$timeto = date("Y-m-d H:i:s",time());
 				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
+			->where('archived', true)
+			->where('status', 99)
 			->groupby(DB::raw('A.applicant'))
 			->get();
 
@@ -480,6 +484,8 @@ class JiabanController extends Controller
 				$timeto = date("Y-m-d H:i:s",time());
 				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
+			->where('archived', true)
+			->where('status', 99)
 			->groupby(DB::raw('A.category'))
 			->get();
 
@@ -507,6 +513,8 @@ class JiabanController extends Controller
 				$timeto = date("Y-m-d H:i:s",time());
 				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
+			->where('archived', true)
+			->where('status', 99)
 			->groupby(DB::raw('A.department'))
 			->get();
 
@@ -536,6 +544,8 @@ class JiabanController extends Controller
 				$timeto = date("Y-m-d H:i:s",time());
 				return $query->whereBetween('created_at', [$timefrom, $timeto]);
 			})
+			->where('archived', true)
+			->where('status', 99)
 			->orderBy(DB::raw('A.datetimerange', 'asc'))
 			->groupby(DB::raw('A.department, A.datetimerange'))
 			->get();
