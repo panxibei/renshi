@@ -155,7 +155,9 @@ var vm_app = new Vue({
 		}, {
 			name: 'Bananas',
 			value: 48
-		}],
+        }],
+        
+        chart1_subtext: '',
 
 
 
@@ -200,8 +202,7 @@ var vm_app = new Vue({
 
         // 获取某个月份的天数 例：getDays(2018-12)
         getDays(yearmonth) {
-            var ym = yearmonth;
-            var arr = ym.split('-');
+            var arr = yearmonth.split('-');
             // var d = new Date(year, month, 0);
             var d = new Date(arr[0], arr[1], 0); //初始化月份的第0天，由于JS中day的范围为1~31中的值，所以当设为0时，会向前一天，也即表示上个月的最后一天。
             return d.getDate();
@@ -255,19 +256,13 @@ var vm_app = new Vue({
             var _this = this;
 
             // var days = getDaysOfMonth(this.chart1_date.substr(0, 4), this.chart1_date.substr(5, 2));
-            var days = _this.getDays(2099-02);
+            var days = _this.getDays(this.chart1_date);
 
-
-
-console.log(days);return false;
             var queryfilter_created_at = [
                 new Date(this.chart1_date).Format("yyyy-MM-1 00:00:00"),
                 new Date(this.chart1_date).Format("yyyy-MM-" + days + " 23:59:59")
             ]
-
-            
-
-            // console.log(queryfilter_created_at);
+            // console.log(queryfilter_created_at);return false;
 
             var url = "{{ route('renshi.jiaban.applicantcube.jiabangetsanalytics') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -288,7 +283,8 @@ console.log(days);return false;
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
-				}
+                }
+                
 
 				if (response.data) {
 					
@@ -297,14 +293,11 @@ console.log(days);return false;
 					// _this.page_last = response.data.res_paginate.last_page;
 					// _this.tabledata = response.data.res_paginate.data;
 
-                    
                     _this.chart1_data = response.data;
-            
                     
-					
-				} else {
-                    _this.chart1_data = [];
-                }
+                }	
+
+                _this.chart1_subtext = response.data.length == 0 ? _this.chart1_date + ' - 暂无数据' : _this.chart1_date;
                 _this.chart1();
 			})
 			.catch(function (error) {
@@ -323,21 +316,23 @@ console.log(days);return false;
 		chart1() {
 			var myChart = echarts.init(document.getElementById('chart1'));
 
-			var data = this.chart1_data;
+            var data = this.chart1_data;
+            var subtext = this.chart1_subtext;
 
             option = {
                 title: {
-                    text: '某站点用户访问来源',
-                    subtext: '纯属虚构',
+                    text: '当月加班时间数及占比',
+                    subtext: subtext,
                     left: 'center'
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    // formatter: '{a} <br/>{b} : {c}小时 ({d}%)'
+                    formatter: '{b} : {c}小时 ({d}%)'
                 },
                 series: [
                     {
-                        name: '访问来源',
+                        name: '加班类别',
                         type: 'pie',
                         radius: '35%',
                         center: ['50%', '40%'],
