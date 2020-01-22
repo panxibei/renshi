@@ -267,20 +267,22 @@ class JiabancubeController extends Controller
 	// app()['cache']->forget('spatie.permission.cache');
 
 	// 用户信息：$user['id']、$user['name'] 等
-	// $me = response()->json(auth()->user());
-	// $user = json_decode($me->getContent(), true);
+	$me = response()->json(auth()->user());
+	$user = json_decode($me->getContent(), true);
 	// $uid = $user['uid'];
+	// dd($user);
 
 	$url = request()->url();
 	$queryParams = request()->query();
 	
-	$perPage = $queryParams['perPage'] ?? 10000;
-	$page = $queryParams['page'] ?? 1;
+	// $perPage = $queryParams['perPage'] ?? 10000;
+	// $page = $queryParams['page'] ?? 1;
 	
-	$queryfilter_uid = $request->input('queryfilter_uid');
-	$queryfilter_applicant = $request->input('queryfilter_applicant');
-	$queryfilter_category = $request->input('queryfilter_category');
-	$queryfilter_created_at = $request->input('queryfilter_created_at');
+	// $queryfilter_uid = $request->input('queryfilter_uid');
+	$queryfilter_uid = $user['uid'];
+	$queryfilter_applicant = $request->input('queryfilter_applicant') || '';
+	$queryfilter_category = $request->input('queryfilter_category') || '';
+	$queryfilter_created_at = $request->input('queryfilter_created_at') || ['2019-01-01', '2099-12-31'];
 	
 // dd($queryfilter_created_at);
 	// dd($queryfilter_applicant);

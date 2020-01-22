@@ -54,11 +54,11 @@ Renshi(Portal) -
 <hr>
 <br>
 <cube-form>
-<cube-form-group>
-<cube-form-item :field="chart_fields[0]">
-<cube-select v-model="select_value" title="选择年份" :options="select_options" placeholder="查看图表" :autoPop="false" :disabled="false" @change="select_change"></cube-select>
-</cube-form-item>
-</cube-form-group>
+    <cube-form-group>
+        <cube-form-item :field="chart_fields[0]">
+            <cube-input v-model.lazy="chart1_date" @focus="showDateTimePicker_chart1date" placeholder="选择日期"></cube-input>
+        </cube-form-item>
+    </cube-form-group>
 </cube-form>
 
 <br>
@@ -83,6 +83,8 @@ var vm_app = new Vue({
         jiaban_info_uid: '',
         jiaban_info_applicant: '',
         jiaban_info_department: '',
+
+        chart1_date: '',
 
 
         fields: [
@@ -133,9 +135,6 @@ var vm_app = new Vue({
             action: 'gotoLogoff'
             }
         ],
-
-        select_options: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
-        select_value: 2019,
 
 
         chart_fields: [
@@ -240,9 +239,17 @@ var vm_app = new Vue({
 
         },
 
-        select_change(value, index, text) {
+
+        // 加载chart1数据
+        chart1_change(value) {
             var _this = this;
-            console.log('change', value, index, text)
+
+            var queryfilter_created_at = [
+                new Date(this.chart1_date).Format("yyyy-MM-1 00:00:00"),
+                new Date(this.chart1_date).Format("yyyy-MM-31 23:59:59")
+            ]
+
+            // console.log(queryfilter_created_at);
 
             var url = "{{ route('renshi.jiaban.applicantcube.jiabangetsanalytics') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -253,11 +260,11 @@ var vm_app = new Vue({
 					// queryfilter_uid: queryfilter_uid,
 					// queryfilter_applicant: queryfilter_applicant,
 					// queryfilter_category: queryfilter_category,
-					// queryfilter_created_at: queryfilter_created_at,
+					queryfilter_created_at: queryfilter_created_at,
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);
+				// console.log(response.data);
 				// return false;
 
 				if (response.data['jwt'] == 'logout') {
@@ -287,10 +294,6 @@ var vm_app = new Vue({
 
 
 
-
-
-
-
             
 
         },
@@ -301,37 +304,6 @@ var vm_app = new Vue({
 
 			var data = this.chart1_data;
 
-			// option = {
-			// 	title: [{
-			// 		text: ''
-			// 	}, {
-			// 		subtext: '▲ 按类别',
-			// 		left: '50%',
-			// 		top: '50%',
-			// 		textAlign: 'center'
-			// 	}],
-			// 	tooltip: {
-			// 		trigger: 'item',
-			// 		formatter: '{c}小时 ({d})%'
-			// 	},
-			// 	series: [{
-			// 		type: 'pie',
-			// 		radius: '60%',
-			// 		center: ['50%', '50%'],
-			// 		data: data,
-			// 		animation: true,
-			// 		label: {
-			// 			position: 'outer',
-			// 			alignTo: 'labelLine',
-			// 			bleedMargin: 5
-			// 		},
-			// 		left: '33.3333%',
-			// 		right: '33.3333%',
-			// 		top: 0,
-			// 		bottom: 200
-			// 	}]
-            // };
-            
             option = {
                 title: {
                     text: '某站点用户访问来源',
@@ -348,13 +320,14 @@ var vm_app = new Vue({
                         type: 'pie',
                         radius: '35%',
                         center: ['50%', '40%'],
-                        data: [
-                            {value: 335, name: '直接访问'},
-                            {value: 310, name: '邮件营销'},
-                            {value: 234, name: '联盟广告'},
-                            {value: 135, name: '视频广告'},
-                            {value: 1548, name: '搜索引擎'}
-                        ],
+                        data: data,
+                        // [
+                        //     {value: 335, name: '直接访问'},
+                        //     {value: 310, name: '邮件营销'},
+                        //     {value: 234, name: '联盟广告'},
+                        //     {value: 135, name: '视频广告'},
+                        //     {value: 1548, name: '搜索引擎'}
+                        // ],
                         emphasis: {
                             itemStyle: {
                                 shadowBlur: 10,
@@ -371,24 +344,40 @@ var vm_app = new Vue({
 		},
 
 
+        // showDateTimePicker
+        showDateTimePicker_chart1date() {
+            if (!this.dateTimePicker_chart1date) {
+                this.dateTimePicker_chart1date = this.$createDatePicker({
+                title: '选择日期',
+                // min: new Date(2008, 7, 8, 8, 0, 0),
+                min: new Date(this.chart1_date || '2019-01-01 00:00:00'),
+                max: new Date(2099, 12, 31, 23, 59, 59),
+                value: new Date(),
+                columnCount: 2,
+                onSelect: this.selectHandle_chart1date,
+                onCancel: this.cancelHandle_chart1date
+                })
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            this.dateTimePicker_chart1date.show()
+        },
+        selectHandle_chart1date(date, selectedVal, selectedText) {
+            // this.chart1_date = date.Format("yyyy-MM-dd hh:mm:ss")
+            this.chart1_date = date.Format("yyyy-MM")
+            // this.$createDialog({
+            //     type: 'warn',
+            //     content: `Selected Item: <br/> - date: ${date} <br/> - value: ${selectedVal.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
+            //     icon: 'cubeic-alert'
+            // }).show()
+            this.chart1_change(this.chart1_date)
+        },
+        cancelHandle_chart1date() {
+            // this.$createToast({
+            //     type: 'correct',
+            //     txt: 'Picker canceled',
+            //     time: 1000
+            // }).show()
+        },
 
 
 
