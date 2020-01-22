@@ -199,6 +199,8 @@ class JiabancubeController extends Controller
 		$user = json_decode($me->getContent(), true);
 		$uid = $user['uid'];
 
+		$queryfilter_uid = $uid;
+
 		$url = request()->url();
 		$queryParams = request()->query();
 		
@@ -220,30 +222,46 @@ class JiabancubeController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
-				// ->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
-				// 	return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
+			// $result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+			// 	->where('uid_of_agent', $uid)
+			// 	->where('archived', false)
+			// 	->limit(10)
+			// 	->orderBy('created_at', 'desc')
+			// 	->paginate($perPage, ['*'], 'page', $page);
+
+
+			$from = 'renshi_jiabans, jsonb_to_recordset(application) as A(uid text, category text, duration float, applicant text, department text, datetimerange text)';
+			$select = 'A.category, A.duration, created_at, datetimerange, progress, status, auditor';
+			
+			$result = DB::table(DB::raw($from))
+				->select(DB::raw($select))
+				->when($queryfilter_uid, function ($query) use ($queryfilter_uid) {
+					$where_uid = "application @> '[{\"uid\":\"" . $queryfilter_uid . "\"}]'::jsonb AND A.uid = '". $queryfilter_uid . "'";
+					return $query->whereRaw($where_uid);
+				})
+				// ->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
+				// 	$where_applicant = "application @> '[{\"applicant\":\"" . $queryfilter_applicant . "\"}]'::jsonb AND A.applicant = '" . $queryfilter_applicant . "'";
+				// 	return $query->whereRaw($where_applicant);
 				// })
-				// ->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
+				// ->when($queryfilter_category, function ($query) use ($queryfilter_category) {
+				// 	$where_category = "application @> '[{\"category\":\"" . $queryfilter_category . "\"}]'::jsonb AND A.category = '" . $queryfilter_category . "'";
+				// 	return $query->whereRaw($where_category);
+				// })
+				// ->when($queryfilter_created_at[0], function ($query) use ($queryfilter_created_at) {
 				// 	return $query->whereBetween('created_at', $queryfilter_created_at);
+				// }, function ($query) {
+				// 	$timefrom = date("Y-m-d H:i:s",time()-604800);
+				// 	$timeto = date("Y-m-d H:i:s",time());
+				// 	return $query->whereBetween('created_at', [$timefrom, $timeto]);
 				// })
-				// ->when($queryfilter_trashed, function ($query) use ($queryfilter_trashed) {
-				// 	return $query->onlyTrashed();
-				// })
-				// ->when($uid > 10, function ($query) use ($uid) {
-				// 	// if ($uid > 10) {
-				// 		return $query->where('uid_of_agent', $uid);
-				// 	// }
-				// })
-				->where('uid_of_agent', $uid)
 				->where('archived', false)
-				// ->where('uid_of_agent', '>', 10)
-				// ->onlyTrashed()
-				// ->offset(10)
 				->limit(10)
+				// ->groupby(DB::raw('A.category'))
+				// ->get();
 				->orderBy('created_at', 'desc')
 				->paginate($perPage, ['*'], 'page', $page);
-				// ->simplePaginate(10);
+
+
 
 			Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}

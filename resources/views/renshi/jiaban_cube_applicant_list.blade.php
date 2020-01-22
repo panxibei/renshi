@@ -257,7 +257,6 @@ var vm_app = new Vue({
             })
             .then(function (response) {
                 // console.log(response.data);
-                // console.log(response.data.data.length);
                 // return false;
                 
 				if (response.data['jwt'] == 'logout') {
@@ -282,13 +281,13 @@ var vm_app = new Vue({
                     orignal_data.map(function (v,i) {
 
                         // let application = JSON.parse(v.application);
-                        let application = v.application;
+                        // let application = v.application;
 
                         result_data.push({
                             'created_at': v.created_at,
-                            'category': application[0].category,
-                            'duration': application[0].duration,
-                            'datetimerange': application[0].datetimerange,
+                            'category': v.category,
+                            'duration': v.duration,
+                            'datetimerange': v.datetimerange,
                             'progress': v.progress,
                             'status': v.status,
                             'auditor': v.auditor
@@ -370,13 +369,13 @@ var vm_app = new Vue({
                     orignal_data.map(function (v,i) {
 
                         // let application = JSON.parse(v.application);
-                        let application = v.application;
+                        // let application = v.application;
 
                         result_data.push({
                             'created_at': v.created_at,
-                            'category': application[0].category,
-                            'duration': application[0].duration,
-                            'datetimerange': application[0].datetimerange,
+                            'category': v.category,
+                            'duration': v.duration,
+                            'datetimerange': v.datetimerange,
                             'progress': v.progress,
                             'status': v.status,
                             'auditor': v.auditor
@@ -457,34 +456,38 @@ var vm_app = new Vue({
                     var orignal_data = response.data.data;
                     var result_data = [];
 
-                    // console.log(orignal_data[0]);
+                    // console.log(orignal_data);
                     // return false;
 
-                    orignal_data.map(function (v,i) {
-                        // console.log(v.application);
-                        // return false;
+                    // orignal_data.map(function (v,i) {
+                    //     let application = v.application;
 
-                        // let application = JSON.parse(v.application);
-                        let application = v.application;
+                    //     result_data.push({
+                    //         'created_at': v.created_at,
+                    //         'category': application[0].category,
+                    //         'duration': application[0].duration,
+                    //         'datetimerange': application[0].datetimerange,
+                    //         'progress': v.progress,
+                    //         'status': v.status,
+                    //         'auditor': v.auditor
+                    //     });
+                    // });
+
+                    orignal_data.map(function (v,i) {
 
                         result_data.push({
                             'created_at': v.created_at,
-                            'category': application[0].category,
-                            'duration': application[0].duration,
-                            'datetimerange': application[0].datetimerange,
+                            'category': v.category,
+                            'duration': v.duration,
+                            'datetimerange': v.datetimerange,
                             'progress': v.progress,
                             'status': v.status,
                             'auditor': v.auditor
                         });
-
                     });
 
                     _this.data_scroll = result_data;
 
-                    // console.log(result_data);
-                    // console.log(orignal_data);
-                    // console.log(orignal_data[0]['application']);
-                    // return false;
 
                     // const toast = _this.$createToast({
                     //     txt: '提交成功！',
