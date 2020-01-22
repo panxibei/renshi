@@ -347,7 +347,7 @@ var vm_app = new Vue({
                         name: '访问来源',
                         type: 'pie',
                         radius: '35%',
-                        center: ['20%', '40%'],
+                        center: ['50%', '40%'],
                         data: [
                             {value: 335, name: '直接访问'},
                             {value: 310, name: '邮件营销'},
