@@ -198,6 +198,16 @@ var vm_app = new Vue({
         },
         // toolbar - end
 
+        // 获取某个月份的天数 例：getDays(2018-12)
+        getDays(yearmonth) {
+            var ym = yearmonth;
+            var arr = ym.split('-');
+            // var d = new Date(year, month, 0);
+            var d = new Date(arr[0], arr[1], 0); //初始化月份的第0天，由于JS中day的范围为1~31中的值，所以当设为0时，会向前一天，也即表示上个月的最后一天。
+            return d.getDate();
+        },
+
+
 
         userinfo() {
             var _this = this;
@@ -244,10 +254,18 @@ var vm_app = new Vue({
         chart1_change(value) {
             var _this = this;
 
+            // var days = getDaysOfMonth(this.chart1_date.substr(0, 4), this.chart1_date.substr(5, 2));
+            var days = _this.getDays(2099-02);
+
+
+
+console.log(days);return false;
             var queryfilter_created_at = [
                 new Date(this.chart1_date).Format("yyyy-MM-1 00:00:00"),
-                new Date(this.chart1_date).Format("yyyy-MM-31 23:59:59")
+                new Date(this.chart1_date).Format("yyyy-MM-" + days + " 23:59:59")
             ]
+
+            
 
             // console.log(queryfilter_created_at);
 
@@ -282,9 +300,12 @@ var vm_app = new Vue({
                     
                     _this.chart1_data = response.data;
             
-                    _this.chart1();
+                    
 					
-				}
+				} else {
+                    _this.chart1_data = [];
+                }
+                _this.chart1();
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);

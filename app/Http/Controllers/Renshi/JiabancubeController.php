@@ -280,9 +280,9 @@ class JiabancubeController extends Controller
 	
 	// $queryfilter_uid = $request->input('queryfilter_uid');
 	$queryfilter_uid = $user['uid'];
-	$queryfilter_applicant = $request->input('queryfilter_applicant') || '';
-	$queryfilter_category = $request->input('queryfilter_category') || '';
-	$queryfilter_created_at = $request->input('queryfilter_created_at') || ['2019-01-01', '2099-12-31'];
+	$queryfilter_applicant = $request->input('queryfilter_applicant') ?? '';
+	$queryfilter_category = $request->input('queryfilter_category') ?? '';
+	$queryfilter_created_at = $request->input('queryfilter_created_at') ?? ['2019-01-01', '2099-12-31'];
 	
 // dd($queryfilter_created_at);
 	// dd($queryfilter_applicant);
