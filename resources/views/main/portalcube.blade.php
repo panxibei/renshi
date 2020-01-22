@@ -301,36 +301,75 @@ var vm_app = new Vue({
 
 			var data = this.chart1_data;
 
-			option = {
-				title: [{
-					text: ''
-				}, {
-					subtext: '▲ 按类别',
-					left: '50%',
-					top: '50%',
-					textAlign: 'center'
-				}],
-				tooltip: {
-					trigger: 'item',
-					formatter: '{c}小时 ({d})%'
-				},
-				series: [{
-					type: 'pie',
-					radius: '60%',
-					center: ['50%', '50%'],
-					data: data,
-					animation: true,
-					label: {
-						position: 'outer',
-						alignTo: 'labelLine',
-						bleedMargin: 5
-					},
-					left: '33.3333%',
-					right: '33.3333%',
-					top: 0,
-					bottom: 200
-				}]
-			};
+			// option = {
+			// 	title: [{
+			// 		text: ''
+			// 	}, {
+			// 		subtext: '▲ 按类别',
+			// 		left: '50%',
+			// 		top: '50%',
+			// 		textAlign: 'center'
+			// 	}],
+			// 	tooltip: {
+			// 		trigger: 'item',
+			// 		formatter: '{c}小时 ({d})%'
+			// 	},
+			// 	series: [{
+			// 		type: 'pie',
+			// 		radius: '60%',
+			// 		center: ['50%', '50%'],
+			// 		data: data,
+			// 		animation: true,
+			// 		label: {
+			// 			position: 'outer',
+			// 			alignTo: 'labelLine',
+			// 			bleedMargin: 5
+			// 		},
+			// 		left: '33.3333%',
+			// 		right: '33.3333%',
+			// 		top: 0,
+			// 		bottom: 200
+			// 	}]
+            // };
+            
+            option = {
+                title: {
+                    text: '某站点用户访问来源',
+                    subtext: '纯属虚构',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [
+                            {value: 335, name: '直接访问'},
+                            {value: 310, name: '邮件营销'},
+                            {value: 234, name: '联盟广告'},
+                            {value: 135, name: '视频广告'},
+                            {value: 1548, name: '搜索引擎'}
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
 
 			myChart.setOption(option);
 
