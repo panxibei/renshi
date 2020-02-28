@@ -32,6 +32,7 @@ class CreateRenshiJiabansTable extends Migration
             // $table->timestamp('start_date')->comment('开始日期');
             // $table->timestamp('end_date')->comment('结束日期');
             // $table->integer('duration')->comment('期间');
+            $table->jsonb('actuality')->comment('实际信息');
             $table->integer('progress')->comment('进度');
             $table->integer('status')->comment('状态');
             $table->text('reason')->comment('事由');
