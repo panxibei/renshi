@@ -261,13 +261,29 @@ if (isMobile) {
 						<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
 
 							<Submenu name="1">
-									<template slot="title">
-											<Icon type="ios-clock-outline" size="20"></Icon> 加班管理
-									</template>
-									<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="18"></Icon> 申请</Menu-item>
-									<Menu-item name="1-2"><Icon type="ios-create-outline" size="20"></Icon> 处理</Menu-item>
-									<Menu-item name="1-3"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
-									<Menu-item name="1-4"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+								<template slot="title">
+										<Icon type="ios-clock-outline" size="20"></Icon> 加班申请
+								</template>
+								<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="18"></Icon> 申请</Menu-item>
+								<Menu-item name="1-2"><Icon type="ios-create-outline" size="20"></Icon> 处理</Menu-item>
+								<!-- <Menu-item name="1-3"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="1-4"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item> -->
+							</Submenu>
+
+							<Submenu name="2">
+								<template slot="title">
+										<Icon type="ios-folder-outline" size="20"></Icon> 加班确认
+								</template>
+								<Menu-item name="2-1"><Icon type="ios-list-box-outline" size="18"></Icon> 确认</Menu-item>
+								<Menu-item name="2-2"><Icon type="ios-create-outline" size="20"></Icon> 处理</Menu-item>
+							</Submenu>
+
+							<Submenu name="3">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 归档分析
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
 							</Submenu>
 		
 						</i-menu>
@@ -321,23 +337,20 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('renshi.jiaban.applicant')}}";
 	  break;
 	case '1-2':
-	  window.location.href = "{{route('renshi.jiaban.todo')}}";
+	  window.location.href = "{{route('renshi.jiaban.applicant_todo')}}";
 	  break;
 	case '1-3':
-	  window.location.href = "{{route('renshi.jiaban.archived')}}";
+	  window.location.href = "";
 	  break;
 	case '1-4':
-	  window.location.href = "{{route('renshi.jiaban.analytics')}}";
+	  window.location.href = "";
 	  break;
 
-	case '2-1-1':
-	  window.location.href = "";
+	case '2-1':
+	  window.location.href = "{{route('renshi.jiaban.confirm')}}";
 	  break;
-	case '2-1-2':
-	  window.location.href = "";
-	  break;
-	case '2-1-3':
-	  window.location.href = "";
+	case '2-2':
+	  window.location.href = "{{route('renshi.jiaban.confirm_todo')}}";
 	  break;
 
 	case '2-2-1':
@@ -358,10 +371,10 @@ function navmenuselect (name) {
 	  break;
 
 	case '3-1':
-	  window.location.href = "";
+	  window.location.href = "{{route('renshi.jiaban.archived')}}";
 	  break;
 	case '3-2':
-	  window.location.href = "";
+	  window.location.href = "{{route('renshi.jiaban.analytics')}}";
 	  break;
 	case '3-3':
 	  window.location.href = "";

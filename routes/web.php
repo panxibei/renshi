@@ -105,7 +105,7 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 
 	// 22222222222
 	// 显示todo页面
-	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.todo');
+	Route::get('jiabanTodo', 'JiabanController@jiabanTodo')->name('renshi.jiaban.applicant_todo');
 
 	// jiaban gets列表
 	Route::get('jiabanGetsTodo', 'JiabanController@jiabanGetsTodo')->name('renshi.jiaban.jiabangetstodo');
@@ -126,7 +126,25 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	Route::post('todoDelete', 'JiabanController@todoDelete')->name('renshi.jiaban.todo.tododelete');
 	
 
-	// 3333333333
+	// 333333333
+	// 显示applicant页面
+	Route::get('jiabanConfirm', 'ConfirmController@jiabanConfirm')->name('renshi.jiaban.confirm');
+
+	// jiaban gets列表
+	Route::get('jiabanGetsConfirm', 'ConfirmController@jiabanGetsConfirm')->name('renshi.jiaban.jiabangetsconfirm');
+
+
+	// 444444444
+	// 显示todo页面
+	Route::get('jiabanConfirmTodo', 'ConfirmController@jiabanConfirmTodo')->name('renshi.jiaban.confirm_todo');
+
+	// jiaban gets列表
+	Route::get('jiabanGetsConfirmTodo', 'ConfirmController@jiabanGetsConfirmTodo')->name('renshi.jiaban.jiabangetsconfirmtodo');
+
+
+
+
+	// 555555555
 	// 显示archived页面
 	Route::get('jiabanArchived', 'JiabanController@jiabanArchived')->name('renshi.jiaban.archived');
 
@@ -146,7 +164,7 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	Route::get('archivedExport', 'JiabanController@archivedExport')->name('renshi.jiaban.archived.archivedexport');
 
 
-	// 4444444444
+	// 66666666
 	// 显示Analytics页面
 	Route::get('jiabanAnalytics', 'JiabanController@jiabanAnalytics')->name('renshi.jiaban.analytics');
 

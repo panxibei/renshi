@@ -413,8 +413,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-3',
-		sideropennames: ['1'],
+		sideractivename: '3-1',
+		sideropennames: ['3'],
 		
 		//分页
 		page_current: 1,

@@ -17,15 +17,15 @@ use App\Exports\Renshi\jiaban_applicantExport;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
-class JiabanController extends Controller
+class ConfirmController extends Controller
 {
 	/**
-	 * 列出applicant页面
+	 * 列出confirm页面
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function jiabanApplicant()
+	public function jiabanConfirm()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -47,7 +47,7 @@ class JiabanController extends Controller
 		->get()->toArray();
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('renshi.jiaban_applicant', $share);
+	return view('renshi.jiaban_confirm', $share);
 	}
 
 
@@ -57,7 +57,7 @@ class JiabanController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function jiabanTodo()
+	public function jiabanConfirmTodo()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -79,7 +79,7 @@ class JiabanController extends Controller
 		->get()->toArray();
 	
 	$share = compact('config', 'user', 'info_todo');
-	return view('renshi.jiaban_todo', $share);
+	return view('renshi.jiaban_confirmtodo', $share);
 	}
 	
 	
@@ -148,12 +148,12 @@ class JiabanController extends Controller
 
 
 	/**
-	 * jiaban applicant列表
+	 * jiaban confirm列表
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function jiabanGetsApplicant(Request $request)
+	public function jiabanGetsConfirm(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -204,6 +204,7 @@ class JiabanController extends Controller
 				// }
 			})
 			// ->where('uid_of_agent', $user['uid'])
+			->where('progress', 100)
 			->where('archived', false)
 			->limit(1000)
 			->orderBy('created_at', 'desc')
@@ -216,12 +217,12 @@ class JiabanController extends Controller
 	}
 
 	/**
-	 * jiaban todo列表
+	 * jiaban confirmtodo列表
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function jiabanGetsTodo(Request $request)
+	public function jiabanGetsConfirmTodo(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -270,6 +271,7 @@ class JiabanController extends Controller
 					return $query->where('uid_of_auditor', $uid);
 			})
 			// ->where('uid_of_auditor', $user['uid'])
+			->where('progress', 100)
 			->where('archived', false)
 			->limit(1000)
 			->orderBy('created_at', 'desc')
