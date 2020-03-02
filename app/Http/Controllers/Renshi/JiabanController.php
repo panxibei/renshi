@@ -685,14 +685,14 @@ class JiabanController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = User::select('auditing')
+		$result = User::select('auditing_actual')
 			->where('id', $id)
 			->first();
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 	}
-// dd($result['auditing']);
-	return $result['auditing'];
+// dd($result['auditing_actual']);
+	return $result['auditing_actual'];
 	}
 
 
