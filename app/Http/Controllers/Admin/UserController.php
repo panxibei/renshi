@@ -544,10 +544,15 @@ class UserController extends Controller
 		$user_auditing = User::select('id', 'uid', 'displayname as name', 'department')
 			->where('id', $id_auditing)
 			->first()->toArray();
+		// dd($user_auditing);
 		
-		$user_current = User::select('auditing')
+		$user_current = User::select('id', 'uid', 'displayname as name', 'department', 'auditing')
 			->where('id', $id_current)
 			->first()->toArray();
+		$user_current_tmp = $user_current;
+		unset($user_current_tmp['auditing']);
+		$user_current_applicant[] = $user_current_tmp;
+		// dd($user_current_applicant);
 
 		if ($user_current['auditing'] != null) {
 			// $auditing_after = json_decode($user_current['auditing'], true);
@@ -558,11 +563,19 @@ class UserController extends Controller
 		}
 
 		// dd($auditing_after);
+		$auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
+		// dd($auditing_actual_after);
+
 		$auditing_after = json_encode(
 			$auditing_after
 			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
+		$auditing_actual_after = json_encode(
+			$auditing_actual_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+		// dd($auditing_actual_after);
 
 		try	{
 			$result = User::where('id', $id_current)
@@ -571,7 +584,8 @@ class UserController extends Controller
 					// 	$auditing_after
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
-					'auditing' => $auditing_after
+					'auditing' => $auditing_after,
+					'auditing_actual' => $auditing_actual_after
 				]);
 			// $result = 1;
 
@@ -608,14 +622,20 @@ class UserController extends Controller
 		$sort = $request->input('sort');
 		// dd($index);
 
-		$user = User::select('auditing')
+		$user = User::select('id', 'uid', 'displayname as name', 'department', 'auditing')
 			->where('id', $id)
-			->first();
+			->first()->toArray();
 		// dd(json_decode($user['auditing']));
 
 		// $auditing_before = json_decode($user['auditing'], true);
 		$auditing_before = $user['auditing'];
 // dd($auditing_before);
+
+		$user_current_tmp = $user;
+		unset($user_current_tmp['auditing']);
+		$user_current_applicant[] = $user_current_tmp;
+		// dd($user_current_applicant);
+
 		$auditing_after = [];
 
 		if ('down' == $sort) {
@@ -645,12 +665,20 @@ class UserController extends Controller
 		}
 
 		// dd($auditing_after);
-		// if ($auditing_after == null) {
-			$auditing_after_json = json_encode(
-				$auditing_after
-				, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-			);
-		// }
+
+		$auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
+		// dd($auditing_actual_after);
+
+		$auditing_after_json = json_encode(
+			$auditing_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		$auditing_actual_after_json = json_encode(
+			$auditing_actual_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+		// dd($auditing_actual_after_json);
 
 		try	{
 			DB::beginTransaction();
@@ -662,7 +690,8 @@ class UserController extends Controller
 					// 	$auditing_after
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
-					'auditing' => $auditing_after_json
+					'auditing' => $auditing_after_json,
+					'auditing_actual' => $auditing_actual_after_json
 				]);
 
 			//2.修正流程
@@ -678,10 +707,10 @@ class UserController extends Controller
 					Renshi_jiaban::where('id_of_agent', $id)
 						->where('index_of_auditor', $index_tmp)
 						->update([
-							'id_of_auditor' => $auditing_after[$index_tmp-1]['id'],
-							'uid_of_auditor' => $auditing_after[$index_tmp-1]['uid'],
-							'auditor' => $auditing_after[$index_tmp-1]['name'],
-							'department_of_auditor' => $auditing_after[$index_tmp-1]['department'],
+							'id_of_auditor' => $auditing_actual_after[$index_tmp-1]['id'],
+							'uid_of_auditor' => $auditing_actual_after[$index_tmp-1]['uid'],
+							'auditor' => $auditing_actual_after[$index_tmp-1]['name'],
+							'department_of_auditor' => $auditing_actual_after[$index_tmp-1]['department'],
 						]);
 				}
 			}
@@ -724,11 +753,15 @@ class UserController extends Controller
 		$id = $request->input('id');
 		$uid = $request->input('uid');
 
-		$user = User::select('auditing')
+		$user = User::select('id', 'uid', 'displayname as name', 'department', 'auditing')
 			->where('id', $id)
-			->first();
+			->first()->toArray();
+		
+		$user_current_tmp = $user;
+		unset($user_current_tmp['auditing']);
+		$user_current_applicant[] = $user_current_tmp;
+		// dd($user_current_applicant);
 
-		// dd(json_decode($user['auditing']));
 
 		// $auditing_before = json_decode($user['auditing'], true);
 		$auditing_before = $user['auditing'];
@@ -743,13 +776,19 @@ class UserController extends Controller
 			}
 		}
 
-		// dd($auditing_after);
-		// if ($auditing_after == null) {
-			$auditing_after = json_encode(
-				$auditing_after
-				, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-			);
-		// }
+		$auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
+		// dd($auditing_actual_after);
+
+		$auditing_after_json = json_encode(
+			$auditing_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		$auditing_actual_after_json = json_encode(
+			$auditing_actual_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+		
 
 		try	{
 			$result = User::where('id', $id)
@@ -758,7 +797,8 @@ class UserController extends Controller
 					// 	$auditing_after
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
-					'auditing' => $auditing_after
+					'auditing' => $auditing_after_json,
+					'auditing_actual' => $auditing_actual_after_json
 				]);
 			// $result = 1;
 // dd($result);
