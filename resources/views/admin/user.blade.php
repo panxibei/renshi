@@ -158,107 +158,202 @@ Admin(User) -
 
 	</Tab-pane>
 
-	<Tab-pane label="批量指定处理用户">
-		<i-row :gutter="16">
-			<i-col span="24">
-				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
-				&nbsp;
-			</i-col>
-		</i-row>
-		
-		<br><br>
-		<i-row :gutter="16">
-			<i-col span="5">
-				当前代理申请用户：&nbsp;<strong>@{{ username_current1 }}</strong>
-				
-			</i-col>
-			<i-col span="19">
-			&nbsp;&nbsp;<i-button type="default" :disabled="boo_update1" @click="auditing_update1" size="small" icon="ios-brush-outline"> Update</i-button>
-			</i-col>
-		</i-row>
-		
-		<br><br>
+	<Tab-pane label="申请流程">
+		<Tabs type="card" v-model="currentsubtabs1" :animated="false">
 
+		<Tab-pane label="批量指定处理用户">
+			<i-row :gutter="16">
+				<i-col span="24">
+					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
+			<i-row :gutter="16">
+				<i-col span="5">
+					当前代理申请用户：&nbsp;<strong>@{{ username_current1 }}</strong>
+					
+				</i-col>
+				<i-col span="19">
+				&nbsp;&nbsp;<i-button type="default" :disabled="boo_update1" @click="auditing_update1" size="small" icon="ios-brush-outline"> Update</i-button>
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
+			<i-row :gutter="16">
+				<i-col span="5">
+					<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData" @on-select-change="onselectchange_user_current"></Tree>
+				</i-col>
+				<i-col span="6">
+					<Tree ref="tree_auditing" :data="treedata_auditing" :load-data="loadTreeData" show-checkbox></Tree>
+				</i-col>
+				<i-col span="13">
+				<i-table height="300" size="small" border :columns="tablecolumns_auditing1" :data="tabledata_auditing1"></i-table>
+				</i-col>
 
-		<i-row :gutter="16">
-			<i-col span="5">
-				<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData" @on-select-change="onselectchange_user_current"></Tree>
-			</i-col>
-			<i-col span="6">
-				<Tree ref="tree_auditing" :data="treedata_auditing" :load-data="loadTreeData" show-checkbox></Tree>
-			</i-col>
-			<i-col span="13">
-			<i-table height="300" size="small" border :columns="tablecolumns_auditing1" :data="tabledata_auditing1"></i-table>
-			</i-col>
+			</i-row>
 
-		</i-row>
+			&nbsp;
 
-		&nbsp;
+			<br><br>
 
+		</Tab-pane>
 
+		<Tab-pane label="单独指定处理用户">
+			<i-row :gutter="16">
+				<i-col span="24">
+					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
-		<br><br>
+			<i-row :gutter="16">
+				<i-col span="15">
+					当前用户工号：&nbsp;
+					<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+					&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2 }}&nbsp;
+				</i-col>
+				<i-col span="9">
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
-		
+			<i-row :gutter="16">
+				<i-col span="15">
+					处理用户工号：&nbsp;
+					<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+					&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2 }}&nbsp;
+				</i-col>
+				<i-col span="9">
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
+			<i-row :gutter="16">
+				<i-col span="24">
+					<i-button type="default" :disabled="boo_update2" @click="auditing_add2" size="small" icon="ios-add"> Add</i-button>
+				</i-col>
+			</i-row>
+
+			<br><br>
+
+			<i-table height="300" size="small" border :columns="tablecolumns_auditing2" :data="tabledata_auditing2"></i-table>
+
+			<br><br>
+
+		</Tab-pane>
+		</Tabs>
 	</Tab-pane>
 
-	<Tab-pane label="单独指定处理用户">
-		<i-row :gutter="16">
-			<i-col span="24">
-				<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
-				&nbsp;
-			</i-col>
-		</i-row>
-		
-		<br><br>
+	<Tab-pane label="确认流程">
+		<Tabs type="card" v-model="currentsubtabs2" :animated="false">
 
-		<i-row :gutter="16">
-			<i-col span="15">
-				当前用户工号：&nbsp;
-				<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
-					<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-				&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2 }}&nbsp;
-			</i-col>
-			<i-col span="9">
-				&nbsp;
-			</i-col>
-		</i-row>
-		
-		<br><br>
+		<Tab-pane label="批量指定处理用户">
+			<i-row :gutter="16">
+				<i-col span="24">
+					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
+			<i-row :gutter="16">
+				<i-col span="5">
+					当前代理申请用户：&nbsp;<strong>@{{ username_current1 }}</strong>
+					
+				</i-col>
+				<i-col span="19">
+				&nbsp;&nbsp;<i-button type="default" :disabled="boo_update1" @click="auditing_update1" size="small" icon="ios-brush-outline"> Update</i-button>
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
-		<i-row :gutter="16">
-			<i-col span="15">
-				处理用户工号：&nbsp;
-				<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
-					<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-				&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2 }}&nbsp;
-			</i-col>
-			<i-col span="9">
-				&nbsp;
-			</i-col>
-		</i-row>
-		
-		<br><br>
+			<i-row :gutter="16">
+				<i-col span="5">
+					<Tree ref="tree_applicant" :data="treedata_applicant" :load-data="loadTreeData" @on-select-change="onselectchange_user_current"></Tree>
+				</i-col>
+				<i-col span="6">
+					<Tree ref="tree_auditing" :data="treedata_auditing" :load-data="loadTreeData" show-checkbox></Tree>
+				</i-col>
+				<i-col span="13">
+				<i-table height="300" size="small" border :columns="tablecolumns_auditing1" :data="tabledata_auditing1"></i-table>
+				</i-col>
 
-		<i-row :gutter="16">
-			<i-col span="24">
-				<i-button type="default" :disabled="boo_update2" @click="auditing_add2" size="small" icon="ios-add"> Add</i-button>
-			</i-col>
-		</i-row>
+			</i-row>
 
+			&nbsp;
 
-		<br><br>
+			<br><br>
 
-		<i-table height="300" size="small" border :columns="tablecolumns_auditing2" :data="tabledata_auditing2"></i-table>
+		</Tab-pane>
 
-		<br><br>
+		<Tab-pane label="单独指定处理用户">
+			<i-row :gutter="16">
+				<i-col span="24">
+					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
-		
+			<i-row :gutter="16">
+				<i-col span="15">
+					当前用户工号：&nbsp;
+					<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+					&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2 }}&nbsp;
+				</i-col>
+				<i-col span="9">
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
 
+			<i-row :gutter="16">
+				<i-col span="15">
+					处理用户工号：&nbsp;
+					<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+					&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2 }}&nbsp;
+				</i-col>
+				<i-col span="9">
+					&nbsp;
+				</i-col>
+			</i-row>
+			
+			<br><br>
+
+			<i-row :gutter="16">
+				<i-col span="24">
+					<i-button type="default" :disabled="boo_update2" @click="auditing_add2" size="small" icon="ios-add"> Add</i-button>
+				</i-col>
+			</i-row>
+
+			<br><br>
+
+			<i-table height="300" size="small" border :columns="tablecolumns_auditing2" :data="tabledata_auditing2"></i-table>
+
+			<br><br>
+
+		</Tab-pane>
+		</Tabs>
 	</Tab-pane>
 
 	<Tab-pane label="导入用户">
@@ -287,16 +382,7 @@ Admin(User) -
 
 	</Tab-pane>
 
-
 </Tabs>
-
-
-
-
-
-
-
-
 
 
 
@@ -717,6 +803,8 @@ var vm_app = new Vue({
 
 		// tabs索引
 		currenttabs: 0,
+		currentsubtabs1: 0,
+		currentsubtabs2: 0,
 		
 		// 查询过滤器
 		queryfilter_name: "{{ $config['FILTERS_USER_NAME'] }}",

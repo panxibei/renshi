@@ -76,7 +76,7 @@ class UserController extends Controller
 		$queryfilter_email = $request->input('queryfilter_email');
 		$queryfilter_loginip = $request->input('queryfilter_loginip');
 
-		$user = User::select('id', 'uid', 'name', 'department', 'auditing', 'auditing_actual', 'ldapname', 'email', 'displayname', 'login_time', 'login_ip', 'login_counts', 'created_at', 'updated_at', 'deleted_at')
+		$user = User::select('id', 'uid', 'name', 'department', 'auditing', 'auditing_confirm', 'ldapname', 'email', 'displayname', 'login_time', 'login_ip', 'login_counts', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_logintime, function ($query) use ($queryfilter_logintime) {
 				return $query->whereBetween('login_time', $queryfilter_logintime);
 			})
@@ -549,9 +549,10 @@ class UserController extends Controller
 		$user_current = User::select('id', 'uid', 'displayname as name', 'department', 'auditing')
 			->where('id', $id_current)
 			->first()->toArray();
-		$user_current_tmp = $user_current;
-		unset($user_current_tmp['auditing']);
-		$user_current_applicant[] = $user_current_tmp;
+		
+		// $user_current_tmp = $user_current;
+		// unset($user_current_tmp['auditing']);
+		// $user_current_applicant[] = $user_current_tmp;
 		// dd($user_current_applicant);
 
 		if ($user_current['auditing'] != null) {
@@ -563,7 +564,7 @@ class UserController extends Controller
 		}
 
 		// dd($auditing_after);
-		$auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
+		// $auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
 		// dd($auditing_actual_after);
 
 		$auditing_after = json_encode(
@@ -571,10 +572,10 @@ class UserController extends Controller
 			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
-		$auditing_actual_after = json_encode(
-			$auditing_actual_after
-			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $auditing_actual_after = json_encode(
+		// 	$auditing_actual_after
+		// 	, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
 		// dd($auditing_actual_after);
 
 		try	{
@@ -585,7 +586,7 @@ class UserController extends Controller
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
 					'auditing' => $auditing_after,
-					'auditing_actual' => $auditing_actual_after
+					// 'auditing_actual' => $auditing_actual_after
 				]);
 			// $result = 1;
 
@@ -631,9 +632,9 @@ class UserController extends Controller
 		$auditing_before = $user['auditing'];
 // dd($auditing_before);
 
-		$user_current_tmp = $user;
-		unset($user_current_tmp['auditing']);
-		$user_current_applicant[] = $user_current_tmp;
+		// $user_current_tmp = $user;
+		// unset($user_current_tmp['auditing']);
+		// $user_current_applicant[] = $user_current_tmp;
 		// dd($user_current_applicant);
 
 		$auditing_after = [];
@@ -663,10 +664,9 @@ class UserController extends Controller
 				}
 			}
 		}
-
 		// dd($auditing_after);
 
-		$auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
+		// $auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
 		// dd($auditing_actual_after);
 
 		$auditing_after_json = json_encode(
@@ -674,10 +674,10 @@ class UserController extends Controller
 			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
-		$auditing_actual_after_json = json_encode(
-			$auditing_actual_after
-			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $auditing_actual_after_json = json_encode(
+		// 	$auditing_actual_after
+		// 	, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
 		// dd($auditing_actual_after_json);
 
 		try	{
@@ -691,7 +691,7 @@ class UserController extends Controller
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
 					'auditing' => $auditing_after_json,
-					'auditing_actual' => $auditing_actual_after_json
+					// 'auditing_actual' => $auditing_actual_after_json
 				]);
 
 			//2.修正流程
@@ -757,9 +757,9 @@ class UserController extends Controller
 			->where('id', $id)
 			->first()->toArray();
 		
-		$user_current_tmp = $user;
-		unset($user_current_tmp['auditing']);
-		$user_current_applicant[] = $user_current_tmp;
+		// $user_current_tmp = $user;
+		// unset($user_current_tmp['auditing']);
+		// $user_current_applicant[] = $user_current_tmp;
 		// dd($user_current_applicant);
 
 
@@ -776,7 +776,7 @@ class UserController extends Controller
 			}
 		}
 
-		$auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
+		// $auditing_actual_after = array_merge($auditing_after, $user_current_applicant, $auditing_after);
 		// dd($auditing_actual_after);
 
 		$auditing_after_json = json_encode(
@@ -784,10 +784,10 @@ class UserController extends Controller
 			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
-		$auditing_actual_after_json = json_encode(
-			$auditing_actual_after
-			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		// $auditing_actual_after_json = json_encode(
+		// 	$auditing_actual_after
+		// 	, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		// );
 		
 
 		try	{
@@ -798,7 +798,7 @@ class UserController extends Controller
 					// , JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 					// )
 					'auditing' => $auditing_after_json,
-					'auditing_actual' => $auditing_actual_after_json
+					// 'auditing_actual' => $auditing_actual_after_json
 				]);
 			// $result = 1;
 // dd($result);

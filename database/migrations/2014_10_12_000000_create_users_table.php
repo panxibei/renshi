@@ -19,8 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique()->comment('申请人姓名');
             $table->string('department')->comment('申请人部门');
             $table->jsonb('applicant_group')->nullable()->comment('批量申请人员组信息');
-            $table->jsonb('auditing')->nullable()->comment('审核人信息');
-            $table->jsonb('auditing_actual')->nullable()->comment('实际流程审核人信息');
+            $table->jsonb('auditing')->nullable()->comment('申请审核人信息');
+            $table->jsonb('auditing_confirm')->nullable()->comment('确认审核人信息');
             $table->jsonb('configs')->nullable()->comment('用户配置');
             $table->string('ldapname')->nullable()->comment('ldap用户名');
             $table->string('email')->nullable();

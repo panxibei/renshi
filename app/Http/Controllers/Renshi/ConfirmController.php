@@ -70,7 +70,7 @@ class ConfirmController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'progress_confirm', 'status_confirm', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
 		->whereBetween('status', [1, 98])
 		->where('archived', false)
@@ -188,7 +188,7 @@ class ConfirmController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'progress_confirm', 'status_confirm', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})

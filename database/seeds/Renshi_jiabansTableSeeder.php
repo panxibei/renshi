@@ -140,6 +140,8 @@ class Renshi_jiabansTableSeeder extends Seeder
                     // )
             //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             // ),
+            'progress_confirm' => 0,
+            'status_confirm' => 0,
         ]);
 
         // 第二条记录
@@ -200,6 +202,8 @@ class Renshi_jiabansTableSeeder extends Seeder
                     "created_at" => $nowtime
                 )
             ),
+            'progress_confirm' => 0,
+            'status_confirm' => 0,
         ]);
 
         // 第三条记录
@@ -260,6 +264,8 @@ class Renshi_jiabansTableSeeder extends Seeder
                     "created_at" => $nowtime
                 )
             ),
+            'progress_confirm' => 100,
+            'status_confirm' => 99,
             'archived' => true,
         ]);
 
