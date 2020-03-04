@@ -161,7 +161,7 @@ Admin(User) -
 	<Tab-pane label="申请流程">
 		<Tabs type="card" v-model="currentsubtabs1" :animated="false">
 
-		<Tab-pane label="批量指定处理用户">
+		<Tab-pane label="批量指定处理用户（申请）">
 			<i-row :gutter="16">
 				<i-col span="24">
 					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
@@ -201,7 +201,7 @@ Admin(User) -
 
 		</Tab-pane>
 
-		<Tab-pane label="单独指定处理用户">
+		<Tab-pane label="单独指定处理用户（申请）">
 			<i-row :gutter="16">
 				<i-col span="24">
 					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
@@ -214,10 +214,10 @@ Admin(User) -
 			<i-row :gutter="16">
 				<i-col span="15">
 					当前用户工号：&nbsp;
-					<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
-						<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="user_select_current_applicant" filterable remote :remote-method="remoteMethod_user_current_applicant" :loading="user_loading_current_applicant" @on-change="onchange_user_current_applicant" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_current_applicant" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-					&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2 }}&nbsp;
+					&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2_applicant }}&nbsp;
 				</i-col>
 				<i-col span="9">
 					&nbsp;
@@ -229,10 +229,10 @@ Admin(User) -
 			<i-row :gutter="16">
 				<i-col span="15">
 					处理用户工号：&nbsp;
-					<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
-						<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="user_select_auditing_applicant" filterable remote :remote-method="remoteMethod_user_auditing_applicant" :loading="user_loading_auditing_applicant" @on-change="onchange_user_auditing_applicant" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_auditing_applicant" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-					&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2 }}&nbsp;
+					&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2_applicant }}&nbsp;
 				</i-col>
 				<i-col span="9">
 					&nbsp;
@@ -243,13 +243,13 @@ Admin(User) -
 
 			<i-row :gutter="16">
 				<i-col span="24">
-					<i-button type="default" :disabled="boo_update2" @click="auditing_add2" size="small" icon="ios-add"> Add</i-button>
+					<i-button type="default" :disabled="boo_update2_applicant" @click="auditing_add2_applicant" size="small" icon="ios-add"> Add</i-button>
 				</i-col>
 			</i-row>
 
 			<br><br>
 
-			<i-table height="300" size="small" border :columns="tablecolumns_auditing2" :data="tabledata_auditing2"></i-table>
+			<i-table height="300" size="small" border :columns="tablecolumns_auditing2_applicant" :data="tabledata_auditing2_applicant"></i-table>
 
 			<br><br>
 
@@ -260,7 +260,7 @@ Admin(User) -
 	<Tab-pane label="确认流程">
 		<Tabs type="card" v-model="currentsubtabs2" :animated="false">
 
-		<Tab-pane label="批量指定处理用户">
+		<Tab-pane label="批量指定处理用户（确认）">
 			<i-row :gutter="16">
 				<i-col span="24">
 					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
@@ -300,10 +300,10 @@ Admin(User) -
 
 		</Tab-pane>
 
-		<Tab-pane label="单独指定处理用户">
+		<Tab-pane label="单独指定处理用户（确认）">
 			<i-row :gutter="16">
 				<i-col span="24">
-					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的申请。</font>
+					<font color="#ff9900">* 在此指定哪些用户可以处理“当前用户”提交的确认。</font>
 					&nbsp;
 				</i-col>
 			</i-row>
@@ -313,10 +313,10 @@ Admin(User) -
 			<i-row :gutter="16">
 				<i-col span="15">
 					当前用户工号：&nbsp;
-					<i-select v-model.lazy="user_select_current" filterable remote :remote-method="remoteMethod_user_current" :loading="user_loading_current" @on-change="onchange_user_current" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
-						<i-option v-for="item in user_options_current" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="user_select_current_confirm" filterable remote :remote-method="remoteMethod_user_current_confirm" :loading="user_loading_current_confirm" @on-change="onchange_user_current_confirm" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_current_confirm" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-					&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2 }}&nbsp;
+					&nbsp;&nbsp;当前用户姓名：&nbsp;@{{ username_current2_confirm }}&nbsp;
 				</i-col>
 				<i-col span="9">
 					&nbsp;
@@ -328,10 +328,10 @@ Admin(User) -
 			<i-row :gutter="16">
 				<i-col span="15">
 					处理用户工号：&nbsp;
-					<i-select v-model.lazy="user_select_auditing" filterable remote :remote-method="remoteMethod_user_auditing" :loading="user_loading_auditing" @on-change="onchange_user_auditing" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
-						<i-option v-for="item in user_options_auditing" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="user_select_auditing_confirm" filterable remote :remote-method="remoteMethod_user_auditing_confirm" :loading="user_loading_auditing_confirm" @on-change="onchange_user_auditing_confirm" clearable placeholder="输入工号后选择" style="width: 120px;" size="small">
+						<i-option v-for="item in user_options_auditing_confirm" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-					&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2 }}&nbsp;
+					&nbsp;&nbsp;处理用户姓名：&nbsp;@{{ username_auditing2_confirm }}&nbsp;
 				</i-col>
 				<i-col span="9">
 					&nbsp;
@@ -342,13 +342,13 @@ Admin(User) -
 
 			<i-row :gutter="16">
 				<i-col span="24">
-					<i-button type="default" :disabled="boo_update2" @click="auditing_add2" size="small" icon="ios-add"> Add</i-button>
+					<i-button type="default" :disabled="boo_update2_confirm" @click="auditing_add2_confirm" size="small" icon="ios-add"> Add</i-button>
 				</i-col>
 			</i-row>
 
 			<br><br>
 
-			<i-table height="300" size="small" border :columns="tablecolumns_auditing2" :data="tabledata_auditing2"></i-table>
+			<i-table height="300" size="small" border :columns="tablecolumns_auditing2_confirm" :data="tabledata_auditing2_confirm"></i-table>
 
 			<br><br>
 
@@ -661,7 +661,7 @@ var vm_app = new Vue({
 		tableselect_auditing1: [],
 
 
-		tablecolumns_auditing2: [
+		tablecolumns_auditing2_applicant: [
 			{
 				type: 'index',
 				align: 'center',
@@ -769,8 +769,119 @@ var vm_app = new Vue({
 				// fixed: 'right'
 			}
 		],
-		tabledata_auditing2: [],
-		tableselect_auditing2: [],
+		tabledata_auditing2_applicant: [],
+		tableselect_auditing2_applicant: [],
+
+		tablecolumns_auditing2_confirm: [
+			{
+				type: 'index',
+				align: 'center',
+				width: 60,
+			},
+			{
+				title: 'uid',
+				key: 'uid',
+				width: 100
+			},
+			{
+				title: 'name',
+				key: 'name',
+				width: 100
+			},
+			{
+				title: 'department',
+				key: 'department',
+				width: 130
+			},
+			{
+				title: 'status',
+				key: 'deleted_at',
+				align: 'center',
+				width: 80,
+				render: (h, params) => {
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: ! params.row.deleted_at
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
+				}
+			},
+			{
+				title: 'Action',
+				key: 'action',
+				align: 'center',
+				width: 140,
+				render: (h, params) => {
+					return h('div', [
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-arrow-round-down'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.auditing_down2(params)
+								}
+							}
+						}),
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-arrow-round-up'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.auditing_up2(params)
+								}
+							}
+						}),
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-close'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.auditing_remove2(params.row)
+								}
+							}
+						}),
+					]);
+				},
+				// fixed: 'right'
+			}
+		],
+		tabledata_auditing2_confirm: [],
+		tableselect_auditing2_confirm: [],
 		
 		//分页
 		page_current: 1,
@@ -815,19 +926,29 @@ var vm_app = new Vue({
 		// 查询过滤器下拉
 		collapse_query: '',
 		
-		// 选择用户查看编辑相应角色
-		user_select_current: '',
-		user_options_current: [],
-		user_loading_current: false,
-		user_select_auditing: '',
+		// 选择用户查看编辑相应角色 申请
+		user_select_current_applicant: '',
+		user_options_current_applicant: [],
+		user_loading_current_applicant: false,
+		user_select_auditing_applicant: '',
 		user_select_auditing_uid: '',
-		user_options_auditing: [],
-		user_loading_auditing: false,
-		boo_update2: true,
-		username_current2: '',
-		username_auditing2: '',
-		// user2auditing_id: [],
-		// user2auditing_input: '',
+		user_options_auditing_applicant: [],
+		user_loading_auditing_applicant: false,
+		boo_update2_applicant: true,
+		username_current2_applicant: '',
+		username_auditing2_applicant: '',
+		
+		// 选择用户查看编辑相应角色 确认
+		user_select_current_confirm: '',
+		user_options_current_confirm: [],
+		user_loading_current_confirm: false,
+		user_select_auditing_confirm: '',
+		// user_select_auditing_uid: '',
+		user_options_auditing_confirm: [],
+		user_loading_auditing_confirm: false,
+		boo_update2_confirm: true,
+		username_current2_confirm: '',
+		username_auditing2_confirm: '',
 
 		boo_update1: true,
 		username_current1: '',
@@ -1368,12 +1489,12 @@ var vm_app = new Vue({
 			
 		},
 
-		// auditing_add2
-		auditing_add2 () {
+		// 添加处理用户 申请
+		auditing_add2_applicant () {
 			var _this = this;
 
-			var id_current = _this.user_select_current;
-			var id_auditing = _this.user_select_auditing;
+			var id_current = _this.user_select_current_applicant;
+			var id_auditing = _this.user_select_auditing_applicant;
 
 			if (id_current == '' || id_auditing == ''
 				|| id_current == undefined || id_auditing == undefined) {
@@ -1386,7 +1507,7 @@ var vm_app = new Vue({
 			// 		return false;
 			// }
 
-			// console.log(_this.user_select_current);
+			// console.log(_this.user_select_current_applicant);
 			// return false;
 
 			var url = "{{ route('admin.user.auditingadd') }}";
@@ -1406,7 +1527,48 @@ var vm_app = new Vue({
 				
  				if (response.data) {
 					_this.success(false, '成功', '添加处理用户成功！');
-					_this.tabledata_auditing2 = response.data;
+					_this.tabledata_auditing2_applicant = response.data;
+				} else {
+					_this.error(false, '失败', '添加处理用户失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '添加处理用户失败！');
+			})
+			
+		},
+
+		// 添加处理用户 确认
+		auditing_add2_confirm () {
+			var _this = this;
+
+			var id_current = _this.user_select_current_confirm;
+			var id_auditing = _this.user_select_auditing_confirm;
+
+			if (id_current == '' || id_auditing == ''
+				|| id_current == undefined || id_auditing == undefined) {
+					_this.error(false, '失败', '用户ID为空或不正确！');
+					return false;
+			}
+
+			var url = "{{ route('admin.user.auditingadd') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id_current: id_current,
+				id_auditing: id_auditing,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.success(false, '成功', '添加处理用户成功！');
+					_this.tabledata_auditing2_confirm = response.data;
 				} else {
 					_this.error(false, '失败', '添加处理用户失败！');
 				}
@@ -1565,7 +1727,7 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			// console.log(_this.user_select_current);
+			// console.log(_this.user_select_current_applicant);
 			// return false;
 
 			var url = "{{ route('admin.user.auditingremove') }}";
@@ -1605,7 +1767,7 @@ var vm_app = new Vue({
 			var uid = params.row.uid;
 
 			// current user id -> id
-			var id = _this.user_select_current;
+			var id = _this.user_select_current_applicant;
 
 			if (id == '' || uid == ''
 				|| id == undefined || uid == undefined || index == undefined
@@ -1631,7 +1793,7 @@ var vm_app = new Vue({
 
 				if (response.data) {
 					_this.success(false, '成功', '排序成功！');
-					_this.tabledata_auditing2 = response.data;
+					_this.tabledata_auditing2_applicant = response.data;
 				} else {
 					_this.error(false, '失败', '排序失败！');
 				}
@@ -1649,11 +1811,11 @@ var vm_app = new Vue({
 			var uid = params.row.uid;
 
 			// current user id -> id
-			var id = _this.user_select_current;
+			var id = _this.user_select_current_applicant;
 
 			if (id == '' || uid == ''
 				|| id == undefined || uid == undefined || index == undefined
-				|| id == uid || index == _this.tabledata_auditing2.length-1) {
+				|| id == uid || index == _this.tabledata_auditing2_applicant.length-1) {
 				return false;
 			}
 
@@ -1675,7 +1837,7 @@ var vm_app = new Vue({
 
 				if (response.data) {
 					_this.success(false, '成功', '排序成功！');
-					_this.tabledata_auditing2 = response.data;
+					_this.tabledata_auditing2_applicant = response.data;
 				} else {
 					_this.error(false, '失败', '排序失败！');
 				}
@@ -1694,7 +1856,7 @@ var vm_app = new Vue({
 
 			var index = row._index;
 			var uid = row.uid;
-			var id = _this.user_select_current;
+			var id = _this.user_select_current_applicant;
 
 			if (id == '' || uid == ''
 				|| id == undefined || uid == undefined
@@ -1702,7 +1864,7 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			// console.log(_this.user_select_current);
+			// console.log(_this.user_select_current_applicant);
 			// return false;
 
 			var url = "{{ route('admin.user.auditingremove') }}";
@@ -1723,7 +1885,7 @@ var vm_app = new Vue({
 				
  				if (response.data) {
 					_this.success(false, '成功', '删除处理用户成功！');
-					_this.tabledata_auditing2 = response.data;
+					_this.tabledata_auditing2_applicant = response.data;
 				} else {
 					_this.error(false, '失败', '删除处理用户失败！');
 				}
@@ -1735,18 +1897,60 @@ var vm_app = new Vue({
 		},
 		
 		
-		// 选择user current
-		onchange_user_current: function () {
+		// 选择user current 申请
+		onchange_user_current_applicant: function () {
 			var _this = this;
-			var userid = _this.user_select_current;
+			var userid = _this.user_select_current_applicant;
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
-				_this.tabledata_auditing2 = [];
-				_this.username_current2 = '';
+				_this.tabledata_auditing2_applicant = [];
+				_this.username_current2_applicant = '';
 				return false;
 			}
-			// _this.boo_update2 = false;
+			// _this.boo_update2_applicant = false;
+			var url = "{{ route('admin.user.userhasauditing2applicant') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					userid: userid
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data.auditing) {
+					_this.tabledata_auditing2_applicant = response.data.auditing;
+					_this.username_current2_applicant = response.data.username;
+				} else {
+					_this.tabledata_auditing2_applicant = [];
+					_this.username_current2_applicant = '';
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
+		},
+		
+		// 选择user current 确认
+		onchange_user_current_confirm: function () {
+			var _this = this;
+			var userid = _this.user_select_current_confirm;
+			// console.log(userid);return false;
+			
+			if (userid == undefined || userid == '') {
+				_this.tabledata_auditing2_confirm = [];
+				_this.username_current2_confirm = '';
+				return false;
+			}
+			// _this.boo_update2_confirm = false;
 			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
@@ -1763,12 +1967,12 @@ var vm_app = new Vue({
 					return false;
 				}
 				
-				if (response.data) {
-					_this.tabledata_auditing2 = response.data.auditing;
-					_this.username_current2 = response.data.username;
+				if (response.data.auditing) {
+					_this.tabledata_auditing2_confirm = response.data.auditing;
+					_this.username_current2_confirm = response.data.username;
 				} else {
-					_this.tabledata_auditing2 = [];
-					_this.username_current2 = '';
+					_this.tabledata_auditing2_confirm = [];
+					_this.username_current2_confirm = '';
 				}
 			})
 			.catch(function (error) {
@@ -1777,21 +1981,21 @@ var vm_app = new Vue({
 			
 		},
 
-		// 选择user auditing
-		onchange_user_auditing () {
+		// 选择user auditing 申请
+		onchange_user_auditing_applicant () {
 			var _this = this;
-			var userid = _this.user_select_auditing;
+			var userid = _this.user_select_auditing_applicant;
 			
 			// console.log(userid);return false;
 			
 			if (userid == undefined || userid == '') {
-				_this.username_auditing2 = '';
+				_this.username_auditing2_applicant = '';
 				// _this.targetkeystransfer = [];
 				// _this.datatransfer = [];
-				_this.boo_update2 = true;
+				_this.boo_update2_applicant = true;
 				return false;
 			}
-			_this.boo_update2 = false;
+			_this.boo_update2_applicant = false;
 			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
@@ -1809,10 +2013,55 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.username_auditing2 = response.data.username;
+					_this.username_auditing2_applicant = response.data.username;
 					_this.user_select_auditing_uid = response.data.uid;
 				} else {
-					_this.username_auditing2 = '';
+					_this.username_auditing2_applicant = '';
+					_this.user_select_auditing_uid = '';
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
+		},
+
+		// 选择user auditing 确认
+		onchange_user_auditing_confirm () {
+			var _this = this;
+			var userid = _this.user_select_auditing_confirm;
+			
+			// console.log(userid);return false;
+			
+			if (userid == undefined || userid == '') {
+				_this.username_auditing2_confirm = '';
+				// _this.targetkeystransfer = [];
+				// _this.datatransfer = [];
+				_this.boo_update2_confirm = true;
+				return false;
+			}
+			_this.boo_update2_confirm = false;
+			var url = "{{ route('admin.user.userhasauditing2') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					userid: userid
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.username_auditing2_confirm = response.data.username;
+					_this.user_select_auditing_uid = response.data.uid;
+				} else {
+					_this.username_auditing2_confirm = '';
 					_this.user_select_auditing_uid = '';
 				}
 			})
@@ -1848,7 +2097,7 @@ var vm_app = new Vue({
 			// console.log(json_applicant);return false;
 			
 			_this.boo_update1 = false;
-			var url = "{{ route('admin.user.userhasauditing1') }}";
+			var url = "{{ route('admin.user.userhasauditing1applicant') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -1866,10 +2115,10 @@ var vm_app = new Vue({
 				
 				if (response.data.auditing) {
 					_this.tabledata_auditing1 = response.data.auditing;
-					// _this.username_current2 = response.data.username;
+					// _this.username_current2_applicant = response.data.username;
 				} else {
 					_this.tabledata_auditing1 = [];
-					// _this.username_current2 = '';
+					// _this.username_current2_applicant = '';
 				}
 			})
 			.catch(function (error) {
@@ -1880,12 +2129,12 @@ var vm_app = new Vue({
 		
 
 
-		// 远程查询当前用户
-		remoteMethod_user_current (query) {
+		// 远程查询当前用户 申请
+		remoteMethod_user_current_applicant (query) {
 			var _this = this;
 
 			if (query !== '') {
-				_this.user_loading_current = true;
+				_this.user_loading_current_applicant = true;
 				
 				var queryfilter_name = query;
 				
@@ -1907,14 +2156,14 @@ var vm_app = new Vue({
 					
 					if (response.data) {
 						var json = response.data;
-						_this.user_options_current = _this.json2selectvalue(json);
+						_this.user_options_current_applicant = _this.json2selectvalue(json);
 					}
 				})
 				.catch(function (error) {
 				})				
 				
 				setTimeout(() => {
-					_this.user_loading_current = false;
+					_this.user_loading_current_applicant = false;
 					// const list = this.list.map(item => {
 						// return {
 							// value: item,
@@ -1924,16 +2173,57 @@ var vm_app = new Vue({
 					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
 				}, 200);
 			} else {
-				_this.user_options_current = [];
+				_this.user_options_current_applicant = [];
+			}
+		},
+
+		// 远程查询当前用户 确认
+		remoteMethod_user_current_confirm (query) {
+			var _this = this;
+
+			if (query !== '') {
+				_this.user_loading_current_confirm = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('admin.user.uidlist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					// return false;
+
+					if (response.data['jwt'] == 'logout') {
+						_this.alert_logout();
+						return false;
+					}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.user_options_current_confirm = _this.json2selectvalue(json);
+					}
+				})
+				.catch(function (error) {
+				})				
+				
+				setTimeout(() => {
+					_this.user_loading_current_confirm = false;
+				}, 200);
+			} else {
+				_this.user_options_current_applicant = [];
 			}
 		},
 
 		// 远程查询处理用户
-		remoteMethod_user_auditing (query) {
+		remoteMethod_user_auditing_applicant (query) {
 			var _this = this;
 
 			if (query !== '') {
-				_this.user_loading_current = true;
+				_this.user_loading_current_applicant = true;
 				
 				var queryfilter_name = query;
 				
@@ -1955,14 +2245,14 @@ var vm_app = new Vue({
 					
 					if (response.data) {
 						var json = response.data;
-						_this.user_options_auditing = _this.json2selectvalue(json);
+						_this.user_options_auditing_applicant = _this.json2selectvalue(json);
 					}
 				})
 				.catch(function (error) {
 				})				
 				
 				setTimeout(() => {
-					_this.user_loading_current = false;
+					_this.user_loading_current_applicant = false;
 					// const list = this.list.map(item => {
 						// return {
 							// value: item,
@@ -1972,7 +2262,48 @@ var vm_app = new Vue({
 					// this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
 				}, 200);
 			} else {
-				_this.user_options_current = [];
+				_this.user_options_current_applicant = [];
+			}
+		},
+
+		// 远程查询处理用户
+		remoteMethod_user_auditing_confirm (query) {
+			var _this = this;
+
+			if (query !== '') {
+				_this.user_loading_current_confirm = true;
+				
+				var queryfilter_name = query;
+				
+				var url = "{{ route('admin.user.uidlist') }}";
+				axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+				axios.get(url,{
+					params: {
+						queryfilter_name: queryfilter_name
+					}
+				})
+				.then(function (response) {
+					// console.log(response.data);
+					// return false;
+
+					if (response.data['jwt'] == 'logout') {
+						_this.alert_logout();
+						return false;
+					}
+					
+					if (response.data) {
+						var json = response.data;
+						_this.user_options_auditing_confirm = _this.json2selectvalue(json);
+					}
+				})
+				.catch(function (error) {
+				})				
+				
+				setTimeout(() => {
+					_this.user_loading_current_confirm = false;
+				}, 200);
+			} else {
+				_this.user_options_current_applicant = [];
 			}
 		},
 
