@@ -1897,8 +1897,8 @@ var vm_app = new Vue({
 		},
 		
 		
-		// 选择user current 申请
-		onchange_user_current_applicant: function () {
+		// 列出申请单独当前用户信息 OK
+		onchange_user_current_applicant() {
 			var _this = this;
 			var userid = _this.user_select_current_applicant;
 			// console.log(userid);return false;
@@ -1938,50 +1938,9 @@ var vm_app = new Vue({
 			})
 			
 		},
-		
-		// 选择user current 确认
-		onchange_user_current_confirm: function () {
-			var _this = this;
-			var userid = _this.user_select_current_confirm;
-			// console.log(userid);return false;
-			
-			if (userid == undefined || userid == '') {
-				_this.tabledata_auditing2_confirm = [];
-				_this.username_current2_confirm = '';
-				return false;
-			}
-			// _this.boo_update2_confirm = false;
-			var url = "{{ route('admin.user.userhasauditing2') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					userid: userid
-				}
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data.auditing) {
-					_this.tabledata_auditing2_confirm = response.data.auditing;
-					_this.username_current2_confirm = response.data.username;
-				} else {
-					_this.tabledata_auditing2_confirm = [];
-					_this.username_current2_confirm = '';
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-			
-		},
 
-		// 选择user auditing 申请
+		// 选择user auditing 申请 2222222222222222
 		onchange_user_auditing_applicant () {
 			var _this = this;
 			var userid = _this.user_select_auditing_applicant;
@@ -1996,7 +1955,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			_this.boo_update2_applicant = false;
-			var url = "{{ route('admin.user.userhasauditing2') }}";
+			var url = "{{ route('admin.user.userhasauditing2applicant') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -2026,8 +1985,51 @@ var vm_app = new Vue({
 			
 		},
 
-		// 选择user auditing 确认
-		onchange_user_auditing_confirm () {
+		
+		// 列出申请单独当前用户信息 OK
+		onchange_user_current_confirm() {
+			var _this = this;
+			var userid = _this.user_select_current_confirm;
+			// console.log(userid);return false;
+			
+			if (userid == undefined || userid == '') {
+				_this.tabledata_auditing2_confirm = [];
+				_this.username_current2_confirm = '';
+				return false;
+			}
+			// _this.boo_update2_confirm = false;
+			var url = "{{ route('admin.user.userhasauditing2confirm') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					userid: userid
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data.auditing) {
+					_this.tabledata_auditing2_confirm = response.data.auditing;
+					_this.username_current2_confirm = response.data.username;
+				} else {
+					_this.tabledata_auditing2_confirm = [];
+					_this.username_current2_confirm = '';
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+			
+		},
+
+		// 选择user auditing 确认 44444444444
+		onchange_user_auditing_confirm() {
 			var _this = this;
 			var userid = _this.user_select_auditing_confirm;
 			
@@ -2041,7 +2043,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			_this.boo_update2_confirm = false;
-			var url = "{{ route('admin.user.userhasauditing2') }}";
+			var url = "{{ route('admin.user.userhasauditing2confirm') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {

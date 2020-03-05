@@ -407,7 +407,7 @@ class UserController extends Controller
 
 
     /**
-     * 列出用户所指向的auditing信息 批量申请
+     * 列出用户所指向的auditing信息 批量申请 ????
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -439,7 +439,7 @@ class UserController extends Controller
     }
 
     /**
-     * 列出用户所指向的auditing信息 批量确认
+     * 列出用户所指向的auditing信息 批量确认 ????
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -471,12 +471,44 @@ class UserController extends Controller
     }
 
     /**
-     * 列出单独和确认的处理用户信息
+     * 列出申请单独当前用户信息 OK
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function userHasAuditing2(Request $request)
+    public function userHasAuditing2Applicant(Request $request)
+    {
+		if (! $request->ajax()) return null;
+
+		$userid = $request->input('userid');
+		
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		// 获取当前用户所指向的auditing
+		$userhasauditing = User::select('uid', 'displayname', 'auditing')
+			->where('id', $userid)
+			->first();
+
+		$uid = $userhasauditing['uid'];
+		$username = $userhasauditing['displayname'];
+		// $auditing = json_decode($userhasauditing['auditing'], true);
+		$auditing = $userhasauditing['auditing'];
+		
+		// $allusers = User::pluck('name', 'id')->toArray();
+
+		$result = compact('uid', 'username', 'auditing');
+
+		return $result;
+	}
+	
+    /**
+     * 列出确认单独当前用户信息 OK
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function userHasAuditing2Confirm(Request $request)
     {
 		if (! $request->ajax()) return null;
 

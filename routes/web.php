@@ -343,14 +343,14 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 列出当前用户拥处理用户 批量申请
 	Route::get('userHasAuditing1Applicant', 'UserController@userHasAuditing1Applicant')->name('admin.user.userhasauditing1applicant');
 
-	// 列出当前用户的处理用户 单独申请
-	Route::get('userHasAuditing2Applicant', 'UserController@userHasAuditing2Applicant')->name('admin.user.userhasauditing2applicant');
-
-	// 列出当前用户拥处理用户 批量确认
-	Route::get('userHasAuditing1', 'UserController@userHasAuditing1')->name('admin.user.userhasauditing1');
+	// 列出当前用户拥处理用户 
+	Route::get('userHasAuditing1Confirm', 'UserController@userHasAuditing1Confirm')->name('admin.user.userhasauditing1confirm');
 
 	// 列出当前用户的处理用户 单独确认
-	Route::get('userHasAuditing2', 'UserController@userHasAuditing2')->name('admin.user.userhasauditing2');
+	Route::get('userHasAuditing2Applicant', 'UserController@userHasAuditing2Applicant')->name('admin.user.userhasauditing2applicant');
+
+	// 列出当前用户的处理用户 单独确认
+	Route::get('userHasAuditing2Confirm', 'UserController@userHasAuditing2Confirm')->name('admin.user.userhasauditing2confirm');
 
 	// 添加处理用户
 	Route::post('auditingAdd', 'UserController@auditingAdd')->name('admin.user.auditingadd');
