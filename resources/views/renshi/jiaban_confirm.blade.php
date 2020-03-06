@@ -30,7 +30,7 @@ Renshi(Confirm) -
 				
 					<i-row :gutter="16">
 						<i-col span="5">
-							当前审核人&nbsp;&nbsp;
+							当前确认人&nbsp;&nbsp;
 							<i-input v-model.lazy="queryfilter_auditor" @on-change="jiabangetsconfirm(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
 						</i-col>
 						<i-col span="8">
@@ -716,7 +716,7 @@ var vm_app = new Vue({
 			// 	width: 160
 			// },
 			{
-				title: '当前审核人',
+				title: '当前确认人',
 				key: 'auditor',
 				width: 160,
 				render: (h, params) => {
@@ -737,7 +737,7 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '当前审核人部门',
+				title: '当前确认人部门',
 				key: 'department_of_auditor',
 				width: 160,
 				render: (h, params) => {
