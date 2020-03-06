@@ -983,7 +983,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabangetsconfirmtodo: function(page, last_page){
+		jiabangetsconfirmtodo(page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {

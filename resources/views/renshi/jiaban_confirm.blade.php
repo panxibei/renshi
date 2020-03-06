@@ -759,11 +759,11 @@ var vm_app = new Vue({
 			},
 			{
 				title: '进度',
-				key: 'progress_confirm',
+				key: 'progress',
 				width: 140,
 				render: (h, params) => {
-					// return h('div', {}, params.row.progress_confirm + '%')
-					if (params.row.progress_confirm == 0) {
+					// return h('div', {}, params.row.progress + '%')
+					if (params.row.progress == 0) {
 						return h('div', {}, [
 							h('Progress',{
 								props: {
@@ -777,7 +777,7 @@ var vm_app = new Vue({
 						return h('div', {}, [
 							h('Progress',{
 								props: {
-									percent: params.row.progress_confirm,
+									percent: params.row.progress,
 									status: 'active',
 									}
 								}
@@ -788,7 +788,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: '状态',
-				key: 'status_confirm',
+				key: 'status',
 				width: 90,
 				render: (h, params) => {
 					if (params.row.archived == 1) {
@@ -802,7 +802,7 @@ var vm_app = new Vue({
 							),
 							h('span',' 已归档')
 						])
-					} else if (params.row.status_confirm == 99) {
+					} else if (params.row.status == 99) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -817,7 +817,7 @@ var vm_app = new Vue({
 								}
 							},' 已结案')
 						])
-					} else if (params.row.status_confirm == 0) {
+					} else if (params.row.status == 0) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -1132,7 +1132,7 @@ var vm_app = new Vue({
 			})
 		},		
 		
-		jiabangetsconfirm: function(page, last_page){
+		jiabangetsconfirm(page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {

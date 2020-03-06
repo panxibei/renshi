@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
-use App\Models\Renshi\Renshi_jiaban;
+use App\Models\Renshi\Renshi_jiaban_confirm;
 use DB;
 use Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -38,7 +38,7 @@ class ConfirmController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
 		->whereBetween('status', [1, 98])
 		->where('archived', false)
@@ -59,27 +59,27 @@ class ConfirmController extends Controller
 	 */
 	public function jiabanConfirmTodo()
 	{
-	// 获取JSON格式的jwt-auth用户响应
-	$me = response()->json(auth()->user());
+		// 获取JSON格式的jwt-auth用户响应
+		$me = response()->json(auth()->user());
 
-	// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
-	$user = json_decode($me->getContent(), true);
-	// 用户信息：$user['id']、$user['name'] 等
+		// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+		$user = json_decode($me->getContent(), true);
+		// 用户信息：$user['id']、$user['name'] 等
 
-	// 获取系统配置
-	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+		// 获取系统配置
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
-	// 获取todo信息
-	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'progress_confirm', 'status_confirm', 'created_at', 'updated_at', 'deleted_at')
-		->where('uid_of_auditor', $user['uid'])
-		->whereBetween('status', [1, 98])
-		->where('archived', false)
-		->limit(5)
-		->orderBy('created_at', 'desc')
-		->get()->toArray();
-	
-	$share = compact('config', 'user', 'info_todo');
-	return view('renshi.jiaban_confirmtodo', $share);
+		// 获取todo信息
+		$info_todo = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+			->where('uid_of_auditor', $user['uid'])
+			->whereBetween('status', [1, 98])
+			->where('archived', false)
+			->limit(5)
+			->orderBy('created_at', 'desc')
+			->get()->toArray();
+		
+		$share = compact('config', 'user', 'info_todo');
+		return view('renshi.jiaban_confirmtodo', $share);
 	}
 	
 	
@@ -102,7 +102,7 @@ class ConfirmController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
 		->whereBetween('status', [1, 98])
 		->where('archived', false)
@@ -134,7 +134,7 @@ class ConfirmController extends Controller
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
 	// 获取todo信息
-	$info_todo = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$info_todo = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		->where('uid_of_auditor', $user['uid'])
 		->whereBetween('status', [1, 98])
 		->where('archived', false)
@@ -188,7 +188,7 @@ class ConfirmController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'progress_confirm', 'status_confirm', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})
@@ -257,7 +257,7 @@ class ConfirmController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_applicant, function ($query) use ($queryfilter_applicant) {
 				return $query->where('agent', 'like', '%'.$queryfilter_applicant.'%');
 			})
@@ -325,7 +325,7 @@ class ConfirmController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
+		$result = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'index_of_auditor', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'progress', 'status', 'reason', 'remark', 'auditing', 'archived', 'camera_imgurl', 'created_at', 'updated_at', 'deleted_at')
 			->when($queryfilter_auditor, function ($query) use ($queryfilter_auditor) {
 				return $query->where('auditor', 'like', '%'.$queryfilter_auditor.'%');
 			})
@@ -1097,7 +1097,7 @@ class ConfirmController extends Controller
 	try	{
 		DB::beginTransaction();
 		
-		Renshi_jiaban::create([
+		Renshi_jiaban_confirm::create([
 			'uuid' => $uuid,
 			'id_of_agent' => $id_of_agent,
 			'uid_of_agent' => $uid_of_agent,
@@ -1272,7 +1272,7 @@ class ConfirmController extends Controller
 		// }
 		// Bpjg_zhongricheng_relation::insert($s);
 
-		Renshi_jiaban::create([
+		Renshi_jiaban_confirm::create([
 			'uuid' => $uuid,
 			'id_of_agent' => $id_of_agent,
 			'uid_of_agent' => $uid_of_agent,
@@ -1381,7 +1381,7 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	$result = Renshi_jiaban::whereIn('id', $id)->delete();
+	$result = Renshi_jiaban_confirm::whereIn('id', $id)->delete();
 	Cache::flush();
 	return $result;
 	}
@@ -1399,7 +1399,7 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	$result = Renshi_jiaban::where('id', $id)->forceDelete();
+	$result = Renshi_jiaban_confirm::where('id', $id)->forceDelete();
 	Cache::flush();
 	return $result;
 	}
@@ -1417,13 +1417,13 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	// $trashed = Renshi_jiaban::select('deleted_at')
+	// $trashed = Renshi_jiaban_confirm::select('deleted_at')
 	// 	->whereIn('id', $id)
 	// 	->first();
 
 	// 如果在回收站里，则恢复它
 	// if ($trashed == null) {
-		$result = Renshi_jiaban::where('id', $id)->restore();
+		$result = Renshi_jiaban_confirm::where('id', $id)->restore();
 	// }
 	Cache::flush();
 	return $result;
@@ -1442,7 +1442,7 @@ class ConfirmController extends Controller
 
 	$jiaban_id = $request->input('jiaban_id');
 
-	$flag = Renshi_jiaban::select('archived')
+	$flag = Renshi_jiaban_confirm::select('archived')
 		->where('id', $jiaban_id)
 		->first();
 
@@ -1457,7 +1457,7 @@ class ConfirmController extends Controller
 		// }
 		// Bpjg_zhongricheng_relation::insert($s);
 
-		$result = Renshi_jiaban::where('id', $jiaban_id)
+		$result = Renshi_jiaban_confirm::where('id', $jiaban_id)
 			->update([
 				'archived' => ! $flag['archived'],
 			]);
@@ -1501,7 +1501,7 @@ class ConfirmController extends Controller
 	$auditor = $user['displayname'];
 	$department_of_auditor = $user['department'];
 
-	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing', 'index_of_auditor')
+	$auditing_before = Renshi_jiaban_confirm::select('uuid', 'status', 'auditing', 'index_of_auditor')
 		->where('id', $jiaban_id)
 		->first();
 
@@ -1594,7 +1594,7 @@ class ConfirmController extends Controller
 		// }
 		// Bpjg_zhongricheng_relation::insert($s);
 
-		$result = Renshi_jiaban::where('id', $jiaban_id)
+		$result = Renshi_jiaban_confirm::where('id', $jiaban_id)
 			->update([
 				'index_of_auditor' => $index_of_auditor + 1,
 				'id_of_auditor' => $id_of_auditor,
@@ -1706,7 +1706,7 @@ class ConfirmController extends Controller
 	$auditor = $user['displayname'];
 	$department_of_auditor = $user['department'];
 
-	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing', 'index_of_auditor')
+	$auditing_before = Renshi_jiaban_confirm::select('uuid', 'status', 'auditing', 'index_of_auditor')
 		->where('id', $jiaban_id)
 		->first();
 
@@ -1793,7 +1793,7 @@ class ConfirmController extends Controller
 		// }
 		// Bpjg_zhongricheng_relation::insert($s);
 
-		$result = Renshi_jiaban::where('id', $jiaban_id)
+		$result = Renshi_jiaban_confirm::where('id', $jiaban_id)
 			->update([
 				'id_of_auditor' => $id_of_auditor,
 				'uid_of_auditor' => $uid_of_auditor,
@@ -1866,7 +1866,7 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	$result = Renshi_jiaban::whereIn('id', $id)->delete();
+	$result = Renshi_jiaban_confirm::whereIn('id', $id)->delete();
 	Cache::flush();
 	return $result;
 	}
@@ -1884,7 +1884,7 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	$result = Renshi_jiaban::where('id', $id)->forceDelete();
+	$result = Renshi_jiaban_confirm::where('id', $id)->forceDelete();
 	Cache::flush();
 	return $result;
 	}
@@ -1903,7 +1903,7 @@ class ConfirmController extends Controller
 	$id = $request->input('id');
 
 	// 如果在回收站里，则恢复它
-	$result = Renshi_jiaban::where('id', $id)->restore();
+	$result = Renshi_jiaban_confirm::where('id', $id)->restore();
 	Cache::flush();
 	return $result;
 	}
@@ -1923,7 +1923,7 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	$result = Renshi_jiaban::whereIn('id', $id)->delete();
+	$result = Renshi_jiaban_confirm::whereIn('id', $id)->delete();
 	Cache::flush();
 	return $result;
 	}
@@ -1941,7 +1941,7 @@ class ConfirmController extends Controller
 
 	$id = $request->input('id');
 
-	$result = Renshi_jiaban::where('id', $id)->forceDelete();
+	$result = Renshi_jiaban_confirm::where('id', $id)->forceDelete();
 	Cache::flush();
 	return $result;
 	}
@@ -1959,7 +1959,7 @@ class ConfirmController extends Controller
 	$id = $request->input('id');
 
 	// 如果在回收站里，则恢复它
-	$result = Renshi_jiaban::where('id', $id)->restore();
+	$result = Renshi_jiaban_confirm::where('id', $id)->restore();
 	Cache::flush();
 	return $result;
 	}
@@ -2015,8 +2015,8 @@ class ConfirmController extends Controller
 	// $queryfilter_created_at = [date('Y-m-d H:i:s', strtotime($queryfilter_datefrom)), date('Y-m-d H:i:s', strtotime($queryfilter_dateto))];
 	$queryfilter_created_at = [$queryfilter_datefrom, $queryfilter_dateto];
 // dd($queryfilter_created_at);
-	// $jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
-	$jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	// $jiaban_applicant = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$jiaban_applicant = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		// ->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
 		// 	return $query->whereBetween('created_at', $queryfilter_created_at);
 		// })
@@ -2105,8 +2105,8 @@ class ConfirmController extends Controller
 	// $queryfilter_created_at = [date('Y-m-d H:i:s', strtotime($queryfilter_datefrom)), date('Y-m-d H:i:s', strtotime($queryfilter_dateto))];
 	$queryfilter_created_at = [$queryfilter_datefrom, $queryfilter_dateto];
 // dd($queryfilter_created_at);
-	// $jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
-	$jiaban_applicant = Renshi_jiaban::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	// $jiaban_applicant = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
+	$jiaban_applicant = Renshi_jiaban_confirm::select('id', 'uuid', 'id_of_agent', 'uid_of_agent', 'agent', 'department_of_agent', 'id_of_auditor', 'uid_of_auditor', 'auditor', 'department_of_auditor', 'application', 'status', 'reason', 'remark', 'auditing', 'archived', 'created_at', 'updated_at', 'deleted_at')
 		// ->when($queryfilter_created_at, function ($query) use ($queryfilter_created_at) {
 		// 	return $query->whereBetween('created_at', $queryfilter_created_at);
 		// })

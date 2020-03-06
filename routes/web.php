@@ -127,18 +127,18 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	
 
 	// 333333333
-	// 显示applicant页面
+	// 显示confirm页面
 	Route::get('jiabanConfirm', 'ConfirmController@jiabanConfirm')->name('renshi.jiaban.confirm');
 
-	// jiaban gets列表
+	// jiaban confirm gets列表
 	Route::get('jiabanGetsConfirm', 'ConfirmController@jiabanGetsConfirm')->name('renshi.jiaban.jiabangetsconfirm');
 
 
 	// 444444444
-	// 显示todo页面
+	// 显示confirm todo页面
 	Route::get('jiabanConfirmTodo', 'ConfirmController@jiabanConfirmTodo')->name('renshi.jiaban.confirm_todo');
 
-	// jiaban gets列表
+	// jiaban confirm todo gets列表
 	Route::get('jiabanGetsConfirmTodo', 'ConfirmController@jiabanGetsConfirmTodo')->name('renshi.jiaban.jiabangetsconfirmtodo');
 
 
