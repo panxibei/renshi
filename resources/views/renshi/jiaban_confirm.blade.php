@@ -1660,7 +1660,7 @@ var vm_app = new Vue({
 // console.log(row.id_of_auditor);
 // console.log(_this.jiaban_edit_id_of_agent);
 // return false;
-			var url = "{{ route('renshi.jiaban.applicant.auditinglist') }}";
+			var url = "{{ route('renshi.jiaban.applicant.auditinglistconfirm') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {

@@ -141,6 +141,9 @@ Route::group(['prefix'=>'renshi', 'namespace'=>'Renshi', 'middleware'=>['jwtauth
 	// jiaban confirm todo gets列表
 	Route::get('jiabanGetsConfirmTodo', 'ConfirmController@jiabanGetsConfirmTodo')->name('renshi.jiaban.jiabangetsconfirmtodo');
 
+	// 确认-确认 页面 查询auditing
+	Route::get('auditingListConfirm', 'ConfirmController@auditingListConfirm')->name('renshi.jiaban.applicant.auditinglistconfirm');
+
 
 
 

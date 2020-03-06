@@ -204,7 +204,6 @@ class ConfirmController extends Controller
 				// }
 			})
 			// ->where('uid_of_agent', $user['uid'])
-			->where('progress', 100)
 			->where('archived', false)
 			->limit(1000)
 			->orderBy('created_at', 'desc')
@@ -271,7 +270,6 @@ class ConfirmController extends Controller
 					return $query->where('uid_of_auditor', $uid);
 			})
 			// ->where('uid_of_auditor', $user['uid'])
-			->where('progress', 100)
 			->where('archived', false)
 			->limit(1000)
 			->orderBy('created_at', 'desc')
@@ -663,7 +661,7 @@ class ConfirmController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function auditingList(Request $request)
+	public function auditingListConfirm(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -687,14 +685,14 @@ class ConfirmController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = User::select('auditing')
+		$result = User::select('auditing_confirm')
 			->where('id', $id)
 			->first();
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 	}
-// dd($result['auditing']);
-	return $result['auditing'];
+
+	return $result['auditing_confirm'];
 	}
 
 
