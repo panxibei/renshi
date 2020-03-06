@@ -1909,7 +1909,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			// _this.boo_update2_applicant = false;
-			var url = "{{ route('admin.user.userhasauditing2applicant') }}";
+			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -1955,7 +1955,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			_this.boo_update2_applicant = false;
-			var url = "{{ route('admin.user.userhasauditing2applicant') }}";
+			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -1998,7 +1998,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			// _this.boo_update2_confirm = false;
-			var url = "{{ route('admin.user.userhasauditing2confirm') }}";
+			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -2043,7 +2043,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			_this.boo_update2_confirm = false;
-			var url = "{{ route('admin.user.userhasauditing2confirm') }}";
+			var url = "{{ route('admin.user.userhasauditing2') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {

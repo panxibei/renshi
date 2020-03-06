@@ -340,17 +340,17 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 清除user的ttl
 	Route::post('userclsttl', 'UserController@userClsttl')->name('admin.user.clsttl');
 
-	// 列出当前用户拥处理用户 批量申请
+	// 列出当前用户拥处理用户 申请->批量
 	Route::get('userHasAuditing1Applicant', 'UserController@userHasAuditing1Applicant')->name('admin.user.userhasauditing1applicant');
 
-	// 列出当前用户拥处理用户 
+	// 列出当前用户拥处理用户 确认->批量
 	Route::get('userHasAuditing1Confirm', 'UserController@userHasAuditing1Confirm')->name('admin.user.userhasauditing1confirm');
 
-	// 列出当前用户的处理用户 单独确认
-	Route::get('userHasAuditing2Applicant', 'UserController@userHasAuditing2Applicant')->name('admin.user.userhasauditing2applicant');
+	// 列出当前用户的处理用户 单独（申请和确认共用）OK
+	Route::get('userHasAuditing2Applicant', 'UserController@userHasAuditing2')->name('admin.user.userhasauditing2');
 
-	// 列出当前用户的处理用户 单独确认
-	Route::get('userHasAuditing2Confirm', 'UserController@userHasAuditing2Confirm')->name('admin.user.userhasauditing2confirm');
+	// 列出当前用户的处理用户 单独确认 ??
+	// Route::get('userHasAuditing2Confirm', 'UserController@userHasAuditing2Confirm')->name('admin.user.userhasauditing2confirm');
 
 	// 添加处理用户
 	Route::post('auditingAdd', 'UserController@auditingAdd')->name('admin.user.auditingadd');

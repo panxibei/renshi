@@ -405,7 +405,7 @@ class UserController extends Controller
 		return $result;
     }
 
-
+//-----------------------------------
     /**
      * 列出用户所指向的auditing信息 批量申请 ????
      *
@@ -476,7 +476,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function userHasAuditing2Applicant(Request $request)
+    public function userHasAuditing2(Request $request)
     {
 		if (! $request->ajax()) return null;
 
@@ -503,7 +503,7 @@ class UserController extends Controller
 	}
 	
     /**
-     * 列出确认单独当前用户信息 OK
+     * 列出确认单独当前用户信息 ??
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -533,7 +533,7 @@ class UserController extends Controller
 
 		return $result;
     }
-
+//----------------------------------------------
 
 
     /**
