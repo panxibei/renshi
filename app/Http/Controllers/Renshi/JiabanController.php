@@ -1108,7 +1108,6 @@ class JiabanController extends Controller
 			'department_of_auditor' => $department_of_auditor,
 			// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 			'application' => $application,
-			'actuality' => $application,
 			'progress' => $progress,
 			'status' => 1,
 			'reason' => $reason,
@@ -1283,7 +1282,6 @@ class JiabanController extends Controller
 			'department_of_auditor' => $department_of_auditor,
 			// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 			'application' => $application,
-			'actuality' => $application,
 			'progress' => $progress,
 			'status' => 1,
 			'reason' => $reason,
@@ -1531,14 +1529,15 @@ class JiabanController extends Controller
 	// $auditing = $auditing_after;
 
 	// get agent
-	$agent = User::select('email', 'displayname', 'auditing')
+	$agent = User::select('email', 'displayname', 'auditing', 'auditing_confirm')
 	->where('id', $jiaban_id_of_agent)
 	->first();
 
 	// 代理人相应的审核人的数量
 	// $agent_auditing = json_decode($agent['auditing'], true);
 	$agent_auditing = $agent['auditing'];
-	$agent_auditing_count = count($agent_auditing);
+	$agent_auditing_confirm = $agent['auditing_confirm'];
+	$agent_auditing_count = count($agent_auditing) + count($agent_auditing_confirm);
 
 
 
@@ -1556,11 +1555,65 @@ class JiabanController extends Controller
 		$department_of_auditor = '无';
 
 		// 状态99为结案
-		$jiaban_status = 99;
+		// $jiaban_status = 99;
+		$jiaban_status++;
 
 		// get progress
-		$progress = 100;
+		// $progress = 100;
+		$progress = intval($jiaban_status / ($agent_auditing_count + 1) * 100);
 
+
+		try	{
+			DB::beginTransaction();
+			
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// foreach ($s as $value) {
+				// Bpjg_zhongricheng_main::create($value);
+			// }
+			// Bpjg_zhongricheng_relation::insert($s);
+
+
+			Renshi_jiaban_confirm::create([
+				'uuid' => $uuid,
+				'id_of_agent' => $id_of_agent,
+				'uid_of_agent' => $uid_of_agent,
+				'agent' => $agent,
+				'department_of_agent' => $department_of_agent,
+				'index_of_auditor' => $index_of_auditor + 1,
+				'id_of_auditor' => $id_of_auditor,
+				'uid_of_auditor' => $uid_of_auditor,
+				'auditor' => $auditor,
+				'department_of_auditor' => $department_of_auditor,
+				'auditing' => $auditing,
+				// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+				'application' => $application,
+				'progress' => $progress,
+				'status' => $jiaban_status,
+				'reason' => $reason,
+				'remark' => $remark,
+				'camera_imgurl' => $camera_imgurl,
+			]);
+	
+			$result = Renshi_jiaban::where('id', $jiaban_id)->delete();
+			// $result = Renshi_jiaban::where('id', $jiaban_id)
+			// 	->update([
+			// 		'index_of_auditor' => $index_of_auditor + 1,
+			// 		'id_of_auditor' => $id_of_auditor,
+			// 		'uid_of_auditor' => $uid_of_auditor,
+			// 		'auditor' => $auditor,
+			// 		'department_of_auditor' => $department_of_auditor,
+			// 		'auditing' => $auditing,
+			// 		'progress' => $progress,
+			// 		'status' => $jiaban_status,
+			// 	]);
+	
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+	
 	} else {
 		//获取下一个auditor
 		$id_of_auditor = $agent_auditing[$jiaban_status]['id'];
@@ -1573,45 +1626,37 @@ class JiabanController extends Controller
 		// get progress
 		$progress = intval($jiaban_status / ($agent_auditing_count + 1) * 100);
 
-	}
 
-
-	// dd($agent_auditing);
-
-// dd($application);
-// dd($s);
-// dd($user);
+		try	{
+			DB::beginTransaction();
+			
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// foreach ($s as $value) {
+				// Bpjg_zhongricheng_main::create($value);
+			// }
+			// Bpjg_zhongricheng_relation::insert($s);
 	
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
-		// foreach ($s as $value) {
-			// Bpjg_zhongricheng_main::create($value);
-		// }
-		// Bpjg_zhongricheng_relation::insert($s);
-
-		$result = Renshi_jiaban::where('id', $jiaban_id)
-			->update([
-				'index_of_auditor' => $index_of_auditor + 1,
-				'id_of_auditor' => $id_of_auditor,
-				'uid_of_auditor' => $uid_of_auditor,
-				'auditor' => $auditor,
-				'department_of_auditor' => $department_of_auditor,
-				'auditing' => $auditing,
-				'progress' => $progress,
-				'status' => $jiaban_status,
-			]);
-
-		// $result = 1;
+			$result = Renshi_jiaban::where('id', $jiaban_id)
+				->update([
+					'index_of_auditor' => $index_of_auditor + 1,
+					'id_of_auditor' => $id_of_auditor,
+					'uid_of_auditor' => $uid_of_auditor,
+					'auditor' => $auditor,
+					'department_of_auditor' => $department_of_auditor,
+					'auditing' => $auditing,
+					'progress' => $progress,
+					'status' => $jiaban_status,
+				]);
+	
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// return 'Message: ' .$e->getMessage();
+			return 0;
+		}
+	
 	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// return 'Message: ' .$e->getMessage();
-		return 0;
-	}
+
 
 	DB::commit();
 	Cache::flush();
