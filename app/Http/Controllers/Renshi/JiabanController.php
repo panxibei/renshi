@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Renshi\Renshi_jiaban;
+use App\Models\Renshi\Renshi_jiaban_confirm;
 use DB;
 use Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -1497,11 +1498,19 @@ class JiabanController extends Controller
 	$auditor = $user['displayname'];
 	$department_of_auditor = $user['department'];
 
-	$auditing_before = Renshi_jiaban::select('uuid', 'status', 'auditing', 'index_of_auditor')
+	$auditing_before = Renshi_jiaban::select('uuid', 'id_of_agent', 'agent', 'uid_of_agent', 'department_of_agent', 'status', 'auditing', 'index_of_auditor', 'application', 'reason', 'remark', 'camera_imgurl')
 		->where('id', $jiaban_id)
 		->first();
 
 	$uuid = $auditing_before['uuid'];
+	$id_of_agent = $auditing_before['id_of_agent'];
+	$uid_of_agent = $auditing_before['uid_of_agent'];
+	$agent = $auditing_before['agent'];
+	$department_of_agent = $auditing_before['department_of_agent'];
+	$application = $auditing_before['application'];
+	$reason = $auditing_before['reason'];
+	$remark = $auditing_before['remark'];
+	$camera_imgurl = $auditing_before['camera_imgurl'];
 
 	$index_of_auditor = $auditing_before['index_of_auditor'];
 
@@ -1528,15 +1537,15 @@ class JiabanController extends Controller
 	);
 	// $auditing = $auditing_after;
 
-	// get agent
-	$agent = User::select('email', 'displayname', 'auditing', 'auditing_confirm')
+	// get agent info
+	$agentinfo = User::select('email', 'displayname', 'auditing', 'auditing_confirm')
 	->where('id', $jiaban_id_of_agent)
 	->first();
 
 	// 代理人相应的审核人的数量
 	// $agent_auditing = json_decode($agent['auditing'], true);
-	$agent_auditing = $agent['auditing'];
-	$agent_auditing_confirm = $agent['auditing_confirm'];
+	$agent_auditing = $agentinfo['auditing'];
+	$agent_auditing_confirm = $agentinfo['auditing_confirm'];
 	$agent_auditing_count = count($agent_auditing) + count($agent_auditing_confirm);
 
 
@@ -1544,15 +1553,11 @@ class JiabanController extends Controller
 	// 订单的状态数字
 	$jiaban_status = $auditing_before['status'];
 
-	if ($jiaban_status >= $agent_auditing_count) {
-		// $id_of_auditor = $user['id'];
-		// $uid_of_auditor = $user['uid'];
-		// $auditor = $user['displayname'];
-		// $department_of_auditor = $user['department'];
-		$id_of_auditor = '无';
-		$uid_of_auditor = '无';
-		$auditor = '无';
-		$department_of_auditor = '无';
+	if ($jiaban_status >= count($agent_auditing)) {
+		// $id_of_auditor = '无';
+		// $uid_of_auditor = '无';
+		// $auditor = '无';
+		// $department_of_auditor = '无';
 
 		// 状态99为结案
 		// $jiaban_status = 99;
@@ -1573,19 +1578,17 @@ class JiabanController extends Controller
 			// Bpjg_zhongricheng_relation::insert($s);
 
 
-			Renshi_jiaban_confirm::create([
+			$result = Renshi_jiaban_confirm::create([
 				'uuid' => $uuid,
 				'id_of_agent' => $id_of_agent,
 				'uid_of_agent' => $uid_of_agent,
 				'agent' => $agent,
 				'department_of_agent' => $department_of_agent,
-				'index_of_auditor' => $index_of_auditor + 1,
-				'id_of_auditor' => $id_of_auditor,
-				'uid_of_auditor' => $uid_of_auditor,
-				'auditor' => $auditor,
-				'department_of_auditor' => $department_of_auditor,
-				'auditing' => $auditing,
-				// 'application' => json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+				'index_of_auditor' => 1,
+				'id_of_auditor' => $id_of_agent,
+				'uid_of_auditor' => $uid_of_agent,
+				'auditor' => $agent,
+				'department_of_auditor' => $department_of_agent,
 				'application' => $application,
 				'progress' => $progress,
 				'status' => $jiaban_status,
@@ -1610,7 +1613,7 @@ class JiabanController extends Controller
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			// return 'Message: ' .$e->getMessage();
+			return 'Message: ' .$e->getMessage();
 			return 0;
 		}
 	
@@ -1672,7 +1675,7 @@ class JiabanController extends Controller
 			$email_of_auditor = User::select('email')->where('id', $id_of_auditor)->first();
 			
 			// addressee
-			$agent_name = $agent['displayname'];
+			$agent_name = $agentinfo['displayname'];
 			
 			// auditor
 			$auditor = $auditor;
@@ -1697,7 +1700,7 @@ class JiabanController extends Controller
 		} else {
 
 			// addressee
-			$agent_name = $agent['displayname'];
+			$agent_name = $agentinfo['displayname'];
 			
 			// auditor
 			// $auditor = $auditor;
@@ -1706,7 +1709,7 @@ class JiabanController extends Controller
 			$subject = '【' . $site_title . '】 您的申请已经通过 ○';
 
 			// $to = 'kydd2008@163.com';
-			$to = $agent['email'];
+			$to = $agentinfo['email'];
 
 			// Mail::send()的返回值为空，所以可以其他方法进行判断
 			Mail::send('renshi.jiaban_mailtemplate_finished', ['agent_name'=>$agent_name, 'uuid'=>$uuid, 'site_title'=>$site_title], function($message) use($to, $subject){
