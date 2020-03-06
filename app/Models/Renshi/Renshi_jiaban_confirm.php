@@ -5,7 +5,7 @@ namespace App\Models\Renshi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Renshi_jiaban extends Model
+class Renshi_jiaban_confirm extends Model
 {
     use SoftDeletes;
 

@@ -32,14 +32,14 @@ class CreateRenshiJiabansTable extends Migration
             // $table->timestamp('start_date')->comment('开始日期');
             // $table->timestamp('end_date')->comment('结束日期');
             // $table->integer('duration')->comment('期间');
-            $table->jsonb('actuality')->comment('实际信息');
+            // $table->jsonb('actuality')->comment('实际信息');
             $table->integer('progress')->comment('申请进度');
             $table->integer('status')->comment('申请状态');
             $table->text('reason')->comment('事由');
             $table->text('camera_imgurl')->nullable()->comment('验证摄像');
             $table->text('remark')->nullable()->comment('备注');
-            $table->integer('progress_confirm')->comment('确认进度');
-            $table->integer('status_confirm')->comment('确认状态');
+            // $table->integer('progress_confirm')->comment('确认进度');
+            // $table->integer('status_confirm')->comment('确认状态');
             $table->jsonb('auditing')->nullable()->comment('审核信息');
             $table->boolean('archived')->default(false)->comment('是否归档');
             $table->timestamps();
@@ -84,6 +84,6 @@ class CreateRenshiJiabansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jiabans');
+        Schema::dropIfExists('renshi_jiabans');
     }
 }

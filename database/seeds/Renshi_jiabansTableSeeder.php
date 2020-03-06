@@ -96,24 +96,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                     'duration' => 2.5,
                 )
             ),
-            'actuality' => array(
-                array(
-                    "uid" => "0003",
-                    "applicant" => "user1",
-                    'department' => 'caiwu',
-                    'category' => 'pingshijiaban',
-                    'datetimerange' => $nowtime . ' - ' . $nowtime,
-                    'duration' => 1.5,
-                ),
-                array(
-                    "uid" => "0004",
-                    "applicant" => "user2",
-                    'department' => '生产计划管理部',
-                    'category' => '节假日加班补',
-                    'datetimerange' => $nowtime . ' - ' . $nowtime,
-                    'duration' => 2.5,
-                )
-            ),
             // 'applicant' => 'lisi',
             // 'department_of_applicant' => 'caiwu',
             // 'category' => 'pingshijiaban',
@@ -140,8 +122,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                     // )
             //     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             // ),
-            'progress_confirm' => 0,
-            'status_confirm' => 0,
         ]);
 
         // 第二条记录
@@ -179,16 +159,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                     'duration' => 4,
                 ),
             ),
-            'actuality' => array(
-                array(
-                    "uid" => "071015516",
-                    "applicant" => "王五",
-                    'department' => 'caiwu',
-                    'category' => 'pingshijiaban',
-                    'datetimerange' => $nowtime . ' - ' . $nowtime,
-                    'duration' => 4,
-                ),
-            ),
             'progress' => 100,
             'status' => 99,
             'reason' => 'reason2',
@@ -202,8 +172,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                     "created_at" => $nowtime
                 )
             ),
-            'progress_confirm' => 0,
-            'status_confirm' => 0,
         ]);
 
         // 第三条记录
@@ -241,16 +209,6 @@ class Renshi_jiabansTableSeeder extends Seeder
                     'duration' => 8,
                 ),
             ),
-            'actuality' => array(
-                array(
-                    "uid" => "071111111",
-                    "applicant" => "赵六",
-                    'department' => 'caiwu',
-                    'category' => 'pingshijiaban',
-                    'datetimerange' => $nowtime . ' - ' . $nowtime,
-                    'duration' => 8,
-                ),
-            ),
             'progress' => 100,
             'status' => 99,
             'reason' => 'reason3',
@@ -264,45 +222,9 @@ class Renshi_jiabansTableSeeder extends Seeder
                     "created_at" => $nowtime
                 )
             ),
-            'progress_confirm' => 100,
-            'status_confirm' => 99,
             'archived' => true,
         ]);
 
-        // Renshi_jiaban_sub::create([
-        //     'applicant' => 'lisi',
-        //     'department' => 'caiwu',
-        //     'category' => 'pingshijiaban',
-        //     'start_date' => $nowtime,
-        //     'end_date' => $nowtime,
-        //     'duration' => 30,
-        //     'reason' => 'reason1',
-        //     'remark' => '',
-        // ]);
-
-        // Renshi_jiaban_sub::create([
-        //     'applicant' => 'wangwu',
-        //     'department' => 'caiwu',
-        //     'category' => 'pingshijiaban',
-        //     'start_date' => $nowtime,
-        //     'end_date' => $nowtime,
-        //     'duration' => 60,
-        //     'reason' => 'reason2',
-        //     'remark' => '',
-        // ]);
-
-		// Renshi_jiaban_sub_2_main::insert(array (
-        //     0 => 
-        //     array (
-        //         'main_id' => '1',
-        //         'sub_id' => '1',
-        //         ),
-        //     1 => 
-        //     array (
-        //         'main_id' => '1',
-        //         'sub_id' => '2',
-        //         ),
-        // ));		
 
 
 

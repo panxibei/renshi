@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Renshi\Renshi_jiaban;
+use App\Models\Renshi\Renshi_jiaban_confirm;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -503,7 +504,7 @@ class UserController extends Controller
 	}
 	
     /**
-     * 列出确认单独当前用户信息 ??
+     * 列出当前用户的处理用户 确认->单独 OK
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -518,14 +519,14 @@ class UserController extends Controller
 		app()['cache']->forget('spatie.permission.cache');
 		
 		// 获取当前用户所指向的auditing
-		$userhasauditing = User::select('uid', 'displayname', 'auditing')
+		$userhasauditing = User::select('uid', 'displayname', 'auditing_confirm')
 			->where('id', $userid)
 			->first();
 
 		$uid = $userhasauditing['uid'];
 		$username = $userhasauditing['displayname'];
-		// $auditing = json_decode($userhasauditing['auditing'], true);
-		$auditing = $userhasauditing['auditing'];
+		// $auditing = json_decode($userhasauditing['auditing_confirm'], true);
+		$auditing = $userhasauditing['auditing_confirm'];
 		
 		// $allusers = User::pluck('name', 'id')->toArray();
 
@@ -674,6 +675,63 @@ class UserController extends Controller
 	}
 
     /**
+     * auditingAddConfirm
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function auditingAddConfirm(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		$id_current = $request->input('id_current');
+		$id_auditing = $request->input('id_auditing');
+
+		$user_auditing = User::select('id', 'uid', 'displayname as name', 'department')
+			->where('id', $id_auditing)
+			->first()->toArray();
+		
+		$user_current = User::select('id', 'uid', 'displayname as name', 'department', 'auditing_confirm')
+			->where('id', $id_current)
+			->first()->toArray();
+		
+		if ($user_current['auditing_confirm'] != null) {
+			$auditing_after = $user_current['auditing_confirm'];
+			array_push($auditing_after, $user_auditing);
+		} else {
+			$auditing_after[] = $user_auditing;
+		}
+
+		$auditing_after = json_encode(
+			$auditing_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		try	{
+			$result = User::where('id', $id_current)
+				->update([
+					'auditing_confirm' => $auditing_after,
+				]);
+
+			// 获取当前用户所指向的auditing
+			$userhasauditing = User::select('auditing_confirm')
+			->where('id', $id_current)
+			->first();
+
+			$result = $userhasauditing['auditing_confirm'];
+		}
+		catch (Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		// dd($result);
+		return $result;
+	}
+
+    /**
      * auditingSort
      *
      * @param  int  $id
@@ -773,10 +831,10 @@ class UserController extends Controller
 					Renshi_jiaban::where('id_of_agent', $id)
 						->where('index_of_auditor', $index_tmp)
 						->update([
-							'id_of_auditor' => $auditing_actual_after[$index_tmp-1]['id'],
-							'uid_of_auditor' => $auditing_actual_after[$index_tmp-1]['uid'],
-							'auditor' => $auditing_actual_after[$index_tmp-1]['name'],
-							'department_of_auditor' => $auditing_actual_after[$index_tmp-1]['department'],
+							'id_of_auditor' => $auditing_after[$index_tmp-1]['id'],
+							'uid_of_auditor' => $auditing_after[$index_tmp-1]['uid'],
+							'auditor' => $auditing_after[$index_tmp-1]['name'],
+							'department_of_auditor' => $auditing_after[$index_tmp-1]['department'],
 						]);
 				}
 			}
@@ -788,6 +846,110 @@ class UserController extends Controller
 
 			// $result = json_decode($userhasauditing['auditing'], true);
 			$result = $userhasauditing['auditing'];
+
+		}
+		catch (Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			$result = 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+    }
+
+    /**
+     * auditingSortConfirm
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function auditingSortConfirm(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$index = $request->input('index');
+		$id = $request->input('id');
+		$uid = $request->input('uid');
+		$sort = $request->input('sort');
+
+		$user = User::select('id', 'uid', 'displayname as name', 'department', 'auditing_confirm')
+			->where('id', $id)
+			->first()->toArray();
+
+		$auditing_before = $user['auditing_confirm'];
+
+		$auditing_after = [];
+
+		if ('down' == $sort) {
+			foreach ($auditing_before as $key => $value) {
+				if ($key != $index && $key != $index+1) {
+					array_push($auditing_after, $value);
+				}
+				elseif ($key == $index) {
+					$auditing_after[$key] = $auditing_before[$index+1];
+				}
+				elseif ($key == $index+1) {
+					$auditing_after[$key] = $auditing_before[$index];
+				}
+			}
+		} elseif ('up' == $sort) {
+			foreach ($auditing_before as $key => $value) {
+				if ($key != $index && $key != $index-1) {
+					array_push($auditing_after, $value);
+				}
+				elseif ($key == $index) {
+					$auditing_after[$key] = $auditing_before[$index-1];
+				}
+				elseif ($key == $index-1) {
+					$auditing_after[$key] = $auditing_before[$index];
+				}
+			}
+		}
+
+		$auditing_after_json = json_encode(
+			$auditing_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		try	{
+			DB::beginTransaction();
+
+			//1.写入调整后的顺序
+			User::where('id', $id)
+				->update([
+					'auditing_confirm' => $auditing_after_json,
+				]);
+
+			//2.修正流程
+			$index_of_auditor = Renshi_jiaban_confirm::select('index_of_auditor')
+				->where('id_of_agent', $id)
+				->get()->toArray();
+			// dd($index_of_auditor);
+
+			foreach ($index_of_auditor as $key=>$value) {
+				if ($value['index_of_auditor'] != null) {
+					$index_tmp = $value['index_of_auditor'];
+
+					Renshi_jiaban_confirm::where('id_of_agent', $id)
+						->where('index_of_auditor', $index_tmp)
+						->update([
+							'id_of_auditor' => $auditing_after[$index_tmp-1]['id'],
+							'uid_of_auditor' => $auditing_after[$index_tmp-1]['uid'],
+							'auditor' => $auditing_after[$index_tmp-1]['name'],
+							'department_of_auditor' => $auditing_after[$index_tmp-1]['department'],
+						]);
+				}
+			}
+
+			//3.获取当前用户所指向的auditing，用于刷新
+			$userhasauditing = User::select('auditing_confirm')
+			->where('id', $id)
+			->first();
+
+			$result = $userhasauditing['auditing_confirm'];
 
 		}
 		catch (Exception $e) {

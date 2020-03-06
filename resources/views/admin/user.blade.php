@@ -841,7 +841,7 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.auditing_down2(params)
+									vm_app.auditing_down2_confirm(params)
 								}
 							}
 						}),
@@ -856,7 +856,7 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.auditing_up2(params)
+									vm_app.auditing_up2_confirm(params)
 								}
 							}
 						}),
@@ -1551,7 +1551,7 @@ var vm_app = new Vue({
 					return false;
 			}
 
-			var url = "{{ route('admin.user.auditingadd') }}";
+			var url = "{{ route('admin.user.auditingaddconfirm') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id_current: id_current,
@@ -1802,6 +1802,49 @@ var vm_app = new Vue({
 				_this.error(false, '错误', '排序失败！');
 			})
 		},
+
+		// sort向前
+		auditing_up2_confirm (params) {
+			var _this = this;
+			var index = params.row._index;
+			var uid = params.row.uid;
+
+			// current user id -> id
+			var id = _this.user_select_current_confirm;
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined || index == undefined
+				|| id == uid || index == 0) {
+				return false;
+			}
+
+			var url = "{{ route('admin.user.auditingsortconfirm') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				index: index,
+				uid: uid,
+				id: id,
+				sort: 'up'
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.success(false, '成功', '排序成功！');
+					_this.tabledata_auditing2_confirm = response.data;
+				} else {
+					_this.error(false, '失败', '排序失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '排序失败！');
+			})
+		},
 		
 		
 		// sort向后
@@ -1838,6 +1881,49 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.success(false, '成功', '排序成功！');
 					_this.tabledata_auditing2_applicant = response.data;
+				} else {
+					_this.error(false, '失败', '排序失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '排序失败！');
+			})
+		},
+		
+		// sort向后
+		auditing_down2_confirm (params) {
+			var _this = this;
+			var index = params.row._index;
+			var uid = params.row.uid;
+
+			// current user id -> id
+			var id = _this.user_select_current_confirm;
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined || index == undefined
+				|| id == uid || index == _this.tabledata_auditing2_confirm.length-1) {
+				return false;
+			}
+
+			var url = "{{ route('admin.user.auditingsortconfirm') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				index: index,
+				uid: uid,
+				id: id,
+				sort: 'down'
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.success(false, '成功', '排序成功！');
+					_this.tabledata_auditing2_confirm = response.data;
 				} else {
 					_this.error(false, '失败', '排序失败！');
 				}
@@ -1998,7 +2084,7 @@ var vm_app = new Vue({
 				return false;
 			}
 			// _this.boo_update2_confirm = false;
-			var url = "{{ route('admin.user.userhasauditing2') }}";
+			var url = "{{ route('admin.user.userhasauditing2confirm') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
