@@ -1045,7 +1045,63 @@ class UserController extends Controller
 		}
 		// dd($result);
 		return $result;
+	}
+
+    /**
+     * auditingRemoveConfirm
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function auditingRemoveConfirm(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		// 重置角色和权限的缓存
+		app()['cache']->forget('spatie.permission.cache');
+		
+		$index = $request->input('index');
+		$id = $request->input('id');
+		$uid = $request->input('uid');
+
+		$user = User::select('id', 'uid', 'displayname as name', 'department', 'auditing_confirm')
+			->where('id', $id)
+			->first()->toArray();
+
+		$auditing_before = $user['auditing_confirm'];
+
+		$auditing_after = [];
+		foreach ($auditing_before as $key => $value) {
+			if ($key != $index) {
+				array_push($auditing_after, $value);
+			}
 		}
+
+		$auditing_after_json = json_encode(
+			$auditing_after
+			, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		try	{
+			$result = User::where('id', $id)
+				->update([
+					'auditing_confirm' => $auditing_after_json,
+				]);
+
+			// 获取当前用户所指向的auditing
+			$userhasauditing = User::select('auditing_confirm')
+			->where('id', $id)
+			->first();
+
+			$result = $userhasauditing['auditing_confirm'];
+		}
+		catch (Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		// dd($result);
+		return $result;
+	}
 
 
 

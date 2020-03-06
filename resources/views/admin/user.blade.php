@@ -871,7 +871,7 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.auditing_remove2(params.row)
+									vm_app.auditing_remove2_confirm(params.row)
 								}
 							}
 						}),
@@ -1972,6 +1972,54 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.success(false, '成功', '删除处理用户成功！');
 					_this.tabledata_auditing2_applicant = response.data;
+				} else {
+					_this.error(false, '失败', '删除处理用户失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除处理用户失败！');
+			})
+			
+		},
+
+		// auditing_remove2_confirm
+		auditing_remove2_confirm (row) {
+			var _this = this;
+			// console.log(row._index);
+			// return false;
+
+			var index = row._index;
+			var uid = row.uid;
+			var id = _this.user_select_current_confirm;
+
+			if (id == '' || uid == ''
+				|| id == undefined || uid == undefined
+				|| id == uid) {
+				return false;
+			}
+
+			// console.log(_this.user_select_current_applicant);
+			// return false;
+
+			var url = "{{ route('admin.user.auditingremoveconfirm') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				index: index,
+				id: id,
+				uid: uid,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.success(false, '成功', '删除处理用户成功！');
+					_this.tabledata_auditing2_confirm = response.data;
 				} else {
 					_this.error(false, '失败', '删除处理用户失败！');
 				}

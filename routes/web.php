@@ -370,6 +370,9 @@ Route::group(['prefix'=>'user', 'namespace'=>'Admin', 'middleware'=>['jwtauth','
 	// 删除处理用户
 	Route::post('auditingRemove', 'UserController@auditingRemove')->name('admin.user.auditingremove');
 
+	// 删除处理用户 confirm
+	Route::post('auditingRemoveConfirm', 'UserController@auditingRemoveConfirm')->name('admin.user.auditingremoveconfirm');
+
 	// 加载外部数据源用户
 	Route::get('getExternalUsers', 'UserController@getExternalUsers')->name('admin.user.getexternalusers');
 	
