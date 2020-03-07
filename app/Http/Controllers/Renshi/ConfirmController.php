@@ -270,6 +270,7 @@ class ConfirmController extends Controller
 					return $query->where('uid_of_auditor', $uid);
 			})
 			// ->where('uid_of_auditor', $user['uid'])
+			->where('status', '<>', 0)
 			->where('archived', false)
 			->limit(1000)
 			->orderBy('created_at', 'desc')

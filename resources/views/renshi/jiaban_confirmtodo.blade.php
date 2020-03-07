@@ -124,10 +124,10 @@ Renshi(Jiaban) -
 
 							<i-col span="5">
 							状态：
-								<span v-if="jiaban_edit_status==99">
+								<span v-if="jiaban_edit_status==100">
 									已结案 <Icon type="md-thumbs-up"></Icon>
 								</span>
-								<span v-else-if="jiaban_edit_status==0">
+								<span v-else-if="jiaban_edit_status==200">
 									已否决 <Icon type="md-thumbs-down"></Icon>
 								</span>
 								<span v-else>
@@ -145,7 +145,7 @@ Renshi(Jiaban) -
 
 						&nbsp;<Divider orientation="left">审核流程</Divider>
 
-						<Steps :current="jiaban_edit_auditing_index" :status="jiaban_edit_status==0?'error':'process'" size="small">
+						<Steps :current="jiaban_edit_auditing_index" :status="jiaban_edit_status==200?'error':'process'" size="small">
 							<Step :title="jiaban_edit_agent" content="申请人"></Step>
 							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
 						</Steps>
@@ -369,7 +369,7 @@ Renshi(Jiaban) -
 
 					
 					<div slot="footer">
-						<div v-if="jiaban_edit_status!=99 && jiaban_edit_status!=0">
+						<div v-if="jiaban_edit_status!=100 && jiaban_edit_status!=200">
 							<div style="text-align:center;font-size:14px;">
 								意&nbsp;&nbsp;&nbsp;&nbsp;见
 								<i-input v-model.lazy="jiaban_edit_opinion" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
@@ -599,7 +599,7 @@ var vm_app = new Vue({
 				width: 140,
 				render: (h, params) => {
 					// return h('div', {}, params.row.progress + '%')
-					if (params.row.progress == 0) {
+					if (params.row.progress == 200) {
 						return h('div', {}, [
 							h('Progress',{
 								props: {
@@ -638,7 +638,7 @@ var vm_app = new Vue({
 							),
 							h('span',' 已归档')
 						])
-					} else if (params.row.status == 99) {
+					} else if (params.row.status == 100) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -653,7 +653,7 @@ var vm_app = new Vue({
 								}
 							},' 已结案')
 						])
-					} else if (params.row.status == 0) {
+					} else if (params.row.status == 200) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
