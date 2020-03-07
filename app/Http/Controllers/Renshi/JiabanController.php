@@ -1546,7 +1546,7 @@ class JiabanController extends Controller
 	// $agent_auditing = json_decode($agent['auditing'], true);
 	$agent_auditing = $agentinfo['auditing'];
 	$agent_auditing_confirm = $agentinfo['auditing_confirm'];
-	$agent_auditing_count = count($agent_auditing) + count($agent_auditing_confirm);
+	$agent_auditing_count = count($agent_auditing) + count($agent_auditing_confirm) + 2;
 
 
 
