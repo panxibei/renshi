@@ -222,7 +222,7 @@ class Renshi_jiabansTableSeeder extends Seeder
                     "created_at" => $nowtime
                 )
             ),
-            'archived' => true,
+            // 'archived' => true,
         ]);
 
 

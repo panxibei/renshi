@@ -131,10 +131,10 @@ Renshi(Confirm) -
 
 							<i-col span="5">
 							状态：
-								<span v-if="jiaban_edit_status==99">
+								<span v-if="jiaban_edit_status==100">
 									已结案 <Icon type="md-thumbs-up"></Icon>
 								</span>
-								<span v-else-if="jiaban_edit_status==0">
+								<span v-else-if="jiaban_edit_status==200">
 									已否决 <Icon type="md-thumbs-down"></Icon>
 								</span>
 								<span v-else>
@@ -151,7 +151,7 @@ Renshi(Confirm) -
 
 						&nbsp;<Divider orientation="left">审核流程</Divider>
 
-						<Steps :current="jiaban_edit_auditing_index" :status="jiaban_edit_status==0?'error':'process'" size="small">
+						<Steps :current="jiaban_edit_auditing_index" :status="jiaban_edit_status==200?'error':'process'" size="small">
 							<Step :title="jiaban_edit_agent" content="申请人"></Step>
 							<Step v-for="(auditing, index) in jiaban_edit_auditing_circulation" :title="auditing.name" content="审核人"></Step>
 						</Steps>
@@ -377,7 +377,7 @@ Renshi(Confirm) -
 
 					
 					<div slot="footer">
-						<div v-if="jiaban_edit_status==99">
+						<div v-if="jiaban_edit_status==100">
 							<i-button type="primary" size="large" long :loading="modal_jiaban_archived_loading" @click="onarchived_applicant">归 档</i-button>
 							<br><br>
 							<i-button type="text" size="large" long @click="modal_jiaban_edit=false">关 闭</i-button>
@@ -802,7 +802,7 @@ var vm_app = new Vue({
 							),
 							h('span',' 已归档')
 						])
-					} else if (params.row.status == 99) {
+					} else if (params.row.status == 100) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -817,7 +817,7 @@ var vm_app = new Vue({
 								}
 							},' 已结案')
 						])
-					} else if (params.row.status == 0) {
+					} else if (params.row.status == 200) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
@@ -1633,7 +1633,7 @@ var vm_app = new Vue({
 
 
 		// applicant编辑前查看
-		jiaban_edit: function (row) {
+		jiaban_edit(row) {
 			var _this = this;
 			
 			_this.jiaban_edit_id = row.id;
@@ -1654,7 +1654,7 @@ var vm_app = new Vue({
 			_this.jiaban_edit_created_at = row.created_at;
 			_this.jiaban_edit_updated_at = row.updated_at;
 
-			_this.jiaban_edit_auditing_index = row.index_of_auditor;
+			_this.jiaban_edit_auditing_index = row.index_of_auditor - 1;
 			_this.jiaban_edit_auditing_id = row.id_of_auditor;
 			_this.jiaban_edit_auditing_uid = row.uid_of_auditor;
 // console.log(row.id_of_auditor);

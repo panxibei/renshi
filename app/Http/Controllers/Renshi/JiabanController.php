@@ -1559,13 +1559,13 @@ class JiabanController extends Controller
 		// $auditor = '无';
 		// $department_of_auditor = '无';
 
-		// 状态99为结案
-		// $jiaban_status = 99;
-		$jiaban_status++;
-
 		// get progress
 		// $progress = 100;
-		$progress = intval($jiaban_status / ($agent_auditing_count + 1) * 100);
+		$progress = intval($jiaban_status / $agent_auditing_count * 100);
+
+		// 状态99为结案
+		// $jiaban_status = 99;
+		// $jiaban_status++;
 
 
 		try	{
@@ -1591,13 +1591,13 @@ class JiabanController extends Controller
 				'department_of_auditor' => $department_of_agent,
 				'application' => $application,
 				'progress' => $progress,
-				'status' => $jiaban_status,
+				'status' => 1,
 				'reason' => $reason,
 				'remark' => $remark,
 				'camera_imgurl' => $camera_imgurl,
 			]);
 	
-			$result = Renshi_jiaban::where('id', $jiaban_id)->delete();
+			$result = Renshi_jiaban::where('id', $jiaban_id)->forceDelete();
 			// $result = Renshi_jiaban::where('id', $jiaban_id)
 			// 	->update([
 			// 		'index_of_auditor' => $index_of_auditor + 1,
@@ -1624,11 +1624,11 @@ class JiabanController extends Controller
 		$auditor = $agent_auditing[$jiaban_status]['name'];
 		$department_of_auditor = $agent_auditing[$jiaban_status]['department'];
 
-		$jiaban_status++;
 
 		// get progress
-		$progress = intval($jiaban_status / ($agent_auditing_count + 1) * 100);
+		$progress = intval($jiaban_status / $agent_auditing_count * 100);
 
+		$jiaban_status++;
 
 		try	{
 			DB::beginTransaction();

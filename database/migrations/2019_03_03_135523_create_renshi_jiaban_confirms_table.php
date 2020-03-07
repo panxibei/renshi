@@ -27,7 +27,7 @@ class CreateRenshiJiabanConfirmsTable extends Migration
             $table->string('department_of_auditor')->comment('审核人部门');
             $table->jsonb('application')->comment('申请信息');
             $table->integer('progress')->comment('确认进度');
-            $table->integer('status')->comment('确认状态');
+            $table->integer('status')->comment('确认状态（1-99进度，100已结案，200已否决）');
             $table->text('reason')->comment('事由');
             $table->text('camera_imgurl')->nullable()->comment('验证摄像');
             $table->text('remark')->nullable()->comment('备注');
