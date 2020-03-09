@@ -356,7 +356,7 @@ Renshi(Confirm) -
 								<i-col span="10">
 									@{{ item.datetimerange }}
 									<!-- <Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:240px"></Date-picker> -->
-									<Time-Picker v-model.lazy="item.datetimerangeconfirm" type="timerange" :steps="[1, 5]" format="HH:mm" size="small" placeholder="选择时间" style="width: 100px"></Time-Picker>
+									<Time-Picker v-model.lazy="item.datetimerangeconfirm" type="timerange" :steps="[1, 5]" format="HH:mm" size="small" placeholder="选择时间" style="width: 110px"></Time-Picker>
 								</i-col>
 								<i-col span="2">
 									<Tooltip content="单位小时" placement="top">
@@ -364,7 +364,7 @@ Renshi(Confirm) -
 									</Tooltip>
 								</i-col>
 								<i-col span="3">
-									<i-select v-model.lazy="item.category" size="small" style="width:80px" placeholder="选择加班类别">
+									<i-select v-model.lazy="item.category" size="small" style="width:100px" placeholder="选择加班类别">
 										<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 									</i-select>
 								</i-col>
