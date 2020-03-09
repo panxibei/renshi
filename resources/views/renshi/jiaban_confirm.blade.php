@@ -83,7 +83,7 @@ Renshi(Confirm) -
 				<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 				<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 			
-				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="850" footer-hide="true">
+				<Modal v-model="modal_jiaban_edit" title="查看 - 加班单" width="800" footer-hide="true">
 				<span id="id_modal_jiaban" style="page-break-after:always">
 					<Divider orientation="center" class="print_display" media="print">加 班 单</Divider>
 
@@ -317,28 +317,28 @@ Renshi(Confirm) -
 						&nbsp;<Divider orientation="left">确认信息</Divider>
 
 						<i-row>
-							<i-col span="4">
+							<i-col span="3">
 								工号&nbsp;
 							</i-col>
 							<i-col span="3">
 								姓名&nbsp;
 							</i-col>
-							<i-col span="3">
+							<i-col span="4">
 								部门&nbsp;
 							</i-col>
-							<i-col span="8">
+							<i-col span="9">
 								* 时间&nbsp;
 							</i-col>
 							<i-col span="2">
 								* 时长&nbsp;
 							</i-col>
-							<i-col span="4">
+							<i-col span="3">
 								* 类别&nbsp;
 							</i-col>
 						</i-row>
 						<br>
 
-						<span v-for="(item, index) in jiaban_edit_application">
+						<span v-for="(item, index) in jiaban_edit_confirm">
 
 							<i-row>
 								<!-- <i-col span="1">
@@ -350,13 +350,12 @@ Renshi(Confirm) -
 								<i-col span="3">
 									<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="" style="width: 80px"></i-input>
 								</i-col>
-								<i-col span="3">
-									<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="" style="width: 80px"></i-input>
+								<i-col span="4">
+									<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="" style="width: 90px"></i-input>
 								</i-col>
-								<i-col span="10">
-									@{{ item.datetimerange }}
-									<!-- <Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:240px"></Date-picker> -->
-									<Time-Picker v-model.lazy="item.datetimerangeconfirm" type="timerange" :steps="[1, 5]" format="HH:mm" size="small" placeholder="选择时间" style="width: 110px"></Time-Picker>
+								<i-col span="9">
+									<Date-picker v-model.lazy="item.datetimerangeconfirm" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:250px"></Date-picker>
+									<!-- <Time-Picker v-model.lazy="item.datetimerangeconfirm" type="timerange" :steps="[1, 5]" format="HH:mm" size="small" placeholder="选择时间" style="width: 110px"></Time-Picker> -->
 								</i-col>
 								<i-col span="2">
 									<Tooltip content="单位小时" placement="top">
@@ -833,6 +832,15 @@ var vm_app = new Vue({
 				applicant: '',
 				department: '',
 				datetimerange: '',
+				category: '',
+				duration: ''
+			},
+		],
+		jiaban_edit_confirm: [
+			{
+				uid: '',
+				applicant: '',
+				department: '',
 				datetimerangeconfirm: [],
 				category: '',
 				duration: ''
@@ -1539,6 +1547,14 @@ var vm_app = new Vue({
 			_this.jiaban_edit_department_of_agent = row.department_of_agent;
 			// _this.jiaban_edit_application = JSON.parse(row.application);
 			_this.jiaban_edit_application = row.application;
+
+			_this.jiaban_edit_confirm = row.application;
+			for (var key in _this.jiaban_edit_confirm) {
+				_this.jiaban_edit_confirm[key]['datetimerangeconfirm']=[new Date(_this.jiaban_edit_application[key]['datetimerange'].substr(0,16)), new Date(_this.jiaban_edit_application[key]['datetimerange'].substr(19,16))];
+			}
+			// console.log(_this.jiaban_edit_confirm);return false;
+
+
 			_this.jiaban_edit_status = row.status;
 			_this.jiaban_edit_reason = row.reason;
 			_this.jiaban_edit_remark = row.remark;
