@@ -10,7 +10,7 @@ Renshi(Confirm) -
 @endsection
 
 @section('my_js')
-<script src="{{ asset('js/camera.js') }}"></script>
+<!-- <script src="{{ asset('js/camera.js') }}"></script> -->
 <script type="text/javascript">
 </script>
 @endsection
@@ -327,13 +327,13 @@ Renshi(Confirm) -
 								部门&nbsp;
 							</i-col>
 							<i-col span="8">
-								时间&nbsp;
+								* 时间&nbsp;
 							</i-col>
 							<i-col span="2">
-								时长&nbsp;
+								* 时长&nbsp;
 							</i-col>
 							<i-col span="4">
-								类别&nbsp;
+								* 类别&nbsp;
 							</i-col>
 						</i-row>
 						<br>
@@ -344,33 +344,33 @@ Renshi(Confirm) -
 								<!-- <i-col span="1">
 									&nbsp;(@{{index+1}})
 								</i-col> -->
-								<i-col span="4">
-									<i-select v-model.lazy="item.uid" filterable remote :remote-method="remoteMethod_applicant" :loading="applicant_loading" @on-change="value=>onchange_applicant(value, index)" clearable placeholder="输入后选择" size="small" style="width: 120px;">
-										<i-option v-for="item in applicant_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-									</i-select>
+								<i-col span="3">
+									<i-input v-model.lazy="item.uid" readonly="true" size="small" placeholder="" style="width: 80px"></i-input>
 								</i-col>
 								<i-col span="3">
-									<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="例：张三" style="width: 80px"></i-input>
+									<i-input v-model.lazy="item.applicant" readonly="true" size="small" placeholder="" style="width: 80px"></i-input>
 								</i-col>
 								<i-col span="3">
-									<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="例：生产部" style="width: 80px"></i-input>
+									<i-input v-model.lazy="item.department" readonly="true" size="small" placeholder="" style="width: 80px"></i-input>
 								</i-col>
-								<i-col span="8">
-									<Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:240px"></Date-picker>
+								<i-col span="10">
+									@{{ item.datetimerange }}
+									<!-- <Date-picker v-model.lazy="item.datetimerange" :editable="false" type="datetimerange" format="yyyy-MM-dd HH:mm" size="small" placeholder="加班时间" style="width:240px"></Date-picker> -->
+									<Time-Picker v-model.lazy="item.datetimerangeconfirm" type="timerange" :steps="[1, 5]" format="HH:mm" size="small" placeholder="选择时间" style="width: 100px"></Time-Picker>
 								</i-col>
 								<i-col span="2">
 									<Tooltip content="单位小时" placement="top">
 									<Input-number v-model.lazy="item.duration" :editable="false" :min="0.5" :max="40" :step="0.5" size="small" placeholder="" clearable style="width: 50px"></Input-number>
 									</Tooltip>
 								</i-col>
-								<i-col span="4">
-									<i-select v-model.lazy="item.category" size="small" style="width:120px" placeholder="选择加班类别">
+								<i-col span="3">
+									<i-select v-model.lazy="item.category" size="small" style="width:80px" placeholder="选择加班类别">
 										<i-option v-for="item in option_category" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 									</i-select>
 								</i-col>
 								
 							</i-row>
-							<br>
+							<br><br>
 						</span>
 						&nbsp;
 
@@ -460,50 +460,7 @@ Renshi(Confirm) -
 	</Tab-pane>
 
 
-	<Tab-pane Icon="ios-color-wand-outline" label="开始申请">
 
-	<i-row :gutter="16">
-		<i-col span="6">
-			* 加班理由&nbsp;&nbsp;
-			<i-input v-model.lazy="jiaban_add_reason" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
-		</i-col>
-
-		<i-col span="1">
-		&nbsp;
-		</i-col>
-
-		<i-col span="6">
-			备注&nbsp;&nbsp;
-			<i-input v-model.lazy="jiaban_add_remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"></i-input>
-		</i-col>
-
-		<i-col span="1">
-		&nbsp;
-		</i-col>
-
-		<i-col span="6">
-		<br>
-			* 状态：&nbsp;
-			<span v-if="camera_imgurl==''">
-				未完成 <Icon type="md-close"></Icon>
-			</span>
-			<span v-else>
-				已完成 <Icon type="md-checkmark"></Icon>
-			</span>
-			<br>
-			<i-button id="startcapture" @click="vm_app.modal_camera_show=true" icon="ios-camera-outline" size="default">拍 照</i-button>
-		</i-col>
-
-		<i-col span="4">
-			&nbsp;&nbsp;
-		</i-col>
-	</i-row>
-
-	<i-row :gutter="16">
-		<i-col span="24">
-		&nbsp;
-		</i-col>
-	</i-row>
 
 
 
@@ -513,13 +470,12 @@ Renshi(Confirm) -
 	</Modal>	
 
 
-	</Tab-pane>
 
 </Tabs>
 
 <my-passwordchange></my-passwordchange>
 
-<my-camera></my-camera>
+<!-- <my-camera></my-camera> -->
 
 @endsection
 
@@ -535,7 +491,7 @@ var vm_app = new Vue({
 	el: '#app',
 	components: {
 		'my-passwordchange': httpVueLoader("{{ asset('components/my-passwordchange.vue') }}"),
-		'my-camera': httpVueLoader("{{ asset('components/my-camera.vue') }}")
+		// 'my-camera': httpVueLoader("{{ asset('components/my-camera.vue') }}")
 	},
     data: {
 		// 是否全屏
@@ -871,7 +827,19 @@ var vm_app = new Vue({
 		jiaban_edit_id_of_agent: '',
 		jiaban_edit_agent: '',
 		jiaban_edit_department_of_agent: '',
-		jiaban_edit_application: '',
+		jiaban_edit_application: [
+			{
+				uid: '',
+				applicant: '',
+				department: '',
+				datetimerange: '',
+				datetimerangeconfirm: [],
+				category: '',
+				duration: ''
+			},
+		],
+
+
 		jiaban_edit_status: 0,
 		jiaban_edit_reason: '',
 		jiaban_edit_remark: '',
