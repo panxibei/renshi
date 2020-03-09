@@ -1550,7 +1550,7 @@ var vm_app = new Vue({
 
 			_this.jiaban_edit_confirm = row.application;
 			for (var key in _this.jiaban_edit_confirm) {
-				_this.jiaban_edit_confirm[key]['datetimerangeconfirm']=[new Date(_this.jiaban_edit_application[key]['datetimerange'].substr(0,16)), new Date(_this.jiaban_edit_application[key]['datetimerange'].substr(19,16))];
+				_this.jiaban_edit_confirm[key]['datetimerangeconfirm']=[new Date(_this.jiaban_edit_application[key]['datetimerange'].substr(0,16)), new Date(_this.jiaban_edit_application[key]['datetimerange'].substr(22,16))];
 			}
 			// console.log(_this.jiaban_edit_confirm);return false;
 
