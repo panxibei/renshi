@@ -5,7 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-use App\Models\Renshi\Renshi_jiaban;
+use App\Models\Renshi\Renshi_jiaban_confirm;
 use DB;
 use Illuminate\Support\Facades\Cache;
 
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
             try	{
                 DB::beginTransaction();
                 
-                $result = Renshi_jiaban::where('archived', false)
+                $result = Renshi_jiaban_confirm::where('archived', false)
                     ->where('status', 99)
                     ->orWhere('status', 0)
                     // ->where('updated_at', '>', date('Y-m-d H:i:s', time() - 2 * 24 * 60 * 60))
