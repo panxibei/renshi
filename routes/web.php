@@ -251,6 +251,9 @@ Route::group(['prefix'=>'', 'namespace'=>'Main', 'middleware'=>['jwtauth']], fun
 
 	// logout
 	Route::get('logout', 'mainController@logout')->name('main.logout');
+
+	// dateofsetup
+	Route::get('dateofsetup', 'mainController@dateofsetup')->name('dateofsetup');
 });
 
 

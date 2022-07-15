@@ -56,11 +56,11 @@ class LoginController extends Controller
 		// $validator = Validator::make(Input::all(), $rules);
 		$validator = Validator::make($request->all(), $rules);
 		if ($validator->fails()) {
-			// echo '<p style="color: #ff0000;">Incorrect!</p>';
+			echo '<p style="color: #ff0000;">Incorrect!</p>';
 			// dd('<p style="color: #ff0000;">Incorrect!</p>');
 			return null;
 		} else {
-			// echo '<p style="color: #00ff30;">Matched :)</p>';
+			echo '<p style="color: #00ff30;">Matched :)</p>';
 			// dd('<p style="color: #00ff30;">Matched :)</p>');
 		}
 
